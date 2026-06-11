@@ -1,3 +1,10 @@
+"""Unit tests for the INACTIVE/FUTURE ``rerun_scope`` module.
+
+Partial Layer 2 rerun is NOT part of Cortex v1. These tests cover the scoping
+helpers in isolation; they do NOT assert any product-path behavior. The
+orchestrator always runs a full Layer 2 build (see ``test_cortex_seam.py``).
+"""
+
 from app.schemas import (
     CargoFlags,
     FlagState,

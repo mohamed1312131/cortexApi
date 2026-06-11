@@ -1,0 +1,2591 @@
+{
+  "case_id": "SHIP-9EEB9389",
+  "request": {
+    "case_id": "SHIP-9EEB9389",
+    "user_goal": {
+      "primary_goal": "find_preparation_paths",
+      "priority": "unknown",
+      "deadline_sensitivity": "unknown"
+    },
+    "core_shipment": {
+      "cargo_description": "lithium batteries",
+      "weight_kg": 8000.0,
+      "volume_cbm": 20.0,
+      "dimensions": null,
+      "quantity": null,
+      "packaging": null
+    },
+    "lane": {
+      "origin_raw": "Shenzhen",
+      "destination_raw": "Lyon",
+      "origin_country": "CN",
+      "destination_country": "FR",
+      "origin_city": "Shenzhen",
+      "destination_city": "Lyon"
+    },
+    "mode": {
+      "requested_mode": "unknown",
+      "candidate_modes": [
+        "sea",
+        "air",
+        "road"
+      ],
+      "needs_mode_selection": true
+    },
+    "cargo_flags": {
+      "dangerous_goods": "yes",
+      "temperature_controlled": "unknown",
+      "oversized": "unknown",
+      "high_value": "unknown",
+      "pharma": "unknown",
+      "food_perishable": "unknown",
+      "live_animals": "unknown"
+    },
+    "active_profiles": [
+      "dangerous_goods",
+      "lithium_battery"
+    ],
+    "profiles": {
+      "dangerous_goods": {
+        "un_number": "UN3480"
+      },
+      "lithium_battery": {
+        "battery_type": null,
+        "packed_with_equipment": null,
+        "state_of_charge_pct": null,
+        "un38_3_available": null
+      }
+    },
+    "commercial": {
+      "incoterm": null,
+      "cargo_value": null,
+      "currency": null,
+      "ready_date": null,
+      "deadline": null
+    },
+    "facts_from_user": {
+      "cargo_description": "lithium batteries",
+      "weight_kg": 8000.0,
+      "origin_raw": "Shenzhen",
+      "destination_raw": "Lyon",
+      "origin_country": "CN",
+      "destination_country": "FR",
+      "volume_cbm": 20.0,
+      "origin_city": "Shenzhen",
+      "destination_city": "Lyon",
+      "un_number": "UN3480"
+    },
+    "inferred_flags": {
+      "dangerous_goods": {
+        "value": "yes",
+        "basis": "cargo description or UN number indicates lithium battery cargo",
+        "confirmed_by_user": true
+      }
+    },
+    "missing_fields": {
+      "blocking": [],
+      "high_value": [
+        "battery packing configuration",
+        "state of charge for air",
+        "UN38.3 availability",
+        "ready date or deadline"
+      ],
+      "can_wait": [
+        "incoterm",
+        "cargo value",
+        "preferred budget/speed priority"
+      ]
+    },
+    "questions_to_user": [
+      {
+        "question": "Are the batteries shipped alone, packed with equipment, or contained in equipment?",
+        "reason": "Battery packing configuration changes dangerous-goods preparation.",
+        "field_target": "profiles.lithium_battery.packed_with_equipment"
+      },
+      {
+        "question": "If air transport is possible, do you know the lithium battery state of charge?",
+        "reason": "State of charge can affect air dangerous-goods preparation.",
+        "field_target": "profiles.lithium_battery.state_of_charge_pct"
+      },
+      {
+        "question": "Do you have UN38.3 test documentation?",
+        "reason": "Lithium battery transport often requires this evidence before carrier review.",
+        "field_target": "profiles.lithium_battery.un38_3_available"
+      }
+    ],
+    "ready_for_layer_2": true,
+    "field_confidence": {
+      "cargo_description": 0.8,
+      "weight_kg": 0.8,
+      "origin_raw": 0.9,
+      "destination_raw": 0.9,
+      "origin_country": 0.9,
+      "destination_country": 0.8,
+      "volume_cbm": 0.9,
+      "origin_city": 0.9,
+      "destination_city": 0.9,
+      "un_number": 0.95
+    },
+    "intake_quality_score": 0.74
+  },
+  "fetch_plan": {
+    "case_id": "SHIP-9EEB9389",
+    "items": [
+      {
+        "block_id": "SEA-C",
+        "mode": "sea",
+        "reason": "sea port capability must be checked before sea preparation",
+        "priority": "fail_fast",
+        "required_inputs": [
+          {
+            "field": "lane.origin_city",
+            "reason": "SEA-C needs origin port/city"
+          },
+          {
+            "field": "lane.origin_country",
+            "reason": "SEA-C needs origin country"
+          }
+        ],
+        "skip_condition": null,
+        "empty_behavior": "fail_fast_unknown",
+        "fallback_policy": "return_unknown"
+      },
+      {
+        "block_id": "SEA-D",
+        "mode": "sea",
+        "reason": "sea carrier and trade lane reference must be checked before sea preparation",
+        "priority": "required",
+        "required_inputs": [
+          {
+            "field": "lane.origin_country",
+            "reason": "SEA-D needs origin country"
+          },
+          {
+            "field": "lane.destination_country",
+            "reason": "SEA-D needs destination country"
+          },
+          {
+            "field": "cargo_flags",
+            "reason": "SEA-D uses cargo flags for carrier/trade lane planning"
+          }
+        ],
+        "skip_condition": null,
+        "empty_behavior": "soft_unknown",
+        "fallback_policy": "return_unknown"
+      },
+      {
+        "block_id": "SEA-A",
+        "mode": "sea",
+        "reason": "sea dangerous goods acceptance must be checked before sea preparation",
+        "priority": "required",
+        "required_inputs": [
+          {
+            "field": "cargo_flags.dangerous_goods",
+            "reason": "SEA-A needs DG flag for IMDG/DG acceptance planning"
+          },
+          {
+            "field": "profiles.dangerous_goods.un_number",
+            "reason": "SEA-A needs UN number for DG acceptance lookup"
+          }
+        ],
+        "skip_condition": null,
+        "empty_behavior": "hard_unknown",
+        "fallback_policy": "return_unknown"
+      },
+      {
+        "block_id": "SEA-B",
+        "mode": "sea",
+        "reason": "container fit must be checked for sea preparation",
+        "priority": "required",
+        "required_inputs": [
+          {
+            "field": "core_shipment.weight_kg",
+            "reason": "SEA-B needs shipment weight"
+          },
+          {
+            "field": "core_shipment.volume_cbm",
+            "reason": "SEA-B needs volume for container planning"
+          },
+          {
+            "field": "core_shipment.dimensions",
+            "reason": "SEA-B needs dimensions for oversize/container fit"
+          }
+        ],
+        "skip_condition": null,
+        "empty_behavior": "soft_unknown",
+        "fallback_policy": "return_unknown"
+      },
+      {
+        "block_id": "SEA-F",
+        "mode": "sea",
+        "reason": "maritime document requirements must be prepared for sea shipment",
+        "priority": "optional",
+        "required_inputs": [
+          {
+            "field": "core_shipment.weight_kg",
+            "reason": "SEA-F needs weight for VGM/document planning"
+          },
+          {
+            "field": "cargo_flags.dangerous_goods",
+            "reason": "SEA-F needs DG flag for DG document planning"
+          }
+        ],
+        "skip_condition": null,
+        "empty_behavior": "planning_unknown",
+        "fallback_policy": "return_planning_only"
+      },
+      {
+        "block_id": "SEA-I",
+        "mode": "sea",
+        "reason": "sea route, chokepoint, and schedule readiness must be checked before sea preparation",
+        "priority": "required",
+        "required_inputs": [
+          {
+            "field": "lane.origin_country",
+            "reason": "SEA-I needs origin country"
+          },
+          {
+            "field": "lane.destination_country",
+            "reason": "SEA-I needs destination country"
+          },
+          {
+            "field": "lane.origin_city",
+            "reason": "SEA-I uses origin port/city for routing"
+          },
+          {
+            "field": "lane.destination_city",
+            "reason": "SEA-I uses destination port/city for routing"
+          },
+          {
+            "field": "commercial.ready_date",
+            "reason": "SEA-I needs ready date for schedule readiness"
+          },
+          {
+            "field": "commercial.deadline",
+            "reason": "SEA-I needs deadline for urgency assessment"
+          }
+        ],
+        "skip_condition": null,
+        "empty_behavior": "soft_unknown",
+        "fallback_policy": "return_unknown"
+      },
+      {
+        "block_id": "SEA-COST",
+        "mode": "sea",
+        "reason": "sea planning cost reference should be checked after readiness facts",
+        "priority": "optional",
+        "required_inputs": [
+          {
+            "field": "lane.origin_country",
+            "reason": "SEA-COST needs origin country"
+          },
+          {
+            "field": "lane.destination_country",
+            "reason": "SEA-COST needs destination country"
+          },
+          {
+            "field": "core_shipment.weight_kg",
+            "reason": "SEA-COST uses weight for planning context"
+          },
+          {
+            "field": "core_shipment.volume_cbm",
+            "reason": "SEA-COST uses volume for planning context"
+          },
+          {
+            "field": "commercial.incoterm",
+            "reason": "SEA-COST uses incoterm for cost responsibility context"
+          }
+        ],
+        "skip_condition": null,
+        "empty_behavior": "planning_unknown",
+        "fallback_policy": "return_planning_only"
+      },
+      {
+        "block_id": "AIR-C",
+        "mode": "air",
+        "reason": "air airport capability must be checked before air preparation",
+        "priority": "fail_fast",
+        "required_inputs": [
+          {
+            "field": "lane.origin_city",
+            "reason": "AIR-C needs origin airport/city"
+          },
+          {
+            "field": "lane.origin_country",
+            "reason": "AIR-C needs origin country"
+          }
+        ],
+        "skip_condition": null,
+        "empty_behavior": "fail_fast_unknown",
+        "fallback_policy": "return_unknown"
+      },
+      {
+        "block_id": "AIR-D",
+        "mode": "air",
+        "reason": "air carrier capability must be checked before air preparation",
+        "priority": "required",
+        "required_inputs": [
+          {
+            "field": "cargo_flags",
+            "reason": "AIR-D needs cargo flags for carrier capability triggers"
+          }
+        ],
+        "skip_condition": null,
+        "empty_behavior": "soft_unknown",
+        "fallback_policy": "return_unknown"
+      },
+      {
+        "block_id": "AIR-A",
+        "mode": "air",
+        "reason": "air dangerous goods acceptance must be checked before air preparation",
+        "priority": "fail_fast",
+        "required_inputs": [
+          {
+            "field": "cargo_flags.dangerous_goods",
+            "reason": "AIR-A needs DG flag"
+          },
+          {
+            "field": "profiles.dangerous_goods.un_number",
+            "reason": "AIR-A needs UN number for DG cargo"
+          }
+        ],
+        "skip_condition": null,
+        "empty_behavior": "fail_fast_unknown",
+        "fallback_policy": "return_unknown"
+      },
+      {
+        "block_id": "AIR-B",
+        "mode": "air",
+        "reason": "air special handling requirements must be checked before air preparation",
+        "priority": "required",
+        "required_inputs": [
+          {
+            "field": "cargo_flags",
+            "reason": "AIR-B needs cargo flags for special handling planning"
+          }
+        ],
+        "skip_condition": null,
+        "empty_behavior": "soft_unknown",
+        "fallback_policy": "return_unknown"
+      },
+      {
+        "block_id": "AIR-E",
+        "mode": "air",
+        "reason": "aircraft and ULD fit must be checked for air preparation",
+        "priority": "required",
+        "required_inputs": [
+          {
+            "field": "core_shipment.weight_kg",
+            "reason": "AIR-E needs shipment weight"
+          },
+          {
+            "field": "core_shipment.volume_cbm",
+            "reason": "AIR-E needs volume for ULD planning"
+          },
+          {
+            "field": "core_shipment.dimensions",
+            "reason": "AIR-E needs dimensions for door/ULD fit"
+          }
+        ],
+        "skip_condition": null,
+        "empty_behavior": "soft_unknown",
+        "fallback_policy": "return_unknown"
+      },
+      {
+        "block_id": "AIR-F",
+        "mode": "air",
+        "reason": "air border and permit requirements must be checked before air preparation",
+        "priority": "required",
+        "required_inputs": [
+          {
+            "field": "lane.origin_country",
+            "reason": "AIR-F needs origin country"
+          },
+          {
+            "field": "lane.destination_country",
+            "reason": "AIR-F needs destination country"
+          },
+          {
+            "field": "cargo_flags",
+            "reason": "AIR-F needs cargo flags for permit triggers"
+          },
+          {
+            "field": "commercial.incoterm",
+            "reason": "AIR-F uses incoterm for responsibility planning"
+          }
+        ],
+        "skip_condition": null,
+        "empty_behavior": "soft_unknown",
+        "fallback_policy": "return_unknown"
+      },
+      {
+        "block_id": "AIR-H",
+        "mode": "air",
+        "reason": "air security and screening requirements must be checked before air preparation",
+        "priority": "required",
+        "required_inputs": [
+          {
+            "field": "lane.origin_country",
+            "reason": "AIR-H needs origin country"
+          },
+          {
+            "field": "lane.destination_country",
+            "reason": "AIR-H needs destination country"
+          },
+          {
+            "field": "core_shipment.cargo_description",
+            "reason": "AIR-H needs cargo description for security data readiness"
+          },
+          {
+            "field": "cargo_flags",
+            "reason": "AIR-H needs cargo flags for screening triggers"
+          }
+        ],
+        "skip_condition": null,
+        "empty_behavior": "soft_unknown",
+        "fallback_policy": "return_unknown"
+      },
+      {
+        "block_id": "AIR-I",
+        "mode": "air",
+        "reason": "air route and schedule readiness must be checked before air preparation",
+        "priority": "required",
+        "required_inputs": [
+          {
+            "field": "lane.origin_country",
+            "reason": "AIR-I needs origin country"
+          },
+          {
+            "field": "lane.destination_country",
+            "reason": "AIR-I needs destination country"
+          },
+          {
+            "field": "lane.origin_city",
+            "reason": "AIR-I uses origin city/airport for routing"
+          },
+          {
+            "field": "lane.destination_city",
+            "reason": "AIR-I uses destination city/airport for routing"
+          },
+          {
+            "field": "commercial.ready_date",
+            "reason": "AIR-I needs ready date for schedule readiness"
+          },
+          {
+            "field": "commercial.deadline",
+            "reason": "AIR-I needs deadline for urgency assessment"
+          }
+        ],
+        "skip_condition": null,
+        "empty_behavior": "soft_unknown",
+        "fallback_policy": "return_unknown"
+      },
+      {
+        "block_id": "ROAD-C",
+        "mode": "road",
+        "reason": "road corridor viability must be checked before road preparation",
+        "priority": "fail_fast",
+        "required_inputs": [
+          {
+            "field": "lane.origin_country",
+            "reason": "ROAD-C needs origin ISO country"
+          },
+          {
+            "field": "lane.destination_country",
+            "reason": "ROAD-C needs destination ISO country"
+          }
+        ],
+        "skip_condition": null,
+        "empty_behavior": "fail_fast_unknown",
+        "fallback_policy": "return_unknown"
+      },
+      {
+        "block_id": "ROAD-A",
+        "mode": "road",
+        "reason": "road dangerous goods / ADR intake must be checked",
+        "priority": "required",
+        "required_inputs": [
+          {
+            "field": "cargo_flags.dangerous_goods",
+            "reason": "ROAD-A needs dangerous goods flag"
+          }
+        ],
+        "skip_condition": null,
+        "empty_behavior": "hard_unknown",
+        "fallback_policy": "return_unknown"
+      },
+      {
+        "block_id": "ROAD-B",
+        "mode": "road",
+        "reason": "road vehicle/load fit must be checked",
+        "priority": "required",
+        "required_inputs": [
+          {
+            "field": "core_shipment.weight_kg",
+            "reason": "ROAD-B needs shipment weight"
+          },
+          {
+            "field": "core_shipment.volume_cbm",
+            "reason": "ROAD-B uses shipment volume for vehicle planning"
+          },
+          {
+            "field": "core_shipment.dimensions",
+            "reason": "ROAD-B needs shipment dimensions"
+          }
+        ],
+        "skip_condition": null,
+        "empty_behavior": "soft_unknown",
+        "fallback_policy": "return_unknown"
+      },
+      {
+        "block_id": "ROAD-F",
+        "mode": "road",
+        "reason": "road documents and transit planning factors should be surfaced",
+        "priority": "optional",
+        "required_inputs": [
+          {
+            "field": "lane.origin_country",
+            "reason": "ROAD-F needs origin ISO country"
+          },
+          {
+            "field": "lane.destination_country",
+            "reason": "ROAD-F needs destination ISO country"
+          },
+          {
+            "field": "commercial.incoterm",
+            "reason": "ROAD-F uses incoterm for document responsibility planning"
+          },
+          {
+            "field": "commercial.ready_date",
+            "reason": "ROAD-F needs ready date for road preparation timing"
+          },
+          {
+            "field": "commercial.deadline",
+            "reason": "ROAD-F needs deadline for transit urgency planning"
+          }
+        ],
+        "skip_condition": null,
+        "empty_behavior": "planning_unknown",
+        "fallback_policy": "return_planning_only"
+      },
+      {
+        "block_id": "ROAD-COST",
+        "mode": "road",
+        "reason": "road planning cost reference should be checked after readiness facts",
+        "priority": "optional",
+        "required_inputs": [
+          {
+            "field": "lane.origin_country",
+            "reason": "ROAD-COST needs origin country"
+          },
+          {
+            "field": "lane.destination_country",
+            "reason": "ROAD-COST needs destination country"
+          },
+          {
+            "field": "core_shipment.weight_kg",
+            "reason": "ROAD-COST uses weight for planning context"
+          },
+          {
+            "field": "core_shipment.volume_cbm",
+            "reason": "ROAD-COST uses volume for planning context"
+          },
+          {
+            "field": "commercial.incoterm",
+            "reason": "ROAD-COST uses incoterm for cost responsibility context"
+          }
+        ],
+        "skip_condition": null,
+        "empty_behavior": "planning_unknown",
+        "fallback_policy": "return_planning_only"
+      }
+    ]
+  },
+  "block_responses": [
+    {
+      "block_id": "SEA-C",
+      "mode": "sea",
+      "status": "unknown",
+      "data": {},
+      "hard_gates": [],
+      "planning_factors": [],
+      "unknowns": [
+        {
+          "field": "sea_port_capability",
+          "reason": "no SEA-C port capability record found for requested origin",
+          "impact": "Sea port capability cannot be verified; do not treat as clear."
+        }
+      ],
+      "missing_fields": [],
+      "confidence": {
+        "source_confidence": "unknown",
+        "cap": null,
+        "reasons": [
+          "no SEA-C port record found"
+        ]
+      },
+      "provenance": {
+        "source": "data/sea/sea_c_port_capability.json",
+        "record_id": "Shenzhen->CN",
+        "provider_used": "mock",
+        "fallback_used": false,
+        "live_data_available": false,
+        "extra": {}
+      }
+    },
+    {
+      "block_id": "SEA-D",
+      "mode": "sea",
+      "status": "unknown",
+      "data": {
+        "carrier_trade_lane_status": "planning_reference_requires_carrier_forwarder_validation",
+        "origin_country": "CN",
+        "destination_country": "FR",
+        "active_trigger_flags": [
+          "any_sea_shipment",
+          "dangerous_goods"
+        ],
+        "unknown_trigger_flags": [
+          "temperature_controlled",
+          "oversized",
+          "high_value",
+          "pharma",
+          "food_perishable",
+          "live_animals"
+        ],
+        "reference_carrier_count": 7,
+        "trade_lane_family_count": 10,
+        "carrier_examples": [
+          {
+            "carrier_code": "MAERSK",
+            "carrier_name": "Maersk",
+            "carrier_type": "global_container_line",
+            "headquarters_region": "Europe",
+            "public_network_reference": true,
+            "public_schedule_lookup": true,
+            "public_booking_or_quote_portal": true,
+            "main_trade_lane_families": [
+              "Asia-Europe",
+              "Trans-Pacific",
+              "Trans-Atlantic",
+              "Intra-Asia",
+              "Middle East/Indian Subcontinent",
+              "Latin America",
+              "Africa",
+              "Oceania",
+              "regional_feeder"
+            ],
+            "service_capability_tags": [
+              "dry_container",
+              "reefer",
+              "dangerous_goods_requires_acceptance",
+              "special_cargo_requires_approval",
+              "schedule_lookup_available"
+            ],
+            "verified_public_claims": [
+              "Ocean freight service to 500+ global destinations",
+              "public sailing schedule lookup available"
+            ]
+          },
+          {
+            "carrier_code": "MSC",
+            "carrier_name": "MSC Mediterranean Shipping Company",
+            "carrier_type": "global_container_line",
+            "headquarters_region": "Europe",
+            "public_network_reference": true,
+            "public_schedule_lookup": true,
+            "public_booking_or_quote_portal": true,
+            "main_trade_lane_families": [
+              "Asia-Europe",
+              "Trans-Pacific",
+              "Trans-Atlantic",
+              "Intra-Asia",
+              "Middle East/Indian Subcontinent",
+              "Latin America",
+              "Africa",
+              "Oceania",
+              "regional_feeder"
+            ],
+            "service_capability_tags": [
+              "dry_container",
+              "reefer",
+              "dangerous_goods_requires_acceptance",
+              "special_cargo_requires_approval",
+              "global_trade_services"
+            ],
+            "verified_public_claims": [
+              "300 global routes",
+              "520 ports",
+              "155+ countries",
+              "675 offices"
+            ]
+          },
+          {
+            "carrier_code": "CMA_CGM",
+            "carrier_name": "CMA CGM",
+            "carrier_type": "global_container_line",
+            "headquarters_region": "Europe",
+            "public_network_reference": true,
+            "public_schedule_lookup": true,
+            "public_booking_or_quote_portal": true,
+            "main_trade_lane_families": [
+              "Africa",
+              "Asia",
+              "Caribbean/Central America",
+              "Europe",
+              "Mediterranean",
+              "Middle East",
+              "North America",
+              "Oceania",
+              "South America"
+            ],
+            "service_capability_tags": [
+              "dry_container",
+              "reefer",
+              "dangerous_goods_requires_acceptance",
+              "special_cargo_requires_approval",
+              "line_services_by_trade"
+            ],
+            "verified_public_claims": [
+              "line-services search by from/to zones",
+              "point-to-point schedule search available"
+            ]
+          },
+          {
+            "carrier_code": "HAPAG_LLOYD",
+            "carrier_name": "Hapag-Lloyd",
+            "carrier_type": "global_container_line",
+            "headquarters_region": "Europe",
+            "public_network_reference": true,
+            "public_schedule_lookup": true,
+            "public_booking_or_quote_portal": true,
+            "main_trade_lane_families": [
+              "Asia-Europe",
+              "Trans-Pacific",
+              "Trans-Atlantic",
+              "Intra-Asia",
+              "Mediterranean",
+              "Latin America",
+              "Africa",
+              "Middle East/Indian Subcontinent",
+              "Oceania"
+            ],
+            "service_capability_tags": [
+              "dry_container",
+              "reefer",
+              "dangerous_goods_requires_acceptance",
+              "special_cargo_requires_approval",
+              "real_time_schedule_data_available"
+            ],
+            "verified_public_claims": [
+              "vessel schedule provides detailed route information and real-time schedule data",
+              "reefer special cargo and dangerous goods categories listed"
+            ]
+          },
+          {
+            "carrier_code": "COSCO",
+            "carrier_name": "COSCO Shipping Lines",
+            "carrier_type": "global_container_line",
+            "headquarters_region": "Asia",
+            "public_network_reference": true,
+            "public_schedule_lookup": true,
+            "public_booking_or_quote_portal": true,
+            "main_trade_lane_families": [
+              "Trans-Pacific",
+              "Asia-Europe",
+              "Europe Feeder",
+              "Trans-Atlantic",
+              "Intra-Asia",
+              "Intra-Europe",
+              "Oceania",
+              "Asia-South Africa-South America",
+              "Southeast/South Asia"
+            ],
+            "service_capability_tags": [
+              "dry_container",
+              "reefer",
+              "dangerous_goods_requires_acceptance",
+              "special_cargo_requires_approval",
+              "schedule_by_city_service_or_vessel"
+            ],
+            "verified_public_claims": [
+              "official schedule pages include service schedule, city pair, service, and vessel schedule search categories"
+            ]
+          }
+        ],
+        "trade_lane_examples": [
+          {
+            "trade_lane_code": "ASIA_EUROPE",
+            "trade_lane_name": "Asia–Europe",
+            "typical_service_pattern": "mainline_deepsea_ocean_service",
+            "typical_frequency_hint": "weekly_or_multiple_weekly_on_major_port_pairs",
+            "planning_implication": "high carrier choice on major ports; check live schedules and capacity"
+          },
+          {
+            "trade_lane_code": "TRANS_PACIFIC",
+            "trade_lane_name": "Trans-Pacific",
+            "typical_service_pattern": "mainline_deepsea_ocean_service",
+            "typical_frequency_hint": "weekly_or_multiple_weekly_on_major_port_pairs",
+            "planning_implication": "major East-West lane; live blank sailings and capacity matter"
+          },
+          {
+            "trade_lane_code": "TRANS_ATLANTIC",
+            "trade_lane_name": "Trans-Atlantic",
+            "typical_service_pattern": "mainline_deepsea_ocean_service",
+            "typical_frequency_hint": "weekly_on_major_port_pairs",
+            "planning_implication": "major lane; fewer options than Asia-Europe/Trans-Pacific on many pairs"
+          },
+          {
+            "trade_lane_code": "INTRA_ASIA",
+            "trade_lane_name": "Intra-Asia",
+            "typical_service_pattern": "regional_mainline_and_feeder",
+            "typical_frequency_hint": "frequent_on_major_hubs; variable_on_secondary_ports",
+            "planning_implication": "hub-and-feeder routing common; transshipment risk should be flagged"
+          },
+          {
+            "trade_lane_code": "MEDITERRANEAN_EUROPE_FEEDER",
+            "trade_lane_name": "Mediterranean / Europe feeder",
+            "typical_service_pattern": "shortsea_feeder_and_mainline_connections",
+            "typical_frequency_hint": "weekly_or_more_from_major_hubs; variable_secondary_ports",
+            "planning_implication": "transshipment via hubs likely for smaller ports"
+          }
+        ]
+      },
+      "hard_gates": [],
+      "planning_factors": [
+        "Sea carrier/trade lane capability is planning-reference only until carrier/forwarder confirms acceptance and space.",
+        "Dangerous goods acceptance varies by carrier, route, port, and vessel; carrier validation is required."
+      ],
+      "unknowns": [
+        {
+          "field": "cargo_flags.temperature_controlled",
+          "reason": "temperature_controlled status is unknown",
+          "impact": "Sea carrier/trade lane requirements may be incomplete."
+        },
+        {
+          "field": "cargo_flags.oversized",
+          "reason": "oversized status is unknown",
+          "impact": "Sea carrier/trade lane requirements may be incomplete."
+        },
+        {
+          "field": "cargo_flags.high_value",
+          "reason": "high_value status is unknown",
+          "impact": "Sea carrier/trade lane requirements may be incomplete."
+        },
+        {
+          "field": "cargo_flags.pharma",
+          "reason": "pharma status is unknown",
+          "impact": "Sea carrier/trade lane requirements may be incomplete."
+        },
+        {
+          "field": "cargo_flags.food_perishable",
+          "reason": "food_perishable status is unknown",
+          "impact": "Sea carrier/trade lane requirements may be incomplete."
+        },
+        {
+          "field": "cargo_flags.live_animals",
+          "reason": "live_animals status is unknown",
+          "impact": "Sea carrier/trade lane requirements may be incomplete."
+        }
+      ],
+      "missing_fields": [],
+      "confidence": {
+        "source_confidence": "planning_reference",
+        "cap": null,
+        "reasons": []
+      },
+      "provenance": {
+        "source": "data/sea/sea_d_carrier_trade_lane_reference.json",
+        "record_id": null,
+        "provider_used": "mock",
+        "fallback_used": false,
+        "live_data_available": false,
+        "extra": {}
+      }
+    },
+    {
+      "block_id": "SEA-A",
+      "mode": "sea",
+      "status": "unknown",
+      "data": {},
+      "hard_gates": [],
+      "planning_factors": [],
+      "unknowns": [
+        {
+          "field": "profiles.dangerous_goods.un_number",
+          "reason": "no SEA-A DG record found for UN3480",
+          "impact": "Sea DG acceptance cannot be verified; do not treat as clear."
+        }
+      ],
+      "missing_fields": [],
+      "confidence": {
+        "source_confidence": "unknown",
+        "cap": null,
+        "reasons": []
+      },
+      "provenance": {
+        "source": "data/sea/sea_a_dg_sea_acceptance.json",
+        "record_id": "UN3480",
+        "provider_used": "mock",
+        "fallback_used": false,
+        "live_data_available": false,
+        "extra": {}
+      }
+    },
+    {
+      "block_id": "SEA-B",
+      "mode": "sea",
+      "status": "unknown",
+      "data": {
+        "fit_status": "planning_only_requires_forwarder_carrier_validation",
+        "weight_kg": 8000.0,
+        "volume_cbm": 20.0,
+        "dimensions_cm": null,
+        "quantity": null,
+        "packaging": null,
+        "active_trigger_flags": [
+          "dangerous_goods"
+        ],
+        "unknown_trigger_flags": [
+          "temperature_controlled",
+          "oversized",
+          "high_value",
+          "pharma",
+          "food_perishable",
+          "live_animals"
+        ],
+        "container_fit_rule_count": 14,
+        "container_spec_count": 14,
+        "candidate_container_examples": [
+          {
+            "equipment_code": "20GP",
+            "equipment_name": "20 ft general purpose dry container",
+            "container_type": "dry",
+            "payload_kg": 28200,
+            "max_gross_weight_kg": 30480,
+            "internal_length_cm": 589.8,
+            "internal_width_cm": 235.2,
+            "internal_height_cm": 239.3,
+            "volume_cbm": 33.1,
+            "notes": "Common reference dry-container dimensions; validate exact serial-container CSC plate at booking.",
+            "confidence": "verified_carrier_reference"
+          },
+          {
+            "equipment_code": "40GP",
+            "equipment_name": "40 ft general purpose dry container",
+            "container_type": "dry",
+            "payload_kg": 26780,
+            "max_gross_weight_kg": 30480,
+            "internal_length_cm": 1203.2,
+            "internal_width_cm": 235.2,
+            "internal_height_cm": 239.3,
+            "volume_cbm": 67.7,
+            "notes": "Payload varies by carrier/unit; volume-sensitive cargo often uses 40GP/40HC.",
+            "confidence": "verified_carrier_reference"
+          },
+          {
+            "equipment_code": "40HC",
+            "equipment_name": "40 ft high cube dry container",
+            "container_type": "high_cube",
+            "payload_kg": 26580,
+            "max_gross_weight_kg": 30480,
+            "internal_length_cm": 1203.2,
+            "internal_width_cm": 235.2,
+            "internal_height_cm": 269.8,
+            "volume_cbm": 76.3,
+            "notes": "High cube gives extra height but not unlimited payload.",
+            "confidence": "verified_carrier_reference"
+          },
+          {
+            "equipment_code": "45HC",
+            "equipment_name": "45 ft high cube dry container",
+            "container_type": "high_cube",
+            "payload_kg": 25680,
+            "max_gross_weight_kg": 30480,
+            "internal_length_cm": 1355.6,
+            "internal_width_cm": 235.2,
+            "internal_height_cm": 269.8,
+            "volume_cbm": 86.0,
+            "notes": "45HC availability is lane/carrier-specific; use as planning option only.",
+            "confidence": "verified_carrier_reference"
+          },
+          {
+            "equipment_code": "20RF",
+            "equipment_name": "20 ft reefer container",
+            "container_type": "reefer",
+            "payload_kg": 27430,
+            "max_gross_weight_kg": 30480,
+            "internal_length_cm": 545.6,
+            "internal_width_cm": 229.4,
+            "internal_height_cm": 226.3,
+            "volume_cbm": 28.3,
+            "notes": "Reefer booking requires setpoint, ventilation/humidity needs, and reefer plug availability at terminals.",
+            "confidence": "verified_carrier_reference"
+          }
+        ],
+        "matched_readiness_rule_ids": [],
+        "cargo_equipment_mapping_examples": [
+          {
+            "cargo_type": "general_dry_palletized",
+            "recommended_equipment": [
+              "20GP",
+              "40GP",
+              "40HC"
+            ],
+            "planning_factors": [
+              "LCL vs FCL based on CBM, value, urgency, handling risk"
+            ],
+            "confidence": "authored_backed_by_sources"
+          },
+          {
+            "cargo_type": "small_dry_lcl",
+            "recommended_equipment": [
+              "LCL_SERVICE"
+            ],
+            "planning_factors": [
+              "below 15 CBM usually LCL candidate; quote both near threshold"
+            ],
+            "confidence": "authored_backed_by_maersk"
+          },
+          {
+            "cargo_type": "temperature_controlled",
+            "recommended_equipment": [
+              "20RF",
+              "40RH"
+            ],
+            "planning_factors": [
+              "pre-cooling, monitoring, genset/drayage, terminal plugs"
+            ],
+            "confidence": "authored_backed_by_sources"
+          },
+          {
+            "cargo_type": "bulk_liquid_non_dg",
+            "recommended_equipment": [
+              "20TK_20KL",
+              "20TK_26KL"
+            ],
+            "planning_factors": [
+              "tank availability, heating/insulation if needed"
+            ],
+            "confidence": "authored"
+          },
+          {
+            "cargo_type": "bulk_liquid_dg",
+            "recommended_equipment": [
+              "20TK_20KL",
+              "20TK_26KL"
+            ],
+            "planning_factors": [
+              "segregation, documentation, heating/venting needs"
+            ],
+            "confidence": "authored"
+          }
+        ]
+      },
+      "hard_gates": [],
+      "planning_factors": [
+        "SEA-B is a planning fit reference only; equipment availability and stuffing/loading plan must be validated with forwarder/carrier.",
+        "Container fit depends on exact piece dimensions, packaging, weight distribution, and carrier/equipment availability.",
+        "Dangerous goods container planning requires DG stowage, segregation, and carrier validation."
+      ],
+      "unknowns": [
+        {
+          "field": "cargo_flags.temperature_controlled",
+          "reason": "temperature_controlled status is unknown",
+          "impact": "Sea container/load fit requirements may be incomplete."
+        },
+        {
+          "field": "cargo_flags.oversized",
+          "reason": "oversized status is unknown",
+          "impact": "Sea container/load fit requirements may be incomplete."
+        },
+        {
+          "field": "cargo_flags.high_value",
+          "reason": "high_value status is unknown",
+          "impact": "Sea container/load fit requirements may be incomplete."
+        },
+        {
+          "field": "cargo_flags.pharma",
+          "reason": "pharma status is unknown",
+          "impact": "Sea container/load fit requirements may be incomplete."
+        },
+        {
+          "field": "cargo_flags.food_perishable",
+          "reason": "food_perishable status is unknown",
+          "impact": "Sea container/load fit requirements may be incomplete."
+        },
+        {
+          "field": "cargo_flags.live_animals",
+          "reason": "live_animals status is unknown",
+          "impact": "Sea container/load fit requirements may be incomplete."
+        },
+        {
+          "field": "core_shipment.dimensions",
+          "reason": "shipment dimensions missing",
+          "impact": "Piece/container loading fit cannot be confirmed."
+        },
+        {
+          "field": "sea_b.readiness_rules",
+          "reason": "no SEA-B readiness rule matched this request",
+          "impact": "Container/load readiness cannot be fully verified; do not treat as clear."
+        }
+      ],
+      "missing_fields": [
+        "core_shipment.dimensions"
+      ],
+      "confidence": {
+        "source_confidence": "planning_reference",
+        "cap": 0.5,
+        "reasons": [
+          "SEA-B fit is capped by missing volume or dimensions."
+        ]
+      },
+      "provenance": {
+        "source": "data/sea/sea_b_container_fit_rules.json",
+        "record_id": null,
+        "provider_used": "mock",
+        "fallback_used": false,
+        "live_data_available": false,
+        "extra": {}
+      }
+    },
+    {
+      "block_id": "SEA-F",
+      "mode": "sea",
+      "status": "unknown",
+      "data": {
+        "documents": [
+          "commercial_invoice",
+          "packing_list",
+          "bill_of_lading",
+          "verified_gross_mass_vgm",
+          "dangerous_goods_declaration",
+          "safety_data_sheet_sds",
+          "emergency_contact_information"
+        ],
+        "document_status": "planning_checklist_only",
+        "booking_ready": false
+      },
+      "hard_gates": [],
+      "planning_factors": [
+        "Maritime document checklist is planning-only until carrier/forwarder confirms booking requirements.",
+        "Verified Gross Mass (VGM) is required before vessel loading where applicable."
+      ],
+      "unknowns": [
+        {
+          "field": "commercial.incoterm",
+          "reason": "incoterm missing",
+          "impact": "Responsibility split for export/import documents cannot be confirmed."
+        }
+      ],
+      "missing_fields": [],
+      "confidence": {
+        "source_confidence": "planning_reference",
+        "cap": null,
+        "reasons": []
+      },
+      "provenance": {
+        "source": "sea_document_planning_reference",
+        "record_id": null,
+        "provider_used": "mock",
+        "fallback_used": false,
+        "live_data_available": false,
+        "extra": {}
+      }
+    },
+    {
+      "block_id": "SEA-I",
+      "mode": "sea",
+      "status": "found",
+      "data": {
+        "origin_country": "CN",
+        "destination_country": "FR",
+        "origin_city": "Shenzhen",
+        "destination_city": "Lyon",
+        "active_trigger_flags": [
+          "any_sea_shipment",
+          "dangerous_goods"
+        ],
+        "unknown_trigger_flags": [
+          "temperature_controlled",
+          "oversized",
+          "high_value",
+          "pharma",
+          "food_perishable",
+          "live_animals"
+        ],
+        "matched_schedule_rule_ids": [
+          "CUTOFF_DG_DOCUMENTS"
+        ],
+        "chokepoint_reference_count": 5,
+        "chokepoint_examples": [
+          {
+            "record_id": "CHOKEPOINT_SUEZ",
+            "name": "Suez Canal / Red Sea route exposure",
+            "waterway_or_area": "Suez Canal, Red Sea approaches",
+            "region": "Egypt / Red Sea / Mediterranean-Indian Ocean corridor",
+            "risk_types": [
+              "geopolitical_security_disruption",
+              "rerouting",
+              "toll_cost_impact",
+              "convoy_navigation_rules"
+            ],
+            "typical_planning_impact": "If disrupted or avoided, Asia-Europe traffic may be rerouted around the Cape of Good Hope, adding major transit time and fuel/cost exposure.",
+            "readiness_action": "If route depends on Suez/Red Sea, check current Suez Canal Authority circulars, carrier route advisories, and security notices before confirming readiness.",
+            "requires_live_validation": true
+          },
+          {
+            "record_id": "CHOKEPOINT_PANAMA",
+            "name": "Panama Canal draft and transit exposure",
+            "waterway_or_area": "Panama Canal",
+            "region": "Panama / Atlantic-Pacific corridor",
+            "risk_types": [
+              "draft_restriction",
+              "transit_slot_restriction",
+              "drought_water_level_impact",
+              "booking_delay",
+              "toll_cost_impact"
+            ],
+            "typical_planning_impact": "Draft and daily transit-slot changes can force booking delays, lighter loading, alternate routing, or higher transit cost exposure.",
+            "readiness_action": "If route depends on Panama Canal, check current Panama Canal Authority advisories for maximum authorized draft, booking slots, and transit restrictions.",
+            "requires_live_validation": true
+          },
+          {
+            "record_id": "CHOKEPOINT_MALACCA",
+            "name": "Strait of Malacca exposure",
+            "waterway_or_area": "Strait of Malacca",
+            "region": "Southeast Asia",
+            "risk_types": [
+              "congestion",
+              "collision/navigational_risk",
+              "strategic_chokepoint_exposure",
+              "security_risk"
+            ],
+            "typical_planning_impact": "High-density Asia trade corridor; disruption or congestion can affect schedule reliability.",
+            "readiness_action": "Flag as strategic chokepoint exposure for Asia-Europe/Asia-Middle East routings; validate carrier ETA and schedule buffer.",
+            "requires_live_validation": true
+          },
+          {
+            "record_id": "CHOKEPOINT_BAB_EL_MANDEB",
+            "name": "Bab-el-Mandeb / Red Sea exposure",
+            "waterway_or_area": "Bab-el-Mandeb Strait / southern Red Sea",
+            "region": "Yemen / Djibouti / Eritrea approaches",
+            "risk_types": [
+              "geopolitical_security_disruption",
+              "rerouting",
+              "insurance_cost_impact",
+              "schedule_reliability_risk"
+            ],
+            "typical_planning_impact": "Security incidents can cause carrier avoidance of Red Sea/Suez route and rerouting via Cape of Good Hope.",
+            "readiness_action": "For routes using Red Sea/Suez, validate current carrier routing and security advisories before confirming timeline.",
+            "requires_live_validation": true
+          },
+          {
+            "record_id": "CHOKEPOINT_HORMUZ",
+            "name": "Strait of Hormuz exposure",
+            "waterway_or_area": "Strait of Hormuz",
+            "region": "Persian Gulf / Gulf of Oman",
+            "risk_types": [
+              "geopolitical_security_risk",
+              "energy_trade_exposure",
+              "insurance_cost_impact",
+              "rerouting_limited"
+            ],
+            "typical_planning_impact": "Strategic energy and Gulf trade chokepoint; disruption can affect insurance, carrier acceptance, and service reliability.",
+            "readiness_action": "For Gulf cargo, validate carrier acceptance, insurance/security advisories, and schedule buffer.",
+            "requires_live_validation": true
+          }
+        ],
+        "schedule_status": "planning_only_requires_carrier_forwarder_schedule_validation"
+      },
+      "hard_gates": [
+        {
+          "gate_id": "SEA_I_CUTOFF_DG_DOCUMENTS_HARD_GATE",
+          "mode": "sea",
+          "severity": "blocking",
+          "status": "triggered",
+          "message": "SEA-I schedule readiness rule contains a hard gate.",
+          "source_block": "SEA-I",
+          "basis": "CUTOFF_DG_DOCUMENTS"
+        }
+      ],
+      "planning_factors": [
+        "Sea route, chokepoint, and schedule readiness must be validated with carrier/forwarder before booking.",
+        "DG paperwork must be accepted before cargo can be planned for vessel stowage."
+      ],
+      "unknowns": [
+        {
+          "field": "cargo_flags.temperature_controlled",
+          "reason": "temperature_controlled status is unknown",
+          "impact": "Sea schedule/chokepoint readiness may be incomplete."
+        },
+        {
+          "field": "cargo_flags.oversized",
+          "reason": "oversized status is unknown",
+          "impact": "Sea schedule/chokepoint readiness may be incomplete."
+        },
+        {
+          "field": "cargo_flags.high_value",
+          "reason": "high_value status is unknown",
+          "impact": "Sea schedule/chokepoint readiness may be incomplete."
+        },
+        {
+          "field": "cargo_flags.pharma",
+          "reason": "pharma status is unknown",
+          "impact": "Sea schedule/chokepoint readiness may be incomplete."
+        },
+        {
+          "field": "cargo_flags.food_perishable",
+          "reason": "food_perishable status is unknown",
+          "impact": "Sea schedule/chokepoint readiness may be incomplete."
+        },
+        {
+          "field": "cargo_flags.live_animals",
+          "reason": "live_animals status is unknown",
+          "impact": "Sea schedule/chokepoint readiness may be incomplete."
+        },
+        {
+          "field": "commercial.ready_date",
+          "reason": "ready date missing",
+          "impact": "Sea schedule readiness cannot be checked."
+        },
+        {
+          "field": "commercial.deadline",
+          "reason": "deadline missing",
+          "impact": "Sea transit urgency cannot be assessed."
+        }
+      ],
+      "missing_fields": [],
+      "confidence": {
+        "source_confidence": "planning_reference",
+        "cap": null,
+        "reasons": []
+      },
+      "provenance": {
+        "source": "data/sea/sea_i_chokepoints_schedule_readiness.json",
+        "record_id": null,
+        "provider_used": "mock",
+        "fallback_used": false,
+        "live_data_available": false,
+        "extra": {}
+      }
+    },
+    {
+      "block_id": "SEA-COST",
+      "mode": "sea",
+      "status": "unknown",
+      "data": {
+        "cost_status": "planning_reference_not_a_quote",
+        "origin_country": "CN",
+        "destination_country": "FR",
+        "origin_city": "Shenzhen",
+        "destination_city": "Lyon",
+        "weight_kg": 8000.0,
+        "volume_cbm": 20.0,
+        "incoterm": null,
+        "active_trigger_flags": [
+          "any_sea_shipment",
+          "dangerous_goods"
+        ],
+        "unknown_trigger_flags": [
+          "temperature_controlled",
+          "oversized",
+          "high_value",
+          "pharma",
+          "food_perishable",
+          "live_animals"
+        ],
+        "lane_benchmark_examples": [
+          {
+            "record_id": "COST_LANE_GLOBAL_WCI_COMPOSITE_2026_05_28",
+            "lane_family": "global_composite",
+            "origin_region": "Global",
+            "destination_region": "Global",
+            "equipment_basis": "40ft container / FEU",
+            "benchmark_low_usd": 2800,
+            "benchmark_high_usd": 2800,
+            "reference_value_usd": 2800,
+            "price_date": "2026-05-28",
+            "basis": "Drewry WCI composite spot benchmark, USD per 40ft container",
+            "cost_type": "fcl_base_freight_market_benchmark",
+            "not_a_quote": true,
+            "requires_live_quote": true
+          },
+          {
+            "record_id": "COST_LANE_FAR_EAST_NORTH_EUROPE_XENETA_2026_05_27",
+            "lane_family": "far_east_to_north_europe",
+            "origin_region": "Far East",
+            "destination_region": "North Europe",
+            "equipment_basis": "FEU / 40ft container",
+            "benchmark_low_usd": 2860,
+            "benchmark_high_usd": 2860,
+            "reference_value_usd": 2860,
+            "price_date": "2026-05-27",
+            "basis": "Xeneta public market average spot rate",
+            "cost_type": "fcl_base_freight_market_benchmark",
+            "not_a_quote": true,
+            "requires_live_quote": true
+          },
+          {
+            "record_id": "COST_LANE_FAR_EAST_MEDITERRANEAN_XENETA_2026_05_27",
+            "lane_family": "far_east_to_mediterranean",
+            "origin_region": "Far East",
+            "destination_region": "Mediterranean",
+            "equipment_basis": "FEU / 40ft container",
+            "benchmark_low_usd": 4304,
+            "benchmark_high_usd": 4304,
+            "reference_value_usd": 4304,
+            "price_date": "2026-05-27",
+            "basis": "Xeneta public market average spot rate",
+            "cost_type": "fcl_base_freight_market_benchmark",
+            "not_a_quote": true,
+            "requires_live_quote": true
+          },
+          {
+            "record_id": "COST_INDEX_FBX_GLOBAL_2026_06_CAPTURE",
+            "lane_family": "global_index_reference",
+            "origin_region": "Global",
+            "destination_region": "Global",
+            "equipment_basis": "40ft container / FEU",
+            "benchmark_low_usd": 1932.6,
+            "benchmark_high_usd": 1932.6,
+            "reference_value_usd": 1932.6,
+            "price_date": "2026-06-03",
+            "basis": "Freightos Baltic Index current public value captured during research; volatile",
+            "cost_type": "fcl_global_index_market_benchmark",
+            "not_a_quote": true,
+            "requires_live_quote": true
+          }
+        ],
+        "surcharge_examples": [
+          {
+            "record_id": "SURCHARGE_FCL_BASE_FREIGHT",
+            "category": "base_freight",
+            "charge_name": "FCL ocean freight base rate",
+            "applies_to": "FCL container shipment",
+            "unit": "per container",
+            "planning_range_low": "see_lane_benchmark",
+            "planning_range_high": "see_lane_benchmark",
+            "currency": "USD",
+            "not_a_quote": true,
+            "requires_live_quote": true
+          },
+          {
+            "record_id": "SURCHARGE_LCL_BASE_PER_CBM",
+            "category": "base_freight",
+            "charge_name": "LCL ocean freight base charge",
+            "applies_to": "LCL cargo",
+            "unit": "per CBM, often with minimum charge",
+            "planning_range_low": 50,
+            "planning_range_high": 250,
+            "currency": "USD",
+            "not_a_quote": true,
+            "requires_live_quote": true
+          },
+          {
+            "record_id": "SURCHARGE_THC_ORIGIN",
+            "category": "terminal_handling",
+            "charge_name": "Terminal Handling Charge - Origin",
+            "applies_to": "containerized shipment at origin terminal",
+            "unit": "per container",
+            "planning_range_low": 100,
+            "planning_range_high": 500,
+            "currency": "USD_or_local",
+            "not_a_quote": true,
+            "requires_live_quote": true
+          },
+          {
+            "record_id": "SURCHARGE_THC_DESTINATION",
+            "category": "terminal_handling",
+            "charge_name": "Terminal Handling Charge - Destination",
+            "applies_to": "containerized shipment at destination terminal",
+            "unit": "per container",
+            "planning_range_low": 100,
+            "planning_range_high": 500,
+            "currency": "USD_or_local",
+            "not_a_quote": true,
+            "requires_live_quote": true
+          },
+          {
+            "record_id": "SURCHARGE_BAF_GFS",
+            "category": "fuel",
+            "charge_name": "BAF / bunker / global fuel surcharge",
+            "applies_to": "ocean freight lanes",
+            "unit": "per TEU or per container depending carrier",
+            "planning_range_low": "variable",
+            "planning_range_high": "variable",
+            "currency": "USD",
+            "not_a_quote": true,
+            "requires_live_quote": true
+          }
+        ],
+        "local_charge_examples": [
+          {
+            "record_id": "TN_MAERSK_IMP_2026",
+            "country": "Tunisia",
+            "port_or_scope": "World to Tunisia",
+            "carrier_or_authority": "Maersk",
+            "charge_code": "IMP",
+            "charge_name": "Import Service",
+            "equipment": "All dry / all reefer",
+            "amount": 40,
+            "currency": "TND",
+            "unit": "per container",
+            "effective_date": "2026-04-01",
+            "valid_for_quote": false,
+            "not_a_quote": true
+          },
+          {
+            "record_id": "TN_MAERSK_EXP_2026",
+            "country": "Tunisia",
+            "port_or_scope": "Tunisia to World",
+            "carrier_or_authority": "Maersk",
+            "charge_code": "EXP",
+            "charge_name": "Export Service",
+            "equipment": "All dry / all reefer",
+            "amount": 40,
+            "currency": "TND",
+            "unit": "per container",
+            "effective_date": "2026-04-01",
+            "valid_for_quote": false,
+            "not_a_quote": true
+          },
+          {
+            "record_id": "TN_MAERSK_RHE_2026",
+            "country": "Tunisia",
+            "port_or_scope": "Tunisia to World",
+            "carrier_or_authority": "Maersk",
+            "charge_code": "RHE",
+            "charge_name": "Recovery for Handling - Export",
+            "equipment": "All dry / all reefer",
+            "amount": 70,
+            "currency": "TND",
+            "unit": "per container",
+            "effective_date": "2026-04-01",
+            "valid_for_quote": false,
+            "not_a_quote": true
+          },
+          {
+            "record_id": "TN_MAERSK_RHI_2026",
+            "country": "Tunisia",
+            "port_or_scope": "World to Tunisia",
+            "carrier_or_authority": "Maersk",
+            "charge_code": "RHI",
+            "charge_name": "Recovery for Handling - Import",
+            "equipment": "All dry / all reefer",
+            "amount": 80,
+            "currency": "TND",
+            "unit": "per container",
+            "effective_date": "2026-04-01",
+            "valid_for_quote": false,
+            "not_a_quote": true
+          },
+          {
+            "record_id": "TN_MAERSK_RFE_2026",
+            "country": "Tunisia",
+            "port_or_scope": "Tunisia to World",
+            "carrier_or_authority": "Maersk",
+            "charge_code": "RFE",
+            "charge_name": "Reefer Monitoring Plug-in Service - Export",
+            "equipment": "Reefer only",
+            "amount": 110,
+            "currency": "TND",
+            "unit": "per container",
+            "effective_date": "2026-04-01",
+            "valid_for_quote": false,
+            "not_a_quote": true
+          }
+        ]
+      },
+      "hard_gates": [],
+      "planning_factors": [
+        "SEA-COST is a planning reference only, not a quote or rate confirmation.",
+        "Actual ocean freight, surcharges, local charges, detention/demurrage, and validity must be confirmed with forwarder/carrier.",
+        "Dangerous goods may trigger DG surcharges and carrier acceptance constraints."
+      ],
+      "unknowns": [
+        {
+          "field": "cargo_flags.temperature_controlled",
+          "reason": "temperature_controlled status is unknown",
+          "impact": "Sea cost planning may be incomplete."
+        },
+        {
+          "field": "cargo_flags.oversized",
+          "reason": "oversized status is unknown",
+          "impact": "Sea cost planning may be incomplete."
+        },
+        {
+          "field": "cargo_flags.high_value",
+          "reason": "high_value status is unknown",
+          "impact": "Sea cost planning may be incomplete."
+        },
+        {
+          "field": "cargo_flags.pharma",
+          "reason": "pharma status is unknown",
+          "impact": "Sea cost planning may be incomplete."
+        },
+        {
+          "field": "cargo_flags.food_perishable",
+          "reason": "food_perishable status is unknown",
+          "impact": "Sea cost planning may be incomplete."
+        },
+        {
+          "field": "cargo_flags.live_animals",
+          "reason": "live_animals status is unknown",
+          "impact": "Sea cost planning may be incomplete."
+        },
+        {
+          "field": "commercial.incoterm",
+          "reason": "incoterm missing",
+          "impact": "Cost responsibility split cannot be confirmed."
+        },
+        {
+          "field": "commercial.ready_date",
+          "reason": "ready date missing",
+          "impact": "Seasonality/surcharge timing cannot be checked."
+        }
+      ],
+      "missing_fields": [
+        "commercial.incoterm",
+        "commercial.ready_date"
+      ],
+      "confidence": {
+        "source_confidence": "planning_reference",
+        "cap": null,
+        "reasons": []
+      },
+      "provenance": {
+        "source": "data/sea/sea_cost_reference.json",
+        "record_id": null,
+        "provider_used": "mock",
+        "fallback_used": false,
+        "live_data_available": false,
+        "extra": {}
+      }
+    },
+    {
+      "block_id": "AIR-C",
+      "mode": "air",
+      "status": "unknown",
+      "data": {},
+      "hard_gates": [],
+      "planning_factors": [],
+      "unknowns": [
+        {
+          "field": "air_airport_capability",
+          "reason": "no AIR-C airport capability record found for requested origin",
+          "impact": "Air airport capability cannot be verified; do not treat as clear."
+        }
+      ],
+      "missing_fields": [],
+      "confidence": {
+        "source_confidence": "unknown",
+        "cap": null,
+        "reasons": [
+          "no AIR-C airport capability record found"
+        ]
+      },
+      "provenance": {
+        "source": "data/air/cortex_air_block_c_dataset.json",
+        "record_id": "Shenzhen->CN",
+        "provider_used": "mock",
+        "fallback_used": false,
+        "live_data_available": false,
+        "extra": {}
+      }
+    },
+    {
+      "block_id": "AIR-D",
+      "mode": "air",
+      "status": "unknown",
+      "data": {
+        "carrier_capability_status": "planning_reference_requires_carrier_validation",
+        "active_trigger_flags": [
+          "any_air_shipment",
+          "dangerous_goods"
+        ],
+        "unknown_trigger_flags": [
+          "temperature_controlled",
+          "oversized",
+          "high_value",
+          "pharma",
+          "food_perishable",
+          "live_animals"
+        ],
+        "reference_carrier_count": 10,
+        "carrier_examples": [
+          {
+            "carrier_code": "FX",
+            "carrier_name": "FedEx",
+            "dangerous_goods_acceptance": "partial",
+            "pharma_capability": "partial",
+            "temperature_control_capability": "partial",
+            "live_animals_capability": "no",
+            "valuable_cargo_capability": "unknown",
+            "oversized_cargo_capability": "partial",
+            "freighter_capability": "yes",
+            "main_deck_capability": "yes",
+            "notes": "DG availability varies by country/service/location. Some locations do not accept DG/dry ice. International restrictions vary for radioactive, explosives, infectious substances, and accessible DG. Live animals should not be assumed accepted from available public evidence."
+          },
+          {
+            "carrier_code": "DHL",
+            "carrier_name": "DHL Global Forwarding / DHL Express",
+            "dangerous_goods_acceptance": "partial",
+            "pharma_capability": "yes",
+            "temperature_control_capability": "yes",
+            "live_animals_capability": "unknown",
+            "valuable_cargo_capability": "unknown",
+            "oversized_cargo_capability": "partial",
+            "freighter_capability": "yes",
+            "main_deck_capability": "yes",
+            "notes": "DG and special cargo depend on DHL business unit, route, approved destination, and service. Strong evidence for pharma/temperature-controlled air freight; less direct evidence for live animals, valuables, and human remains."
+          },
+          {
+            "carrier_code": "5X",
+            "carrier_name": "UPS Airlines / UPS Air Cargo",
+            "dangerous_goods_acceptance": "partial",
+            "pharma_capability": "partial",
+            "temperature_control_capability": "partial",
+            "live_animals_capability": "unknown",
+            "valuable_cargo_capability": "unknown",
+            "oversized_cargo_capability": "partial",
+            "freighter_capability": "yes",
+            "main_deck_capability": "yes",
+            "notes": "UPS accepts hazardous materials under air service rules but UPS operator variations are restrictive. UPS Air Cargo DG accepted by contract only according to operator variation source. Some lithium battery and CAO restrictions apply."
+          },
+          {
+            "carrier_code": "EK",
+            "carrier_name": "Emirates SkyCargo",
+            "dangerous_goods_acceptance": "yes",
+            "pharma_capability": "yes",
+            "temperature_control_capability": "yes",
+            "live_animals_capability": "yes",
+            "valuable_cargo_capability": "yes",
+            "oversized_cargo_capability": "yes",
+            "freighter_capability": "yes",
+            "main_deck_capability": "yes",
+            "notes": "Special cargo accepted only under carrier regulations and station conditions. FAQ lists broad cargo types; DG page requires documentation and specialised handling; specialty page mentions large special cargo such as aircraft engines."
+          },
+          {
+            "carrier_code": "QR",
+            "carrier_name": "Qatar Airways Cargo",
+            "dangerous_goods_acceptance": "yes",
+            "pharma_capability": "yes",
+            "temperature_control_capability": "yes",
+            "live_animals_capability": "yes",
+            "valuable_cargo_capability": "partial",
+            "oversized_cargo_capability": "partial",
+            "freighter_capability": "yes",
+            "main_deck_capability": "yes",
+            "notes": "Product portfolio supports QR Pharma, QR Fresh, QR Live, Express and Charter. DG page exists but route/station acceptance must be confirmed. Valuables evidence is less direct than pharma/fresh/live."
+          }
+        ]
+      },
+      "hard_gates": [],
+      "planning_factors": [
+        "Carrier capability is planning-reference only until airline/forwarder confirms acceptance.",
+        "Dangerous goods acceptance varies by airline and must be confirmed before booking."
+      ],
+      "unknowns": [
+        {
+          "field": "cargo_flags.temperature_controlled",
+          "reason": "temperature_controlled status is unknown",
+          "impact": "Carrier capability requirements may be incomplete."
+        },
+        {
+          "field": "cargo_flags.oversized",
+          "reason": "oversized status is unknown",
+          "impact": "Carrier capability requirements may be incomplete."
+        },
+        {
+          "field": "cargo_flags.high_value",
+          "reason": "high_value status is unknown",
+          "impact": "Carrier capability requirements may be incomplete."
+        },
+        {
+          "field": "cargo_flags.pharma",
+          "reason": "pharma status is unknown",
+          "impact": "Carrier capability requirements may be incomplete."
+        },
+        {
+          "field": "cargo_flags.food_perishable",
+          "reason": "food_perishable status is unknown",
+          "impact": "Carrier capability requirements may be incomplete."
+        },
+        {
+          "field": "cargo_flags.live_animals",
+          "reason": "live_animals status is unknown",
+          "impact": "Carrier capability requirements may be incomplete."
+        }
+      ],
+      "missing_fields": [],
+      "confidence": {
+        "source_confidence": "planning_reference",
+        "cap": null,
+        "reasons": []
+      },
+      "provenance": {
+        "source": "data/air/cortex_air_block_d_dataset.json",
+        "record_id": null,
+        "provider_used": "mock",
+        "fallback_used": false,
+        "live_data_available": false,
+        "extra": {}
+      }
+    },
+    {
+      "block_id": "AIR-A",
+      "mode": "air",
+      "status": "found",
+      "data": {
+        "record_id": "DG_01529",
+        "symbols": "",
+        "proper_shipping_name": "Lithium in cartridges, see Lithium Lithium ion batteries including lithium ion polymer batteries",
+        "hazard_class_or_division": "9",
+        "identification_number": "UN3480",
+        "packing_group": "",
+        "label_codes": "9",
+        "passenger_aircraft_rail_limit_9A": "Forbidden",
+        "cargo_aircraft_only_limit_9B": "35 kg",
+        "air_acceptance_status": "cargo_aircraft_only",
+        "cargo_aircraft_only_required": true,
+        "hard_gate": true
+      },
+      "hard_gates": [
+        {
+          "gate_id": "AIR_A_DG_HARD_GATE",
+          "mode": "air",
+          "severity": "blocking",
+          "status": "triggered",
+          "message": "Air DG acceptance record contains a hard gate.",
+          "source_block": "AIR-A",
+          "basis": "cargo_aircraft_only"
+        }
+      ],
+      "planning_factors": [
+        "Cargo Aircraft Only restriction may apply; passenger/belly air option requires carrier validation.",
+        "Air DG acceptance must be validated with airline/forwarder before booking."
+      ],
+      "unknowns": [],
+      "missing_fields": [],
+      "confidence": {
+        "source_confidence": "unknown",
+        "cap": null,
+        "reasons": []
+      },
+      "provenance": {
+        "source": "data/air/cortex_air_block_a_dg_records_REPAIRED.json",
+        "record_id": "DG_01529",
+        "provider_used": "mock",
+        "fallback_used": false,
+        "live_data_available": false,
+        "extra": {}
+      }
+    },
+    {
+      "block_id": "AIR-B",
+      "mode": "air",
+      "status": "skipped",
+      "data": {},
+      "hard_gates": [],
+      "planning_factors": [],
+      "unknowns": [
+        {
+          "field": "fetch_executor.fail_fast",
+          "reason": "skipped because fail-fast block AIR-A triggered a blocking hard gate",
+          "impact": "Deeper checks were not executed because the mode is blocked at a higher gate."
+        }
+      ],
+      "missing_fields": [],
+      "confidence": {
+        "source_confidence": "unknown",
+        "cap": null,
+        "reasons": [
+          "skipped after fail-fast blocking gate"
+        ]
+      },
+      "provenance": {
+        "source": "fetch_executor",
+        "record_id": null,
+        "provider_used": "mock",
+        "fallback_used": false,
+        "live_data_available": false,
+        "extra": {
+          "skipped_after": "AIR-A"
+        }
+      }
+    },
+    {
+      "block_id": "AIR-E",
+      "mode": "air",
+      "status": "skipped",
+      "data": {},
+      "hard_gates": [],
+      "planning_factors": [],
+      "unknowns": [
+        {
+          "field": "fetch_executor.fail_fast",
+          "reason": "skipped because fail-fast block AIR-A triggered a blocking hard gate",
+          "impact": "Deeper checks were not executed because the mode is blocked at a higher gate."
+        }
+      ],
+      "missing_fields": [],
+      "confidence": {
+        "source_confidence": "unknown",
+        "cap": null,
+        "reasons": [
+          "skipped after fail-fast blocking gate"
+        ]
+      },
+      "provenance": {
+        "source": "fetch_executor",
+        "record_id": null,
+        "provider_used": "mock",
+        "fallback_used": false,
+        "live_data_available": false,
+        "extra": {
+          "skipped_after": "AIR-A"
+        }
+      }
+    },
+    {
+      "block_id": "AIR-F",
+      "mode": "air",
+      "status": "skipped",
+      "data": {},
+      "hard_gates": [],
+      "planning_factors": [],
+      "unknowns": [
+        {
+          "field": "fetch_executor.fail_fast",
+          "reason": "skipped because fail-fast block AIR-A triggered a blocking hard gate",
+          "impact": "Deeper checks were not executed because the mode is blocked at a higher gate."
+        }
+      ],
+      "missing_fields": [],
+      "confidence": {
+        "source_confidence": "unknown",
+        "cap": null,
+        "reasons": [
+          "skipped after fail-fast blocking gate"
+        ]
+      },
+      "provenance": {
+        "source": "fetch_executor",
+        "record_id": null,
+        "provider_used": "mock",
+        "fallback_used": false,
+        "live_data_available": false,
+        "extra": {
+          "skipped_after": "AIR-A"
+        }
+      }
+    },
+    {
+      "block_id": "AIR-H",
+      "mode": "air",
+      "status": "skipped",
+      "data": {},
+      "hard_gates": [],
+      "planning_factors": [],
+      "unknowns": [
+        {
+          "field": "fetch_executor.fail_fast",
+          "reason": "skipped because fail-fast block AIR-A triggered a blocking hard gate",
+          "impact": "Deeper checks were not executed because the mode is blocked at a higher gate."
+        }
+      ],
+      "missing_fields": [],
+      "confidence": {
+        "source_confidence": "unknown",
+        "cap": null,
+        "reasons": [
+          "skipped after fail-fast blocking gate"
+        ]
+      },
+      "provenance": {
+        "source": "fetch_executor",
+        "record_id": null,
+        "provider_used": "mock",
+        "fallback_used": false,
+        "live_data_available": false,
+        "extra": {
+          "skipped_after": "AIR-A"
+        }
+      }
+    },
+    {
+      "block_id": "AIR-I",
+      "mode": "air",
+      "status": "skipped",
+      "data": {},
+      "hard_gates": [],
+      "planning_factors": [],
+      "unknowns": [
+        {
+          "field": "fetch_executor.fail_fast",
+          "reason": "skipped because fail-fast block AIR-A triggered a blocking hard gate",
+          "impact": "Deeper checks were not executed because the mode is blocked at a higher gate."
+        }
+      ],
+      "missing_fields": [],
+      "confidence": {
+        "source_confidence": "unknown",
+        "cap": null,
+        "reasons": [
+          "skipped after fail-fast blocking gate"
+        ]
+      },
+      "provenance": {
+        "source": "fetch_executor",
+        "record_id": null,
+        "provider_used": "mock",
+        "fallback_used": false,
+        "live_data_available": false,
+        "extra": {
+          "skipped_after": "AIR-A"
+        }
+      }
+    },
+    {
+      "block_id": "ROAD-C",
+      "mode": "road",
+      "status": "found",
+      "data": {
+        "origin_country": "CN",
+        "origin_country_name": "China",
+        "destination_country": "FR",
+        "destination_country_name": "France",
+        "corridor_viability": "requires_multi_country_permits_and_likely_impractical",
+        "permit_type": "multi-country road permits, customs transit documents, border checks, likely specialized operator study",
+        "cabotage_allowed": false,
+        "transit_countries_note": "Do not treat as a simple road move. Routing-engine duration is only a floor and does not validate corridor legality, border access, sanctions, permits, or customs transit.",
+        "hard_gate": true,
+        "factor_type": "HARD_GATE",
+        "confidence_cap_if_missing": 30,
+        "rule_id": "ROAD_C_INTERCONTINENTAL_OVERLAND_IMPRACTICAL",
+        "_source": "CORTEX_AUTHORED_CORRIDOR_RULES",
+        "_confidence": "authored"
+      },
+      "hard_gates": [
+        {
+          "gate_id": "ROAD_C_INTERCONTINENTAL_OVERLAND_IMPRACTICAL",
+          "mode": "road",
+          "severity": "blocking",
+          "status": "triggered",
+          "message": "Do not treat as a simple road move. Routing-engine duration is only a floor and does not validate corridor legality, border access, sanctions, permits, or customs transit.",
+          "source_block": "ROAD-C",
+          "basis": "requires_multi_country_permits_and_likely_impractical"
+        }
+      ],
+      "planning_factors": [],
+      "unknowns": [],
+      "missing_fields": [],
+      "confidence": {
+        "source_confidence": "authored",
+        "cap": 0.3,
+        "reasons": [
+          "confidence capped if corridor requirements unconfirmed (rule ROAD_C_INTERCONTINENTAL_OVERLAND_IMPRACTICAL)"
+        ]
+      },
+      "provenance": {
+        "source": "data/road/road_c_corridor_viability.json",
+        "record_id": "CN->FR",
+        "provider_used": "mock",
+        "fallback_used": false,
+        "live_data_available": false,
+        "extra": {}
+      }
+    },
+    {
+      "block_id": "ROAD-A",
+      "mode": "road",
+      "status": "skipped",
+      "data": {},
+      "hard_gates": [],
+      "planning_factors": [],
+      "unknowns": [
+        {
+          "field": "fetch_executor.fail_fast",
+          "reason": "skipped because fail-fast block ROAD-C triggered a blocking hard gate",
+          "impact": "Deeper checks were not executed because the mode is blocked at a higher gate."
+        }
+      ],
+      "missing_fields": [],
+      "confidence": {
+        "source_confidence": "unknown",
+        "cap": null,
+        "reasons": [
+          "skipped after fail-fast blocking gate"
+        ]
+      },
+      "provenance": {
+        "source": "fetch_executor",
+        "record_id": null,
+        "provider_used": "mock",
+        "fallback_used": false,
+        "live_data_available": false,
+        "extra": {
+          "skipped_after": "ROAD-C"
+        }
+      }
+    },
+    {
+      "block_id": "ROAD-B",
+      "mode": "road",
+      "status": "skipped",
+      "data": {},
+      "hard_gates": [],
+      "planning_factors": [],
+      "unknowns": [
+        {
+          "field": "fetch_executor.fail_fast",
+          "reason": "skipped because fail-fast block ROAD-C triggered a blocking hard gate",
+          "impact": "Deeper checks were not executed because the mode is blocked at a higher gate."
+        }
+      ],
+      "missing_fields": [],
+      "confidence": {
+        "source_confidence": "unknown",
+        "cap": null,
+        "reasons": [
+          "skipped after fail-fast blocking gate"
+        ]
+      },
+      "provenance": {
+        "source": "fetch_executor",
+        "record_id": null,
+        "provider_used": "mock",
+        "fallback_used": false,
+        "live_data_available": false,
+        "extra": {
+          "skipped_after": "ROAD-C"
+        }
+      }
+    },
+    {
+      "block_id": "ROAD-F",
+      "mode": "road",
+      "status": "skipped",
+      "data": {},
+      "hard_gates": [],
+      "planning_factors": [],
+      "unknowns": [
+        {
+          "field": "fetch_executor.fail_fast",
+          "reason": "skipped because fail-fast block ROAD-C triggered a blocking hard gate",
+          "impact": "Deeper checks were not executed because the mode is blocked at a higher gate."
+        }
+      ],
+      "missing_fields": [],
+      "confidence": {
+        "source_confidence": "unknown",
+        "cap": null,
+        "reasons": [
+          "skipped after fail-fast blocking gate"
+        ]
+      },
+      "provenance": {
+        "source": "fetch_executor",
+        "record_id": null,
+        "provider_used": "mock",
+        "fallback_used": false,
+        "live_data_available": false,
+        "extra": {
+          "skipped_after": "ROAD-C"
+        }
+      }
+    },
+    {
+      "block_id": "ROAD-COST",
+      "mode": "road",
+      "status": "skipped",
+      "data": {},
+      "hard_gates": [],
+      "planning_factors": [],
+      "unknowns": [
+        {
+          "field": "fetch_executor.fail_fast",
+          "reason": "skipped because fail-fast block ROAD-C triggered a blocking hard gate",
+          "impact": "Deeper checks were not executed because the mode is blocked at a higher gate."
+        }
+      ],
+      "missing_fields": [],
+      "confidence": {
+        "source_confidence": "unknown",
+        "cap": null,
+        "reasons": [
+          "skipped after fail-fast blocking gate"
+        ]
+      },
+      "provenance": {
+        "source": "fetch_executor",
+        "record_id": null,
+        "provider_used": "mock",
+        "fallback_used": false,
+        "live_data_available": false,
+        "extra": {
+          "skipped_after": "ROAD-C"
+        }
+      }
+    }
+  ],
+  "global_hard_gates": [],
+  "global_unknowns": [],
+  "global_missing_fields": [],
+  "conflicts": [
+    {
+      "type": "mode_blocked_but_later_blocks_present",
+      "message": "sea has a blocking gate from SEA-I, but later blocks also returned non-skipped responses: ['SEA-COST']",
+      "action": "Executor should fail-fast after blocking gates for that mode."
+    },
+    {
+      "type": "cost_reference_present_for_blocked_mode",
+      "message": "sea has a blocking gate but cost reference block SEA-COST also returned.",
+      "action": "Cost references should be skipped or clearly suppressed for blocked modes."
+    }
+  ],
+  "completeness": {
+    "status": "blocked",
+    "reasons": [
+      "blocking hard gate triggered"
+    ]
+  },
+  "derived_rollup": {
+    "hard_gates": [
+      {
+        "gate_id": "SEA_I_CUTOFF_DG_DOCUMENTS_HARD_GATE",
+        "mode": "sea",
+        "severity": "blocking",
+        "status": "triggered",
+        "message": "SEA-I schedule readiness rule contains a hard gate.",
+        "source_block": "SEA-I",
+        "basis": "CUTOFF_DG_DOCUMENTS"
+      },
+      {
+        "gate_id": "AIR_A_DG_HARD_GATE",
+        "mode": "air",
+        "severity": "blocking",
+        "status": "triggered",
+        "message": "Air DG acceptance record contains a hard gate.",
+        "source_block": "AIR-A",
+        "basis": "cargo_aircraft_only"
+      },
+      {
+        "gate_id": "ROAD_C_INTERCONTINENTAL_OVERLAND_IMPRACTICAL",
+        "mode": "road",
+        "severity": "blocking",
+        "status": "triggered",
+        "message": "Do not treat as a simple road move. Routing-engine duration is only a floor and does not validate corridor legality, border access, sanctions, permits, or customs transit.",
+        "source_block": "ROAD-C",
+        "basis": "requires_multi_country_permits_and_likely_impractical"
+      }
+    ],
+    "unknowns": [
+      {
+        "field": "sea_port_capability",
+        "reason": "no SEA-C port capability record found for requested origin",
+        "impact": "Sea port capability cannot be verified; do not treat as clear."
+      },
+      {
+        "field": "cargo_flags.temperature_controlled",
+        "reason": "temperature_controlled status is unknown",
+        "impact": "Sea carrier/trade lane requirements may be incomplete."
+      },
+      {
+        "field": "cargo_flags.oversized",
+        "reason": "oversized status is unknown",
+        "impact": "Sea carrier/trade lane requirements may be incomplete."
+      },
+      {
+        "field": "cargo_flags.high_value",
+        "reason": "high_value status is unknown",
+        "impact": "Sea carrier/trade lane requirements may be incomplete."
+      },
+      {
+        "field": "cargo_flags.pharma",
+        "reason": "pharma status is unknown",
+        "impact": "Sea carrier/trade lane requirements may be incomplete."
+      },
+      {
+        "field": "cargo_flags.food_perishable",
+        "reason": "food_perishable status is unknown",
+        "impact": "Sea carrier/trade lane requirements may be incomplete."
+      },
+      {
+        "field": "cargo_flags.live_animals",
+        "reason": "live_animals status is unknown",
+        "impact": "Sea carrier/trade lane requirements may be incomplete."
+      },
+      {
+        "field": "profiles.dangerous_goods.un_number",
+        "reason": "no SEA-A DG record found for UN3480",
+        "impact": "Sea DG acceptance cannot be verified; do not treat as clear."
+      },
+      {
+        "field": "cargo_flags.temperature_controlled",
+        "reason": "temperature_controlled status is unknown",
+        "impact": "Sea container/load fit requirements may be incomplete."
+      },
+      {
+        "field": "cargo_flags.oversized",
+        "reason": "oversized status is unknown",
+        "impact": "Sea container/load fit requirements may be incomplete."
+      },
+      {
+        "field": "cargo_flags.high_value",
+        "reason": "high_value status is unknown",
+        "impact": "Sea container/load fit requirements may be incomplete."
+      },
+      {
+        "field": "cargo_flags.pharma",
+        "reason": "pharma status is unknown",
+        "impact": "Sea container/load fit requirements may be incomplete."
+      },
+      {
+        "field": "cargo_flags.food_perishable",
+        "reason": "food_perishable status is unknown",
+        "impact": "Sea container/load fit requirements may be incomplete."
+      },
+      {
+        "field": "cargo_flags.live_animals",
+        "reason": "live_animals status is unknown",
+        "impact": "Sea container/load fit requirements may be incomplete."
+      },
+      {
+        "field": "core_shipment.dimensions",
+        "reason": "shipment dimensions missing",
+        "impact": "Piece/container loading fit cannot be confirmed."
+      },
+      {
+        "field": "sea_b.readiness_rules",
+        "reason": "no SEA-B readiness rule matched this request",
+        "impact": "Container/load readiness cannot be fully verified; do not treat as clear."
+      },
+      {
+        "field": "commercial.incoterm",
+        "reason": "incoterm missing",
+        "impact": "Responsibility split for export/import documents cannot be confirmed."
+      },
+      {
+        "field": "cargo_flags.temperature_controlled",
+        "reason": "temperature_controlled status is unknown",
+        "impact": "Sea schedule/chokepoint readiness may be incomplete."
+      },
+      {
+        "field": "cargo_flags.oversized",
+        "reason": "oversized status is unknown",
+        "impact": "Sea schedule/chokepoint readiness may be incomplete."
+      },
+      {
+        "field": "cargo_flags.high_value",
+        "reason": "high_value status is unknown",
+        "impact": "Sea schedule/chokepoint readiness may be incomplete."
+      },
+      {
+        "field": "cargo_flags.pharma",
+        "reason": "pharma status is unknown",
+        "impact": "Sea schedule/chokepoint readiness may be incomplete."
+      },
+      {
+        "field": "cargo_flags.food_perishable",
+        "reason": "food_perishable status is unknown",
+        "impact": "Sea schedule/chokepoint readiness may be incomplete."
+      },
+      {
+        "field": "cargo_flags.live_animals",
+        "reason": "live_animals status is unknown",
+        "impact": "Sea schedule/chokepoint readiness may be incomplete."
+      },
+      {
+        "field": "commercial.ready_date",
+        "reason": "ready date missing",
+        "impact": "Sea schedule readiness cannot be checked."
+      },
+      {
+        "field": "commercial.deadline",
+        "reason": "deadline missing",
+        "impact": "Sea transit urgency cannot be assessed."
+      },
+      {
+        "field": "cargo_flags.temperature_controlled",
+        "reason": "temperature_controlled status is unknown",
+        "impact": "Sea cost planning may be incomplete."
+      },
+      {
+        "field": "cargo_flags.oversized",
+        "reason": "oversized status is unknown",
+        "impact": "Sea cost planning may be incomplete."
+      },
+      {
+        "field": "cargo_flags.high_value",
+        "reason": "high_value status is unknown",
+        "impact": "Sea cost planning may be incomplete."
+      },
+      {
+        "field": "cargo_flags.pharma",
+        "reason": "pharma status is unknown",
+        "impact": "Sea cost planning may be incomplete."
+      },
+      {
+        "field": "cargo_flags.food_perishable",
+        "reason": "food_perishable status is unknown",
+        "impact": "Sea cost planning may be incomplete."
+      },
+      {
+        "field": "cargo_flags.live_animals",
+        "reason": "live_animals status is unknown",
+        "impact": "Sea cost planning may be incomplete."
+      },
+      {
+        "field": "commercial.incoterm",
+        "reason": "incoterm missing",
+        "impact": "Cost responsibility split cannot be confirmed."
+      },
+      {
+        "field": "commercial.ready_date",
+        "reason": "ready date missing",
+        "impact": "Seasonality/surcharge timing cannot be checked."
+      },
+      {
+        "field": "air_airport_capability",
+        "reason": "no AIR-C airport capability record found for requested origin",
+        "impact": "Air airport capability cannot be verified; do not treat as clear."
+      },
+      {
+        "field": "cargo_flags.temperature_controlled",
+        "reason": "temperature_controlled status is unknown",
+        "impact": "Carrier capability requirements may be incomplete."
+      },
+      {
+        "field": "cargo_flags.oversized",
+        "reason": "oversized status is unknown",
+        "impact": "Carrier capability requirements may be incomplete."
+      },
+      {
+        "field": "cargo_flags.high_value",
+        "reason": "high_value status is unknown",
+        "impact": "Carrier capability requirements may be incomplete."
+      },
+      {
+        "field": "cargo_flags.pharma",
+        "reason": "pharma status is unknown",
+        "impact": "Carrier capability requirements may be incomplete."
+      },
+      {
+        "field": "cargo_flags.food_perishable",
+        "reason": "food_perishable status is unknown",
+        "impact": "Carrier capability requirements may be incomplete."
+      },
+      {
+        "field": "cargo_flags.live_animals",
+        "reason": "live_animals status is unknown",
+        "impact": "Carrier capability requirements may be incomplete."
+      },
+      {
+        "field": "fetch_executor.fail_fast",
+        "reason": "skipped because fail-fast block AIR-A triggered a blocking hard gate",
+        "impact": "Deeper checks were not executed because the mode is blocked at a higher gate."
+      },
+      {
+        "field": "fetch_executor.fail_fast",
+        "reason": "skipped because fail-fast block AIR-A triggered a blocking hard gate",
+        "impact": "Deeper checks were not executed because the mode is blocked at a higher gate."
+      },
+      {
+        "field": "fetch_executor.fail_fast",
+        "reason": "skipped because fail-fast block AIR-A triggered a blocking hard gate",
+        "impact": "Deeper checks were not executed because the mode is blocked at a higher gate."
+      },
+      {
+        "field": "fetch_executor.fail_fast",
+        "reason": "skipped because fail-fast block AIR-A triggered a blocking hard gate",
+        "impact": "Deeper checks were not executed because the mode is blocked at a higher gate."
+      },
+      {
+        "field": "fetch_executor.fail_fast",
+        "reason": "skipped because fail-fast block AIR-A triggered a blocking hard gate",
+        "impact": "Deeper checks were not executed because the mode is blocked at a higher gate."
+      },
+      {
+        "field": "fetch_executor.fail_fast",
+        "reason": "skipped because fail-fast block ROAD-C triggered a blocking hard gate",
+        "impact": "Deeper checks were not executed because the mode is blocked at a higher gate."
+      },
+      {
+        "field": "fetch_executor.fail_fast",
+        "reason": "skipped because fail-fast block ROAD-C triggered a blocking hard gate",
+        "impact": "Deeper checks were not executed because the mode is blocked at a higher gate."
+      },
+      {
+        "field": "fetch_executor.fail_fast",
+        "reason": "skipped because fail-fast block ROAD-C triggered a blocking hard gate",
+        "impact": "Deeper checks were not executed because the mode is blocked at a higher gate."
+      },
+      {
+        "field": "fetch_executor.fail_fast",
+        "reason": "skipped because fail-fast block ROAD-C triggered a blocking hard gate",
+        "impact": "Deeper checks were not executed because the mode is blocked at a higher gate."
+      }
+    ],
+    "missing_fields": [
+      "core_shipment.dimensions",
+      "commercial.incoterm",
+      "commercial.ready_date"
+    ],
+    "confidence_caps": [
+      {
+        "cap": 0.5,
+        "reasons": [
+          "SEA-B fit is capped by missing volume or dimensions."
+        ],
+        "source_block": "SEA-B"
+      },
+      {
+        "cap": 0.3,
+        "reasons": [
+          "confidence capped if corridor requirements unconfirmed (rule ROAD_C_INTERCONTINENTAL_OVERLAND_IMPRACTICAL)"
+        ],
+        "source_block": "ROAD-C"
+      }
+    ],
+    "modes_covered": [
+      "sea",
+      "air",
+      "road"
+    ],
+    "blocks_called": [
+      "SEA-C",
+      "SEA-D",
+      "SEA-A",
+      "SEA-B",
+      "SEA-F",
+      "SEA-I",
+      "SEA-COST",
+      "AIR-C",
+      "AIR-D",
+      "AIR-A",
+      "AIR-B",
+      "AIR-E",
+      "AIR-F",
+      "AIR-H",
+      "AIR-I",
+      "ROAD-C",
+      "ROAD-A",
+      "ROAD-B",
+      "ROAD-F",
+      "ROAD-COST"
+    ],
+    "blocks_failed": [],
+    "blocks_empty": [
+      "SEA-C",
+      "SEA-D",
+      "SEA-A",
+      "SEA-B",
+      "SEA-F",
+      "SEA-COST",
+      "AIR-C",
+      "AIR-D"
+    ]
+  }
+}

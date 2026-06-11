@@ -11,8 +11,18 @@ from app.schemas.shipment_request import (
     Commercial,
     MissingFields,
     QuestionToUser,
-    MemoryUse,
     ValidatedShipmentRequest,
+)
+
+from app.schemas.intake import (
+    CaseAction,
+    IntakeIntent,
+    CaseStatus,
+    IntakeDecision,
+    FieldSourceType,
+    CaseState,
+    IntakeMessageRequest,
+    IntakeResult,
 )
 
 from app.schemas.block_response import (
@@ -46,6 +56,12 @@ from app.schemas.fact_package import (
     FactPackage,
 )
 
+from app.schemas.cortex_orchestrator import (
+    CortexNextAction,
+    CortexOrchestratorDebug,
+    CortexOrchestratorResult,
+)
+
 from app.schemas.reasoning_decision import (
     ReadinessBand,
     RankingType,
@@ -69,8 +85,16 @@ __all__ = [
     "Commercial",
     "MissingFields",
     "QuestionToUser",
-    "MemoryUse",
     "ValidatedShipmentRequest",
+    # intake
+    "CaseAction",
+    "IntakeIntent",
+    "CaseStatus",
+    "IntakeDecision",
+    "FieldSourceType",
+    "CaseState",
+    "IntakeMessageRequest",
+    "IntakeResult",
     # block_response
     "ProviderUsed",
     "BlockStatus",
@@ -96,6 +120,10 @@ __all__ = [
     "Conflict",
     "FactPackageRollup",
     "FactPackage",
+    # cortex orchestrator
+    "CortexNextAction",
+    "CortexOrchestratorDebug",
+    "CortexOrchestratorResult",
     # reasoning_decision
     "ReadinessBand",
     "RankingType",

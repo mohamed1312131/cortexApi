@@ -1,0 +1,31 @@
+from __future__ import annotations
+
+from enum import Enum
+from typing import Any
+
+from pydantic import BaseModel, Field
+
+from app.schemas.fact_package import FactPackage
+from app.schemas.intake import IntakeResult
+
+
+class CortexNextAction(str, Enum):
+    ask_user = "ASK_USER"
+    show_fact_package = "SHOW_FACT_PACKAGE"
+    error = "ERROR"
+
+
+class CortexOrchestratorDebug(BaseModel):
+    layer2_ran: bool = False
+    rerun_scope: dict[str, Any] = Field(default_factory=dict)
+    trace_id: str | None = None
+    error: str | None = None
+
+
+class CortexOrchestratorResult(BaseModel):
+    conversation_id: str | None = None
+    case_id: str
+    layer1: IntakeResult
+    layer2: FactPackage | None = None
+    next_action: CortexNextAction
+    debug: CortexOrchestratorDebug = Field(default_factory=CortexOrchestratorDebug)

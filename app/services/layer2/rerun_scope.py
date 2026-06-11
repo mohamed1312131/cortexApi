@@ -1,3 +1,13 @@
+"""INACTIVE / FUTURE — partial Layer 2 rerun scoping.
+
+This module is intentionally NOT wired into the product path in Cortex v1. The
+orchestrator always performs a full Layer 2 build; ``rerun_scope`` /
+``requires_layer_2_rerun`` are advisory metadata only. These helpers exist for a
+future partial-rerun feature and are exercised solely by ``test_rerun_scope.py``
+as unit tests, not as a product guarantee. Do not import this from the product
+path until partial rerun is formally activated.
+"""
+
 from __future__ import annotations
 
 from app.schemas import FetchPlan, FetchPlanItem

@@ -1,6 +1,13 @@
 # tests/layer1/test_extractor_build_request.py
-from app.services.layer1.extractor import IntakeExtraction, _build_request
+from app.services.layer1.extractor import IntakeExtraction, _build_request, build_extraction_prompt
 from app.schemas import RequestedMode, FlagState
+
+
+def test_extraction_prompt_renders_with_json_examples():
+    # Catches .format() breakage: JSON braces in the prompt must not be treated as placeholders.
+    prompt = build_extraction_prompt("Ship 500 kg textile from Milan to Paris.")
+    assert "Ship 500 kg textile from Milan to Paris." in prompt
+    assert '{"multiple_shipments_detected": true}' in prompt
 
 
 def test_build_request_lithium_shenzhen_paris_road():
@@ -34,5 +41,5 @@ def test_build_request_lithium_shenzhen_paris_road():
     assert "dangerous_goods" in req.active_profiles
     assert req.profiles["dangerous_goods"]["un_number"] is None
 
-    assert "UN number" in req.missing_fields.blocking
-    assert req.ready_for_layer_2 is True
+    assert "valid UN number or dangerous-goods classification" in req.missing_fields.blocking
+    assert req.ready_for_layer_2 is False

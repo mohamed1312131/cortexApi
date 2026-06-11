@@ -40,6 +40,7 @@ def get_chat_model(*, intake: bool = False) -> BaseChatModel | None:
             model=model_name,
             api_key=settings.google_ai_api_key,
             max_tokens=settings.intake_max_output_tokens,
+            timeout=30,
         )
 
     raise ValueError(f"Unsupported LLM_PROVIDER: {settings.llm_provider}")

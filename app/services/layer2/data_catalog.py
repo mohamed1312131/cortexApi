@@ -1,10 +1,8 @@
 from __future__ import annotations
 
 import json
-from collections import Counter
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
 
 
 @dataclass(frozen=True)
@@ -263,21 +261,6 @@ def get_main_asset(block_id: str) -> DataAsset | None:
     for asset in find_assets(block_id=block_id, role="main"):
         return asset
     return None
-
-
-def summarize_catalog() -> dict[str, Any]:
-    assets = build_data_catalog()
-    return {
-        "counts_by_mode": dict(Counter(asset.mode for asset in assets)),
-        "counts_by_block_id": dict(
-            Counter(asset.block_id or "None" for asset in assets)
-        ),
-        "counts_by_role": dict(Counter(asset.role for asset in assets)),
-        "counts_by_connector_status": dict(
-            Counter(asset.connector_status for asset in assets)
-        ),
-        "invalid_json_count": sum(1 for asset in assets if asset.top_type == "invalid"),
-    }
 
 
 def _purpose_for(path: Path, block_id: str | None, role: str) -> str:

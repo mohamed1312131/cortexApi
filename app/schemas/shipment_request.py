@@ -110,11 +110,6 @@ class QuestionToUser(BaseModel):
     field_target: str
 
 
-class MemoryUse(BaseModel):
-    memory_type: str
-    summary: str
-
-
 # ---- the frozen contract: Layer 1 -> Layer 2 seam (Shape A, nested) ----
 class ValidatedShipmentRequest(BaseModel):
     case_id: str                              # required; API endpoint mints it before construction
@@ -138,5 +133,4 @@ class ValidatedShipmentRequest(BaseModel):
 
     ready_for_layer_2: bool = False
     field_confidence: dict[str, float] = Field(default_factory=dict)
-    memory_used: list[MemoryUse] = Field(default_factory=list)
     intake_quality_score: float = 0.0

@@ -4,6 +4,12 @@ services:
       context: .
     env_file:
       - .env
+    environment:
+      # Production-like multi-worker runtime by default; override in .env for dev.
+      CORTEX_API_WORKERS: "${CORTEX_API_WORKERS:-4}"
+      # Production stance: do not silently fall back to per-process in-memory
+      # case state when Redis is unavailable.
+      CORTEX_REDIS_FALLBACK_ENABLED: "${CORTEX_REDIS_FALLBACK_ENABLED:-false}"
     ports:
       - "${API_PORT:-8000}:${API_PORT:-8000}"
     volumes:
