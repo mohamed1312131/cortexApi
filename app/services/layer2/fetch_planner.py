@@ -573,6 +573,40 @@ def _air_i_item() -> FetchPlanItem:
     )
 
 
+def _air_cost_item() -> FetchPlanItem:
+    return FetchPlanItem(
+        block_id="AIR-COST",
+        mode=RequestedMode.air,
+        reason="air planning cost reference should be checked after readiness facts",
+        priority=FetchPriority.optional,
+        required_inputs=[
+            RequiredInput(
+                field="lane.origin_country",
+                reason="AIR-COST uses origin country for lane rate selection",
+            ),
+            RequiredInput(
+                field="lane.destination_country",
+                reason="AIR-COST uses destination country for lane rate selection",
+            ),
+            RequiredInput(
+                field="core_shipment.weight_kg",
+                reason="AIR-COST uses weight for chargeable-weight estimate",
+            ),
+            RequiredInput(
+                field="core_shipment.volume_cbm",
+                reason="AIR-COST uses volume/dimensions for volumetric weight",
+            ),
+            RequiredInput(
+                field="commercial.incoterm",
+                reason="AIR-COST uses incoterm for cost responsibility context",
+            ),
+        ],
+        skip_condition=None,
+        empty_behavior=EmptyResponseBehavior.planning_unknown,
+        fallback_policy=FallbackPolicy.return_planning_only,
+    )
+
+
 def _air_items(request: ValidatedShipmentRequest) -> list[FetchPlanItem]:
     items = [_air_c_item(), _air_d_item()]
     if request.cargo_flags.dangerous_goods in {
@@ -587,6 +621,7 @@ def _air_items(request: ValidatedShipmentRequest) -> list[FetchPlanItem]:
     items.append(_air_f_item())
     items.append(_air_h_item())
     items.append(_air_i_item())
+    items.append(_air_cost_item())
     return items
 
 

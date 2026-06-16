@@ -11,6 +11,7 @@ from app.services.layer2.connectors.air_e_connector import fetch_air_e
 from app.services.layer2.connectors.air_f_connector import fetch_air_f
 from app.services.layer2.connectors.air_h_connector import fetch_air_h
 from app.services.layer2.connectors.air_i_connector import fetch_air_i
+from app.services.layer2.connectors.air_cost_connector import fetch_air_cost
 from app.services.layer2.connectors.road_a_connector import fetch_road_a
 from app.services.layer2.connectors.road_b_connector import fetch_road_b
 from app.services.layer2.connectors.road_c_connector import fetch_road_c
@@ -43,6 +44,7 @@ BLOCK_REGISTRY: dict[str, Connector] = {
     "AIR-F": fetch_air_f,
     "AIR-H": fetch_air_h,
     "AIR-I": fetch_air_i,
+    "AIR-COST": fetch_air_cost,
     "ROAD-C": _fetch_road_c_from_request,
     "ROAD-A": fetch_road_a,
     "ROAD-B": fetch_road_b,

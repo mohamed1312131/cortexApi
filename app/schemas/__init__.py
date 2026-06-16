@@ -72,6 +72,20 @@ from app.schemas.reasoning_decision import (
     ReasoningDecision,
 )
 
+# Layer 3: only the service/dev envelope is public. Internal Layer 3 models
+# (ReasoningContext, DeterministicDecision, drafts/reviews) and InternalScoringTrace
+# stay out of the public schema namespace by design.
+from app.schemas.layer3 import (
+    Layer3Status,
+    Layer3Result,
+)
+
+from app.schemas.layer4 import (
+    Layer4ReportType,
+    Layer4ReportRequest,
+    Layer4Result,
+)
+
 __all__ = [
     # shipment_request
     "FlagState",
@@ -132,4 +146,11 @@ __all__ = [
     "RankedReadinessOption",
     "MustShowWarning",
     "ReasoningDecision",
+    # layer3 (public envelope only)
+    "Layer3Status",
+    "Layer3Result",
+    # layer4
+    "Layer4ReportType",
+    "Layer4ReportRequest",
+    "Layer4Result",
 ]

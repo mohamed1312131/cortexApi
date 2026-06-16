@@ -33,6 +33,7 @@ CORE_BLOCKS = [
     "AIR-F",
     "AIR-H",
     "AIR-I",
+    "AIR-COST",
 ]
 
 
@@ -91,6 +92,7 @@ def test_planner_order_for_core_modes():
         "AIR-F",
         "AIR-H",
         "AIR-I",
+        "AIR-COST",
     ]
 
     air_non_dg_plan = build_fetch_plan(_air_request(cargo_flags=_air_flags()))
@@ -104,6 +106,7 @@ def test_planner_order_for_core_modes():
         "AIR-F",
         "AIR-H",
         "AIR-I",
+        "AIR-COST",
     ]
 
 

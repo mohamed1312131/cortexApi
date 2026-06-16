@@ -60,6 +60,7 @@ def test_air_request_plans_air_c_before_air_a_for_dg():
         "AIR-F",
         "AIR-H",
         "AIR-I",
+        "AIR-COST",
     ]
 
 
@@ -74,6 +75,7 @@ def test_air_request_non_dg_plans_air_c_air_e_for_now():
         "AIR-F",
         "AIR-H",
         "AIR-I",
+        "AIR-COST",
     ]
     assert "AIR-A" not in [item.block_id for item in plan.items]
 

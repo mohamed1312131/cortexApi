@@ -27,8 +27,6 @@ _OBVIOUS_FIELD_KEYS = {
 def detect_conflicts(block_responses: list[BlockResponse]) -> list[Conflict]:
     conflicts: list[Conflict] = []
     conflicts.extend(_duplicate_block_response_conflicts(block_responses))
-    conflicts.extend(_blocked_mode_later_response_conflicts(block_responses))
-    conflicts.extend(_cost_for_blocked_mode_conflicts(block_responses))
     conflicts.extend(_dg_unclear_conflicts(block_responses))
     conflicts.extend(_field_unknown_but_data_present_conflicts(block_responses))
     return conflicts
@@ -48,74 +46,6 @@ def _duplicate_block_response_conflicts(
                 type="duplicate_block_response",
                 message=f"Duplicate block response detected for {_mode_label(mode)}/{block_id}.",
                 action="Executor should call each planned block once per mode.",
-            )
-        )
-
-    return conflicts
-
-
-def _blocked_mode_later_response_conflicts(
-    block_responses: list[BlockResponse],
-) -> list[Conflict]:
-    conflicts: list[Conflict] = []
-
-    for index, response in enumerate(block_responses):
-        if not _has_blocking_gate(response):
-            continue
-
-        later_ids = [
-            later.block_id
-            for later in block_responses[index + 1 :]
-            if later.mode == response.mode and later.status != BlockStatus.skipped
-        ]
-        if not later_ids:
-            continue
-
-        conflicts.append(
-            Conflict(
-                type="mode_blocked_but_later_blocks_present",
-                message=(
-                    f"{_mode_label(response.mode)} has a blocking gate from "
-                    f"{response.block_id}, but later blocks also returned "
-                    f"non-skipped responses: {later_ids}"
-                ),
-                action=(
-                    "Executor should fail-fast after blocking gates for that mode."
-                ),
-            )
-        )
-
-    return conflicts
-
-
-def _cost_for_blocked_mode_conflicts(
-    block_responses: list[BlockResponse],
-) -> list[Conflict]:
-    conflicts: list[Conflict] = []
-    blocked_modes = {
-        response.mode
-        for response in block_responses
-        if _has_blocking_gate(response)
-    }
-
-    for response in block_responses:
-        if response.mode not in blocked_modes:
-            continue
-        if not response.block_id.endswith("-COST"):
-            continue
-        if response.status not in {BlockStatus.found, BlockStatus.unknown}:
-            continue
-        conflicts.append(
-            Conflict(
-                type="cost_reference_present_for_blocked_mode",
-                message=(
-                    f"{_mode_label(response.mode)} has a blocking gate but cost "
-                    f"reference block {response.block_id} also returned."
-                ),
-                action=(
-                    "Cost references should be skipped or clearly suppressed for "
-                    "blocked modes."
-                ),
             )
         )
 

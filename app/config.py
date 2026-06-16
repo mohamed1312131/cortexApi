@@ -25,6 +25,8 @@ class Settings(BaseSettings):
     google_ai_api_key: str = ""
     google_ai_model: str = "gemma-4-26b-a4b-it"
     google_ai_intake_model: str = ""
+    google_ai_layer3_model: str = ""
+    google_ai_layer4_model: str = ""
     intake_max_output_tokens: int = 2048
     langsmith_tracing: bool = False
     langsmith_api_key: str = ""
@@ -43,3 +45,23 @@ def get_settings() -> Settings:
 
 
 settings = get_settings()
+
+
+def iter_model_config_debug_values(
+    current_settings: Settings | None = None,
+) -> list[tuple[str, object]]:
+    """Return LLM/model-related settings with secret values redacted."""
+    selected = current_settings or settings
+    values: list[tuple[str, object]] = []
+    for name in type(selected).model_fields:
+        lower = name.lower()
+        if not any(token in lower for token in ("model", "google", "gemini", "llm")):
+            continue
+        try:
+            value = getattr(selected, name)
+        except Exception as exc:
+            value = f"{type(exc).__name__}: {exc}"
+        if "key" in lower and value:
+            value = "***REDACTED***"
+        values.append((name, value))
+    return values

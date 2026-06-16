@@ -1,0 +1,286 @@
+{
+  "info": {
+    "name": "Cortex Platform — Layer 1/2/3 Test Flow",
+    "description": "10 requests covering intake (Layer 1), cortex (Layer 1+2) and layer3 (Analyst + Critic + Safety Gate). Run top to bottom: R1 saves case_id for R2; each cortex request saves its layer2 FactPackage for the next layer3 request. See docs/POSTMAN_TESTING_GUIDE.md for expected responses.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8000" },
+    { "key": "caseId", "value": "" },
+    { "key": "factPackage", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "R1 — Intake: incomplete lithium request (ask_user)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "pm.collectionVariables.set('caseId', json.case_id);",
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.test('decision is ask_user', () => pm.expect(json.decision).to.eql('ask_user'));",
+              "pm.test('not ready for layer 2', () => pm.expect(json.ready_for_layer_2).to.be.false);",
+              "pm.test('lithium profiles active', () => pm.expect(json.intake_json.active_profiles).to.include('lithium_battery'));",
+              "pm.test('has questions for user', () => pm.expect(json.questions_to_user.length).to.be.above(0));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/v1/intake/message",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"conversation_id\": \"pm-conv-01\",\n  \"user_id\": \"tester\",\n  \"message\": \"I need to ship lithium batteries from China to France.\"\n}"
+        }
+      }
+    },
+    {
+      "name": "R2 — Intake: follow-up completes the case (ready_with_unknowns)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.test('same case id', () => pm.expect(json.case_id).to.eql(pm.collectionVariables.get('caseId')));",
+              "pm.test('ready for layer 2', () => pm.expect(json.ready_for_layer_2).to.be.true);",
+              "pm.test('no blocking gaps left', () => pm.expect(json.intake_json.missing_fields.blocking.length).to.eql(0));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/v1/intake/message",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"conversation_id\": \"pm-conv-01\",\n  \"case_id\": \"{{caseId}}\",\n  \"user_id\": \"tester\",\n  \"message\": \"It is UN3480 lithium-ion batteries, 8000 kg, from Shenzhen to Lyon.\"\n}"
+        }
+      }
+    },
+    {
+      "name": "R3 — Cortex: clean road textiles Milan→Paris (FactPackage)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.test('SHOW_FACT_PACKAGE', () => pm.expect(json.next_action).to.eql('SHOW_FACT_PACKAGE'));",
+              "pm.test('layer2 ran', () => pm.expect(json.debug.layer2_ran).to.be.true);",
+              "pm.test('road blocks called', () => {",
+              "  const ids = json.layer2.block_responses.map(b => b.block_id);",
+              "  pm.expect(ids).to.include.members(['ROAD-A','ROAD-B','ROAD-C','ROAD-F','ROAD-COST']);",
+              "});",
+              "pm.test('no hard gates on liberalized EU lane', () => pm.expect(json.layer2.derived_rollup.hard_gates.filter(g => g.status === 'triggered').length).to.eql(0));",
+              "if (json.layer2) pm.collectionVariables.set('factPackage', JSON.stringify(json.layer2));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/v1/cortex/message",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"conversation_id\": \"pm-conv-03\",\n  \"user_id\": \"tester\",\n  \"message\": \"Ship 500 kg of textiles from Milan to Paris by road. About 2 cbm, ready next Monday.\"\n}"
+        }
+      }
+    },
+    {
+      "name": "R4 — Layer 3 on clean road package (critic skipped)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.test('passes to layer 4', () => pm.expect(json.status).to.eql('pass_to_layer4'));",
+              "pm.test('analyst wrote narratives', () => pm.expect(json.analyst_draft.narratives.length).to.be.above(0));",
+              "pm.test('critic skipped on clean case', () => pm.expect(json.critic_review.verdict).to.eql('skipped'));",
+              "pm.test('safety gate passed', () => pm.expect(json.safety_gate_report.passed).to.be.true);",
+              "pm.test('no raw score leakage', () => pm.expect(pm.response.text()).to.not.include('raw_score'));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/v1/layer3/reason",
+        "body": { "mode": "raw", "raw": "{{factPackage}}" }
+      }
+    },
+    {
+      "name": "R5 — Cortex: UN3480 lithium air Shenzhen→Frankfurt (DG FactPackage)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.test('SHOW_FACT_PACKAGE', () => pm.expect(json.next_action).to.eql('SHOW_FACT_PACKAGE'));",
+              "pm.test('DG + lithium profiles', () => pm.expect(json.layer1.intake_json.active_profiles).to.include.members(['dangerous_goods','lithium_battery']));",
+              "pm.test('air mode covered', () => pm.expect(json.layer2.derived_rollup.modes_covered).to.include('air'));",
+              "if (json.layer2) pm.collectionVariables.set('factPackage', JSON.stringify(json.layer2));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/v1/cortex/message",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"conversation_id\": \"pm-conv-05\",\n  \"user_id\": \"tester\",\n  \"message\": \"Ship 2000 kg of lithium-ion batteries UN3480 from Shenzhen to Frankfurt by air. State of charge is 30 percent and the UN38.3 test report is available.\"\n}"
+        }
+      }
+    },
+    {
+      "name": "R6 — Layer 3 on DG package (critic RUNS)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.test('critic ran (DG profile trigger)', () => { pm.expect(json.critic_review).to.not.be.null; pm.expect(json.critic_review.verdict).to.not.eql('skipped'); });",
+              "pm.test('safety gate present', () => pm.expect(json.safety_gate_report).to.not.be.null);",
+              "pm.test('no raw score leakage', () => pm.expect(pm.response.text()).to.not.include('raw_score'));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/v1/layer3/reason",
+        "body": { "mode": "raw", "raw": "{{factPackage}}" }
+      }
+    },
+    {
+      "name": "R7 — Cortex: road Istanbul→Berlin (ECMT permit hard gate)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.test('SHOW_FACT_PACKAGE', () => pm.expect(json.next_action).to.eql('SHOW_FACT_PACKAGE'));",
+              "pm.test('hard gate present (TR→DE ECMT)', () => pm.expect(json.layer2.derived_rollup.hard_gates.length).to.be.above(0));",
+              "if (json.layer2) pm.collectionVariables.set('factPackage', JSON.stringify(json.layer2));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/v1/cortex/message",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"conversation_id\": \"pm-conv-07\",\n  \"user_id\": \"tester\",\n  \"message\": \"Ship 3000 kg of textile rolls from Istanbul to Berlin by road, about 12 cbm.\"\n}"
+        }
+      }
+    },
+    {
+      "name": "R8 — Layer 3 on hard-gated package (critic + capped band)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.test('decision present', () => pm.expect(json.reasoning_decision).to.not.be.null);",
+              "pm.test('warnings surfaced', () => pm.expect((json.reasoning_decision.must_show_warnings || []).length).to.be.above(0));",
+              "pm.test('safety gate present', () => pm.expect(json.safety_gate_report).to.not.be.null);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/v1/layer3/reason",
+        "body": { "mode": "raw", "raw": "{{factPackage}}" }
+      }
+    },
+    {
+      "name": "R9 — Cortex: perfume with lithium UN number (conflict → ASK_USER)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.test('ASK_USER', () => pm.expect(json.next_action).to.eql('ASK_USER'));",
+              "pm.test('layer2 did not run', () => pm.expect(json.debug.layer2_ran).to.be.false);",
+              "pm.test('layer2 is null', () => pm.expect(json.layer2).to.be.null);",
+              "pm.test('blocking gap reported', () => pm.expect(json.layer1.intake_json.missing_fields.blocking.length).to.be.above(0));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/v1/cortex/message",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"conversation_id\": \"pm-conv-09\",\n  \"user_id\": \"tester\",\n  \"message\": \"Ship perfume UN3480 from Grasse to Dubai, 500 kg.\"\n}"
+        }
+      }
+    },
+    {
+      "name": "R10 — Cortex: two shipments in one message (rejected)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.test('ASK_USER', () => pm.expect(json.next_action).to.eql('ASK_USER'));",
+              "pm.test('layer2 is null', () => pm.expect(json.layer2).to.be.null);",
+              "pm.test('multi-shipment blocker present', () => pm.expect(json.layer1.intake_json.missing_fields.blocking.length).to.be.above(0));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/v1/cortex/message",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"conversation_id\": \"pm-conv-10\",\n  \"user_id\": \"tester\",\n  \"message\": \"I have two shipments: 300 kg of shoes from Milan to Paris and 700 kg of toys from Madrid to Lisbon.\"\n}"
+        }
+      }
+    }
+  ]
+}

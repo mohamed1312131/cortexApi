@@ -60,6 +60,7 @@ def test_air_request_plans_air_c_air_a_air_e_for_dg():
         "AIR-F",
         "AIR-H",
         "AIR-I",
+        "AIR-COST",
     ]
 
 
@@ -75,6 +76,7 @@ def test_air_request_non_dg_plans_air_c_air_e():
         "AIR-F",
         "AIR-H",
         "AIR-I",
+        "AIR-COST",
     ]
     assert "AIR-A" not in block_ids
 

@@ -73,6 +73,7 @@ def test_air_request_with_special_flag_plans_air_c_air_b_air_e():
         "AIR-F",
         "AIR-H",
         "AIR-I",
+        "AIR-COST",
     ]
     assert block_ids.index("AIR-C") < block_ids.index("AIR-B")
     assert block_ids.index("AIR-C") < block_ids.index("AIR-D")
@@ -101,6 +102,7 @@ def test_air_request_with_dg_and_special_flag_plans_air_c_air_a_air_b_air_e():
         "AIR-F",
         "AIR-H",
         "AIR-I",
+        "AIR-COST",
     ]
 
 

@@ -3,10 +3,40 @@ from langchain_core.language_models.chat_models import BaseChatModel
 from app.config import settings
 
 
-def get_chat_model(*, intake: bool = False) -> BaseChatModel | None:
+def _configured(value: str) -> str:
+    return value.strip()
+
+
+def get_google_model_name(
+    *,
+    intake: bool = False,
+    layer3: bool = False,
+    layer4: bool = False,
+) -> str:
+    if intake:
+        return _configured(settings.google_ai_intake_model) or _configured(settings.google_ai_model)
+    if layer3:
+        return _configured(settings.google_ai_layer3_model) or _configured(settings.google_ai_model)
+    if layer4:
+        return (
+            _configured(settings.google_ai_layer4_model)
+            or _configured(settings.google_ai_layer3_model)
+            or _configured(settings.google_ai_model)
+        )
+    return _configured(settings.google_ai_model)
+
+
+def get_chat_model(
+    *,
+    intake: bool = False,
+    layer3: bool = False,
+    layer4: bool = False,
+) -> BaseChatModel | None:
     """
     Returns a chat model based on LLM_PROVIDER.
     intake=True selects the lighter intake model when configured.
+    layer3=True selects the Layer 3 model when configured.
+    layer4=True selects the Layer 4 report model when configured.
     """
     provider = settings.llm_provider.strip().lower()
 
@@ -30,11 +60,7 @@ def get_chat_model(*, intake: bool = False) -> BaseChatModel | None:
         if not settings.google_ai_api_key:
             raise RuntimeError("GOOGLE_AI_API_KEY is required when LLM_PROVIDER=google.")
 
-        model_name = (
-            settings.google_ai_intake_model
-            if intake and settings.google_ai_intake_model
-            else settings.google_ai_model
-        )
+        model_name = get_google_model_name(intake=intake, layer3=layer3, layer4=layer4)
 
         return ChatGoogleGenerativeAI(
             model=model_name,

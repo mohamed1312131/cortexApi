@@ -136,7 +136,11 @@ def test_removed_redis_client_module_is_gone():
 
 
 def test_removed_dead_symbols():
-    state = importlib.import_module("app.services.layer1.state")
-    assert not hasattr(state, "FieldValue")
+    # The old multi-node Layer 1 pipeline (state, nodes, extractors, validators)
+    # was hard-deleted when Layer 1 became a single agent turn.
+    with pytest.raises(ModuleNotFoundError):
+        importlib.import_module("app.services.layer1.state")
+    with pytest.raises(ModuleNotFoundError):
+        importlib.import_module("app.services.layer1.deterministic_update_extractor")
     data_catalog = importlib.import_module("app.services.layer2.data_catalog")
     assert not hasattr(data_catalog, "summarize_catalog")

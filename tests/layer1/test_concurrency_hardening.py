@@ -1,13 +1,12 @@
 """Production-concurrency hardening tests.
 
 Covers the per-conversation guard, Redis production mode (fallback enabled vs
-disabled), the configurable worker/thread/fallback settings, and the async LLM
-extraction path. All offline and deterministic.
+disabled), and the configurable worker/thread/fallback settings. All offline
+and deterministic.
 """
 
 from __future__ import annotations
 
-import asyncio
 import logging
 import threading
 import time
@@ -16,8 +15,7 @@ import pytest
 from redis import RedisError
 
 from app.config import Settings, settings
-from app.schemas import CaseState, ValidatedShipmentRequest
-from app.services.layer1 import extractor
+from app.schemas import CaseState
 from app.services.layer1.case_state_manager import (
     RedisCaseStateStore,
     RedisFallbackDisabledError,
@@ -135,39 +133,3 @@ def test_runtime_settings_defaults():
     assert fresh.cortex_api_workers == 1
     assert fresh.cortex_api_thread_workers == 0
     assert fresh.cortex_redis_fallback_enabled is True
-
-
-# --------------------------------------------------------------------------- #
-# Async LLM extraction path
-# --------------------------------------------------------------------------- #
-def test_extract_shipment_async_uses_ainvoke(monkeypatch):
-    calls = {"ainvoke": 0}
-
-    class _FakeMessage:
-        text = (
-            '{"cargo_description": "textile", "origin_city": "Milan", '
-            '"destination_city": "Paris"}'
-        )
-
-    class _FakeModel:
-        async def ainvoke(self, _prompt):
-            calls["ainvoke"] += 1
-            return _FakeMessage()
-
-    monkeypatch.setattr(extractor, "get_chat_model", lambda **_kwargs: _FakeModel())
-
-    result = asyncio.run(
-        extractor.extract_shipment_async("CASE-ASYNC", "ship textile from Milan to Paris")
-    )
-
-    assert calls["ainvoke"] == 1
-    assert isinstance(result, ValidatedShipmentRequest)
-    assert result.core_shipment.cargo_description == "textile"
-    assert result.lane.origin_city == "Milan"
-    assert result.lane.destination_city == "Paris"
-
-
-def test_extract_shipment_async_requires_model(monkeypatch):
-    monkeypatch.setattr(extractor, "get_chat_model", lambda **_kwargs: None)
-    with pytest.raises(RuntimeError):
-        asyncio.run(extractor.extract_shipment_async("CASE-NONE", "ship cargo"))

@@ -158,6 +158,7 @@ def test_unknown_mode_without_road_candidate_does_not_plan_road_c():
         "AIR-F",
         "AIR-H",
         "AIR-I",
+        "AIR-COST",
     ]
     assert "ROAD-C" not in [item.block_id for item in plan.items]
 

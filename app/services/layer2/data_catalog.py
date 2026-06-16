@@ -37,7 +37,7 @@ def infer_block_id_from_filename(path: Path) -> str | None:
     exact = {
         "air_airports.json": "AIR-C",
         "air_carriers.json": "AIR-D",
-        "air_reference.json": "AIR-REF",
+        "air_reference.json": "AIR-COST",
     }
     if name in exact:
         return exact[name]
@@ -160,7 +160,7 @@ def connector_status_for(block_id: str | None, path: Path) -> str:
         "AIR-F": "implemented",
         "AIR-H": "implemented",
         "AIR-I": "implemented",
-        "AIR-REF": "planned",
+        "AIR-COST": "implemented",
     }
     return status_by_block.get(block_id, "planned")
 

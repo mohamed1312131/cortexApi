@@ -12,12 +12,11 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from uuid import uuid4
 
-from pydantic import BaseModel
 from redis import Redis, RedisError
 
 from app.config import settings
 from app.core.logging import get_logger
-from app.schemas import CaseState, ValidatedShipmentRequest
+from app.schemas import CaseState
 
 
 logger = get_logger(__name__)
@@ -158,98 +157,6 @@ def append_message_to_summary(state: CaseState, message: str) -> CaseState:
     else:
         state.conversation_summary = f"User: {clean}"
     return state
-
-
-def merge_requests(
-    existing: ValidatedShipmentRequest | None,
-    incoming: ValidatedShipmentRequest,
-) -> tuple[ValidatedShipmentRequest, list[str]]:
-    if existing is None:
-        return incoming, _present_fields(incoming)
-
-    merged = existing.model_copy(deep=True)
-    changed_fields: list[str] = []
-
-    _merge_model_fields(
-        merged.core_shipment,
-        incoming.core_shipment,
-        "core_shipment",
-        changed_fields,
-    )
-    _merge_model_fields(merged.lane, incoming.lane, "lane", changed_fields)
-    _merge_model_fields(merged.commercial, incoming.commercial, "commercial", changed_fields)
-
-    if incoming.mode.requested_mode.value != "unknown":
-        if merged.mode.requested_mode != incoming.mode.requested_mode:
-            merged.mode.requested_mode = incoming.mode.requested_mode
-            merged.mode.candidate_modes = incoming.mode.candidate_modes
-            merged.mode.needs_mode_selection = incoming.mode.needs_mode_selection
-            changed_fields.append("mode.requested_mode")
-
-    _merge_model_fields(merged.cargo_flags, incoming.cargo_flags, "cargo_flags", changed_fields)
-
-    for profile in incoming.active_profiles:
-        if profile not in merged.active_profiles:
-            merged.active_profiles.append(profile)
-            changed_fields.append("active_profiles")
-
-    for profile_name, profile_payload in incoming.profiles.items():
-        current = merged.profiles.setdefault(profile_name, {})
-        if isinstance(current, dict) and isinstance(profile_payload, dict):
-            for key, value in profile_payload.items():
-                if value is not None and current.get(key) != value:
-                    current[key] = value
-                    changed_fields.append(f"profiles.{profile_name}.{key}")
-        elif profile_payload is not None and current != profile_payload:
-            merged.profiles[profile_name] = profile_payload
-            changed_fields.append(f"profiles.{profile_name}")
-
-    merged.facts_from_user.update(incoming.facts_from_user)
-    merged.inferred_flags.update(incoming.inferred_flags)
-    merged.field_confidence.update(incoming.field_confidence)
-
-    return merged, _dedupe(changed_fields)
-
-
-def _merge_model_fields(
-    target: BaseModel,
-    incoming: BaseModel,
-    prefix: str,
-    changed_fields: list[str],
-) -> None:
-    for field_name in incoming.__class__.model_fields:
-        value = getattr(incoming, field_name)
-        if value is None:
-            continue
-        if hasattr(value, "value") and value.value == "unknown":
-            continue
-        if getattr(target, field_name) != value:
-            setattr(target, field_name, value)
-            changed_fields.append(f"{prefix}.{field_name}")
-
-
-def _present_fields(request: ValidatedShipmentRequest) -> list[str]:
-    fields: list[str] = []
-    for group_name in ("core_shipment", "lane", "commercial"):
-        group = getattr(request, group_name)
-        for field_name in group.__class__.model_fields:
-            if getattr(group, field_name) is not None:
-                fields.append(f"{group_name}.{field_name}")
-    for field_name in request.cargo_flags.__class__.model_fields:
-        value = getattr(request.cargo_flags, field_name)
-        if getattr(value, "value", None) not in {None, "unknown"}:
-            fields.append(f"cargo_flags.{field_name}")
-    return _dedupe(fields)
-
-
-def _dedupe(values: list[str]) -> list[str]:
-    seen: set[str] = set()
-    result: list[str] = []
-    for value in values:
-        if value not in seen:
-            seen.add(value)
-            result.append(value)
-    return result
 
 
 def _case_key(case_id: str) -> str:

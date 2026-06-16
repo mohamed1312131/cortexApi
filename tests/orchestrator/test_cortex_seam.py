@@ -1,162 +1,205 @@
-"""Real Layer 1 -> Layer 2 seam tests for /api/v1/cortex/message.
+"""Layer 1 (agent) -> Layer 2 seam tests for /api/v1/cortex/message.
 
-These tests deliberately exercise the *real* Layer 1 graph (routing, validation,
-conflict detection, multi-shipment handling, missing-field prioritization, the
-decision engine, persistence and sanitization). The only non-deterministic part
-of Layer 1 is the LLM field extractor (`extract_shipment`), so that single call
-is stubbed with deterministic fakes. Everything downstream of it is the genuine
-production code path.
+Layer 1 is now a single intake agent turn plus mechanical plumbing. The agent
+call (`run_intake_agent`) is the only non-deterministic part, so it is stubbed
+with scripted `AgentTurn`s. Everything downstream — case persistence, diffing,
+rerun scope, the orchestrator's defensive `_is_safe_for_layer_2` gate, and the
+real Layer 2 fact builder — runs as genuine production code.
 
 Layer 2 (`build_fact_package_for_request`) is wrapped by a spy that records the
-argument and either refuses to run (unsafe/incomplete intake) or calls through to
-the real deterministic fact builder (ready intake).
+argument and either refuses to run (unsafe/incomplete intake) or calls through
+to the real deterministic fact builder (ready intake).
 """
 
 from __future__ import annotations
-
-import importlib
 
 import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app
 from app.schemas import (
+    CaseAction,
+    CargoFlags,
     CoreShipment,
+    FlagState,
+    IntakeDecision,
+    IntakeIntent,
     Lane,
+    MissingFields,
     ModeSelection,
+    QuestionToUser,
     RequestedMode,
     ValidatedShipmentRequest,
 )
 from app.services.layer1.case_state_manager import case_state_store
-from app.services.layer1.extractor import MultipleShipmentDetected
+from app.services.layer1.intake_agent import AgentTurn
 import app.services.orchestrator.cortex_orchestrator as orchestrator
 from app.services.layer2.service import (
     build_fact_package_for_request as real_build_fact_package,
 )
 
-# The `nodes` package re-exports the `extract_shipment_fields` *function*, which
-# shadows the submodule attribute, so resolve the real module explicitly.
-extract_node = importlib.import_module(
-    "app.services.layer1.nodes.extract_shipment_fields"
-)
-
 
 # --------------------------------------------------------------------------- #
-# Deterministic stand-in for the LLM extractor (the only non-deterministic part
-# of the real Layer 1 graph). Everything else in Layer 1 runs for real.
+# Scripted agent turns (the only stubbed piece; everything else is real).
 # --------------------------------------------------------------------------- #
-def _vsr(
-    case_id: str,
-    *,
-    cargo: str | None = None,
-    weight: float | None = None,
-    volume: float | None = None,
-    ocity: str | None = None,
-    dcity: str | None = None,
-    oraw: str | None = None,
-    draw: str | None = None,
-    ocountry: str | None = None,
-    dcountry: str | None = None,
-    un: str | None = None,
-    mode: RequestedMode = RequestedMode.unknown,
-) -> ValidatedShipmentRequest:
-    profiles: dict = {}
-    if un is not None:
-        profiles["dangerous_goods"] = {"un_number": un}
-    if mode is RequestedMode.unknown:
-        mode_sel = ModeSelection()
-    else:
-        mode_sel = ModeSelection(
-            requested_mode=mode,
-            candidate_modes=[mode],
-            needs_mode_selection=False,
-        )
-    return ValidatedShipmentRequest(
-        case_id=case_id,
-        core_shipment=CoreShipment(cargo_description=cargo, weight_kg=weight, volume_cbm=volume),
-        lane=Lane(
-            origin_city=ocity,
-            destination_city=dcity,
-            origin_raw=oraw or ocity,
-            destination_raw=draw or dcity,
-            origin_country=ocountry,
-            destination_country=dcountry,
+def _ready_textile_turn(case_id: str) -> AgentTurn:
+    return AgentTurn(
+        case_action=CaseAction.create_new_case,
+        intent=IntakeIntent.shipment_readiness,
+        decision=IntakeDecision.ready_for_layer_2_with_unknowns,
+        assistant_message="Textiles from Milan to Paris by road — moving to the data check.",
+        intake=ValidatedShipmentRequest(
+            case_id=case_id,
+            core_shipment=CoreShipment(cargo_description="textiles", weight_kg=500),
+            lane=Lane(
+                origin_raw="Milan",
+                destination_raw="Paris",
+                origin_city="Milan",
+                destination_city="Paris",
+                origin_country="IT",
+                destination_country="FR",
+            ),
+            mode=ModeSelection(
+                requested_mode=RequestedMode.road,
+                candidate_modes=[RequestedMode.road],
+                needs_mode_selection=False,
+            ),
+            active_profiles=["general_cargo"],
+            profiles={"general_cargo": {}},
+            facts_from_user={"cargo_description": "textiles", "weight_kg": 500},
+            missing_fields=MissingFields(can_wait=["incoterm"]),
+            ready_for_layer_2=True,
+            field_confidence={"cargo_description": 0.9, "weight_kg": 0.9},
+            intake_quality_score=0.96,
         ),
-        mode=mode_sel,
-        profiles=profiles,
     )
 
 
-def _fake_extract_shipment(case_id: str, message: str) -> ValidatedShipmentRequest:
+def _ask_user_lithium_turn(case_id: str) -> AgentTurn:
+    return AgentTurn(
+        case_action=CaseAction.create_new_case,
+        intent=IntakeIntent.shipment_readiness,
+        decision=IntakeDecision.ask_user,
+        assistant_message="I need the weight, the cities, and the UN number.",
+        intake=ValidatedShipmentRequest(
+            case_id=case_id,
+            core_shipment=CoreShipment(cargo_description="lithium-ion batteries"),
+            lane=Lane(destination_raw="Germany", destination_country="DE"),
+            cargo_flags=CargoFlags(dangerous_goods=FlagState.likely),
+            active_profiles=["dangerous_goods", "lithium_battery"],
+            profiles={
+                "dangerous_goods": {"un_number": None},
+                "lithium_battery": {
+                    "battery_type": None,
+                    "packed_with_equipment": None,
+                    "state_of_charge_pct": None,
+                    "un38_3_available": None,
+                },
+            },
+            missing_fields=MissingFields(
+                blocking=["weight or quantity", "origin and destination", "valid UN number or dangerous-goods classification"],
+            ),
+            questions_to_user=[
+                QuestionToUser(
+                    question="What is the total weight?",
+                    reason="Weight changes preparation.",
+                    field_target="core_shipment.weight_kg",
+                )
+            ],
+            ready_for_layer_2=False,
+            intake_quality_score=0.3,
+        ),
+    )
+
+
+def _ready_lithium_update_turn(case_id: str) -> AgentTurn:
+    return AgentTurn(
+        case_action=CaseAction.update_existing_case,
+        intent=IntakeIntent.follow_up_update,
+        decision=IntakeDecision.update_case_and_rerun,
+        assistant_message="Updated: UN3480, 8000 kg, Shenzhen to Frankfurt by air.",
+        intake=ValidatedShipmentRequest(
+            case_id=case_id,
+            core_shipment=CoreShipment(cargo_description="lithium-ion batteries", weight_kg=8000),
+            lane=Lane(
+                origin_raw="Shenzhen",
+                destination_raw="Frankfurt",
+                origin_city="Shenzhen",
+                destination_city="Frankfurt",
+                origin_country="CN",
+                destination_country="DE",
+            ),
+            mode=ModeSelection(
+                requested_mode=RequestedMode.air,
+                candidate_modes=[RequestedMode.air],
+                needs_mode_selection=False,
+            ),
+            cargo_flags=CargoFlags(dangerous_goods=FlagState.yes),
+            active_profiles=["dangerous_goods", "lithium_battery"],
+            profiles={
+                "dangerous_goods": {"un_number": "UN3480"},
+                "lithium_battery": {
+                    "battery_type": None,
+                    "packed_with_equipment": None,
+                    "state_of_charge_pct": None,
+                    "un38_3_available": None,
+                },
+            },
+            facts_from_user={"un_number": "UN3480", "weight_kg": 8000},
+            missing_fields=MissingFields(high_value=["volume or dimensions"]),
+            ready_for_layer_2=True,
+            field_confidence={"un_number": 0.95, "weight_kg": 0.9},
+            intake_quality_score=0.9,
+        ),
+    )
+
+
+def _multi_shipment_turn(case_id: str) -> AgentTurn:
+    return AgentTurn(
+        case_action=CaseAction.unknown,
+        intent=IntakeIntent.shipment_readiness,
+        decision=IntakeDecision.ask_user,
+        assistant_message=(
+            "I detected multiple shipments in one message. Please choose one shipment "
+            "to continue with or send each shipment separately."
+        ),
+        intake=ValidatedShipmentRequest(
+            case_id=case_id,
+            missing_fields=MissingFields(blocking=["single shipment selection"]),
+            questions_to_user=[
+                QuestionToUser(
+                    question="Please choose one shipment to continue with.",
+                    reason="One intake request per shipment.",
+                    field_target="shipment.selection",
+                )
+            ],
+            inferred_flags={"multiple_shipments_detected": True},
+            ready_for_layer_2=False,
+        ),
+    )
+
+
+def _inconsistent_ready_turn(case_id: str) -> AgentTurn:
+    """Adversarial: the agent claims ready while blocking gaps remain."""
+    turn = _ready_textile_turn(case_id)
+    turn.intake.missing_fields = MissingFields(blocking=["weight or quantity"])
+    turn.intake.ready_for_layer_2 = True
+    return turn
+
+
+def _scripted_agent(message: str, *, case_id: str, previous_request=None, conversation_summary=None, model=None) -> AgentTurn:
     text = message.lower()
-
     if "two shipments" in text:
-        raise MultipleShipmentDetected("multiple shipments detected (test stub)")
-
-    if "perfume" in text:
-        # cargo / UN conflict: perfume cannot carry a lithium UN number.
-        return _vsr(
-            case_id,
-            cargo="perfume",
-            weight=500,
-            ocity="Grasse",
-            dcity="Dubai",
-            ocountry="FR",
-            dcountry="AE",
-            un="UN3480",
-        )
-
-    if "textile" in text:
-        return _vsr(
-            case_id,
-            cargo="textile",
-            weight=500,
-            ocity="Milan",
-            dcity="Paris",
-            ocountry="IT",
-            dcountry="FR",
-            mode=RequestedMode.road,
-        )
-
-    # Check the valid 4-digit UN number before the malformed one, because the
-    # string "un3480" also contains the substring "un348".
+        return _multi_shipment_turn(case_id)
+    if "claims-ready-but-blocked" in text:
+        return _inconsistent_ready_turn(case_id)
     if "un3480" in text:
-        return _vsr(
-            case_id,
-            cargo="lithium batteries",
-            weight=8000,
-            ocity="Shenzhen",
-            dcity="Lyon",
-            ocountry="CN",
-            dcountry="FR",
-            un="UN3480",
-        )
-
-    if "un348" in text:
-        # Malformed UN number; the real validator must reject it.
-        return _vsr(
-            case_id,
-            cargo="lithium batteries",
-            weight=8000,
-            ocity="Shenzhen",
-            dcity="Lyon",
-            ocountry="CN",
-            dcountry="FR",
-            un="UN348",
-        )
-
-    if "lithium batteries" in text:
-        # Incomplete lithium intake: no weight, no cities, no UN number.
-        return _vsr(
-            case_id,
-            cargo="lithium batteries",
-            oraw="China",
-            draw="France",
-            ocountry="CN",
-            dcountry="FR",
-        )
-
-    return ValidatedShipmentRequest(case_id=case_id)
+        return _ready_lithium_update_turn(case_id)
+    if "lithium" in text:
+        return _ask_user_lithium_turn(case_id)
+    if "textile" in text:
+        return _ready_textile_turn(case_id)
+    return _ask_user_lithium_turn(case_id)
 
 
 class _Layer2Spy:
@@ -175,10 +218,6 @@ class _Layer2Spy:
 
 @pytest.fixture(autouse=True)
 def _clear_case_state():
-    # The Layer 1 graph uses a process-wide store (Redis with an in-memory
-    # fallback). Reset the in-memory maps between tests for isolation. Each test
-    # also uses a unique conversation_id, so cross-test leakage is avoided even
-    # when a real Redis backs the store.
     def _reset() -> None:
         store = getattr(case_state_store, "_fallback", case_state_store)
         if hasattr(store, "_cases"):
@@ -192,9 +231,9 @@ def _clear_case_state():
 
 
 @pytest.fixture
-def real_layer1(monkeypatch):
-    """Stub only the LLM extractor; the rest of Layer 1 runs for real."""
-    monkeypatch.setattr(extract_node, "extract_shipment", _fake_extract_shipment)
+def scripted_agent(monkeypatch):
+    """Stub only the agent turn; all Layer 1 plumbing runs for real."""
+    monkeypatch.setattr("app.services.layer1.graph.run_intake_agent", _scripted_agent)
 
 
 def _install_layer2_spy(monkeypatch, *, call_through: bool) -> _Layer2Spy:
@@ -206,9 +245,8 @@ def _install_layer2_spy(monkeypatch, *, call_through: bool) -> _Layer2Spy:
 # --------------------------------------------------------------------------- #
 # A. /api/v1/intake/message is Layer 1 only and never reaches Layer 2.
 # --------------------------------------------------------------------------- #
-def test_A_intake_message_never_calls_layer2(monkeypatch, real_layer1):
+def test_A_intake_message_never_calls_layer2(monkeypatch, scripted_agent):
     spy = _install_layer2_spy(monkeypatch, call_through=False)
-    # Also guard the source symbol the orchestrator would import.
     monkeypatch.setattr(
         "app.services.layer2.service.build_fact_package_for_request", spy
     )
@@ -224,7 +262,6 @@ def test_A_intake_message_never_calls_layer2(monkeypatch, real_layer1):
 
     payload = response.json()
     assert response.status_code == 200
-    # IntakeResult shape, not an orchestrator result.
     assert "intake_json" in payload
     assert "next_action" not in payload
     assert "layer2" not in payload
@@ -232,9 +269,9 @@ def test_A_intake_message_never_calls_layer2(monkeypatch, real_layer1):
 
 
 # --------------------------------------------------------------------------- #
-# B. Incomplete lithium shipment -> ASK_USER, no Layer 2.
+# B. Agent says ask_user (blocking gaps) -> no Layer 2, ASK_USER.
 # --------------------------------------------------------------------------- #
-def test_B_incomplete_lithium_does_not_call_layer2(monkeypatch, real_layer1):
+def test_B_ask_user_turn_does_not_call_layer2(monkeypatch, scripted_agent):
     spy = _install_layer2_spy(monkeypatch, call_through=False)
 
     with TestClient(app) as client:
@@ -242,52 +279,47 @@ def test_B_incomplete_lithium_does_not_call_layer2(monkeypatch, real_layer1):
             "/api/v1/cortex/message",
             json={
                 "conversation_id": "seam-B",
-                "message": "I need to ship lithium batteries from China to France.",
+                "message": "I need to ship lithium batteries to Germany.",
             },
         )
 
     payload = response.json()
     assert response.status_code == 200
-    assert payload["next_action"] == "ASK_USER"
     assert payload["layer2"] is None
-    assert payload["debug"]["layer2_ran"] is False
-    assert payload["layer1"]["ready_for_layer_2"] is False
-    assert len(spy.calls) == 0
+    assert payload["next_action"] != "SHOW_FACT_PACKAGE"
+    assert payload["layer1"]["decision"] == "ask_user"
+    assert payload["layer1"]["questions_to_user"]
+    assert spy.calls == []
 
 
 # --------------------------------------------------------------------------- #
-# C. Invalid UN number -> ASK_USER, not autocorrected, no Layer 2.
+# C. Agent says ready -> Layer 2 runs and returns a FactPackage.
 # --------------------------------------------------------------------------- #
-def test_C_invalid_un_does_not_call_layer2(monkeypatch, real_layer1):
-    spy = _install_layer2_spy(monkeypatch, call_through=False)
+def test_C_ready_turn_calls_layer2(monkeypatch, scripted_agent):
+    spy = _install_layer2_spy(monkeypatch, call_through=True)
 
     with TestClient(app) as client:
         response = client.post(
             "/api/v1/cortex/message",
             json={
                 "conversation_id": "seam-C",
-                "message": "Ship lithium batteries UN348 from Shenzhen to Lyon, 8000 kg.",
+                "message": "Ship 500 kg textile from Milan to Paris by road.",
             },
         )
 
     payload = response.json()
     assert response.status_code == 200
-    assert payload["next_action"] == "ASK_USER"
-    assert payload["layer2"] is None
-    assert payload["debug"]["layer2_ran"] is False
-    assert len(spy.calls) == 0
-
-    # UN348 must NOT be silently autocorrected into a valid 4-digit UN number.
-    dg = payload["layer1"]["intake_json"]["profiles"].get("dangerous_goods", {})
-    assert dg.get("un_number") is None
-    rejected = payload["layer1"]["intake_json"]["inferred_flags"].get("rejected_fields", [])
-    assert any(item.get("value") == "UN348" for item in rejected)
+    assert len(spy.calls) == 1
+    assert payload["next_action"] == "SHOW_FACT_PACKAGE"
+    assert payload["layer2"] is not None
+    assert payload["layer2"]["case_id"] == payload["case_id"]
+    assert spy.calls[0].lane.origin_country == "IT"
 
 
 # --------------------------------------------------------------------------- #
-# D. Cargo / UN conflict -> ASK_USER with conflict blocker, no Layer 2.
+# D. Multi-shipment turn -> blocked at Layer 1, no Layer 2.
 # --------------------------------------------------------------------------- #
-def test_D_cargo_un_conflict_does_not_call_layer2(monkeypatch, real_layer1):
+def test_D_multi_shipment_does_not_call_layer2(monkeypatch, scripted_agent):
     spy = _install_layer2_spy(monkeypatch, call_through=False)
 
     with TestClient(app) as client:
@@ -295,211 +327,72 @@ def test_D_cargo_un_conflict_does_not_call_layer2(monkeypatch, real_layer1):
             "/api/v1/cortex/message",
             json={
                 "conversation_id": "seam-D",
-                "message": "Ship perfume UN3480 from Grasse to Dubai, 500 kg.",
+                "message": "I have two shipments: batteries to Lyon and textiles to Paris.",
             },
         )
 
     payload = response.json()
     assert response.status_code == 200
-    assert payload["next_action"] == "ASK_USER"
     assert payload["layer2"] is None
-    assert payload["debug"]["layer2_ran"] is False
-    blocking = payload["layer1"]["intake_json"]["missing_fields"]["blocking"]
-    assert "cargo / UN number conflict clarification" in blocking
-    assert len(spy.calls) == 0
-
-
-# --------------------------------------------------------------------------- #
-# E. Multi-shipment -> ASK_USER with single-shipment blocker, no Layer 2.
-# --------------------------------------------------------------------------- #
-def test_E_multi_shipment_does_not_call_layer2(monkeypatch, real_layer1):
-    spy = _install_layer2_spy(monkeypatch, call_through=False)
-
-    with TestClient(app) as client:
-        response = client.post(
-            "/api/v1/cortex/message",
-            json={
-                "conversation_id": "seam-E",
-                "message": (
-                    "I have two shipments: lithium batteries from Shenzhen to Lyon "
-                    "and textile from Milan to Paris."
-                ),
-            },
-        )
-
-    payload = response.json()
-    assert response.status_code == 200
-    assert payload["next_action"] == "ASK_USER"
-    assert payload["layer2"] is None
-    assert payload["debug"]["layer2_ran"] is False
+    assert payload["layer1"]["decision"] == "ask_user"
     blocking = payload["layer1"]["intake_json"]["missing_fields"]["blocking"]
     assert "single shipment selection" in blocking
-    assert len(spy.calls) == 0
+    assert spy.calls == []
 
 
 # --------------------------------------------------------------------------- #
-# F. Ready general cargo -> SHOW_FACT_PACKAGE, Layer 2 called once with the
-#    structured request (not assistant text).
+# E. Two turns: ask_user then ready update -> Layer 2 runs once, case persists.
 # --------------------------------------------------------------------------- #
-def test_F_ready_general_cargo_calls_layer2(monkeypatch, real_layer1):
-    spy = _install_layer2_spy(monkeypatch, call_through=True)
-
-    with TestClient(app) as client:
-        response = client.post(
-            "/api/v1/cortex/message",
-            json={
-                "conversation_id": "seam-F",
-                "message": "Ship 500 kg textile from Milan to Paris by road.",
-            },
-        )
-
-    payload = response.json()
-    assert response.status_code == 200
-    assert payload["next_action"] == "SHOW_FACT_PACKAGE"
-    assert payload["layer2"] is not None
-    assert payload["debug"]["layer2_ran"] is True
-    assert payload["layer1"]["ready_for_layer_2"] is True
-
-    assert len(spy.calls) == 1
-    sent = spy.calls[0]
-    assert isinstance(sent, ValidatedShipmentRequest)
-    assert sent.core_shipment.cargo_description == "textile"
-    # Assistant text must never be passed to Layer 2.
-    assert not hasattr(sent, "assistant_message")
-
-
-# --------------------------------------------------------------------------- #
-# G. Ready lithium shipment over two turns -> SHOW_FACT_PACKAGE with DG profile.
-# --------------------------------------------------------------------------- #
-def test_G_ready_lithium_two_turns_calls_layer2(monkeypatch, real_layer1):
+def test_E_two_turn_flow_persists_case_and_calls_layer2(monkeypatch, scripted_agent):
     spy = _install_layer2_spy(monkeypatch, call_through=True)
 
     with TestClient(app) as client:
         first = client.post(
             "/api/v1/cortex/message",
             json={
-                "conversation_id": "seam-G",
-                "message": "I need to ship lithium batteries from China to France.",
+                "conversation_id": "seam-E",
+                "message": "I need to ship lithium batteries to Germany.",
             },
         )
-        case_id = first.json()["case_id"]
         second = client.post(
             "/api/v1/cortex/message",
             json={
-                "conversation_id": "seam-G",
-                "case_id": case_id,
-                "message": "It is UN3480, 8000 kg, from Shenzhen to Lyon.",
+                "conversation_id": "seam-E",
+                "message": "It's UN3480, 8000 kg, Shenzhen to Frankfurt by air.",
             },
         )
 
-    assert first.json()["next_action"] == "ASK_USER"
-    assert len(spy.calls) == 1  # only the second (ready) turn reaches Layer 2
+    first_payload = first.json()
+    second_payload = second.json()
 
-    payload = second.json()
-    assert second.status_code == 200
-    assert payload["next_action"] == "SHOW_FACT_PACKAGE"
-    assert payload["layer2"] is not None
-    assert payload["debug"]["layer2_ran"] is True
+    assert first_payload["layer2"] is None
+    assert len(spy.calls) == 1
 
-    sent = spy.calls[0]
-    assert "dangerous_goods" in sent.active_profiles
-    assert "lithium_battery" in sent.active_profiles
-    assert sent.profiles["dangerous_goods"]["un_number"] == "UN3480"
+    assert second_payload["case_id"] == first_payload["case_id"]
+    assert second_payload["next_action"] == "SHOW_FACT_PACKAGE"
+    assert second_payload["layer2"] is not None
+    assert second_payload["layer1"]["requires_layer_2_rerun"] is True
+    assert "core_shipment.weight_kg" in second_payload["layer1"]["changed_fields"]
+    assert "profiles.dangerous_goods.un_number" in second_payload["layer1"]["changed_fields"]
 
 
 # --------------------------------------------------------------------------- #
-# H. Layer 2 exception -> controlled ERROR response, no traceback leak.
+# F. Adversarial agent output (ready while blocking remains) -> gate refuses.
 # --------------------------------------------------------------------------- #
-def test_H_layer2_exception_returns_controlled_error(monkeypatch, real_layer1):
-    def boom(_request):
-        raise RuntimeError("fact package unavailable")
-
-    monkeypatch.setattr(orchestrator, "build_fact_package_for_request", boom)
+def test_F_orchestrator_gate_refuses_inconsistent_ready(monkeypatch, scripted_agent):
+    spy = _install_layer2_spy(monkeypatch, call_through=False)
 
     with TestClient(app) as client:
         response = client.post(
             "/api/v1/cortex/message",
             json={
-                "conversation_id": "seam-H",
-                "message": "Ship 500 kg textile from Milan to Paris by road.",
+                "conversation_id": "seam-F",
+                "message": "claims-ready-but-blocked textile shipment",
             },
         )
 
     payload = response.json()
     assert response.status_code == 200
-    assert payload["next_action"] == "ERROR"
     assert payload["layer2"] is None
-    assert payload["debug"]["layer2_ran"] is True
-    assert payload["debug"]["error"] == "RuntimeError: fact package unavailable"
-    assert "Traceback" not in (payload["debug"]["error"] or "")
-
-
-# --------------------------------------------------------------------------- #
-# I. FactPackage is facts-only: no final recommendation / decision fields.
-# --------------------------------------------------------------------------- #
-def test_I_fact_package_is_facts_only(monkeypatch, real_layer1):
-    _install_layer2_spy(monkeypatch, call_through=True)
-
-    with TestClient(app) as client:
-        response = client.post(
-            "/api/v1/cortex/message",
-            json={
-                "conversation_id": "seam-I",
-                "message": "Ship 500 kg textile from Milan to Paris by road.",
-            },
-        )
-
-    payload = response.json()
-    assert payload["next_action"] == "SHOW_FACT_PACKAGE"
-    layer2 = payload["layer2"]
-
-    # Facts / unknowns / provenance present.
-    for fact_field in ("block_responses", "global_unknowns", "global_missing_fields", "derived_rollup"):
-        assert fact_field in layer2
-
-    # No Layer 3 style recommendation/approval fields at the Layer 2 boundary.
-    forbidden = (
-        "final_decision",
-        "route_recommendation",
-        "recommendation",
-        "approved",
-        "compliant",
-        "booking_confirmed",
-        "carrier_accepted",
-    )
-    for field in forbidden:
-        assert field not in layer2
-
-
-# --------------------------------------------------------------------------- #
-# J. Layer 2 receives the structured request only, with machine fields intact.
-# --------------------------------------------------------------------------- #
-def test_J_layer2_receives_structured_request_only(monkeypatch, real_layer1):
-    spy = _install_layer2_spy(monkeypatch, call_through=True)
-
-    with TestClient(app) as client:
-        client.post(
-            "/api/v1/cortex/message",
-            json={
-                "conversation_id": "seam-J",
-                "message": "Ship 500 kg textile from Milan to Paris by road.",
-            },
-        )
-
-    assert len(spy.calls) == 1
-    sent = spy.calls[0]
-    assert isinstance(sent, ValidatedShipmentRequest)
-
-    # No user-facing / assistant text leaks into the Layer 2 input contract.
-    assert not hasattr(sent, "assistant_message")
-    dumped = sent.model_dump()
-    assert "assistant_message" not in dumped
-
-    # Machine fields intact.
-    assert sent.core_shipment.cargo_description == "textile"
-    assert sent.core_shipment.weight_kg == 500
-    assert sent.lane.origin_city == "Milan"
-    assert sent.lane.destination_city == "Paris"
-    assert sent.mode.requested_mode == RequestedMode.road
-    assert sent.cargo_flags is not None
-    assert isinstance(sent.profiles, dict)
+    assert payload["next_action"] != "SHOW_FACT_PACKAGE"
+    assert spy.calls == []

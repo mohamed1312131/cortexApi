@@ -261,6 +261,11 @@ def fetch_road_b(request: ValidatedShipmentRequest) -> BlockResponse:
                 for rule in matched_abnormal_rules
                 if rule.get("rule_id")
             ],
+            "matched_vehicle_profile_ids": [
+                str(profile.get("cargo_profile_id"))
+                for profile in matched_vehicle_profiles
+                if profile.get("cargo_profile_id")
+            ],
         },
         hard_gates=hard_gates,
         planning_factors=planning_factors,
@@ -294,29 +299,74 @@ def _matched_abnormal_rules(
     return matched
 
 
+# Structured flag gating for flag-driven vehicle profiles: a profile listed
+# here matches only when EVERY required cargo flag is yes/likely. Unknown
+# flags never match — the gap is surfaced explicitly via unknown_trigger_flags
+# instead of silently widening the match. Type-specific profiles inside a flag
+# family (e.g. batteries_lithium, hazardous_waste) are deliberately NOT listed:
+# a bare flag cannot identify them, so they stay description-matched.
+_PROFILE_FLAG_REQUIREMENTS: dict[str, frozenset[str]] = {
+    "food_ambient_packaged": frozenset({"food_perishable"}),
+    "food_chilled": frozenset({"food_perishable"}),
+    "food_frozen": frozenset({"food_perishable"}),
+    "pharma_temperature_controlled": frozenset({"pharma", "temperature_controlled"}),
+    "refrigerated_dg_or_chemical": frozenset({"dangerous_goods", "temperature_controlled"}),
+    "fragile_high_value_electronics": frozenset({"high_value"}),
+    "livestock": frozenset({"live_animals"}),
+    "oversized_machine_width_over_2_55m": frozenset({"oversized"}),
+    "oversized_machine_height_over_4m": frozenset({"oversized"}),
+    "very_heavy_machine_over_40t_gvw": frozenset({"oversized"}),
+    "long_industrial_beams": frozenset({"oversized"}),
+    "wind_turbine_blade": frozenset({"oversized"}),
+    "transformer_large_power": frozenset({"oversized"}),
+    "boats_yachts": frozenset({"oversized"}),
+}
+
+# Profile-name tokens too generic to identify a cargo type on their own.
+_GENERIC_PROFILE_NAME_TOKENS = frozenset(
+    {
+        "or",
+        "and",
+        "of",
+        "the",
+        "non",
+        "goods",
+        "temperature",
+        "controlled",
+        "standard",
+        "dimensions",
+        "consumer",
+        "lq",
+        "hazardous",
+        "large",
+    }
+)
+
+
 def _matched_vehicle_profiles(
     vehicle_profiles: list[dict[str, Any]],
     active_flags: list[str],
     cargo_description: str | None,
 ) -> list[dict[str, Any]]:
-    terms = set(active_flags)
-    if cargo_description:
-        terms.update(_text_tokens(cargo_description))
-    if not terms:
-        return []
+    active = set(active_flags)
+    description_tokens = (
+        _text_tokens(cargo_description) if cargo_description else set()
+    )
 
     matched: list[dict[str, Any]] = []
     for profile in vehicle_profiles:
-        haystack = " ".join(
-            str(profile.get(key) or "")
-            for key in (
-                "cargo_profile",
-                "required_vehicle",
-                "operational_note",
-                "factor_type",
-            )
-        ).lower()
-        if any(_profile_term_matches(term, haystack) for term in terms):
+        name = str(profile.get("cargo_profile") or "").strip().lower()
+        required_flags = _PROFILE_FLAG_REQUIREMENTS.get(name)
+        if required_flags is not None:
+            # Flag-driven profile: structured gating only. A cargo description
+            # can never substitute for a flag that is unknown or absent.
+            if required_flags <= active:
+                matched.append(profile)
+            continue
+        # Profile without flag semantics: exact token overlap between the
+        # cargo description and the profile name (no alias expansion).
+        name_tokens = _text_tokens(name) - _GENERIC_PROFILE_NAME_TOKENS
+        if description_tokens & name_tokens:
             matched.append(profile)
     return matched
 
@@ -334,31 +384,13 @@ def _normalized_tokens(value: Any) -> set[str]:
 
 
 def _text_tokens(text: str) -> set[str]:
+    # Underscores are split too, so profile names like "steel_coils" produce
+    # the same tokens as the description "steel coils".
     return {
         token
-        for token in re.split(r"[^a-zA-Z0-9_]+", text.lower())
+        for token in re.split(r"[^a-zA-Z0-9]+", text.lower())
         if token
     }
-
-
-def _profile_term_matches(term: str, haystack: str) -> bool:
-    aliases = {
-        "dangerous_goods": {"dangerous", "dg", "adr", "hazardous"},
-        "temperature_controlled": {
-            "temperature",
-            "controlled",
-            "reefer",
-            "refrigerated",
-            "chilled",
-        },
-        "oversized": {"oversized", "abnormal", "overdimensional", "special"},
-        "high_value": {"high_value", "valuable", "security"},
-        "pharma": {"pharma", "pharmaceutical"},
-        "food_perishable": {"food", "perishable", "chilled", "reefer"},
-        "live_animals": {"live", "animals", "animal"},
-    }
-    candidates = aliases.get(term, {term})
-    return any(candidate in haystack for candidate in candidates)
 
 
 def _request_unknowns(
@@ -457,6 +489,16 @@ def _request_unknowns(
     return unknowns, missing_fields
 
 
+def _is_unverified_readiness_gate(record: dict[str, Any]) -> bool:
+    # Within standard limits and no abnormal permit: the rule's hard gate is an
+    # evidence/readiness requirement (e.g. reefer setpoint evidence, GDP carrier
+    # qualification), not a constraint that the shipment already violates.
+    return (
+        record.get("within_standard_limits") is True
+        and record.get("abnormal_permit_required") is False
+    )
+
+
 def _hard_gate_findings(
     records: list[dict[str, Any]],
 ) -> tuple[list[HardGate], list[Unknown]]:
@@ -466,6 +508,40 @@ def _hard_gate_findings(
         hard_gate = record.get("hard_gate")
         if hard_gate is True:
             basis = _record_basis(record)
+            if _is_unverified_readiness_gate(record):
+                # No violation detected — only unverified evidence. The gate
+                # stays visible at blocking severity but with unknown status,
+                # and the evidence gap is reported as an explicit unknown.
+                gates.append(
+                    HardGate(
+                        gate_id=f"ROAD_B_{_gate_token(basis)}_HARD_GATE",
+                        mode=RequestedMode.road,
+                        severity=GateSeverity.blocking,
+                        status=GateStatus.unknown,
+                        message=(
+                            record.get("hard_gate_reason")
+                            or record.get("operational_note")
+                            or "ROAD-B vehicle/load fit rule contains a hard gate."
+                        ),
+                        source_block=BLOCK_ID,
+                        basis=basis,
+                    )
+                )
+                unknowns.append(
+                    Unknown(
+                        field=f"road_b.readiness.{basis}",
+                        reason=(
+                            "ROAD-B readiness gate for "
+                            f"{record.get('cargo_profile') or basis} requires "
+                            "validation evidence"
+                        ),
+                        impact=(
+                            "Readiness requirement is unverified; do not treat "
+                            "as clear."
+                        ),
+                    )
+                )
+                continue
             gates.append(
                 HardGate(
                     gate_id=f"ROAD_B_{_gate_token(basis)}_HARD_GATE",

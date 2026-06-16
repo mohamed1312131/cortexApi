@@ -60,6 +60,7 @@ def test_air_request_with_dg_plans_air_a():
         "AIR-F",
         "AIR-H",
         "AIR-I",
+        "AIR-COST",
     ]
 
 
@@ -74,6 +75,7 @@ def test_air_request_non_dg_does_not_plan_air_a():
         "AIR-F",
         "AIR-H",
         "AIR-I",
+        "AIR-COST",
     ]
     assert "AIR-A" not in [item.block_id for item in plan.items]
 

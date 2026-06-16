@@ -92,6 +92,7 @@ def test_air_request_non_dg_plans_air_c_air_d_air_e_air_f_air_h_air_i():
         "AIR-F",
         "AIR-H",
         "AIR-I",
+        "AIR-COST",
     ]
     assert "AIR-A" not in block_ids
     assert "AIR-B" not in block_ids
