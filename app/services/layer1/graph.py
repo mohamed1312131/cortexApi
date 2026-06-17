@@ -21,6 +21,7 @@ from app.schemas import (
     CaseStatus,
     IntakeDecision,
     IntakeResult,
+    MissingFields,
     ValidatedShipmentRequest,
 )
 from app.services.layer1.case_state_manager import (
@@ -44,6 +45,21 @@ _NO_FACT_ACTIONS = {
     CaseAction.ask_detail_about_existing_report,
     CaseAction.filter_existing_report,
 }
+
+
+def _intake_quality_score(missing: MissingFields) -> float:
+    """Closed-form intake quality score — deterministic, never the model's arithmetic.
+
+    Penalize the triage tiers by weight: blocking gaps hurt most, can_wait least.
+    Clamped to [0, 1] and rounded to 2 decimals.
+    """
+    score = (
+        1.0
+        - 0.18 * len(missing.blocking)
+        - 0.05 * len(missing.high_value)
+        - 0.02 * len(missing.can_wait)
+    )
+    return round(max(0.0, score), 2)
 
 
 class Layer1AgentIntake:
@@ -99,6 +115,14 @@ class Layer1AgentIntake:
 
         current = turn.intake
         current.case_id = case_state.case_id
+
+        # Deterministic fields are plumbing, not the agent's: derive the readiness
+        # gate from the decision and the quality score from its formula. The model
+        # may still emit them, but Python overwrites so they can never drift from
+        # the decision (LLMs are unreliable at arithmetic and at keeping a derived
+        # boolean in sync with the choice it depends on).
+        current.ready_for_layer_2 = turn.decision in _READY_DECISIONS
+        current.intake_quality_score = _intake_quality_score(current.missing_fields)
 
         if user_id and not case_state.user_id:
             case_state.user_id = user_id

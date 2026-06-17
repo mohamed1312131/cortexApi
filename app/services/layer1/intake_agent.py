@@ -120,10 +120,10 @@ The "intake" object (always return it COMPLETE, merged with previous state):
   "inferred_flags": {flags YOU inferred rather than the user stating, each as {"value":..., "basis": short reason, "confirmed_by_user": bool}},
   "missing_fields": {"blocking": [...], "high_value": [...], "can_wait": [...]},
   "questions_to_user": [{"question": str (user's language), "reason": str, "field_target": dotted field path}, ... max 3, only for blocking fields, [] when nothing blocks],
-  "ready_for_layer_2": bool,
-  "field_confidence": {fact name: 0.0-1.0},
-  "intake_quality_score": 0.0-1.0
+  "field_confidence": {fact name: 0.0-1.0}
 }
+(The system derives ready_for_layer_2 and intake_quality_score from your decision
+and missing_fields — do NOT output them; just get the decision and triage right.)
 </turn_output>
 
 <extraction_rules>
@@ -227,13 +227,10 @@ separately, set inferred_flags.multiple_shipments_detected = true, decision
   blocks.
 - User explicitly starts a different shipment -> case_action "start_new_case",
   decision "start_new_case" (or "ask_user" if the new shipment lacks blocking facts).
-- ready_for_layer_2 is true exactly when decision is "ready_for_layer_2",
-  "ready_for_layer_2_with_unknowns", or "update_case_and_rerun".
+- The system derives ready_for_layer_2 from your decision (true when decision is
+  "ready_for_layer_2", "ready_for_layer_2_with_unknowns", or
+  "update_case_and_rerun"); focus on choosing the right decision, not the flag.
 </decision_policy>
-
-<quality_score>
-intake_quality_score = max(0, 1 - 0.18*len(blocking) - 0.05*len(high_value) - 0.02*len(can_wait)), rounded to 2 decimals.
-</quality_score>
 
 <assistant_message_style>
 Reply in the user's language. Be brief and concrete. When asking: lead with why
