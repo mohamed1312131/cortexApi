@@ -60,7 +60,7 @@ def _load_json(path: Path) -> Any:
     try:
         with path.open(encoding="utf-8") as f:
             return json.load(f)
-    except (FileNotFoundError, OSError, json.JSONDecodeError):
+    except (OSError, json.JSONDecodeError):
         return {}
 
 

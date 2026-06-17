@@ -12,7 +12,9 @@ from app.config import get_settings
 config = context.config
 
 if config.config_file_name is not None:
-    fileConfig(config.config_file_name)
+    # Security audit: alembic.ini only configures console migration logs and
+    # does not log the injected database URL or request/user payloads.
+    fileConfig(config.config_file_name, disable_existing_loggers=False)  # skipcq: PY-A6006
 
 settings = get_settings()
 config.set_main_option("sqlalchemy.url", settings.database_url)
@@ -62,4 +64,3 @@ if context.is_offline_mode():
     run_migrations_offline()
 else:
     run_migrations_online()
-

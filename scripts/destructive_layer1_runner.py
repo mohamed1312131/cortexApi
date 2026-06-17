@@ -5,6 +5,7 @@ import json
 import time
 import urllib.error
 import urllib.request
+from urllib.parse import urlparse
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -486,7 +487,14 @@ BASE_CASES: list[Case] = [
 ]
 
 
+def _ensure_http_url(url: str) -> None:
+    scheme = urlparse(url).scheme.lower()
+    if scheme not in {"http", "https"}:
+        raise ValueError(f"Only http(s) URLs are allowed, got scheme {scheme!r}")
+
+
 def post_json(url: str, payload: dict[str, Any], timeout: int) -> tuple[int, Any]:
+    _ensure_http_url(url)
     data = json.dumps(payload).encode("utf-8")
     req = urllib.request.Request(
         url,
@@ -495,7 +503,7 @@ def post_json(url: str, payload: dict[str, Any], timeout: int) -> tuple[int, Any
         method="POST",
     )
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:  # skipcq: BAN-B310
             body = resp.read().decode("utf-8")
             try:
                 return resp.status, json.loads(body)

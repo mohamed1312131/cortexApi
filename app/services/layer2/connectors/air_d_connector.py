@@ -51,7 +51,7 @@ def _load_dataset() -> dict[str, Any]:
     try:
         with _data_path().open(encoding="utf-8") as f:
             payload = json.load(f)
-    except (FileNotFoundError, OSError, json.JSONDecodeError):
+    except (OSError, json.JSONDecodeError):
         return {}
 
     if isinstance(payload, dict):
@@ -137,54 +137,54 @@ def fetch_air_d(request: ValidatedShipmentRequest) -> BlockResponse:
         for flag in unknown_flags
     )
 
-    if "dangerous_goods" in active_flags:
-        if not _any_clear_yes(carrier_examples, ["dangerous_goods_acceptance"]):
-            unknowns.append(
-                Unknown(
-                    field="carrier_capabilities.dangerous_goods_acceptance",
-                    reason=(
-                        "no reference carrier capability clearly verifies DG "
-                        "acceptance"
-                    ),
-                    impact="DG air movement requires airline validation.",
-                )
+    if "dangerous_goods" in active_flags and not _any_clear_yes(
+        carrier_examples,
+        ["dangerous_goods_acceptance"],
+    ):
+        unknowns.append(
+            Unknown(
+                field="carrier_capabilities.dangerous_goods_acceptance",
+                reason=(
+                    "no reference carrier capability clearly verifies DG "
+                    "acceptance"
+                ),
+                impact="DG air movement requires airline validation.",
             )
+        )
 
-    if {"pharma", "temperature_controlled"} & set(active_flags):
-        if not _any_clear_yes(
-            carrier_examples,
-            ["pharma_capability", "temperature_control_capability"],
-        ):
-            unknowns.append(
-                Unknown(
-                    field="carrier_capabilities.temperature_pharma",
-                    reason=(
-                        "no reference carrier capability clearly verifies "
-                        "pharma/temperature capability"
-                    ),
-                    impact="Temperature/pharma air movement requires airline validation.",
-                )
+    if {"pharma", "temperature_controlled"} & set(active_flags) and not _any_clear_yes(
+        carrier_examples,
+        ["pharma_capability", "temperature_control_capability"],
+    ):
+        unknowns.append(
+            Unknown(
+                field="carrier_capabilities.temperature_pharma",
+                reason=(
+                    "no reference carrier capability clearly verifies "
+                    "pharma/temperature capability"
+                ),
+                impact="Temperature/pharma air movement requires airline validation.",
             )
+        )
 
-    if "oversized" in active_flags:
-        if not _any_clear_yes(
-            carrier_examples,
-            [
-                "oversized_cargo_capability",
-                "freighter_capability",
-                "main_deck_capability",
-            ],
-        ):
-            unknowns.append(
-                Unknown(
-                    field="carrier_capabilities.oversized",
-                    reason=(
-                        "oversized cargo requires freighter/main-deck carrier "
-                        "validation"
-                    ),
-                    impact="Oversized air cargo cannot be treated as clear.",
-                )
+    if "oversized" in active_flags and not _any_clear_yes(
+        carrier_examples,
+        [
+            "oversized_cargo_capability",
+            "freighter_capability",
+            "main_deck_capability",
+        ],
+    ):
+        unknowns.append(
+            Unknown(
+                field="carrier_capabilities.oversized",
+                reason=(
+                    "oversized cargo requires freighter/main-deck carrier "
+                    "validation"
+                ),
+                impact="Oversized air cargo cannot be treated as clear.",
             )
+        )
 
     return BlockResponse(
         block_id=BLOCK_ID,

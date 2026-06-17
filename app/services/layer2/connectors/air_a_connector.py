@@ -54,7 +54,7 @@ def _load_records() -> list[dict[str, Any]]:
     try:
         with _data_path().open(encoding="utf-8") as f:
             payload = json.load(f)
-    except (FileNotFoundError, OSError, json.JSONDecodeError):
+    except (OSError, json.JSONDecodeError):
         return []
 
     if not isinstance(payload, list):

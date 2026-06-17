@@ -66,7 +66,7 @@ def _load_json(path: Path) -> Any:
     try:
         with path.open(encoding="utf-8") as f:
             return json.load(f)
-    except (FileNotFoundError, OSError, json.JSONDecodeError):
+    except (OSError, json.JSONDecodeError):
         return {}
 
 
@@ -273,9 +273,12 @@ def _matched_document_requirements(
     for record in requirements:
         if _is_base_document(record) and record not in selected:
             selected.append(record)
-        if "dangerous_goods" in active_flags and _is_dg_document(record):
-            if record not in selected:
-                selected.append(record)
+        if (
+            "dangerous_goods" in active_flags
+            and _is_dg_document(record)
+            and record not in selected
+        ):
+            selected.append(record)
     return selected
 
 
@@ -432,18 +435,20 @@ def _request_unknowns(
             )
         )
 
-    if request.cargo_flags.dangerous_goods in {FlagState.yes, FlagState.likely}:
-        if not any(_is_dg_document(record) for record in matched_documents):
-            unknowns.append(
-                Unknown(
-                    field="road_f.dg_documents",
-                    reason=(
-                        "dangerous goods flagged but no ADR/DG document "
-                        "requirement matched"
-                    ),
-                    impact="ADR document readiness cannot be treated as clear.",
-                )
+    if (
+        request.cargo_flags.dangerous_goods in {FlagState.yes, FlagState.likely}
+        and not any(_is_dg_document(record) for record in matched_documents)
+    ):
+        unknowns.append(
+            Unknown(
+                field="road_f.dg_documents",
+                reason=(
+                    "dangerous goods flagged but no ADR/DG document "
+                    "requirement matched"
+                ),
+                impact="ADR document readiness cannot be treated as clear.",
             )
+        )
 
     if request.cargo_flags.oversized in {FlagState.yes, FlagState.likely}:
         unknowns.append(

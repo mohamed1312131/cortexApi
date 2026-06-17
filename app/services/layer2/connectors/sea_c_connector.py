@@ -53,7 +53,7 @@ def _load_ports() -> list[dict[str, Any]]:
     try:
         with _DATA_PATH.open(encoding="utf-8") as f:
             payload = json.load(f)
-    except (FileNotFoundError, OSError, json.JSONDecodeError):
+    except (OSError, json.JSONDecodeError):
         return []
 
     if not isinstance(payload, dict):
@@ -240,9 +240,9 @@ def _capability_unknowns(
             Unknown(
                 field="cap_dg_handling",
                 reason="DG handling is not verified as yes for this port",
-                    impact="Dangerous goods sea handling requires terminal validation.",
-                )
+                impact="Dangerous goods sea handling requires terminal validation.",
             )
+        )
 
     if data.get("cap_draft_m") is None:
         unknowns.append(

@@ -68,7 +68,7 @@ def _load_dataset() -> Any:
     try:
         with _data_path().open(encoding="utf-8") as f:
             return json.load(f)
-    except (FileNotFoundError, OSError, json.JSONDecodeError):
+    except (OSError, json.JSONDecodeError):
         return {}
 
 

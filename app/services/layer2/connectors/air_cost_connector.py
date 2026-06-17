@@ -67,7 +67,7 @@ def _load_reference() -> dict[str, Any]:
     try:
         with _data_path().open(encoding="utf-8") as f:
             payload = json.load(f)
-    except (FileNotFoundError, OSError, json.JSONDecodeError):
+    except (OSError, json.JSONDecodeError):
         return {}
     return payload if isinstance(payload, dict) else {}
 

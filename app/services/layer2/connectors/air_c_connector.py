@@ -70,7 +70,7 @@ def _load_airports() -> list[dict[str, Any]]:
     try:
         with _data_path().open(encoding="utf-8") as f:
             payload = json.load(f)
-    except (FileNotFoundError, OSError, json.JSONDecodeError):
+    except (OSError, json.JSONDecodeError):
         return []
 
     if not isinstance(payload, dict):
@@ -255,31 +255,36 @@ def _capability_unknowns(
             )
         )
 
-    if request.cargo_flags.dangerous_goods in {FlagState.yes, FlagState.likely}:
-        if not _is_explicit_yes(row.get("dangerous_goods_handling")):
-            unknowns.append(
-                Unknown(
-                    field="dangerous_goods_handling",
-                    reason="DG handling is not verified as yes at this airport",
-                    impact="Air DG handling requires airline/handler validation.",
-                )
+    if (
+        request.cargo_flags.dangerous_goods in {FlagState.yes, FlagState.likely}
+        and not _is_explicit_yes(row.get("dangerous_goods_handling"))
+    ):
+        unknowns.append(
+            Unknown(
+                field="dangerous_goods_handling",
+                reason="DG handling is not verified as yes at this airport",
+                impact="Air DG handling requires airline/handler validation.",
             )
+        )
 
-    if request.cargo_flags.temperature_controlled in {
-        FlagState.yes,
-        FlagState.likely,
-    }:
-        if not _is_explicit_yes(row.get("temperature_controlled_storage")):
-            unknowns.append(
-                Unknown(
-                    field="temperature_controlled_storage",
-                    reason="temperature-controlled storage is not verified as yes",
-                    impact=(
-                        "Temperature-controlled air cargo requires handler "
-                        "validation."
-                    ),
-                )
+    if (
+        request.cargo_flags.temperature_controlled
+        in {
+            FlagState.yes,
+            FlagState.likely,
+        }
+        and not _is_explicit_yes(row.get("temperature_controlled_storage"))
+    ):
+        unknowns.append(
+            Unknown(
+                field="temperature_controlled_storage",
+                reason="temperature-controlled storage is not verified as yes",
+                impact=(
+                    "Temperature-controlled air cargo requires handler "
+                    "validation."
+                ),
             )
+        )
 
     return unknowns
 
