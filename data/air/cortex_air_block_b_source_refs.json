@@ -1,0 +1,56 @@
+[
+  {
+    "source_id": "SRC_B_001",
+    "source_name": "Special Handling Codes list / Cargo IMP codes sheet",
+    "use_in_dataset": "Base code dictionary and mapping to cargo categories",
+    "uploaded_file": "1-3-3.pdf"
+  },
+  {
+    "source_id": "SRC_B_002",
+    "source_name": "Air Cargo Perishable Handling",
+    "use_in_dataset": "Perishable categories, labels, intake questions, service preference",
+    "uploaded_file": "Air_Cargo_Perishable_Handling.pdf"
+  },
+  {
+    "source_id": "SRC_B_003",
+    "source_name": "WHO Temperature-controlled transport operations by road and by air",
+    "use_in_dataset": "Pharma/TTSPP rules, active/passive systems, risk controls, air transport process",
+    "uploaded_file": "trs961-annex9-supp12.pdf"
+  },
+  {
+    "source_id": "SRC_B_004",
+    "source_name": "Pharma.Aero CEIV validation white paper",
+    "use_in_dataset": "Pharma cold-chain quality, CEIV capability, temperature excursion risk",
+    "uploaded_file": "CEIV-1.0-Validation-project-by-the-shippers-White-Paper_Pharma.Aero_.pdf"
+  },
+  {
+    "source_id": "SRC_B_005",
+    "source_name": "The process of handling live animals in air transport",
+    "use_in_dataset": "Live animal complexity, need to minimize time, airline rules and terminal process",
+    "uploaded_file": "The_process_of_handling_live_animal.pdf"
+  },
+  {
+    "source_id": "SRC_B_006",
+    "source_name": "FAA AC 120-85A Air Cargo Operations",
+    "use_in_dataset": "Heavy/outsized/special cargo, W&B, ULDs, restraint, active ULD compatibility",
+    "uploaded_file": "ac_120-85a.pdf"
+  },
+  {
+    "source_id": "SRC_B_007",
+    "source_name": "IATA Air Cargo Security Position 2024",
+    "use_in_dataset": "Security-sensitive cargo, PLACI, ACC3, secure supply-chain logic",
+    "uploaded_file": "cargo-security.pdf"
+  },
+  {
+    "source_id": "SRC_B_008",
+    "source_name": "IATA Cargo Agent Handbook Resolution 801",
+    "use_in_dataset": "Industry context for cargo handling, live animals/perishables, ULDs, documentation",
+    "uploaded_file": "cah801-47-en-final.pdf"
+  },
+  {
+    "source_id": "SRC_B_009",
+    "source_name": "Carriage of Cargo, Mail and Baggage - Guidance for Operators",
+    "use_in_dataset": "Safety risk assessment framing: item hazards, operator capability, operational considerations, aircraft capability",
+    "uploaded_file": "carriage-of-cargo-mail-and-baggage.pdf"
+  }
+]

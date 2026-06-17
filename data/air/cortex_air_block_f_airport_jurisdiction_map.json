@@ -1,0 +1,65 @@
+[
+  {
+    "airport_code": "CDG",
+    "airport_name": "Paris Charles de Gaulle",
+    "country": "France",
+    "block_f_jurisdiction": "EU",
+    "notes": "EU SPS/TRACES rules apply for animal, plant, food/feed categories."
+  },
+  {
+    "airport_code": "FRA",
+    "airport_name": "Frankfurt Airport",
+    "country": "Germany",
+    "block_f_jurisdiction": "EU",
+    "notes": "EU SPS/TRACES rules apply for animal, plant, food/feed categories."
+  },
+  {
+    "airport_code": "AMS",
+    "airport_name": "Amsterdam Schiphol",
+    "country": "Netherlands",
+    "block_f_jurisdiction": "EU",
+    "notes": "EU SPS/TRACES rules apply for animal, plant, food/feed categories."
+  },
+  {
+    "airport_code": "DXB",
+    "airport_name": "Dubai International",
+    "country": "United Arab Emirates",
+    "block_f_jurisdiction": "UAE",
+    "notes": "MOCCAE / health / customs authority checks depending cargo category."
+  },
+  {
+    "airport_code": "DOH",
+    "airport_name": "Hamad International",
+    "country": "Qatar",
+    "block_f_jurisdiction": "QATAR",
+    "notes": "Food/meat import controls and customs declaration checks; other categories need manual validation."
+  },
+  {
+    "airport_code": "HKG",
+    "airport_name": "Hong Kong International",
+    "country": "Hong Kong SAR",
+    "block_f_jurisdiction": "HONG_KONG",
+    "notes": "AFCD permits for animals/plants/CITES; customs controlled imports."
+  },
+  {
+    "airport_code": "SIN",
+    "airport_name": "Singapore Changi",
+    "country": "Singapore",
+    "block_f_jurisdiction": "SINGAPORE",
+    "notes": "SFA/TradeNet food permits; NParks/AVS for animal/pet-food style controls."
+  },
+  {
+    "airport_code": "JFK",
+    "airport_name": "John F. Kennedy International",
+    "country": "United States",
+    "block_f_jurisdiction": "US",
+    "notes": "CBP plus CDC/APHIS/FDA/USFWS depending cargo category."
+  },
+  {
+    "airport_code": "TUN",
+    "airport_name": "Tunis-Carthage",
+    "country": "Tunisia",
+    "block_f_jurisdiction": "TUNISIA_PLACEHOLDER",
+    "notes": "Public category-specific data is weak; manual authority validation required."
+  }
+]

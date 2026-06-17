@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import json
 
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import BaseModel, ValidationError
 
 from app.core.llm import get_chat_model
 from app.schemas import (

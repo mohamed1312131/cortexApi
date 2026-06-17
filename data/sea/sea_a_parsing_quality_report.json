@@ -1,0 +1,2507 @@
+{
+  "name_digit_violations": [
+    {
+      "row_index": 155,
+      "identification_number": "UN3317",
+      "proper_shipping_name_raw": "2-Amino-4,6-Dinitrophenol, wetted with not < 20% water by mass",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 156,
+      "identification_number": "UN2673",
+      "proper_shipping_name_raw": "2-Amino-4-chlorophenol",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 157,
+      "identification_number": "UN2946",
+      "proper_shipping_name_raw": "2-Amino-5-diethylaminopentane",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 158,
+      "identification_number": "UN3055",
+      "proper_shipping_name_raw": "2-(2-Aminoethoxy) ethanol",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 483,
+      "identification_number": "UN3241",
+      "proper_shipping_name_raw": "2-Bromo-2-nitropropane-1,3-diol",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 484,
+      "identification_number": "UN2688",
+      "proper_shipping_name_raw": "1-Bromo-3-chloropropane",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 485,
+      "identification_number": "UN2341",
+      "proper_shipping_name_raw": "1-Bromo-3-methylbutane",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 495,
+      "identification_number": "UN2339",
+      "proper_shipping_name_raw": "2-Bromobutane",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 496,
+      "identification_number": "UN1126",
+      "proper_shipping_name_raw": "1-Bromobutane",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 498,
+      "identification_number": "UN2340",
+      "proper_shipping_name_raw": "2-Bromoethyl ethyl ether",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 501,
+      "identification_number": "UN2343",
+      "proper_shipping_name_raw": "2-Bromopentane",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 504,
+      "identification_number": "UN2345",
+      "proper_shipping_name_raw": "3-Bromopropyne",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 519,
+      "identification_number": "UN2956",
+      "proper_shipping_name_raw": "5-tert-Butyl-2,4,6-trinitro-m-xylene or Musk xylene",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 533,
+      "identification_number": "UN3022",
+      "proper_shipping_name_raw": "1,2-Butylene oxide, stabilized",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 557,
+      "identification_number": "UN2716",
+      "proper_shipping_name_raw": "1,4-Butynediol",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 743,
+      "identification_number": "UN2517",
+      "proper_shipping_name_raw": "1-Chloro-1,1-difluoroethane or Refrigerant gas R 142b",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 744,
+      "identification_number": "UN1021",
+      "proper_shipping_name_raw": "1-Chloro-1,2,2,2-tetrafluoroethaneor Refrigerant gas R 124",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 745,
+      "identification_number": "UN1983",
+      "proper_shipping_name_raw": "1-Chloro-2,2,2-trifluoroethane or Refrigerant gas R 133a",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 746,
+      "identification_number": "UN2236",
+      "proper_shipping_name_raw": "3-Chloro-4-methylphenyl isocyanate, liquid",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 747,
+      "identification_number": "UN3428",
+      "proper_shipping_name_raw": "3-Chloro-4-methylphenyl isocyanate, solid",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 774,
+      "identification_number": "UN2232",
+      "proper_shipping_name_raw": "2-Chloroethanal",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 785,
+      "identification_number": "UN1579",
+      "proper_shipping_name_raw": "4-Chloro-o-toluidine hydrochloride, solid",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 786,
+      "identification_number": "UN3410",
+      "proper_shipping_name_raw": "4-Chloro-o-toluidine hydrochloride, solution",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 804,
+      "identification_number": "UN1278",
+      "proper_shipping_name_raw": "1-Chloropropane",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 805,
+      "identification_number": "UN2356",
+      "proper_shipping_name_raw": "2-Chloropropane",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 806,
+      "identification_number": "UN2849",
+      "proper_shipping_name_raw": "3-Chloropropanol-1",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 807,
+      "identification_number": "UN2456",
+      "proper_shipping_name_raw": "2-Chloropropene",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 808,
+      "identification_number": "UN2511",
+      "proper_shipping_name_raw": "2-Chloropropionic acid",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 809,
+      "identification_number": "UN2822",
+      "proper_shipping_name_raw": "2-Chloropyridine",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 1017,
+      "identification_number": "UN2518",
+      "proper_shipping_name_raw": "1,5,9-Cyclododecatriene",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 1091,
+      "identification_number": "UN2651",
+      "proper_shipping_name_raw": "4,4'-Diaminodiphenyl methane",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 1108,
+      "identification_number": "UN2648",
+      "proper_shipping_name_raw": "1,2-Dibromobutan-3-one",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 1117,
+      "identification_number": "UN1958",
+      "proper_shipping_name_raw": "1,2-Dichloro-1,1,2,2- tetrafluoroethane or Refrigerant gas R 114",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 1118,
+      "identification_number": "UN2650",
+      "proper_shipping_name_raw": "1,1-Dichloro-1-nitroethane",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 1119,
+      "identification_number": "NA9264",
+      "proper_shipping_name_raw": "3,5-Dichloro-2,4,6-trifluoropyridine",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 1121,
+      "identification_number": "UN2649",
+      "proper_shipping_name_raw": "1,3-Dichloroacetone",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 1127,
+      "identification_number": "UN1916",
+      "proper_shipping_name_raw": "2,2'-Dichlorodiethyl ether",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 1131,
+      "identification_number": "UN2362",
+      "proper_shipping_name_raw": "1,1-Dichloroethane",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 1133,
+      "identification_number": "UN1150",
+      "proper_shipping_name_raw": "1,2-Dichloroethylene",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 1142,
+      "identification_number": "UN1279",
+      "proper_shipping_name_raw": "1,2-Dichloropropane",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 1143,
+      "identification_number": "UN2750",
+      "proper_shipping_name_raw": "1,3-Dichloropropanol-2",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 1153,
+      "identification_number": "UN2372",
+      "proper_shipping_name_raw": "1,2-Di-(dimethylamino)ethane",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 1159,
+      "identification_number": "UN2374",
+      "proper_shipping_name_raw": "3,3-Diethoxypropene",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 1160,
+      "identification_number": "UN2684",
+      "proper_shipping_name_raw": "3-Diethyamino-propylamine.",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 1162,
+      "identification_number": "UN2686",
+      "proper_shipping_name_raw": "2-Diethylaminoethanol",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 1181,
+      "identification_number": "UN1030",
+      "proper_shipping_name_raw": "1,1-Difluoroethane or Refrigerant gas R 152a",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 1182,
+      "identification_number": "UN1959",
+      "proper_shipping_name_raw": "1,1-Difluoroethylene or Refrigerant gas R 1132a",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 1185,
+      "identification_number": "UN2376",
+      "proper_shipping_name_raw": "2,3-Dihydropyran",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 1196,
+      "identification_number": "UN2252",
+      "proper_shipping_name_raw": "1,2-Dimethoxyethane",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    },
+    {
+      "row_index": 1197,
+      "identification_number": "UN2377",
+      "proper_shipping_name_raw": "1,1-Dimethoxyethane",
+      "action": "normalized_with_Substance_prefix_not_column_shift"
+    }
+  ],
+  "excluded_rows_sample": [
+    {
+      "row_index": 0,
+      "reason": "no_identification_number",
+      "raw_name": "Accellerene, see p-Nitrosodimethylaniline",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Accellerene, see p-Nitrosodimethylaniline",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 1,
+      "reason": "no_identification_number",
+      "raw_name": "Accumulators, electric, see Batteries, wet etc",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Accumulators, electric, see Batteries, wet etc",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 2,
+      "reason": "no_identification_number",
+      "raw_name": "Accumulators, pressurized, pneumatic or hydraulic (containing non-flamable gas), see Articles pressurized, pneumatic or hydraulic (containing non-flamable gas)",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Accumulators, pressurized, pneumatic or hydraulic (containing non-flamable gas), see Articles pressurized, pneumatic or hydraulic (containing non-flamable gas)",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 15,
+      "reason": "no_identification_number",
+      "raw_name": "Acetyl acetone peroxide with > 9% by mass active oxygen",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Acetyl acetone peroxide with > 9% by mass active oxygen",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 16,
+      "reason": "no_identification_number",
+      "raw_name": "Acetyl benzoyl peroxide, solid, or with > 40% in solution",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Acetyl benzoyl peroxide, solid, or with > 40% in solution",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 19,
+      "reason": "no_identification_number",
+      "raw_name": "Acetyl cyclohexanesulfonyl peroxide, with > 82% wetted with < 12% water",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Acetyl cyclohexanesulfonyl peroxide, with > 82% wetted with < 12% water",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 21,
+      "reason": "no_identification_number",
+      "raw_name": "Acetylene (liquefied)",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Acetylene (liquefied)",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 22,
+      "reason": "no_identification_number",
+      "raw_name": "Acetylene silver nitrate",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Acetylene silver nitrate",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 23,
+      "reason": "no_identification_number",
+      "raw_name": "Acetylene, solvent free",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Acetylene, solvent free",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 24,
+      "reason": "no_identification_number",
+      "raw_name": "Acetylene tetrabromide, see Tetrabromoethane",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Acetylene tetrabromide, see Tetrabromoethane",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 27,
+      "reason": "no_identification_number",
+      "raw_name": "Acetyl peroxide, solid, or with > 25% in solution",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Acetyl peroxide, solid, or with > 25% in solution",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 28,
+      "reason": "no_identification_number",
+      "raw_name": "Acid butyl phosphate, see Butyl acid phosphate",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Acid butyl phosphate, see Butyl acid phosphate",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 29,
+      "reason": "no_identification_number",
+      "raw_name": "Acid, sludge, see Sludge acid",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Acid, sludge, see Sludge acid",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 37,
+      "reason": "no_identification_number",
+      "raw_name": "Actuating cartridge, explosive, see Cartridges, power device",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Actuating cartridge, explosive, see Cartridges, power device",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 50,
+      "reason": "no_identification_number",
+      "raw_name": "Aircraft engines (including turbines), see Engines, internal combustion",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Aircraft engines (including turbines), see Engines, internal combustion",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 51,
+      "reason": "no_identification_number",
+      "raw_name": "Aircraft evacuation slides, see Life saving appliances etc",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Aircraft evacuation slides, see Life saving appliances etc",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 53,
+      "reason": "no_identification_number",
+      "raw_name": "Aircraft survival kits, see Life saving appliances etc",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Aircraft survival kits, see Life saving appliances etc",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 79,
+      "reason": "no_identification_number",
+      "raw_name": "Alkaline corrosive liquids, n.o.s., see Caustic alkali liquids, n.o.s.",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Alkaline corrosive liquids, n.o.s., see Caustic alkali liquids, n.o.s.",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 102,
+      "reason": "no_identification_number",
+      "raw_name": "Allethrin, see Pesticides, liquid, toxic, n.o.s.",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Allethrin, see Pesticides, liquid, toxic, n.o.s.",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 108,
+      "reason": "no_identification_number",
+      "raw_name": "Allyl chlorocarbonate, see Allyl chloroformate",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Allyl chlorocarbonate, see Allyl chloroformate",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 126,
+      "reason": "no_identification_number",
+      "raw_name": "Aluminum dross, wet or hot",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Aluminum dross, wet or hot",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 132,
+      "reason": "no_identification_number",
+      "raw_name": "Aluminum phosphate solution, see Corrosive liquids, etc",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Aluminum phosphate solution, see Corrosive liquids, etc",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 143,
+      "reason": "no_identification_number",
+      "raw_name": "Amatols, see Explosives, blasting, type B",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Amatols, see Explosives, blasting, type B",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 161,
+      "reason": "no_identification_number",
+      "raw_name": "Aminopropyldiethanolamine, see Amines, etc",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Aminopropyldiethanolamine, see Amines, etc",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 162,
+      "reason": "no_identification_number",
+      "raw_name": "n-Aminopropylmorpholine, see Amines, etc",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "n-Aminopropylmorpholine, see Amines, etc",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 171,
+      "reason": "no_identification_number",
+      "raw_name": "Ammonium azide",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Ammonium azide",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 172,
+      "reason": "no_identification_number",
+      "raw_name": "Ammonium bifluoride, solid, see Ammonium hydrogen difluoride, solid",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Ammonium bifluoride, solid, see Ammonium hydrogen difluoride, solid",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 173,
+      "reason": "no_identification_number",
+      "raw_name": "Ammonium bifluoride solution, see Ammonium hydrogen difluoride, solution",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Ammonium bifluoride solution, see Ammonium hydrogen difluoride, solution",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 174,
+      "reason": "no_identification_number",
+      "raw_name": "Ammonium bromate",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Ammonium bromate",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 175,
+      "reason": "no_identification_number",
+      "raw_name": "Ammonium chlorate",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Ammonium chlorate",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 182,
+      "reason": "no_identification_number",
+      "raw_name": "Ammonium fulminate",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Ammonium fulminate",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 187,
+      "reason": "no_identification_number",
+      "raw_name": "Ammonium hydrosulfide, solution, see Ammonium sulfide solution",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Ammonium hydrosulfide, solution, see Ammonium sulfide solution",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 188,
+      "reason": "no_identification_number",
+      "raw_name": "Ammonium hydroxide, see Ammonia solutions, etc",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": "D",
+        "proper_shipping_name_raw": "Ammonium hydroxide, see Ammonia solutions, etc",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 197,
+      "reason": "no_identification_number",
+      "raw_name": "Ammonium nitrite",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Ammonium nitrite",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 200,
+      "reason": "no_identification_number",
+      "raw_name": "Ammonium permanganate",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Ammonium permanganate",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 207,
+      "reason": "no_identification_number",
+      "raw_name": "Ammonium silicofluoride, see Ammonium fluorosilicate",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Ammonium silicofluoride, see Ammonium fluorosilicate",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 209,
+      "reason": "no_identification_number",
+      "raw_name": "Ammunition, blank, see Cartridges for weapons, blank",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Ammunition, blank, see Cartridges for weapons, blank",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 214,
+      "reason": "no_identification_number",
+      "raw_name": "Ammunition, incendiary (water-activated contrivances) with burster, expelling charge or propelling charge, see Contrivances, water-activated, etc.",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Ammunition, incendiary (water-activated contrivances) with burster, expelling charge or propelling charge, see Contrivances, water-activated, etc.",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 223,
+      "reason": "no_identification_number",
+      "raw_name": "Ammunition, rocket, see Warheads, rocket etc",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Ammunition, rocket, see Warheads, rocket etc",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 224,
+      "reason": "no_identification_number",
+      "raw_name": "Ammunition, SA (small arms), see Cartridges for weapons, etc",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Ammunition, SA (small arms), see Cartridges for weapons, etc",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 225,
+      "reason": "no_identification_number",
+      "raw_name": "Ammunition, smoke (water-activated contrivances), white phosphorus, with burster, expelling charge or propelling charge, see Contrivances, water-activated, etc. (UN 0248)",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Ammunition, smoke (water-activated contrivances), white phosphorus, with burster, expelling charge or propelling charge, see Contrivances, water-activated, etc. (UN 0248)",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 226,
+      "reason": "no_identification_number",
+      "raw_name": "Ammunition, smoke (water-activated contrivances), without white phosphorus or phosphides, with burster, expelling charge or propelling charge, see Contrivances, water-activated, etc. (UN 0249)",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Ammunition, smoke (water-activated contrivances), without white phosphorus or phosphides, with burster, expelling charge or propelling charge, see Contrivances, water-activated, etc. (UN 0249)",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 232,
+      "reason": "no_identification_number",
+      "raw_name": "Ammunition, sporting, see Cartridges for weapons, etc. (UN 0012; UN 0328; UN 0339)",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Ammunition, sporting, see Cartridges for weapons, etc. (UN 0012; UN 0328; UN 0339)",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 238,
+      "reason": "no_identification_number",
+      "raw_name": "Ammunition, toxic (water-activated contrivances), with burster, expelling charge or propelling charge, see Contrivances, water-activated, etc",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Ammunition, toxic (water-activated contrivances), with burster, expelling charge or propelling charge, see Contrivances, water-activated, etc",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 253,
+      "reason": "no_identification_number",
+      "raw_name": "Anhydrous ammonia, see Ammonia, anhydrous",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Anhydrous ammonia, see Ammonia, anhydrous",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 254,
+      "reason": "no_identification_number",
+      "raw_name": "Anhydrous hydrofluoric acid, see Hydrogen fluoride, anhydrous",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Anhydrous hydrofluoric acid, see Hydrogen fluoride, anhydrous",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 257,
+      "reason": "no_identification_number",
+      "raw_name": "Aniline oil, see Aniline",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Aniline oil, see Aniline",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 261,
+      "reason": "no_identification_number",
+      "raw_name": "Anti-freeze, liquid, see Flammable liquids, n.o.s.",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Anti-freeze, liquid, see Flammable liquids, n.o.s.",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 262,
+      "reason": "no_identification_number",
+      "raw_name": "Antimonous chloride, see Antimony trichloride",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Antimonous chloride, see Antimony trichloride",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 272,
+      "reason": "no_identification_number",
+      "raw_name": "Antimony sulfide and a chlorate, mixtures of",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Antimony sulfide and a chlorate, mixtures of",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 273,
+      "reason": "no_identification_number",
+      "raw_name": "Antimony sulfide, solid, see Antimony compounds, inorganic, n.o.s.",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Antimony sulfide, solid, see Antimony compounds, inorganic, n.o.s.",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 276,
+      "reason": "no_identification_number",
+      "raw_name": "Aqua ammonia, see Ammonia solution, etc",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Aqua ammonia, see Ammonia solution, etc",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 295,
+      "reason": "no_identification_number",
+      "raw_name": "Arsenic chloride, see Arsenic trichloride",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Arsenic chloride, see Arsenic trichloride",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 303,
+      "reason": "no_identification_number",
+      "raw_name": "Arsenic sulfide and a chlorate, mixtures of",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Arsenic sulfide and a chlorate, mixtures of",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 306,
+      "reason": "no_identification_number",
+      "raw_name": "Arsenic, white, solid, see Arsenic trioxide",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Arsenic, white, solid, see Arsenic trioxide",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 307,
+      "reason": "no_identification_number",
+      "raw_name": "Arsenious acid, solid, see Arsenic trioxide",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Arsenious acid, solid, see Arsenic trioxide",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 308,
+      "reason": "no_identification_number",
+      "raw_name": "Arsenious and mercuric iodide solution, see Arsenic compounds, liquid, n.o.s.",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Arsenious and mercuric iodide solution, see Arsenic compounds, liquid, n.o.s.",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 338,
+      "reason": "no_identification_number",
+      "raw_name": "Ascaridole (organic peroxide)",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Ascaridole (organic peroxide)",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 340,
+      "reason": "no_identification_number",
+      "raw_name": "Asphalt, cut back, see Tars, liquid, etc",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": "D",
+        "proper_shipping_name_raw": "Asphalt, cut back, see Tars, liquid, etc",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 341,
+      "reason": "no_identification_number",
+      "raw_name": "Automobile, motorcycle, tractor, other self-propelled vehicle, engine, or other mechanical apparatus, see Vehicles or Battery etc",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Automobile, motorcycle, tractor, other self-propelled vehicle, engine, or other mechanical apparatus, see Vehicles or Battery etc",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 344,
+      "reason": "no_identification_number",
+      "raw_name": "Azaurolic acid (salt of) (dry)",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Azaurolic acid (salt of) (dry)",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 345,
+      "reason": "no_identification_number",
+      "raw_name": "3-Azido-1,2-Propylene glycol dinitrate",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "3-Azido-1,2-Propylene glycol dinitrate",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 346,
+      "reason": "no_identification_number",
+      "raw_name": "5-Azido-1-hydroxy tetrazole",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "5-Azido-1-hydroxy tetrazole",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 347,
+      "reason": "no_identification_number",
+      "raw_name": "Azidodithiocarbonic acid",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Azidodithiocarbonic acid",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 348,
+      "reason": "no_identification_number",
+      "raw_name": "Azidoethyl nitrate",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Azidoethyl nitrate",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 349,
+      "reason": "no_identification_number",
+      "raw_name": "Azido guanidine picrate (dry)",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Azido guanidine picrate (dry)",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 350,
+      "reason": "no_identification_number",
+      "raw_name": "Azido hydroxy tetrazole (mercury and silver salts)",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Azido hydroxy tetrazole (mercury and silver salts)",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 351,
+      "reason": "no_identification_number",
+      "raw_name": "1-Aziridinylphosphine oxide-(tris), see Tris-(1-aziridinyl) phosphine oxide, solution",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "1-Aziridinylphosphine oxide-(tris), see Tris-(1-aziridinyl) phosphine oxide, solution",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 353,
+      "reason": "no_identification_number",
+      "raw_name": "Azotetrazole (dry)",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Azotetrazole (dry)",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 373,
+      "reason": "no_identification_number",
+      "raw_name": "Barium selenate, see Selenates or Selenites",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Barium selenate, see Selenates or Selenites",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 374,
+      "reason": "no_identification_number",
+      "raw_name": "Barium selenite, see Selenates or Selenites",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Barium selenite, see Selenates or Selenites",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 377,
+      "reason": "no_identification_number",
+      "raw_name": "Batteries, dry, not subject to the requirements of this subchapter",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Batteries, dry, not subject to the requirements of this subchapter",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": "130",
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 383,
+      "reason": "no_identification_number",
+      "raw_name": "Battery lithium type, see Lithium batteries etc",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Battery lithium type, see Lithium batteries etc",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 385,
+      "reason": "no_identification_number",
+      "raw_name": "Battery, wet, filled with acid or alkali with vehicle or mechanical equipment containing an internal combustion engine, see Vehicle, etc. or Engines, internal combustion, etc",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Battery, wet, filled with acid or alkali with vehicle or mechanical equipment containing an internal combustion engine, see Vehicle, etc. or Engines, internal combustion, etc",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 388,
+      "reason": "no_identification_number",
+      "raw_name": "Benzene diazonium chloride (dry)",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Benzene diazonium chloride (dry)",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 389,
+      "reason": "no_identification_number",
+      "raw_name": "Benzene diazonium nitrate (dry)",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Benzene diazonium nitrate (dry)",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 390,
+      "reason": "no_identification_number",
+      "raw_name": "Benzene phosphorus dichloride, see Phenyl phosphorus dichloride",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Benzene phosphorus dichloride, see Phenyl phosphorus dichloride",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 391,
+      "reason": "no_identification_number",
+      "raw_name": "Benzene phosphorus thiodichloride, see Phenyl phosphorus thiodichloride",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Benzene phosphorus thiodichloride, see Phenyl phosphorus thiodichloride",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 393,
+      "reason": "no_identification_number",
+      "raw_name": "Benzenethiol, see Phenyl mercaptan",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Benzenethiol, see Phenyl mercaptan",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 394,
+      "reason": "no_identification_number",
+      "raw_name": "Benzene triozonide",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Benzene triozonide",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 396,
+      "reason": "no_identification_number",
+      "raw_name": "Benzol, see Benzene",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Benzol, see Benzene",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 401,
+      "reason": "no_identification_number",
+      "raw_name": "Benzoxidiazoles (dry)",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Benzoxidiazoles (dry)",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 402,
+      "reason": "no_identification_number",
+      "raw_name": "Benzoyl azide",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Benzoyl azide",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 418,
+      "reason": "no_identification_number",
+      "raw_name": "Biphenyl triozonide",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Biphenyl triozonide",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 430,
+      "reason": "no_identification_number",
+      "raw_name": "Bis (Aminopropyl) piperazine, see Corrosive liquid, n.o.s.",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Bis (Aminopropyl) piperazine, see Corrosive liquid, n.o.s.",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 437,
+      "reason": "no_identification_number",
+      "raw_name": "Blasting agent, n.o.s., see Explosives, blasting etc",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Blasting agent, n.o.s., see Explosives, blasting etc",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 438,
+      "reason": "no_identification_number",
+      "raw_name": "Blasting cap assemblies, see Detonator assemblies, non-electric, for blasting",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Blasting cap assemblies, see Detonator assemblies, non-electric, for blasting",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 439,
+      "reason": "no_identification_number",
+      "raw_name": "Blasting caps, electric, see Detonators, electric for blasting",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Blasting caps, electric, see Detonators, electric for blasting",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 440,
+      "reason": "no_identification_number",
+      "raw_name": "Blasting caps, non-electric, see Detonators, non-electric, for blasting",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Blasting caps, non-electric, see Detonators, non-electric, for blasting",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 441,
+      "reason": "no_identification_number",
+      "raw_name": "Bleaching powder, see Calcium hypochlorite mixtures, etc",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Bleaching powder, see Calcium hypochlorite mixtures, etc",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 458,
+      "reason": "no_identification_number",
+      "raw_name": "Borate and chlorate mixtures, see Chlorate and borate mixtures",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Borate and chlorate mixtures, see Chlorate and borate mixtures",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 470,
+      "reason": "no_identification_number",
+      "raw_name": "Box toe gum, see Nitrocellulose etc",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Box toe gum, see Nitrocellulose etc",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 475,
+      "reason": "no_identification_number",
+      "raw_name": "Bromine azide",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Bromine azide",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 481,
+      "reason": "no_identification_number",
+      "raw_name": "4-Bromo-1,2-dinitrobenzene",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "4-Bromo-1,2-dinitrobenzene",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 482,
+      "reason": "no_identification_number",
+      "raw_name": "4-Bromo-1,2-dinitrobenzene (unstable at 59 degrees C)",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "4-Bromo-1,2-dinitrobenzene (unstable at 59 degrees C)",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 486,
+      "reason": "no_identification_number",
+      "raw_name": "1-Bromo-3-nitrobenzene (unstable at 56 degrees C)",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "1-Bromo-3-nitrobenzene (unstable at 56 degrees C)",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 505,
+      "reason": "no_identification_number",
+      "raw_name": "Bromosilane",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Bromosilane",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 506,
+      "reason": "no_identification_number",
+      "raw_name": "Bromotoluene-alpha, see Benzyl bromide",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Bromotoluene-alpha, see Benzyl bromide",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 512,
+      "reason": "no_identification_number",
+      "raw_name": "Butane, butane mixtures and mixtures having similar properties in cartridges each not exceeding 500 grams, see Receptacles, etc",
+      "hazard_class_or_division": null,
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "Butane, butane mixtures and mixtures having similar properties in cartridges each not exceeding 500 grams, see Receptacles, etc",
+        "hazard_class_or_division": null,
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    },
+    {
+      "row_index": 515,
+      "reason": "no_identification_number",
+      "raw_name": "1,2,4-Butanetriol trinitrate",
+      "hazard_class_or_division": "Forbidden",
+      "raw": {
+        "symbols": null,
+        "proper_shipping_name_raw": "1,2,4-Butanetriol trinitrate",
+        "hazard_class_or_division": "Forbidden",
+        "identification_number": null,
+        "packing_group": null,
+        "label_codes": null,
+        "special_provisions": null,
+        "packaging_exceptions": null,
+        "packaging_non_bulk": null,
+        "packaging_bulk": null,
+        "quantity_limit_passenger_air_rail": null,
+        "quantity_limit_cargo_air": null,
+        "vessel_stowage_category": null,
+        "vessel_stowage_provisions": null
+      }
+    }
+  ],
+  "notes": "Full _raw values are preserved in main JSON for included rows."
+}

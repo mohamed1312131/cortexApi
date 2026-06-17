@@ -1,0 +1,167 @@
+[
+  {
+    "requirement_id": "ROAD_DOC_CMR",
+    "document": "CMR consignment note",
+    "when_required": "International carriage of goods by road where pickup and delivery are in different countries and at least one is a CMR contracting country.",
+    "responsible_party": "sender/carrier workflow",
+    "hard_gate_if_missing": true,
+    "factor_type": "HARD_GATE",
+    "confidence_cap_if_missing": 55,
+    "_source": "CMR_CONVENTION",
+    "_confidence": "verified"
+  },
+  {
+    "requirement_id": "ROAD_DOC_COMMERCIAL_INVOICE",
+    "document": "Commercial invoice",
+    "when_required": "Cross-border commercial shipment, customs clearance, valuation, or trade documentation required.",
+    "responsible_party": "shipper/exporter",
+    "hard_gate_if_missing": true,
+    "factor_type": "HARD_GATE",
+    "confidence_cap_if_missing": 50,
+    "_source": "CORTEX_AUTHORED_TRADE_DOCUMENT_RULE",
+    "_confidence": "authored"
+  },
+  {
+    "requirement_id": "ROAD_DOC_PACKING_LIST",
+    "document": "Packing list",
+    "when_required": "Cross-border shipment, multi-package shipment, warehouse receiving, customs inspection, or cargo verification.",
+    "responsible_party": "shipper/exporter",
+    "hard_gate_if_missing": true,
+    "factor_type": "HARD_GATE",
+    "confidence_cap_if_missing": 55,
+    "_source": "CORTEX_AUTHORED_TRADE_DOCUMENT_RULE",
+    "_confidence": "authored"
+  },
+  {
+    "requirement_id": "ROAD_DOC_ADR_TRANSPORT_DOCUMENT",
+    "document": "ADR dangerous goods transport document",
+    "when_required": "Shipment contains dangerous goods subject to ADR.",
+    "responsible_party": "consignor/shipper, checked by carrier",
+    "hard_gate_if_missing": true,
+    "factor_type": "HARD_GATE",
+    "confidence_cap_if_missing": 35,
+    "_source": "ADR_2025_VOL_II",
+    "_confidence": "verified"
+  },
+  {
+    "requirement_id": "ROAD_DOC_ADR_WRITTEN_INSTRUCTIONS",
+    "document": "ADR written instructions",
+    "when_required": "Dangerous goods road shipment where ADR written instructions must be carried by the vehicle crew.",
+    "responsible_party": "carrier/vehicle crew",
+    "hard_gate_if_missing": true,
+    "factor_type": "HARD_GATE",
+    "confidence_cap_if_missing": 40,
+    "_source": "ADR_2025_VOL_II",
+    "_confidence": "verified"
+  },
+  {
+    "requirement_id": "ROAD_DOC_DRIVER_ADR_CERTIFICATE",
+    "document": "ADR driver training certificate",
+    "when_required": "Dangerous goods shipment requiring a trained/certified ADR driver.",
+    "responsible_party": "carrier/driver",
+    "hard_gate_if_missing": true,
+    "factor_type": "HARD_GATE",
+    "confidence_cap_if_missing": 30,
+    "_source": "ADR_2025_VOL_II",
+    "_confidence": "verified"
+  },
+  {
+    "requirement_id": "ROAD_DOC_DRIVER_CPC",
+    "document": "Driver CPC / professional driver qualification",
+    "when_required": "Professional road goods transport driver in jurisdictions applying Driver CPC rules.",
+    "responsible_party": "carrier/driver",
+    "hard_gate_if_missing": true,
+    "factor_type": "HARD_GATE",
+    "confidence_cap_if_missing": 55,
+    "_source": "EU_DRIVER_CPC_2003_59",
+    "_confidence": "verified"
+  },
+  {
+    "requirement_id": "ROAD_DOC_ECMT_PERMIT",
+    "document": "ECMT permit / licence",
+    "when_required": "Corridor or cross-trade scenario requiring ECMT multilateral road-haulage permit.",
+    "responsible_party": "carrier/operator",
+    "hard_gate_if_missing": true,
+    "factor_type": "HARD_GATE",
+    "confidence_cap_if_missing": 45,
+    "_source": "ROAD_C_ECMT_RULES",
+    "_confidence": "verified"
+  },
+  {
+    "requirement_id": "ROAD_DOC_BILATERAL_ROAD_PERMIT",
+    "document": "Bilateral road haulage permit",
+    "when_required": "Non-liberalized country-pair corridor where bilateral road transport authorisation is required.",
+    "responsible_party": "carrier/operator",
+    "hard_gate_if_missing": true,
+    "factor_type": "HARD_GATE",
+    "confidence_cap_if_missing": 40,
+    "_source": "ROAD_C_BILATERAL_RULES",
+    "_confidence": "verified_partial_authored"
+  },
+  {
+    "requirement_id": "ROAD_DOC_T1_NCTS_EXTERNAL_TRANSIT",
+    "document": "T1 external transit declaration via NCTS",
+    "when_required": "Non-Union goods moved under customs transit within or through Union customs territory with duties/charges suspended.",
+    "responsible_party": "holder of transit procedure / customs broker / declarant",
+    "hard_gate_if_missing": true,
+    "factor_type": "HARD_GATE",
+    "confidence_cap_if_missing": 35,
+    "_source": "EU_CUSTOMS_TRANSIT_QUICK_INFO",
+    "_confidence": "verified"
+  },
+  {
+    "requirement_id": "ROAD_DOC_T2_NCTS_INTERNAL_TRANSIT",
+    "document": "T2 internal transit declaration via NCTS",
+    "when_required": "Union goods temporarily leave and re-enter Union customs territory while maintaining Union status.",
+    "responsible_party": "holder of transit procedure / customs broker / declarant",
+    "hard_gate_if_missing": true,
+    "factor_type": "HARD_GATE",
+    "confidence_cap_if_missing": 40,
+    "_source": "EU_CUSTOMS_TRANSIT_QUICK_INFO",
+    "_confidence": "verified"
+  },
+  {
+    "requirement_id": "ROAD_DOC_TIR_CARNET",
+    "document": "TIR carnet / eTIR data",
+    "when_required": "TIR customs transit selected, usually crossing multiple borders by road under approved vehicle/container and guarantee system.",
+    "responsible_party": "TIR holder / carrier / guaranteeing association",
+    "hard_gate_if_missing": true,
+    "factor_type": "HARD_GATE",
+    "confidence_cap_if_missing": 35,
+    "_source": "UNECE_TIR_CONVENTION + EU_CUSTOMS_TRANSIT_QUICK_INFO",
+    "_confidence": "verified"
+  },
+  {
+    "requirement_id": "ROAD_DOC_VEHICLE_REGISTRATION_INSURANCE",
+    "document": "Vehicle registration and international insurance",
+    "when_required": "All international road movements.",
+    "responsible_party": "carrier/operator",
+    "hard_gate_if_missing": true,
+    "factor_type": "HARD_GATE",
+    "confidence_cap_if_missing": 50,
+    "_source": "CORTEX_AUTHORED_OPERATIONAL_RULE",
+    "_confidence": "authored"
+  },
+  {
+    "requirement_id": "ROAD_DOC_REEFER_TEMPERATURE_RECORDS",
+    "document": "Temperature setpoint and temperature record evidence",
+    "when_required": "Reefer, pharma, food, or temperature-controlled shipment.",
+    "responsible_party": "carrier/shipper depending contract",
+    "hard_gate_if_missing": false,
+    "factor_type": "PLANNING_FACTOR",
+    "confidence_cap_if_missing": 65,
+    "_source": "CORTEX_AUTHORED_OPERATIONAL_RULE",
+    "_confidence": "authored"
+  },
+  {
+    "requirement_id": "ROAD_DOC_FERRY_TUNNEL_BOOKING",
+    "document": "Ferry/tunnel booking confirmation",
+    "when_required": "Corridor includes sea/ferry/tunnel leg such as UK/EU, Europe/North Africa, island origin/destination.",
+    "responsible_party": "carrier/freight forwarder",
+    "hard_gate_if_missing": true,
+    "factor_type": "HARD_GATE",
+    "confidence_cap_if_missing": 55,
+    "_source": "CORTEX_AUTHORED_OPERATIONAL_RULE",
+    "_confidence": "authored"
+  }
+]

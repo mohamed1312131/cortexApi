@@ -1,0 +1,52 @@
+[
+  {
+    "cortex_field": "document_code",
+    "source_field": "authored_stable_code",
+    "confidence": "authored"
+  },
+  {
+    "cortex_field": "document",
+    "source_field": "official/common document name",
+    "confidence": "verified_or_authored"
+  },
+  {
+    "cortex_field": "jurisdiction",
+    "source_field": "regulation or operational scope",
+    "confidence": "verified_or_authored"
+  },
+  {
+    "cortex_field": "when_required",
+    "source_field": "source requirement summary",
+    "confidence": "verified_or_authored"
+  },
+  {
+    "cortex_field": "deadline",
+    "source_field": "official deadline where available; otherwise operational cutoff",
+    "confidence": "verified_or_estimated"
+  },
+  {
+    "cortex_field": "responsible_party",
+    "source_field": "official/source party or authored operational party",
+    "confidence": "verified_or_authored"
+  },
+  {
+    "cortex_field": "hard_gate_if_missing",
+    "source_field": "authored Cortex readiness interpretation",
+    "confidence": "authored"
+  },
+  {
+    "cortex_field": "_source",
+    "source_field": "source_id list",
+    "confidence": "verified"
+  },
+  {
+    "cortex_field": "_confidence",
+    "source_field": "confidence classification",
+    "confidence": "authored"
+  },
+  {
+    "cortex_field": "confidence_cap_if_missing",
+    "source_field": "Cortex confidence rule",
+    "confidence": "authored"
+  }
+]

@@ -1,0 +1,138 @@
+[
+  {
+    "milestone_code": "BKD",
+    "milestone_name": "Booked",
+    "meaning": "Consignment booked on a specific flight or routing.",
+    "normal_sequence_order": 10,
+    "is_exception": false,
+    "cortex_interpretation": "Planned booking exists, but cargo is not yet accepted."
+  },
+  {
+    "milestone_code": "FOH",
+    "milestone_name": "Freight on hand",
+    "meaning": "Freight is on hand with the carrier/handler before ready-for-carriage acceptance.",
+    "normal_sequence_order": 20,
+    "is_exception": false,
+    "cortex_interpretation": "Cargo is physically present but not necessarily accepted as ready."
+  },
+  {
+    "milestone_code": "RCS",
+    "milestone_name": "Received from shipper / accepted",
+    "meaning": "Consignment physically received from shipper/agent and accepted for carriage.",
+    "normal_sequence_order": 30,
+    "is_exception": false,
+    "cortex_interpretation": "Readiness moved from planned to accepted for carriage."
+  },
+  {
+    "milestone_code": "MAN",
+    "milestone_name": "Manifested",
+    "meaning": "Shipment manifested on a specific flight.",
+    "normal_sequence_order": 40,
+    "is_exception": false,
+    "cortex_interpretation": "Shipment is planned/declared on flight manifest."
+  },
+  {
+    "milestone_code": "CLD",
+    "milestone_name": "Cargo loaded",
+    "meaning": "Shipment has been loaded onto the flight.",
+    "normal_sequence_order": 45,
+    "is_exception": false,
+    "cortex_interpretation": "Cargo appears loaded; await departure confirmation."
+  },
+  {
+    "milestone_code": "DEP",
+    "milestone_name": "Departed",
+    "meaning": "Shipment departed on a specific flight.",
+    "normal_sequence_order": 50,
+    "is_exception": false,
+    "cortex_interpretation": "Cargo has left origin or transfer airport."
+  },
+  {
+    "milestone_code": "ARR",
+    "milestone_name": "Arrived",
+    "meaning": "Flight/shipment arrived at airport.",
+    "normal_sequence_order": 60,
+    "is_exception": false,
+    "cortex_interpretation": "Aircraft arrived; cargo still needs handler receipt/processing."
+  },
+  {
+    "milestone_code": "RCF",
+    "milestone_name": "Received from flight",
+    "meaning": "Shipment unloaded/received from flight by handler.",
+    "normal_sequence_order": 70,
+    "is_exception": false,
+    "cortex_interpretation": "Cargo is physically received after flight arrival."
+  },
+  {
+    "milestone_code": "TFD",
+    "milestone_name": "Transferred",
+    "meaning": "Shipment transferred to another carrier, flight, or airport area.",
+    "normal_sequence_order": 75,
+    "is_exception": false,
+    "cortex_interpretation": "Transit/interline handover occurred; check next leg and dwell risk."
+  },
+  {
+    "milestone_code": "NFD",
+    "milestone_name": "Notified",
+    "meaning": "Consignee/agent notified that shipment has arrived or will be ready for collection.",
+    "normal_sequence_order": 80,
+    "is_exception": false,
+    "cortex_interpretation": "Cargo is near pickup/clearance stage."
+  },
+  {
+    "milestone_code": "AWD",
+    "milestone_name": "Documents delivered",
+    "meaning": "Shipment documents delivered to consignee or agent.",
+    "normal_sequence_order": 85,
+    "is_exception": false,
+    "cortex_interpretation": "Documentation handover occurred; can support clearance/pickup."
+  },
+  {
+    "milestone_code": "CCD",
+    "milestone_name": "Customs cleared",
+    "meaning": "Shipment cleared by customs.",
+    "normal_sequence_order": 90,
+    "is_exception": false,
+    "cortex_interpretation": "Border clearance milestone reached."
+  },
+  {
+    "milestone_code": "DLV",
+    "milestone_name": "Delivered",
+    "meaning": "Shipment delivered to consignee or agent.",
+    "normal_sequence_order": 100,
+    "is_exception": false,
+    "cortex_interpretation": "Shipment complete/delivered."
+  },
+  {
+    "milestone_code": "OFLD",
+    "milestone_name": "Offloaded",
+    "meaning": "Shipment was offloaded from planned flight or routing.",
+    "normal_sequence_order": 55,
+    "is_exception": true,
+    "cortex_interpretation": "Disruption. Re-route, capacity, acceptance or security issue may exist."
+  },
+  {
+    "milestone_code": "DIS",
+    "milestone_name": "Discrepancy",
+    "meaning": "Shipment has discrepancy.",
+    "normal_sequence_order": 65,
+    "is_exception": true,
+    "cortex_interpretation": "Exception. Investigate piece count, weight, documents or damage."
+  },
+  {
+    "milestone_code": "MSCA",
+    "milestone_name": "Missing cargo",
+    "meaning": "Cargo missing or not located as expected.",
+    "normal_sequence_order": 66,
+    "is_exception": true,
+    "cortex_interpretation": "Critical exception. Escalate to carrier/handler."
+  },
+  {
+    "milestone_code": "OVCD",
+    "milestone_name": "Overcarried",
+    "meaning": "Cargo carried beyond planned destination/transfer point.",
+    "normal_sequence_order": 67,
+    "is_exception": true,
+    "cortex_interpretation": "Critical route exception. Re-routing/recovery required."
+  }
+]

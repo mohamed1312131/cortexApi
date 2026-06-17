@@ -1,0 +1,16 @@
+{
+  "total_structured_rows_read": 3594,
+  "total_dg_records_in_main_dataset": 2912,
+  "unique_identification_numbers": 2298,
+  "un_records": 2840,
+  "na_records": 72,
+  "records_with_vessel_stowage_category": 2892,
+  "records_with_vessel_stowage_provisions": 1566,
+  "records_flagged_with_possible_segregation_or_handling_codes": 1399,
+  "records_requiring_manual_review_missing_stowage": 378,
+  "excluded_rows_without_identification_number": 682,
+  "continuation_rows_inherited_name_and_id": 0,
+  "proper_shipping_name_starts_with_digit_violations_after_normalization": 0,
+  "numeric_leading_names_normalized_and_preserved_in_raw": 103,
+  "proper_shipping_name_digit_validation_passed": true
+}

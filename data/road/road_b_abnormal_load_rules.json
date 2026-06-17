@@ -1,0 +1,47 @@
+[
+  {
+    "rule_id": "ROAD_B_EXCEEDS_EU_STANDARD_WIDTH",
+    "condition": "cargo or loaded vehicle width exceeds 2.55m general EU baseline or 2.60m refrigerated allowance where applicable",
+    "abnormal_permit_required": true,
+    "hard_gate": true,
+    "confidence_cap_if_missing": 40,
+    "_source": "EU_DIRECTIVE_96_53_EC",
+    "_confidence": "verified"
+  },
+  {
+    "rule_id": "ROAD_B_EXCEEDS_COMMON_HEIGHT",
+    "condition": "loaded vehicle height exceeds 4.0m common planning baseline",
+    "abnormal_permit_required": true,
+    "hard_gate": true,
+    "confidence_cap_if_missing": 35,
+    "_source": "EU_DIRECTIVE_96_53_EC + CORTEX_AUTHORED_VEHICLE_FIT_RULES",
+    "_confidence": "verified_partial_authored"
+  },
+  {
+    "rule_id": "ROAD_B_EXCEEDS_STANDARD_GROSS_WEIGHT",
+    "condition": "loaded vehicle exceeds standard gross weight baseline for its configuration, commonly 40t or 44t for eligible intermodal configurations",
+    "abnormal_permit_required": true,
+    "hard_gate": true,
+    "confidence_cap_if_missing": 35,
+    "_source": "EU_DIRECTIVE_96_53_EC",
+    "_confidence": "verified"
+  },
+  {
+    "rule_id": "ROAD_B_EXCEEDS_STANDARD_LENGTH",
+    "condition": "loaded articulated vehicle or road train exceeds standard EU length baseline for configuration",
+    "abnormal_permit_required": true,
+    "hard_gate": true,
+    "confidence_cap_if_missing": 40,
+    "_source": "EU_DIRECTIVE_96_53_EC",
+    "_confidence": "verified"
+  },
+  {
+    "rule_id": "ROAD_B_UK_ABNORMAL_EXAMPLE",
+    "condition": "UK example abnormal-load trigger: weight over 44,000kg, width over 2.9m, or rigid length over 18.65m",
+    "abnormal_permit_required": true,
+    "hard_gate": true,
+    "confidence_cap_if_missing": 40,
+    "_source": "NATIONAL_HIGHWAYS_ABNORMAL_LOADS",
+    "_confidence": "verified_for_UK_context"
+  }
+]

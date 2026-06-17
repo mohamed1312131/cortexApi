@@ -1,0 +1,552 @@
+{
+  "metadata": {
+    "block_id": "SEA-D",
+    "block_name": "Carrier / trade-lane reference",
+    "generated_at": "2026-06-03T14:15:40.743819+00:00",
+    "status": "final_pfe_reference_layer",
+    "scope": "Public carrier network inference only. Not a live schedule, rate, capacity, or booking dataset.",
+    "sources": {
+      "maersk_ocean_transport": "Maersk Global Ocean Transport Services, public carrier page; states ocean freight to 500+ global destinations and provides cargo solutions.",
+      "maersk_schedules": "Maersk public schedules page; route/vessel/port-call schedule lookup concept.",
+      "msc_trade_services": "MSC Trade Services official page; states 300 global routes, 520 ports, 155+ countries, 675 offices.",
+      "cma_cgm_line_services": "CMA CGM Shipping Lines Search; line services by trade/zones and schedules.",
+      "cma_cgm_schedules": "CMA CGM schedules search; point-to-point schedule lookup up to listed period.",
+      "hapag_lloyd_schedule": "Hapag-Lloyd Vessel Schedule; detailed route and real-time schedule data concept.",
+      "hapag_lloyd_services": "Hapag-Lloyd services information; reefer, special cargo and dangerous goods service categories.",
+      "cosco_schedule": "COSCO Shipping Lines official schedule pages; service categories such as Trans-Pacific, Europe, Europe Feeder, Trans-Atlantic, Intra-Asia, Oceania, Asia/South Africa/South America.",
+      "one_service_maps": "ONE official service maps; global routes/lanes, sailing/vessel schedules, terminals, port calls and port-to-port details.",
+      "evergreen_portal": "Evergreen Shipping Agency portal; sailing schedules, booking and cargo tracking portal; registration required for some services."
+    },
+    "coverage_summary": {
+      "carrier_profiles": 7,
+      "trade_lane_families": 10,
+      "readiness_rules": 7,
+      "confidence_rules": 7,
+      "carriers": [
+        "Maersk",
+        "MSC",
+        "CMA CGM",
+        "Hapag-Lloyd",
+        "COSCO Shipping Lines",
+        "ONE",
+        "Evergreen Line"
+      ]
+    },
+    "known_limitations": [
+      "SEA-D does not include live schedules, space, capacity or rates.",
+      "Exact port-pair service requires live carrier schedule lookup.",
+      "DG, reefer, OOG and project cargo require carrier-specific acceptance/approval.",
+      "Carrier public sites can change; schedule data is time-sensitive.",
+      "Broad trade-lane families are inference/reference, not contractual service commitments."
+    ],
+    "v2_paid_or_live_data_needed": [
+      "carrier schedule APIs",
+      "booking/space availability",
+      "spot/contract rates",
+      "carrier DG acceptance feeds",
+      "special cargo approval workflow",
+      "TMS/forwarder network data"
+    ]
+  },
+  "carrier_profiles": [
+    {
+      "carrier_code": "MAERSK",
+      "carrier_name": "Maersk",
+      "carrier_type": "global_container_line",
+      "headquarters_region": "Europe",
+      "public_network_reference": true,
+      "public_schedule_lookup": true,
+      "public_booking_or_quote_portal": true,
+      "main_trade_lane_families": [
+        "Asia-Europe",
+        "Trans-Pacific",
+        "Trans-Atlantic",
+        "Intra-Asia",
+        "Middle East/Indian Subcontinent",
+        "Latin America",
+        "Africa",
+        "Oceania",
+        "regional_feeder"
+      ],
+      "service_capability_tags": [
+        "dry_container",
+        "reefer",
+        "dangerous_goods_requires_acceptance",
+        "special_cargo_requires_approval",
+        "schedule_lookup_available"
+      ],
+      "verified_public_claims": [
+        "Ocean freight service to 500+ global destinations",
+        "public sailing schedule lookup available"
+      ],
+      "source_refs": [
+        "maersk_ocean_transport",
+        "maersk_schedules"
+      ],
+      "_source": "Maersk public ocean transport and schedules pages",
+      "_confidence": "verified_for_carrier_presence_and_public_schedule_tool; authored_for_lane_family_inference",
+      "confidence_cap_if_missing": "cap_60_if_no_live_schedule_for_origin_destination_pair"
+    },
+    {
+      "carrier_code": "MSC",
+      "carrier_name": "MSC Mediterranean Shipping Company",
+      "carrier_type": "global_container_line",
+      "headquarters_region": "Europe",
+      "public_network_reference": true,
+      "public_schedule_lookup": true,
+      "public_booking_or_quote_portal": true,
+      "main_trade_lane_families": [
+        "Asia-Europe",
+        "Trans-Pacific",
+        "Trans-Atlantic",
+        "Intra-Asia",
+        "Middle East/Indian Subcontinent",
+        "Latin America",
+        "Africa",
+        "Oceania",
+        "regional_feeder"
+      ],
+      "service_capability_tags": [
+        "dry_container",
+        "reefer",
+        "dangerous_goods_requires_acceptance",
+        "special_cargo_requires_approval",
+        "global_trade_services"
+      ],
+      "verified_public_claims": [
+        "300 global routes",
+        "520 ports",
+        "155+ countries",
+        "675 offices"
+      ],
+      "source_refs": [
+        "msc_trade_services"
+      ],
+      "_source": "MSC official trade services page",
+      "_confidence": "verified_for_public_network_scale; authored_for_lane_family_inference",
+      "confidence_cap_if_missing": "cap_60_if_no_live_schedule_for_origin_destination_pair"
+    },
+    {
+      "carrier_code": "CMA_CGM",
+      "carrier_name": "CMA CGM",
+      "carrier_type": "global_container_line",
+      "headquarters_region": "Europe",
+      "public_network_reference": true,
+      "public_schedule_lookup": true,
+      "public_booking_or_quote_portal": true,
+      "main_trade_lane_families": [
+        "Africa",
+        "Asia",
+        "Caribbean/Central America",
+        "Europe",
+        "Mediterranean",
+        "Middle East",
+        "North America",
+        "Oceania",
+        "South America"
+      ],
+      "service_capability_tags": [
+        "dry_container",
+        "reefer",
+        "dangerous_goods_requires_acceptance",
+        "special_cargo_requires_approval",
+        "line_services_by_trade"
+      ],
+      "verified_public_claims": [
+        "line-services search by from/to zones",
+        "point-to-point schedule search available"
+      ],
+      "source_refs": [
+        "cma_cgm_line_services",
+        "cma_cgm_schedules"
+      ],
+      "_source": "CMA CGM public line-services and schedules pages",
+      "_confidence": "verified_for_public_line_service_tool; authored_for_lane_family_inference",
+      "confidence_cap_if_missing": "cap_60_if_no_live_schedule_for_origin_destination_pair"
+    },
+    {
+      "carrier_code": "HAPAG_LLOYD",
+      "carrier_name": "Hapag-Lloyd",
+      "carrier_type": "global_container_line",
+      "headquarters_region": "Europe",
+      "public_network_reference": true,
+      "public_schedule_lookup": true,
+      "public_booking_or_quote_portal": true,
+      "main_trade_lane_families": [
+        "Asia-Europe",
+        "Trans-Pacific",
+        "Trans-Atlantic",
+        "Intra-Asia",
+        "Mediterranean",
+        "Latin America",
+        "Africa",
+        "Middle East/Indian Subcontinent",
+        "Oceania"
+      ],
+      "service_capability_tags": [
+        "dry_container",
+        "reefer",
+        "dangerous_goods_requires_acceptance",
+        "special_cargo_requires_approval",
+        "real_time_schedule_data_available"
+      ],
+      "verified_public_claims": [
+        "vessel schedule provides detailed route information and real-time schedule data",
+        "reefer special cargo and dangerous goods categories listed"
+      ],
+      "source_refs": [
+        "hapag_lloyd_schedule",
+        "hapag_lloyd_services"
+      ],
+      "_source": "Hapag-Lloyd vessel schedule and services information pages",
+      "_confidence": "verified_for_public_schedule_and_cargo_categories; authored_for_lane_family_inference",
+      "confidence_cap_if_missing": "cap_60_if_no_live_schedule_for_origin_destination_pair"
+    },
+    {
+      "carrier_code": "COSCO",
+      "carrier_name": "COSCO Shipping Lines",
+      "carrier_type": "global_container_line",
+      "headquarters_region": "Asia",
+      "public_network_reference": true,
+      "public_schedule_lookup": true,
+      "public_booking_or_quote_portal": true,
+      "main_trade_lane_families": [
+        "Trans-Pacific",
+        "Asia-Europe",
+        "Europe Feeder",
+        "Trans-Atlantic",
+        "Intra-Asia",
+        "Intra-Europe",
+        "Oceania",
+        "Asia-South Africa-South America",
+        "Southeast/South Asia"
+      ],
+      "service_capability_tags": [
+        "dry_container",
+        "reefer",
+        "dangerous_goods_requires_acceptance",
+        "special_cargo_requires_approval",
+        "schedule_by_city_service_or_vessel"
+      ],
+      "verified_public_claims": [
+        "official schedule pages include service schedule, city pair, service, and vessel schedule search categories"
+      ],
+      "source_refs": [
+        "cosco_schedule"
+      ],
+      "_source": "COSCO Shipping Lines public service schedule pages",
+      "_confidence": "verified_for_public_schedule_categories; authored_for_lane_family_inference",
+      "confidence_cap_if_missing": "cap_60_if_no_live_schedule_for_origin_destination_pair"
+    },
+    {
+      "carrier_code": "ONE",
+      "carrier_name": "Ocean Network Express (ONE)",
+      "carrier_type": "global_container_line",
+      "headquarters_region": "Asia",
+      "public_network_reference": true,
+      "public_schedule_lookup": true,
+      "public_booking_or_quote_portal": true,
+      "main_trade_lane_families": [
+        "Asia-Europe",
+        "Trans-Pacific",
+        "Trans-Atlantic",
+        "Intra-Asia",
+        "Middle East/Indian Subcontinent",
+        "Latin America",
+        "Africa",
+        "Oceania",
+        "regional_feeder"
+      ],
+      "service_capability_tags": [
+        "dry_container",
+        "reefer",
+        "dangerous_goods_requires_acceptance",
+        "special_cargo_requires_approval",
+        "service_maps_available"
+      ],
+      "verified_public_claims": [
+        "service maps expose global routes and lanes, sailing schedules, terminals, port calls and port-to-port details"
+      ],
+      "source_refs": [
+        "one_service_maps"
+      ],
+      "_source": "ONE official service maps and point-to-point schedule pages",
+      "_confidence": "verified_for_public_service_maps; authored_for_lane_family_inference",
+      "confidence_cap_if_missing": "cap_60_if_no_live_schedule_for_origin_destination_pair"
+    },
+    {
+      "carrier_code": "EVERGREEN",
+      "carrier_name": "Evergreen Line",
+      "carrier_type": "global_container_line",
+      "headquarters_region": "Asia",
+      "public_network_reference": true,
+      "public_schedule_lookup": true,
+      "public_booking_or_quote_portal": true,
+      "main_trade_lane_families": [
+        "Asia-Europe",
+        "Trans-Pacific",
+        "Trans-Atlantic",
+        "Intra-Asia",
+        "Middle East/Indian Subcontinent",
+        "Latin America",
+        "Africa",
+        "Oceania",
+        "regional_feeder"
+      ],
+      "service_capability_tags": [
+        "dry_container",
+        "reefer",
+        "dangerous_goods_requires_acceptance",
+        "special_cargo_requires_approval",
+        "schedule_booking_tracking_portal"
+      ],
+      "verified_public_claims": [
+        "official portal supports sailing schedules, booking and cargo tracking; some services require registration"
+      ],
+      "source_refs": [
+        "evergreen_portal"
+      ],
+      "_source": "Evergreen official shipping portal",
+      "_confidence": "verified_for_public_portal; authored_for_lane_family_inference",
+      "confidence_cap_if_missing": "cap_55_if_only_portal_confirmed_without_lane_family_detail"
+    }
+  ],
+  "trade_lane_families": [
+    {
+      "trade_lane_code": "ASIA_EUROPE",
+      "trade_lane_name": "Asia–Europe",
+      "typical_service_pattern": "mainline_deepsea_ocean_service",
+      "typical_frequency_hint": "weekly_or_multiple_weekly_on_major_port_pairs",
+      "planning_implication": "high carrier choice on major ports; check live schedules and capacity",
+      "_confidence": "authored_from_public_carrier_network_pages",
+      "confidence_cap_if_missing": "cap_65_without_live_port_pair_schedule"
+    },
+    {
+      "trade_lane_code": "TRANS_PACIFIC",
+      "trade_lane_name": "Trans-Pacific",
+      "typical_service_pattern": "mainline_deepsea_ocean_service",
+      "typical_frequency_hint": "weekly_or_multiple_weekly_on_major_port_pairs",
+      "planning_implication": "major East-West lane; live blank sailings and capacity matter",
+      "_confidence": "authored_from_public_carrier_network_pages",
+      "confidence_cap_if_missing": "cap_65_without_live_port_pair_schedule"
+    },
+    {
+      "trade_lane_code": "TRANS_ATLANTIC",
+      "trade_lane_name": "Trans-Atlantic",
+      "typical_service_pattern": "mainline_deepsea_ocean_service",
+      "typical_frequency_hint": "weekly_on_major_port_pairs",
+      "planning_implication": "major lane; fewer options than Asia-Europe/Trans-Pacific on many pairs",
+      "_confidence": "authored_from_public_carrier_network_pages",
+      "confidence_cap_if_missing": "cap_65_without_live_port_pair_schedule"
+    },
+    {
+      "trade_lane_code": "INTRA_ASIA",
+      "trade_lane_name": "Intra-Asia",
+      "typical_service_pattern": "regional_mainline_and_feeder",
+      "typical_frequency_hint": "frequent_on_major_hubs; variable_on_secondary_ports",
+      "planning_implication": "hub-and-feeder routing common; transshipment risk should be flagged",
+      "_confidence": "authored_from_public_carrier_network_pages",
+      "confidence_cap_if_missing": "cap_65_without_live_port_pair_schedule"
+    },
+    {
+      "trade_lane_code": "MEDITERRANEAN_EUROPE_FEEDER",
+      "trade_lane_name": "Mediterranean / Europe feeder",
+      "typical_service_pattern": "shortsea_feeder_and_mainline_connections",
+      "typical_frequency_hint": "weekly_or_more_from_major_hubs; variable_secondary_ports",
+      "planning_implication": "transshipment via hubs likely for smaller ports",
+      "_confidence": "authored_from_public_carrier_network_pages",
+      "confidence_cap_if_missing": "cap_60_without_feeder_schedule"
+    },
+    {
+      "trade_lane_code": "MIDDLE_EAST_INDIAN_SUBCONTINENT",
+      "trade_lane_name": "Middle East / Indian Subcontinent",
+      "typical_service_pattern": "regional_mainline_and_feeder",
+      "typical_frequency_hint": "weekly_on_major_ports; variable_on secondary ports",
+      "planning_implication": "chokepoint/geopolitical validation may be needed depending route",
+      "_confidence": "authored_from_public_carrier_network_pages",
+      "confidence_cap_if_missing": "cap_65_without_live_port_pair_schedule"
+    },
+    {
+      "trade_lane_code": "LATIN_AMERICA",
+      "trade_lane_name": "Latin America",
+      "typical_service_pattern": "deepsea_and_regional_feeder",
+      "typical_frequency_hint": "weekly_on_major services; variable secondary ports",
+      "planning_implication": "often needs hub routing for smaller ports",
+      "_confidence": "authored_from_public_carrier_network_pages",
+      "confidence_cap_if_missing": "cap_65_without_live_port_pair_schedule"
+    },
+    {
+      "trade_lane_code": "AFRICA",
+      "trade_lane_name": "Africa",
+      "typical_service_pattern": "deepsea_and_feeder",
+      "typical_frequency_hint": "weekly_or less depending corridor and port",
+      "planning_implication": "port coverage and transshipment validation important",
+      "_confidence": "authored_from_public_carrier_network_pages",
+      "confidence_cap_if_missing": "cap_60_without_live_port_pair_schedule"
+    },
+    {
+      "trade_lane_code": "OCEANIA",
+      "trade_lane_name": "Oceania",
+      "typical_service_pattern": "deepsea_mainline_and_regional_connections",
+      "typical_frequency_hint": "weekly_on_major corridors; variable otherwise",
+      "planning_implication": "capacity and cutoffs can be tight; live schedule needed",
+      "_confidence": "authored_from_public_carrier_network_pages",
+      "confidence_cap_if_missing": "cap_65_without_live_port_pair_schedule"
+    },
+    {
+      "trade_lane_code": "REGIONAL_FEEDER_TRANSSHIPMENT",
+      "trade_lane_name": "Regional feeder / transshipment",
+      "typical_service_pattern": "feeder_service_linking_secondary_ports_to_hubs",
+      "typical_frequency_hint": "variable_by_region_and_port",
+      "planning_implication": "adds transshipment, delay, missed-connection risk",
+      "_confidence": "authored_from_public_carrier_network_pages",
+      "confidence_cap_if_missing": "cap_55_without_feeder_service_validation"
+    }
+  ],
+  "readiness_rules": [
+    {
+      "rule_id": "SEA_D_LIVE_SCHEDULE_REQUIRED",
+      "factor_type": "HARD_GATE",
+      "trigger": "shipper asks for exact sailing or booking readiness",
+      "logic": "Do not infer exact departure from static carrier profile. A live carrier schedule lookup is required for origin, destination, date window, cargo type and equipment.",
+      "cortex_action": "request_live_schedule_or_mark_booking_not_confirmed",
+      "_confidence": "authored"
+    },
+    {
+      "rule_id": "SEA_D_NO_LIVE_SERVICE_FOUND",
+      "factor_type": "HARD_GATE",
+      "trigger": "live carrier schedule search returns no service for port pair/date window",
+      "logic": "Shipment cannot be booked on that carrier/service for that window without alternative routing.",
+      "cortex_action": "suggest_alternate_port_carrier_or_date",
+      "_confidence": "authored"
+    },
+    {
+      "rule_id": "SEA_D_DG_CARRIER_ACCEPTANCE",
+      "factor_type": "HARD_GATE",
+      "trigger": "cargo is dangerous goods",
+      "logic": "Carrier DG acceptance is required even if SEA-A regulatory reference says transport may be possible.",
+      "cortex_action": "require_carrier_DG_approval",
+      "_confidence": "authored"
+    },
+    {
+      "rule_id": "SEA_D_OOG_SPECIAL_CARGO_APPROVAL",
+      "factor_type": "HARD_GATE",
+      "trigger": "cargo is out-of-gauge, flat-rack, open-top, breakbulk, project cargo, or heavy lift",
+      "logic": "Special cargo desk/carrier approval is required before booking.",
+      "cortex_action": "require_special_cargo_approval",
+      "_confidence": "authored"
+    },
+    {
+      "rule_id": "SEA_D_REEFER_SERVICE_VALIDATION",
+      "factor_type": "PLANNING_FACTOR",
+      "trigger": "cargo requires reefer equipment",
+      "logic": "Carrier must offer reefer equipment/service on the route and terminal must support reefer handling.",
+      "cortex_action": "validate_reefer_service_and_equipment_availability",
+      "_confidence": "authored"
+    },
+    {
+      "rule_id": "SEA_D_TRANSSHIPMENT_RISK",
+      "factor_type": "PLANNING_FACTOR",
+      "trigger": "origin/destination likely not both mainline hub ports",
+      "logic": "Feeder/transshipment route may add delay, missed-connection risk, extra handling and documentation timing risk.",
+      "cortex_action": "flag_transshipment_and_connection_risk",
+      "_confidence": "authored"
+    },
+    {
+      "rule_id": "SEA_D_RATE_CAPACITY_OUT_OF_SCOPE",
+      "factor_type": "PLANNING_FACTOR",
+      "trigger": "user asks cost or space availability",
+      "logic": "Static carrier reference does not provide rate or space. Requires quote/API/TMS/carrier booking data.",
+      "cortex_action": "mark_rate_capacity_as_live_paid_data_required",
+      "_confidence": "authored"
+    }
+  ],
+  "confidence_rules": [
+    {
+      "rule_id": "CONF_SEA_D_CARRIER_PROFILE",
+      "condition": "carrier presence and public service/schedule page exists",
+      "max_confidence": "verified",
+      "action": "carrier can be considered a candidate carrier family, not a confirmed booking option"
+    },
+    {
+      "rule_id": "CONF_SEA_D_NO_LIVE_SCHEDULE",
+      "condition": "no live schedule checked for exact origin/destination/date",
+      "confidence_cap_if_missing": 60,
+      "action": "do not state exact service availability"
+    },
+    {
+      "rule_id": "CONF_SEA_D_NO_CAPACITY",
+      "condition": "no live capacity/space data",
+      "confidence_cap_if_missing": 55,
+      "action": "do not state booking space is available"
+    },
+    {
+      "rule_id": "CONF_SEA_D_NO_RATE",
+      "condition": "no live rate/quote",
+      "confidence_cap_if_missing": 50,
+      "action": "do not quote cost from SEA-D"
+    },
+    {
+      "rule_id": "CONF_SEA_D_DG_ACCEPTANCE_UNKNOWN",
+      "condition": "DG cargo without carrier approval",
+      "confidence_cap_if_missing": 45,
+      "action": "hard gate until carrier accepts UN/class/packing details"
+    },
+    {
+      "rule_id": "CONF_SEA_D_SPECIAL_CARGO_UNKNOWN",
+      "condition": "OOG/project/special cargo without carrier approval",
+      "confidence_cap_if_missing": 45,
+      "action": "hard gate until special cargo desk approves"
+    },
+    {
+      "rule_id": "CONF_SEA_D_FEEDER_INFERENCE",
+      "condition": "small port route inferred to need feeder/transshipment without schedule confirmation",
+      "confidence_cap_if_missing": 55,
+      "action": "mark as planning risk, not confirmed route"
+    }
+  ],
+  "field_mapping": [
+    {
+      "cortex_field": "carrier_code",
+      "source_field": "carrier public identity",
+      "source_type": "carrier official page",
+      "confidence": "verified"
+    },
+    {
+      "cortex_field": "carrier_name",
+      "source_field": "carrier public identity",
+      "source_type": "carrier official page",
+      "confidence": "verified"
+    },
+    {
+      "cortex_field": "public_schedule_lookup",
+      "source_field": "public schedule/service map pages",
+      "source_type": "carrier official page",
+      "confidence": "verified"
+    },
+    {
+      "cortex_field": "main_trade_lane_families",
+      "source_field": "public route/service categories + authored lane families",
+      "source_type": "carrier official pages + authored",
+      "confidence": "verified_or_authored"
+    },
+    {
+      "cortex_field": "service_capability_tags",
+      "source_field": "carrier cargo/service category pages",
+      "source_type": "carrier official pages + authored",
+      "confidence": "verified_or_authored"
+    },
+    {
+      "cortex_field": "hard_gate_logic",
+      "source_field": "Cortex authored readiness rules",
+      "source_type": "authored",
+      "confidence": "authored"
+    },
+    {
+      "cortex_field": "schedule_lookup_required",
+      "source_field": "all carrier pages expose schedule tools but exact date/port pair is live",
+      "source_type": "authored from verified schedule tools",
+      "confidence": "authored"
+    }
+  ]
+}

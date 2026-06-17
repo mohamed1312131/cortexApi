@@ -1,0 +1,32 @@
+{
+  "dataset_name": "Cortex Air Mode - Block H Air Cargo Security and Screening Matrix",
+  "version": "r_and_d_v1_first_pass",
+  "generated_at_utc": "2026-06-03T12:14:05.029022+00:00",
+  "purpose": "Mock/reference security status matrix and jurisdiction security rules for Cortex air-mode readiness checks.",
+  "legal_note": "R&D/mock reference only. Aviation security rules are jurisdiction-, carrier-, station-, route-, commodity-, shipper-, and threat-level dependent. Final operational validation must come from carrier/station/security authority.",
+  "coverage": {
+    "security_status_rows": 9,
+    "jurisdiction_security_rules": 12,
+    "placi_minimum_data_fields": 10,
+    "confidence_rules": 8,
+    "source_refs": 6
+  },
+  "integration_note": "Run Block H after Blocks B, C, D, F and before final readiness. Passenger aircraft routing requires passenger-eligible security status; EU-bound third-country cargo requires ACC3/secure supply-chain validation; PLACI lanes require complete advance cargo data.",
+  "important_security_codes": [
+    "SPX",
+    "SCO",
+    "NSC",
+    "SCY",
+    "SHR",
+    "VAL",
+    "VUN",
+    "RAC",
+    "QRT"
+  ],
+  "recommended_next_research": [
+    "Carrier-specific security acceptance rules by station",
+    "Country-specific PLACI implementation details",
+    "Known consignor / regulated agent datasets if available",
+    "Local screening facility capability for TUN and North Africa"
+  ]
+}

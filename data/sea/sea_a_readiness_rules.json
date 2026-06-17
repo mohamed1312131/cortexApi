@@ -1,0 +1,58 @@
+{
+  "rules": [
+    {
+      "rule_id": "SEA_A_GATE_001",
+      "factor": "DG identification",
+      "gate_type": "HARD_GATE",
+      "condition": "cargo is DG and UN/NA identification number is missing",
+      "decision": "shipment_not_ready",
+      "message": "Dangerous goods require a valid identification number before sea booking.",
+      "_confidence": "authored"
+    },
+    {
+      "rule_id": "SEA_A_GATE_002",
+      "factor": "Proper shipping name",
+      "gate_type": "HARD_GATE",
+      "condition": "proper shipping name missing, ambiguous, or parser flags column shift",
+      "decision": "shipment_not_ready",
+      "message": "DG declaration cannot be trusted until proper shipping name is clean text.",
+      "_confidence": "authored"
+    },
+    {
+      "rule_id": "SEA_A_GATE_003",
+      "factor": "Vessel stowage category",
+      "gate_type": "HARD_GATE",
+      "condition": "planned stowage conflicts with category A/B/C/D/E/01-05 restrictions",
+      "decision": "shipment_not_ready_for_planned_sailing",
+      "message": "Vessel stowage location must match authorized stowage category.",
+      "_confidence": "authored"
+    },
+    {
+      "rule_id": "SEA_A_GATE_004",
+      "factor": "Column 10B provisions",
+      "gate_type": "HARD_GATE",
+      "condition": "provision codes exist and have not been reviewed",
+      "decision": "manual_dg_review_required",
+      "message": "Column 10B stowage/handling provisions must be checked before booking.",
+      "_confidence": "authored"
+    },
+    {
+      "rule_id": "SEA_A_GATE_005",
+      "factor": "Segregation compatibility",
+      "gate_type": "HARD_GATE",
+      "condition": "multiple DG cargoes in same CTU/vessel plan without segregation compatibility check",
+      "decision": "manual_dg_review_required",
+      "message": "DG segregation/compatibility review is required; SEA-A does not replace IMDG specialist approval.",
+      "_confidence": "authored"
+    },
+    {
+      "rule_id": "SEA_A_PLAN_001",
+      "factor": "Carrier/terminal acceptance",
+      "gate_type": "PLANNING_FACTOR",
+      "condition": "regulatory stowage appears acceptable but carrier/terminal DG approval not confirmed",
+      "decision": "ask_carrier_terminal_validation",
+      "message": "Legal stowage does not guarantee carrier or terminal acceptance.",
+      "_confidence": "authored"
+    }
+  ]
+}

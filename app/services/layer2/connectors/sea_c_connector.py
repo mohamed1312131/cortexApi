@@ -232,12 +232,14 @@ def _capability_unknowns(
             )
         )
 
-    if request.cargo_flags.dangerous_goods in {FlagState.yes, FlagState.likely}:
-        if _normalize(data.get("cap_dg_handling")) != "yes":
-            unknowns.append(
-                Unknown(
-                    field="cap_dg_handling",
-                    reason="DG handling is not verified as yes for this port",
+    if (
+        request.cargo_flags.dangerous_goods in {FlagState.yes, FlagState.likely}
+        and _normalize(data.get("cap_dg_handling")) != "yes"
+    ):
+        unknowns.append(
+            Unknown(
+                field="cap_dg_handling",
+                reason="DG handling is not verified as yes for this port",
                     impact="Dangerous goods sea handling requires terminal validation.",
                 )
             )

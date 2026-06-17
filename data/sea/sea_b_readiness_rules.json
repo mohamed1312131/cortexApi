@@ -1,0 +1,83 @@
+[
+  {
+    "rule_id": "SEA_B_DIMENSION_FIT",
+    "factor_type": "HARD_GATE",
+    "condition": "selected equipment has internal dimensions and cargo length/width/height exceeds any applicable internal dimension",
+    "decision": "equipment_not_fit",
+    "confidence_impact": "block until different equipment or special approval",
+    "_source": "authored from carrier dimension specs",
+    "_confidence": "authored"
+  },
+  {
+    "rule_id": "SEA_B_PAYLOAD_FIT",
+    "factor_type": "HARD_GATE",
+    "condition": "gross cargo weight including packaging, pallets, dunnage and securing material exceeds reference payload",
+    "decision": "equipment_not_fit",
+    "confidence_impact": "block or require different equipment/weight split",
+    "_source": "authored from carrier payload specs",
+    "_confidence": "authored"
+  },
+  {
+    "rule_id": "SEA_B_REEFER_SETPOINT",
+    "factor_type": "HARD_GATE",
+    "condition": "cargo requires temperature control and setpoint/range is missing",
+    "decision": "not_ready_for_booking",
+    "confidence_impact": "block until setpoint/range declared",
+    "_source": "authored; reefer type from DCSA/carrier specs",
+    "_confidence": "authored"
+  },
+  {
+    "rule_id": "SEA_B_REEFER_REQUIRED",
+    "factor_type": "HARD_GATE",
+    "condition": "temperature controlled cargo selected with non-reefer equipment",
+    "decision": "wrong_equipment",
+    "confidence_impact": "block unless validated as ambient-safe",
+    "_source": "authored from container taxonomy",
+    "_confidence": "authored"
+  },
+  {
+    "rule_id": "SEA_B_TANK_COMPATIBILITY",
+    "factor_type": "HARD_GATE",
+    "condition": "bulk liquid cargo selected with tank equipment but commodity compatibility/cleaning/DG status missing",
+    "decision": "manual_tank_validation_required",
+    "confidence_impact": "block readiness report from green status",
+    "_source": "authored from tank-container risk logic",
+    "_confidence": "authored"
+  },
+  {
+    "rule_id": "SEA_B_OOG_APPROVAL",
+    "factor_type": "HARD_GATE",
+    "condition": "cargo requires open-top/flat-rack/breakbulk and lashing plan or carrier OOG approval missing",
+    "decision": "manual_special_cargo_validation_required",
+    "confidence_impact": "block clean readiness",
+    "_source": "authored from special equipment limitations",
+    "_confidence": "authored"
+  },
+  {
+    "rule_id": "SEA_B_LCL_FCL_THRESHOLD",
+    "factor_type": "PLANNING_FACTOR",
+    "condition": "shipment volume is below 15 CBM or near 10-18 CBM threshold",
+    "decision": "quote_lcl_and_fcl_or_recommend_lcl_below_threshold",
+    "confidence_impact": "planning recommendation only, not a hard gate",
+    "_source": "Maersk FCL/LCL guidance",
+    "_confidence": "authored_backed_by_source"
+  },
+  {
+    "rule_id": "SEA_B_LCL_LIMITS",
+    "factor_type": "PLANNING_FACTOR",
+    "condition": "LCL requested but package/booking size approaches carrier-specific limits",
+    "decision": "validate_lcl_limits_with_carrier",
+    "confidence_impact": "cap confidence to 80 until carrier limit confirmed",
+    "_source": "Maersk LCL public limits example",
+    "_confidence": "verified_carrier_reference"
+  },
+  {
+    "rule_id": "SEA_B_PORT_EQUIPMENT_LINK",
+    "factor_type": "HARD_GATE",
+    "condition": "selected equipment requires port capability not present in SEA-C, e.g., RoRo without RoRo facility, heavy lift without lift capability",
+    "decision": "port_equipment_mismatch",
+    "confidence_impact": "cross-block hard gate with SEA-C",
+    "_source": "authored linkage to SEA-C",
+    "_confidence": "authored"
+  }
+]

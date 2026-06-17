@@ -1,0 +1,26 @@
+[
+  {
+    "metric": "lane_benchmark_records",
+    "count": 7
+  },
+  {
+    "metric": "surcharge_reference_records",
+    "count": 12
+  },
+  {
+    "metric": "local_charge_example_records",
+    "count": 15
+  },
+  {
+    "metric": "confidence_rules",
+    "count": 7
+  },
+  {
+    "metric": "readiness_rules",
+    "count": 6
+  },
+  {
+    "metric": "tunisia_specific_records",
+    "count": 15
+  }
+]

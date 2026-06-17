@@ -1,0 +1,56 @@
+[
+  {
+    "source_id": "SRC_I_001",
+    "source_name": "IATA ONE Record",
+    "source_url": "https://www.iata.org/en/programs/cargo/e/one-record/",
+    "use_in_dataset": "Digital cargo data-sharing concept and single shipment record vision."
+  },
+  {
+    "source_id": "SRC_I_002",
+    "source_name": "IATA ONE Record specification",
+    "source_url": "https://iata-cargo.github.io/ONE-Record/2025-07/",
+    "use_in_dataset": "ONE Record as common data model and standardized secured web API."
+  },
+  {
+    "source_id": "SRC_I_003",
+    "source_name": "IATA e-AWB SOP IST",
+    "source_url": "https://www.iata.org/contentassets/b559d10aeb734d5196332b4953dcf312/e-awb-sop-ist.pdf",
+    "use_in_dataset": "FSU/RCS and FSU/DEP examples for cargo status messages."
+  },
+  {
+    "source_id": "SRC_I_004",
+    "source_name": "CargoAi Track and Trace API event codes",
+    "source_url": "https://help.cargoai.co/en/articles/6352646-track-and-trace-api-event-codes",
+    "use_in_dataset": "Event code meanings including RCF, NFD, AWD, DLV, CLC, CLD, RCT, TFD."
+  },
+  {
+    "source_id": "SRC_I_005",
+    "source_name": "Lufthansa Cargo Shipment Tracking API",
+    "source_url": "https://developer.lufthansa-cargo.com/docs/read/apis/shipmenttracking",
+    "use_in_dataset": "Carrier shipment tracking event type examples such as BKD and RCS."
+  },
+  {
+    "source_id": "SRC_I_006",
+    "source_name": "OAG Flight Info API",
+    "source_url": "https://www.oag.com/flight-info-api",
+    "use_in_dataset": "Current schedule/status API concept including schedules, flight status, cargo operations."
+  },
+  {
+    "source_id": "SRC_I_007",
+    "source_name": "OAG Airline Schedules Data",
+    "source_url": "https://www.oag.com/airline-schedules-data",
+    "use_in_dataset": "Schedule data fields: carrier, flight number, departure/arrival, flight date, origin/destination, aircraft type, stops."
+  },
+  {
+    "source_id": "SRC_I_008",
+    "source_name": "CargoAi Route and Schedule APIs",
+    "source_url": "https://www.cargoai.co/blog/route-and-schedule-apis-impact-aircargo/",
+    "use_in_dataset": "Route/schedule APIs provide access to flight schedules, routes and capacity information from carriers."
+  },
+  {
+    "source_id": "SRC_I_009",
+    "source_name": "Cirium flight schedules data",
+    "source_url": "https://www.cirium.com/data/flight-schedules/",
+    "use_in_dataset": "Schedules/routes data for planning and connections."
+  }
+]

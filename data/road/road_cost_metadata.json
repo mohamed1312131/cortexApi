@@ -1,0 +1,77 @@
+{
+  "file_id": "ROAD_COST_REFERENCE",
+  "file_name": "Road cost reference",
+  "version": "v1.0",
+  "generated_at": "2026-06-05",
+  "purpose": "Static planning-cost reference for ROAD mode. Provides rough ranges only, not live quotes.",
+  "not_a_full_block": true,
+  "coverage_summary": {
+    "cost_reference_records": 19,
+    "confidence_rule_records": 6,
+    "source_count": 5
+  },
+  "known_limitations": [
+    "Not a quote engine.",
+    "Live rates, live tolls, ferry/tunnel prices, fuel prices, driver wages, border waits and carrier availability require paid/live data.",
+    "Ranges are intentionally broad to prevent false precision.",
+    "Costs exclude taxes, insurance, warehousing, storage, demurrage, currency conversion and special contractual terms unless explicitly stated.",
+    "Abnormal-load and DG surcharges are especially variable and must be confirmed by specialized carriers."
+  ],
+  "sources": {
+    "EU_WEEKLY_OIL_BULLETIN": {
+      "title": "European Commission Weekly Oil Bulletin",
+      "url": "https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en",
+      "source_type": "official_live_reference",
+      "confidence": "verified",
+      "used_for": [
+        "diesel/fuel price volatility note",
+        "live fuel price source requirement"
+      ]
+    },
+    "IRU_TI_UPPLY_ROAD_FREIGHT_RATE_BENCHMARK": {
+      "title": "IRU/Ti/Upply European Road Freight Rate Development Benchmark",
+      "url": "https://www.iru.org/intelligence/road-transport-intelligence/european-road-freight-rate-development-benchmark-q4-2025",
+      "source_type": "industry_benchmark",
+      "confidence": "verified_for_market_trend_not_quote",
+      "used_for": [
+        "European road freight rate trend context",
+        "contract/spot market volatility"
+      ]
+    },
+    "EUROTUNNEL_LESHUTTLE_FREIGHT_RATES": {
+      "title": "LeShuttle Freight prices",
+      "url": "https://www.leshuttlefreight.com/rates-accounts/prices",
+      "source_type": "operator_public_tariff",
+      "confidence": "verified",
+      "used_for": [
+        "cross-Channel tunnel freight charge example"
+      ]
+    },
+    "UK_HGV_LEVY_VED": {
+      "title": "GOV.UK HGV VED and road user levy rates",
+      "url": "https://www.gov.uk/government/publications/vehicle-excise-duty-rates-for-heavy-goods-vehicles-and-heavy-goods-vehicles-road-user-levy-from-1-april-2025",
+      "source_type": "official_tax_reference",
+      "confidence": "verified",
+      "used_for": [
+        "HGV tax/levy concept and UK-specific cost component"
+      ]
+    },
+    "CORTEX_AUTHORED_COST_RANGES": {
+      "title": "Cortex authored road cost planning ranges",
+      "url": null,
+      "source_type": "authored_planning_reference",
+      "confidence": "estimated",
+      "used_for": [
+        "static planning ranges where live quote APIs are unavailable"
+      ]
+    }
+  },
+  "files_in_bundle": [
+    "road_cost_reference.json",
+    "road_cost_reference.csv",
+    "road_cost_metadata.json",
+    "road_cost_confidence_rules.json",
+    "road_cost_confidence_rules.csv",
+    "README.md"
+  ]
+}

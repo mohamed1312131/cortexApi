@@ -1,0 +1,56 @@
+[
+  {
+    "condition": "EU/EU country pair and no island/war/special restriction",
+    "corridor_viability": "liberalized",
+    "confidence_cap_if_missing": null,
+    "max_confidence": 95,
+    "reason": "Regulatory framework verified, but live operational constraints still out of scope.",
+    "_source": "EU_REG_1072_2009",
+    "_confidence": "verified"
+  },
+  {
+    "condition": "ECMT member pair outside EU/EU logic and permit status unknown",
+    "corridor_viability": "ecmt_permit_required",
+    "confidence_cap_if_missing": 70,
+    "max_confidence": 80,
+    "reason": "ECMT framework verified, but the carrier must confirm permit availability, licence validity, emissions class, restrictions, and transit-country participation.",
+    "_source": "ITF_ECMT_USER_GUIDE_2026 + UK_GOV_ECMT_PERMITS_2026",
+    "_confidence": "verified"
+  },
+  {
+    "condition": "Europe to/from North Africa and bilateral permit status missing",
+    "corridor_viability": "bilateral_permit_required",
+    "confidence_cap_if_missing": 50,
+    "max_confidence": 65,
+    "reason": "GOV.UK guidance supports bilateral permit handling for Tunisia/Morocco in UK context; broader Europe/North Africa generalization needs country-pair confirmation.",
+    "_source": "UK_GOV_ECMT_PERMITS_2026 + CORTEX_AUTHORED_CORRIDOR_RULES",
+    "_confidence": "verified_partial_authored_generalization"
+  },
+  {
+    "condition": "Russia involved",
+    "corridor_viability": "not_viable_or_restricted",
+    "confidence_cap_if_missing": 25,
+    "max_confidence": 40,
+    "reason": "ECMT permits cannot currently be used to travel to Russia; sanctions, border and security checks are outside static v1.",
+    "_source": "UK_GOV_ECMT_PERMITS_2026",
+    "_confidence": "verified"
+  },
+  {
+    "condition": "Intercontinental overland Europe to Central/East/Western Asia",
+    "corridor_viability": "requires_multi_country_permits_and_likely_impractical",
+    "confidence_cap_if_missing": 30,
+    "max_confidence": 45,
+    "reason": "Authored anti-nonsense rule: routing engines cannot validate multi-country permits, border access, sanctions, customs transit, or carrier capability.",
+    "_source": "CORTEX_AUTHORED_CORRIDOR_RULES",
+    "_confidence": "authored"
+  },
+  {
+    "condition": "Unknown or unverified country pair",
+    "corridor_viability": "bilateral_permit_required",
+    "confidence_cap_if_missing": 40,
+    "max_confidence": 50,
+    "reason": "No exact verified free source for this pair in v1; require carrier/authority confirmation before shipment readiness is cleared.",
+    "_source": "CORTEX_AUTHORED_CORRIDOR_RULES",
+    "_confidence": "authored"
+  }
+]

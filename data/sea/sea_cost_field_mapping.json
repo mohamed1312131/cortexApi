@@ -1,0 +1,38 @@
+[
+  {
+    "cortex_field": "lane_family",
+    "source_field": "public index route / authored lane family",
+    "source_type": "benchmark/authored",
+    "confidence": "estimated_market_benchmark"
+  },
+  {
+    "cortex_field": "benchmark_low_usd/high_usd",
+    "source_field": "public index reported value or authored planning range",
+    "source_type": "Drewry/Freightos/Xeneta/authored",
+    "confidence": "estimated"
+  },
+  {
+    "cortex_field": "local_charge_examples.amount",
+    "source_field": "carrier notice or local PDF amount",
+    "source_type": "carrier/local authority",
+    "confidence": "verified or historical"
+  },
+  {
+    "cortex_field": "not_a_quote",
+    "source_field": "authored safety flag",
+    "source_type": "Cortex rule",
+    "confidence": "authored"
+  },
+  {
+    "cortex_field": "requires_live_quote",
+    "source_field": "authored from pricing volatility",
+    "source_type": "Cortex rule",
+    "confidence": "authored"
+  },
+  {
+    "cortex_field": "confidence_cap_if_missing_live_quote",
+    "source_field": "authored confidence rule",
+    "source_type": "Cortex rule",
+    "confidence": "authored"
+  }
+]

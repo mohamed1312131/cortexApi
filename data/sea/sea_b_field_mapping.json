@@ -1,0 +1,50 @@
+[
+  {
+    "cortex_field": "equipment_code",
+    "source_field": "container type / size name",
+    "source": "CMA CGM / ONE / Hapag-Lloyd / authored for non-container modes",
+    "confidence": "verified_or_authored"
+  },
+  {
+    "cortex_field": "family",
+    "source_field": "container family taxonomy",
+    "source": "DCSA",
+    "confidence": "verified"
+  },
+  {
+    "cortex_field": "internal_length_mm/internal_width_mm/internal_height_mm",
+    "source_field": "inside measurement / internal dimensions",
+    "source": "CMA CGM / ONE / Hapag-Lloyd",
+    "confidence": "verified_carrier_reference"
+  },
+  {
+    "cortex_field": "reference_payload_kg",
+    "source_field": "maximum payload / max load weight",
+    "source": "CMA CGM / ONE / Hapag-Lloyd",
+    "confidence": "verified_carrier_reference"
+  },
+  {
+    "cortex_field": "capacity_cbm",
+    "source_field": "nominal/load capacity",
+    "source": "CMA CGM / ONE",
+    "confidence": "verified_carrier_reference"
+  },
+  {
+    "cortex_field": "suits_cargo_types",
+    "source_field": "container purpose description + authored mapping",
+    "source": "DCSA + Cortex authored",
+    "confidence": "authored_backed_by_source"
+  },
+  {
+    "cortex_field": "fcl_or_lcl_guidance",
+    "source_field": "FCL/LCL public guidance",
+    "source": "Maersk",
+    "confidence": "planning_reference"
+  },
+  {
+    "cortex_field": "hard_gate rules",
+    "source_field": "derived from physical fit and mandatory cargo declarations",
+    "source": "Cortex authored rules",
+    "confidence": "authored"
+  }
+]

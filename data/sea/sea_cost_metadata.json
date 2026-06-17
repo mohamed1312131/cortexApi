@@ -1,0 +1,56 @@
+{
+  "block_id": "SEA_COST",
+  "name": "SEA cost reference",
+  "version": "1.0-final-planning-reference",
+  "generated_at_utc": "2026-06-03T14:22:21.984289+00:00",
+  "scope": "Planning cost reference only for Cortex sea readiness reports. Not a quote engine and not suitable for final pricing.",
+  "sources": {
+    "drewry_wci_2026_05_28": "https://www.drewry.co.uk/supply-chain-advisors/supply-chain-expertise/world-container-index-assessed-by-drewry",
+    "drewry_wci_methodology": "https://www.drewry.co.uk/logistics-executive-briefing/logistics-executive-briefing-articles/world-container-index-methodology",
+    "freightos_fbx": "https://www.freightos.com/enterprise/terminal/freightos-baltic-index-global-container-pricing-index/",
+    "xeneta_2026_05_28": "https://www.xeneta.com/news/xeneta-weekly-ocean-container-shipping-market-update-28.5.2026",
+    "xeneta_2026_05_14": "https://www.xeneta.com/news/xeneta-weekly-ocean-container-shipping-market-update-14.5.2026",
+    "maersk_tunisia_surcharges_2026_04": "https://www.maersk.com/news/articles/2026/03/02/tunisia-shipping-surcharges-update-april",
+    "maersk_tunisia_ohc_dhc_2026_03": "https://www.maersk.com/news/articles/2026/01/30/increase-ohc-dhc-sfax-tunis",
+    "maersk_dd_free_time": "https://www.maersk.com/support/faqs/how-can-i-request-demurrage-detention-freetime",
+    "maersk_terms_dnd": "https://terms.maersk.com/dnd",
+    "cma_cgm_dd_terms": "https://www.cma-cgm.com/ebusiness/tariffs/demurrage-detention/general-terms",
+    "cma_cgm_tunisia_local_2024": "https://www.cma-cgm.com/assets/public/documents/TUNISIA%20-%20LOCAL%20SCES.pdf?VersionId=F3J9Q6tY_v8x.wW_iPFaaO_MDOJrxQNm",
+    "hapag_lloyd_tunisia_dd_import_2021": "https://www.hapag-lloyd.com/content/dam/website/downloads/detention_demurrage/tunisia_demurrage_detention_import.pdf",
+    "ommp_rates": "https://www.ommp.nat.tn/rates/?lang=en"
+  },
+  "coverage_summary": {
+    "lane_benchmark_records": 7,
+    "surcharge_reference_records": 12,
+    "local_charge_example_records": 15,
+    "confidence_rules": 7,
+    "readiness_rules": 6,
+    "covered_market_sources": [
+      "Drewry WCI",
+      "Freightos FBX",
+      "Xeneta public updates"
+    ],
+    "covered_tunisia_sources": [
+      "Maersk Tunisia surcharge notices 2026",
+      "CMA CGM Tunisia local charges 2024",
+      "Hapag-Lloyd Tunisia D&D 2021",
+      "OMMP rates page"
+    ]
+  },
+  "known_limitations": [
+    "Not a live freight quote.",
+    "FCL benchmarks are public market averages, not carrier offers.",
+    "LCL ranges are authored planning estimates and require forwarder quote.",
+    "Local charges vary by carrier, port, terminal, date, equipment, service contract and Incoterm.",
+    "Tunisia charge examples mix current public 2026 carrier notices and older historical references.",
+    "Rates/surcharges can change weekly or faster during disruptions.",
+    "No live capacity, space, routing, vessel schedule or exchange-rate validation included."
+  ],
+  "default_confidence_policy": {
+    "market_indices": "estimated_market_benchmark",
+    "carrier_public_local_charge_notice": "verified_carrier_local_charge_public_notice_but_not_quote",
+    "old_tariff_pdf": "historical_carrier_local_charge_reference",
+    "authored_range": "authored_estimate",
+    "confidence_cap_if_missing_live_quote": 40
+  }
+}

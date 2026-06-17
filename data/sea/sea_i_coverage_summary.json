@@ -1,0 +1,41 @@
+{
+  "block": "SEA-I",
+  "title": "Chokepoints + Schedule Readiness",
+  "generated_at": "2026-06-03T14:10:12Z",
+  "coverage_counts": {
+    "chokepoint_records": 5,
+    "schedule_readiness_rules": 7,
+    "confidence_rules": 5,
+    "field_mapping_records": 8,
+    "official_authority_sources": 3,
+    "carrier_operational_sources": 3,
+    "intergovernmental_sources": 1
+  },
+  "covered_chokepoints": [
+    "Suez Canal / Red Sea",
+    "Panama Canal",
+    "Strait of Malacca",
+    "Bab-el-Mandeb",
+    "Strait of Hormuz"
+  ],
+  "covered_cutoff_types": [
+    "container gate-in",
+    "VGM",
+    "shipping instructions",
+    "DG documents"
+  ],
+  "covered_cost_risk_concepts": [
+    "demurrage",
+    "detention",
+    "free time",
+    "missed service-cycle delay"
+  ],
+  "not_covered_live_data": [
+    "live canal closure status",
+    "current carrier schedules",
+    "exact cutoff timestamps per sailing",
+    "current demurrage/detention tariffs",
+    "live security advisories",
+    "AIS/vessel tracking"
+  ]
+}

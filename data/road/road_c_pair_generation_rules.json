@@ -1,0 +1,130 @@
+[
+  {
+    "rule_id": "ROAD_C_RUSSIA_ECMT_RESTRICTED",
+    "priority": 1,
+    "corridor_viability": "not_viable_or_restricted",
+    "applies_when": {
+      "origin_or_destination": "RU"
+    },
+    "hard_gate": true,
+    "confidence_cap_if_missing": 25,
+    "_source": "UK_GOV_ECMT_PERMITS_2026",
+    "_confidence": "verified"
+  },
+  {
+    "rule_id": "ROAD_C_CYPRUS_SEA_LEG_REQUIRED",
+    "priority": 2,
+    "corridor_viability": "not_simple_road_move",
+    "applies_when": {
+      "origin_or_destination": "CY"
+    },
+    "hard_gate": true,
+    "confidence_cap_if_missing": 60,
+    "_source": "UK_GOV_ECMT_PERMITS_2026 + CORTEX_AUTHORED_CORRIDOR_RULES",
+    "_confidence": "verified_partial_authored_operational_flag"
+  },
+  {
+    "rule_id": "ROAD_C_EUROPE_TO_NORTH_AFRICA_FERRY_BILATERAL",
+    "priority": 3,
+    "corridor_viability": "bilateral_permit_required",
+    "applies_when": {
+      "one_side_in": [
+        "EU_COUNTRIES",
+        "UK_GROUP",
+        "SWITZERLAND_GROUP",
+        "EEA_NON_EU"
+      ],
+      "other_side_in": "NORTH_AFRICA_GROUP"
+    },
+    "hard_gate": true,
+    "confidence_cap_if_missing": 50,
+    "_source": "UK_GOV_ECMT_PERMITS_2026 + CORTEX_AUTHORED_CORRIDOR_RULES",
+    "_confidence": "verified_partial_authored_generalization"
+  },
+  {
+    "rule_id": "ROAD_C_TURKIYE_TRANSIT_TO_THIRD_COUNTRY",
+    "priority": 4,
+    "corridor_viability": "bilateral_permit_required",
+    "applies_when": {
+      "transit_country": "TR",
+      "destination_after_transit": "another_country"
+    },
+    "hard_gate": true,
+    "confidence_cap_if_missing": 50,
+    "_source": "UK_GOV_ECMT_PERMITS_2026 + CORTEX_AUTHORED_CORRIDOR_RULES",
+    "_confidence": "verified_for_UK_operator_context_authored_generalization"
+  },
+  {
+    "rule_id": "ROAD_C_UK_CONTEXT_OVERLAYS",
+    "priority": 5,
+    "corridor_viability": "varies",
+    "applies_when": {
+      "operator_context": "UK_operator"
+    },
+    "hard_gate": true,
+    "confidence_cap_if_missing": 50,
+    "_source": "UK_GOV_ECMT_PERMITS_2026",
+    "_confidence": "verified_for_UK_operator_context"
+  },
+  {
+    "rule_id": "ROAD_C_EU_TO_EU_LIBERALIZED",
+    "priority": 6,
+    "corridor_viability": "liberalized",
+    "applies_when": {
+      "origin_in": "EU_COUNTRIES",
+      "destination_in": "EU_COUNTRIES"
+    },
+    "hard_gate": false,
+    "confidence_cap_if_missing": null,
+    "_source": "EU_REG_1072_2009 + EU_ROAD_HAULAGE_MARKET_ACCESS_SUMMARY",
+    "_confidence": "verified"
+  },
+  {
+    "rule_id": "ROAD_C_ECMT_MEMBER_TO_ECMT_MEMBER",
+    "priority": 7,
+    "corridor_viability": "ecmt_permit_required",
+    "applies_when": {
+      "origin_in": "ECMT_SYSTEM_COUNTRIES",
+      "destination_in": "ECMT_SYSTEM_COUNTRIES",
+      "not_both_in": "EU_COUNTRIES"
+    },
+    "hard_gate": true,
+    "confidence_cap_if_missing": 70,
+    "_source": "ITF_ECMT_USER_GUIDE_2026 + ITF_ECMT_COUNTRY_LICENCES + UK_GOV_ECMT_PERMITS_2026",
+    "_confidence": "verified"
+  },
+  {
+    "rule_id": "ROAD_C_INTERCONTINENTAL_OVERLAND_IMPRACTICAL",
+    "priority": 8,
+    "corridor_viability": "requires_multi_country_permits_and_likely_impractical",
+    "applies_when": {
+      "one_side_in": [
+        "EU_COUNTRIES",
+        "UK_GROUP",
+        "EEA_NON_EU",
+        "SWITZERLAND_GROUP"
+      ],
+      "other_side_in": [
+        "CENTRAL_ASIA_GROUP",
+        "EAST_ASIA_GROUP",
+        "WESTERN_ASIA_MIDDLE_EAST_GROUP"
+      ]
+    },
+    "hard_gate": true,
+    "confidence_cap_if_missing": 30,
+    "_source": "CORTEX_AUTHORED_CORRIDOR_RULES",
+    "_confidence": "authored"
+  },
+  {
+    "rule_id": "ROAD_C_UNKNOWN_COUNTRY_PAIR_FALLBACK",
+    "priority": 9,
+    "corridor_viability": "bilateral_permit_required",
+    "applies_when": {
+      "no_specific_rule_matched": true
+    },
+    "hard_gate": true,
+    "confidence_cap_if_missing": 40,
+    "_source": "CORTEX_AUTHORED_CORRIDOR_RULES",
+    "_confidence": "authored"
+  }
+]

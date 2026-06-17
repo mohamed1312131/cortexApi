@@ -1,0 +1,94 @@
+{
+  "stowage_category_mapping": [
+    {
+      "category": "A",
+      "stowage_location": "on_deck_or_under_deck",
+      "cargo_vessel": "on_deck_or_under_deck",
+      "passenger_vessel": "on_deck_or_under_deck",
+      "passenger_restriction": "none",
+      "_source": "49 CFR 172.101(k) definitions",
+      "_confidence": "verified"
+    },
+    {
+      "category": "B",
+      "stowage_location": "on_deck_or_under_deck_limited_passenger",
+      "cargo_vessel": "on_deck_or_under_deck",
+      "passenger_vessel": "on_deck_or_under_deck_or_on_deck_only_if_many_passengers",
+      "passenger_restriction": "large_passenger_vessel_on_deck_only",
+      "_source": "49 CFR 172.101(k) definitions",
+      "_confidence": "verified"
+    },
+    {
+      "category": "C",
+      "stowage_location": "on_deck_only",
+      "cargo_vessel": "on_deck_only",
+      "passenger_vessel": "on_deck_only",
+      "passenger_restriction": "on_deck_only",
+      "_source": "49 CFR 172.101(k) definitions",
+      "_confidence": "verified"
+    },
+    {
+      "category": "D",
+      "stowage_location": "on_deck_only_passenger_restricted",
+      "cargo_vessel": "on_deck_only",
+      "passenger_vessel": "on_deck_only_limited_passenger_only",
+      "passenger_restriction": "prohibited_on_large_passenger_vessel",
+      "_source": "49 CFR 172.101(k) definitions",
+      "_confidence": "verified"
+    },
+    {
+      "category": "E",
+      "stowage_location": "on_deck_or_under_deck_passenger_restricted",
+      "cargo_vessel": "on_deck_or_under_deck",
+      "passenger_vessel": "on_deck_or_under_deck_limited_passenger_only",
+      "passenger_restriction": "prohibited_on_large_passenger_vessel",
+      "_source": "49 CFR 172.101(k) definitions",
+      "_confidence": "verified"
+    },
+    {
+      "category": "01",
+      "stowage_location": "closed_ctu_on_deck_or_under_deck",
+      "cargo_vessel": "closed_ctu_on_deck_or_under_deck",
+      "passenger_vessel": "closed_ctu_on_deck_or_under_deck",
+      "passenger_restriction": "cargo_vessel_up_to_12_passengers",
+      "_source": "49 CFR 172.101(k) definitions",
+      "_confidence": "verified"
+    },
+    {
+      "category": "02",
+      "stowage_location": "closed_ctu_on_deck_or_under_deck",
+      "cargo_vessel": "closed_ctu_on_deck_or_under_deck",
+      "passenger_vessel": "closed_ctu_on_deck_or_under_deck",
+      "passenger_restriction": "cargo_vessel_up_to_12_passengers",
+      "_source": "49 CFR 172.101(k) definitions",
+      "_confidence": "verified"
+    },
+    {
+      "category": "03",
+      "stowage_location": "closed_ctu_on_deck_or_under_deck_passenger_prohibited",
+      "cargo_vessel": "closed_ctu_on_deck_or_under_deck",
+      "passenger_vessel": "prohibited",
+      "passenger_restriction": "prohibited_on_passenger_vessel",
+      "_source": "49 CFR 172.101(k) definitions",
+      "_confidence": "verified"
+    },
+    {
+      "category": "04",
+      "stowage_location": "closed_ctu_on_deck_or_under_deck_passenger_prohibited",
+      "cargo_vessel": "closed_ctu_on_deck_or_under_deck",
+      "passenger_vessel": "prohibited",
+      "passenger_restriction": "prohibited_on_passenger_vessel",
+      "_source": "49 CFR 172.101(k) definitions",
+      "_confidence": "verified"
+    },
+    {
+      "category": "05",
+      "stowage_location": "closed_ctu_on_deck_only_passenger_prohibited",
+      "cargo_vessel": "closed_ctu_on_deck_only",
+      "passenger_vessel": "prohibited",
+      "passenger_restriction": "prohibited_on_passenger_vessel",
+      "_source": "49 CFR 172.101(k) definitions",
+      "_confidence": "verified"
+    }
+  ]
+}

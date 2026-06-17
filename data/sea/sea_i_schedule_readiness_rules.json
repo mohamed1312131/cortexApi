@@ -1,0 +1,154 @@
+[
+  {
+    "rule_id": "CUTOFF_CARGO_GATE_IN",
+    "name": "Cargo / container gate-in cutoff",
+    "applies_when": "containerized ocean shipment has assigned sailing or vessel booking",
+    "required_input_fields": [
+      "etd",
+      "carrier",
+      "origin_terminal",
+      "gate_in_cutoff_datetime",
+      "container_ready_datetime"
+    ],
+    "deadline_type": "carrier_terminal_cutoff",
+    "default_deadline_assumption": "carrier/terminal specific; commonly days before sailing, do not infer exact time without schedule source",
+    "hard_gate": true,
+    "hard_gate_condition": "container_ready_datetime or terminal_gate_in_time is after gate_in_cutoff_datetime",
+    "planning_factor": false,
+    "readiness_message": "Container misses terminal gate-in cutoff; it cannot be loaded on that sailing unless carrier/terminal grants exception.",
+    "_source": [
+      "MAERSK_CUTOFFS"
+    ],
+    "_confidence": "verified_concept_live_cutoff_required",
+    "confidence_cap_if_missing": 0.6
+  },
+  {
+    "rule_id": "CUTOFF_VGM",
+    "name": "VGM cutoff",
+    "applies_when": "packed export container subject to SOLAS VGM",
+    "required_input_fields": [
+      "vgm_submitted",
+      "vgm_cutoff_datetime",
+      "vgm_submission_datetime"
+    ],
+    "deadline_type": "carrier_terminal_cutoff",
+    "default_deadline_assumption": "must be submitted before the carrier/terminal VGM cutoff and before vessel loading",
+    "hard_gate": true,
+    "hard_gate_condition": "VGM missing or submitted after VGM cutoff",
+    "planning_factor": false,
+    "readiness_message": "No timely VGM means no load for that sailing.",
+    "_source": [
+      "MAERSK_CUTOFFS",
+      "SEA_F_SOLAS_VGM"
+    ],
+    "_confidence": "verified_concept_live_cutoff_required",
+    "confidence_cap_if_missing": 0.6
+  },
+  {
+    "rule_id": "CUTOFF_SHIPPING_INSTRUCTIONS",
+    "name": "Shipping instructions / documentation cutoff",
+    "applies_when": "ocean shipment requires bill of lading or sea waybill generation",
+    "required_input_fields": [
+      "shipping_instructions_submitted",
+      "si_cutoff_datetime",
+      "si_submission_datetime"
+    ],
+    "deadline_type": "carrier_document_cutoff",
+    "default_deadline_assumption": "carrier/sailing specific; must be validated per booking",
+    "hard_gate": true,
+    "hard_gate_condition": "shipping instructions missing or submitted after carrier documentation cutoff",
+    "planning_factor": false,
+    "readiness_message": "Late shipping instructions can block B/L creation and cause shipment roll or documentation failure.",
+    "_source": [
+      "MAERSK_CUTOFFS"
+    ],
+    "_confidence": "verified_concept_live_cutoff_required",
+    "confidence_cap_if_missing": 0.6
+  },
+  {
+    "rule_id": "CUTOFF_DG_DOCUMENTS",
+    "name": "Dangerous goods document cutoff",
+    "applies_when": "shipment contains dangerous goods",
+    "required_input_fields": [
+      "dg_declaration_submitted",
+      "dg_cutoff_datetime",
+      "dg_submission_datetime"
+    ],
+    "deadline_type": "carrier_dg_document_cutoff",
+    "default_deadline_assumption": "carrier/sailing specific; often earlier than standard documentation cutoff",
+    "hard_gate": true,
+    "hard_gate_condition": "DG declaration or required DG packing certificate missing/late",
+    "planning_factor": false,
+    "readiness_message": "DG paperwork must be accepted before cargo can be planned for vessel stowage.",
+    "_source": [
+      "SEA_A",
+      "SEA_F",
+      "carrier_booking_cutoff_required"
+    ],
+    "_confidence": "authored_from_dg_document_rules_live_cutoff_required",
+    "confidence_cap_if_missing": 0.55
+  },
+  {
+    "rule_id": "SAILING_FREQUENCY_IMPACT",
+    "name": "Missed service-cycle impact",
+    "applies_when": "shipment misses intended sailing",
+    "required_input_fields": [
+      "intended_sailing_etd",
+      "service_frequency_days"
+    ],
+    "deadline_type": "planning_estimate",
+    "default_deadline_assumption": "if service_frequency_days unknown, weekly container service estimate = 7 days with low confidence",
+    "hard_gate": false,
+    "hard_gate_condition": "none; missing a sailing is a delay/cost planning factor unless cargo has a fixed latest acceptable arrival date",
+    "planning_factor": true,
+    "readiness_message": "Missing a weekly ocean service usually loses a service cycle, not a few hours.",
+    "_source": [
+      "MAERSK_SCHEDULES",
+      "authored_planning_heuristic"
+    ],
+    "_confidence": "authored_planning_heuristic",
+    "confidence_cap_if_missing": 0.65
+  },
+  {
+    "rule_id": "DEMURRAGE_FREE_TIME",
+    "name": "Demurrage / terminal free-time risk",
+    "applies_when": "full import container remains in terminal beyond free time",
+    "required_input_fields": [
+      "container_discharge_datetime",
+      "free_time_expiry_datetime",
+      "planned_pickup_datetime"
+    ],
+    "deadline_type": "carrier_terminal_free_time",
+    "default_deadline_assumption": "free time and tariff are carrier/country/terminal specific",
+    "hard_gate": false,
+    "hard_gate_condition": "none by default; may become operational block if charges/holds prevent release",
+    "planning_factor": true,
+    "readiness_message": "Pickup after free time expiry can trigger demurrage/storage charges.",
+    "_source": [
+      "MAERSK_DD_FREE_TIME"
+    ],
+    "_confidence": "verified_concept_tariff_required",
+    "confidence_cap_if_missing": 0.65
+  },
+  {
+    "rule_id": "DETENTION_FREE_TIME",
+    "name": "Detention / equipment free-time risk",
+    "applies_when": "empty container is returned after agreed free time",
+    "required_input_fields": [
+      "container_outgate_datetime",
+      "free_time_expiry_datetime",
+      "planned_empty_return_datetime"
+    ],
+    "deadline_type": "carrier_equipment_free_time",
+    "default_deadline_assumption": "free time and tariff are carrier/country/terminal specific",
+    "hard_gate": false,
+    "hard_gate_condition": "none by default; may become cost or equipment-release issue",
+    "planning_factor": true,
+    "readiness_message": "Late empty return can trigger detention charges.",
+    "_source": [
+      "MAERSK_DD_FREE_TIME"
+    ],
+    "_confidence": "verified_concept_tariff_required",
+    "confidence_cap_if_missing": 0.65
+  }
+]

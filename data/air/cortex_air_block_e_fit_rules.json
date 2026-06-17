@@ -1,0 +1,83 @@
+[
+  {
+    "rule_id": "E_FIT_001",
+    "rule_name": "Piece dimensions required for heavy/oversized",
+    "applies_to_codes": "HEA,BIG,OHG",
+    "condition": "piece_weight_or_dimensions_missing",
+    "action": "hard_gate",
+    "confidence_cap_percent": 40,
+    "message": "Heavy/outsized/overhang cargo cannot be assessed without piece weight and dimensions."
+  },
+  {
+    "rule_id": "E_FIT_002",
+    "rule_name": "Passenger belly height limit",
+    "applies_to_codes": "HEA,BIG,OHG,general_cargo",
+    "condition": "piece_height_cm > selected_aircraft.lower_deck_max_loading_height_cm",
+    "action": "require_freighter_or_main_deck",
+    "confidence_cap_percent": 55,
+    "message": "Cargo height exceeds lower-deck passenger/belly reference height; require main-deck freighter check."
+  },
+  {
+    "rule_id": "E_FIT_003",
+    "rule_name": "Cargo door check",
+    "applies_to_codes": "HEA,BIG,OHG,ACT,BUP",
+    "condition": "piece_width_or_height_exceeds_selected_door_clear_opening",
+    "action": "block_or_reroute",
+    "confidence_cap_percent": 45,
+    "message": "Cargo may not pass through the selected aircraft cargo door. Check alternate aircraft, nose-door freighter, or special loading plan."
+  },
+  {
+    "rule_id": "E_FIT_004",
+    "rule_name": "ULD footprint check",
+    "applies_to_codes": "all",
+    "condition": "piece_length_or_width_exceeds_uld_usable_area",
+    "action": "selected_uld_unsuitable",
+    "confidence_cap_percent": 60,
+    "message": "Cargo footprint exceeds selected ULD/pallet usable area; choose larger ULD/pallet or freighter option."
+  },
+  {
+    "rule_id": "E_FIT_005",
+    "rule_name": "ULD max gross weight check",
+    "applies_to_codes": "HEA,BIG,OHG,BUP",
+    "condition": "piece_or_loaded_unit_weight_exceeds_uld_max_gross_weight",
+    "action": "selected_uld_unsuitable",
+    "confidence_cap_percent": 50,
+    "message": "Loaded unit exceeds selected ULD/pallet gross weight. Use heavy-duty pallet or special cargo engineering review."
+  },
+  {
+    "rule_id": "E_FIT_006",
+    "rule_name": "20-ft and 16-ft pallet freighter-only handling",
+    "applies_to_codes": "BIG,OHG,HEA",
+    "condition": "selected_uld in 16ft_or_20ft_pallet",
+    "action": "require_main_deck_freighter",
+    "confidence_cap_percent": 65,
+    "message": "Long pallets require main-deck freighter handling and carrier/loadmaster confirmation."
+  },
+  {
+    "rule_id": "E_FIT_007",
+    "rule_name": "Active/passive temperature container compatibility",
+    "applies_to_codes": "ACT,PIL,CRT,COL,LHO",
+    "condition": "active_or_passive_container_selected",
+    "action": "require_carrier_aircraft_container_approval",
+    "confidence_cap_percent": 65,
+    "message": "Temperature-controlled containers require aircraft compatibility, carrier approval, and operating-duration validation."
+  },
+  {
+    "rule_id": "E_FIT_008",
+    "rule_name": "Dry ice temperature container cross-check",
+    "applies_to_codes": "RKN t2,RAP t2,ICE,PIL,FRO",
+    "condition": "container_uses_dry_ice",
+    "action": "cross_check_block_a_dg_and_surcharges",
+    "confidence_cap_percent": 70,
+    "message": "Dry ice can trigger DG, ventilation, quantity, surcharge, and carrier/station acceptance checks."
+  },
+  {
+    "rule_id": "E_FIT_009",
+    "rule_name": "Final aircraft fit is advisory only",
+    "applies_to_codes": "all",
+    "condition": "fit_appears_plausible",
+    "action": "require_final_loadmaster_wb_station_confirmation",
+    "confidence_cap_percent": 85,
+    "message": "Reference dimensions suggest fit may be plausible, but final acceptance requires carrier loadmaster, aircraft W&B, floor loading, restraint and station confirmation."
+  }
+]

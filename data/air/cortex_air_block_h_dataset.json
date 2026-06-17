@@ -1,0 +1,466 @@
+{
+  "metadata": {
+    "dataset_name": "Cortex Air Mode - Block H Air Cargo Security and Screening Matrix",
+    "version": "r_and_d_v1_first_pass",
+    "generated_at_utc": "2026-06-03T12:14:05.029022+00:00",
+    "purpose": "Mock/reference security status matrix and jurisdiction security rules for Cortex air-mode readiness checks.",
+    "legal_note": "R&D/mock reference only. Aviation security rules are jurisdiction-, carrier-, station-, route-, commodity-, shipper-, and threat-level dependent. Final operational validation must come from carrier/station/security authority.",
+    "coverage": {
+      "security_status_rows": 9,
+      "jurisdiction_security_rules": 12,
+      "placi_minimum_data_fields": 10,
+      "confidence_rules": 8,
+      "source_refs": 6
+    },
+    "integration_note": "Run Block H after Blocks B, C, D, F and before final readiness. Passenger aircraft routing requires passenger-eligible security status; EU-bound third-country cargo requires ACC3/secure supply-chain validation; PLACI lanes require complete advance cargo data.",
+    "important_security_codes": [
+      "SPX",
+      "SCO",
+      "NSC",
+      "SCY",
+      "SHR",
+      "VAL",
+      "VUN",
+      "RAC",
+      "QRT"
+    ],
+    "recommended_next_research": [
+      "Carrier-specific security acceptance rules by station",
+      "Country-specific PLACI implementation details",
+      "Known consignor / regulated agent datasets if available",
+      "Local screening facility capability for TUN and North Africa"
+    ]
+  },
+  "security_status_matrix": [
+    {
+      "security_code": "SPX",
+      "description": "Secured freight for passenger and all-cargo aircraft",
+      "meaning_for_cortex": "Cargo may be eligible for passenger aircraft from a security standpoint if other blocks pass.",
+      "passenger_aircraft_eligible": "yes",
+      "cargo_aircraft_eligible": "yes",
+      "requires_screening": "already_secured_or_equivalent",
+      "requires_secure_supply_chain": "yes_or_equivalent_screening",
+      "requires_placi_check": "depends_destination_or_transit",
+      "requires_station_confirmation": true,
+      "hard_gate_if_unknown": "yes",
+      "confidence_cap_if_unknown": 65,
+      "notes": "Do not confuse security eligibility with DG/legal/carrier eligibility."
+    },
+    {
+      "security_code": "SCO",
+      "description": "Cargo secure for all-cargo aircraft only",
+      "meaning_for_cortex": "Security status allows all-cargo aircraft only; do not route on passenger belly unless status changes to passenger-eligible.",
+      "passenger_aircraft_eligible": "no",
+      "cargo_aircraft_eligible": "yes",
+      "requires_screening": "already_secured_for_all_cargo_only_or_equivalent",
+      "requires_secure_supply_chain": "yes_or_equivalent_screening",
+      "requires_placi_check": "depends_destination_or_transit",
+      "requires_station_confirmation": true,
+      "hard_gate_if_unknown": "yes",
+      "confidence_cap_if_unknown": 60,
+      "notes": "Important for deciding passenger belly vs freighter/security routing."
+    },
+    {
+      "security_code": "NSC",
+      "description": "Cargo not secured yet for passenger or all-cargo aircraft",
+      "meaning_for_cortex": "Cargo is not security-ready. It requires screening/security process before loading.",
+      "passenger_aircraft_eligible": "no_until_screened",
+      "cargo_aircraft_eligible": "no_until_screened_or_accepted_by_rules",
+      "requires_screening": "yes",
+      "requires_secure_supply_chain": "yes_or_screening",
+      "requires_placi_check": "depends_destination_or_transit",
+      "requires_station_confirmation": true,
+      "hard_gate_if_unknown": "yes",
+      "confidence_cap_if_unknown": 45,
+      "notes": "Hard gate until security status is resolved."
+    },
+    {
+      "security_code": "SCY",
+      "description": "Security cargo - personal effects requiring prescreening",
+      "meaning_for_cortex": "Personal effects or similar cargo need prescreening/security handling before uplift.",
+      "passenger_aircraft_eligible": "after_prescreening",
+      "cargo_aircraft_eligible": "after_prescreening",
+      "requires_screening": "yes",
+      "requires_secure_supply_chain": "partial",
+      "requires_placi_check": "depends_destination_or_transit",
+      "requires_station_confirmation": true,
+      "hard_gate_if_unknown": "yes",
+      "confidence_cap_if_unknown": 55,
+      "notes": "Often requires manual station/security confirmation."
+    },
+    {
+      "security_code": "SHR",
+      "description": "Cargo secure for passenger and all-cargo aircraft according to high-risk requirements",
+      "meaning_for_cortex": "High-risk cargo that has been secured under enhanced requirements. Still needs route/station validation.",
+      "passenger_aircraft_eligible": "yes_if_high_risk_requirements_met",
+      "cargo_aircraft_eligible": "yes_if_high_risk_requirements_met",
+      "requires_screening": "enhanced_or_high_risk_security",
+      "requires_secure_supply_chain": "yes",
+      "requires_placi_check": "yes_if_destination_or_transit_requires",
+      "requires_station_confirmation": true,
+      "hard_gate_if_unknown": "yes",
+      "confidence_cap_if_unknown": 55,
+      "notes": "Never treat SHR as ordinary cargo. Keep security confidence capped without proof."
+    },
+    {
+      "security_code": "VAL",
+      "description": "Valuable cargo",
+      "meaning_for_cortex": "Theft-sensitive cargo requiring secure storage, chain of custody, controlled handover and often escort.",
+      "passenger_aircraft_eligible": "depends_carrier_station",
+      "cargo_aircraft_eligible": "depends_carrier_station",
+      "requires_screening": "yes_or_secure_supply_chain",
+      "requires_secure_supply_chain": "yes",
+      "requires_placi_check": "depends_destination_or_transit",
+      "requires_station_confirmation": true,
+      "hard_gate_if_unknown": "yes",
+      "confidence_cap_if_unknown": 65,
+      "notes": "Security status and secure storage are both needed; Block C/D/G interaction."
+    },
+    {
+      "security_code": "VUN",
+      "description": "Vulnerable cargo",
+      "meaning_for_cortex": "Cargo has theft, tamper, damage or vulnerability risk and needs controlled handling.",
+      "passenger_aircraft_eligible": "depends_carrier_station",
+      "cargo_aircraft_eligible": "depends_carrier_station",
+      "requires_screening": "yes_or_secure_supply_chain",
+      "requires_secure_supply_chain": "yes",
+      "requires_placi_check": "depends_destination_or_transit",
+      "requires_station_confirmation": true,
+      "hard_gate_if_unknown": "yes",
+      "confidence_cap_if_unknown": 65,
+      "notes": "Treat like security-sensitive even if not high-value."
+    },
+    {
+      "security_code": "RAC",
+      "description": "Reserved air cargo",
+      "meaning_for_cortex": "Reserved/controlled booking cargo; security and operational coordination should be confirmed.",
+      "passenger_aircraft_eligible": "depends_status",
+      "cargo_aircraft_eligible": "depends_status",
+      "requires_screening": "depends_status",
+      "requires_secure_supply_chain": "depends_status",
+      "requires_placi_check": "depends_destination_or_transit",
+      "requires_station_confirmation": true,
+      "hard_gate_if_unknown": "partial",
+      "confidence_cap_if_unknown": 70,
+      "notes": "Use mostly as booking/security coordination warning."
+    },
+    {
+      "security_code": "QRT",
+      "description": "Quick ramp transfer",
+      "meaning_for_cortex": "Fast transfer cargo; security status must be clear before transfer because there is little time to resolve screening gaps.",
+      "passenger_aircraft_eligible": "depends_status",
+      "cargo_aircraft_eligible": "depends_status",
+      "requires_screening": "must_be_completed_before_transfer",
+      "requires_secure_supply_chain": "depends_status",
+      "requires_placi_check": "depends_destination_or_transit",
+      "requires_station_confirmation": true,
+      "hard_gate_if_unknown": "yes_for_tight_connections",
+      "confidence_cap_if_unknown": 60,
+      "notes": "If security status unknown, QRT is risky."
+    }
+  ],
+  "jurisdiction_security_rules": [
+    {
+      "rule_id": "H_US_001",
+      "jurisdiction": "US",
+      "applies_to": "cargo_on_passenger_aircraft",
+      "condition": "cargo transported on passenger aircraft departing US airport or under TSA cargo program scope",
+      "required_security_action": "100 percent cargo screening at level comparable to passenger checked baggage screening",
+      "hard_gate_if_missing": "yes",
+      "confidence_cap": 50,
+      "source_name": "TSA Cargo Screening Program",
+      "source_url": "https://www.tsa.gov/for-industry/cargo-screening-program",
+      "confidence": "high"
+    },
+    {
+      "rule_id": "H_EU_001",
+      "jurisdiction": "EU",
+      "applies_to": "cargo_or_mail_into_EU_from_non_EU_airport",
+      "condition": "air carrier flies cargo/mail into EU from non-EU airport",
+      "required_security_action": "ACC3 designation for each non-EU airport; cargo/mail must be screened to EU standards or originate from EU-validated secure supply chain",
+      "hard_gate_if_missing": "yes",
+      "confidence_cap": 50,
+      "source_name": "European Commission ACC3 non-EU cargo/mail",
+      "source_url": "https://transport.ec.europa.eu/transport-modes/air/aviation-security/air-cargo-and-mail/non-eu-countries_en",
+      "confidence": "high"
+    },
+    {
+      "rule_id": "H_EU_002",
+      "jurisdiction": "EU",
+      "applies_to": "secure_supply_chain",
+      "condition": "cargo is offered to EU-bound air carrier via known consignor/account consignor/regulated agent chain",
+      "required_security_action": "validate secure supply chain actor status or apply screening before carrier acceptance",
+      "hard_gate_if_missing": "yes",
+      "confidence_cap": 60,
+      "source_name": "European Commission air cargo and mail security",
+      "source_url": "https://transport.ec.europa.eu/transport-modes/air/aviation-security/air-cargo-and-mail_en",
+      "confidence": "high"
+    },
+    {
+      "rule_id": "H_PLACI_001",
+      "jurisdiction": "US,EU,UK,UAE,CANADA",
+      "applies_to": "pre_loading_advance_cargo_information",
+      "condition": "destination or transit jurisdiction has PLACI/advance cargo information requirements",
+      "required_security_action": "submit/validate pre-loading advance cargo information before loading; ensure shipment data completeness",
+      "hard_gate_if_missing": "yes_for_applicable_lanes",
+      "confidence_cap": 60,
+      "source_name": "IATA PLACI standard procedures",
+      "source_url": "https://www.iata.org/en/publications/manuals/placi-standard-procedures-for-preloading-advance-cargo-information/",
+      "confidence": "high"
+    },
+    {
+      "rule_id": "H_CSD_001",
+      "jurisdiction": "GLOBAL",
+      "applies_to": "secured_supply_chain_proof",
+      "condition": "shipment claims secure status",
+      "required_security_action": "maintain Consignment Security Declaration / equivalent audit trail showing how, when and by whom cargo was secured",
+      "hard_gate_if_missing": "partial",
+      "confidence_cap": 65,
+      "source_name": "IATA Consignment Security Declaration",
+      "source_url": "https://www.iata.org/en/programs/security/cargo-security/csd/",
+      "confidence": "high"
+    },
+    {
+      "rule_id": "H_STATUS_001",
+      "jurisdiction": "GLOBAL",
+      "applies_to": "NSC",
+      "condition": "security_code = NSC",
+      "required_security_action": "screen or secure cargo before treating it as ready for uplift",
+      "hard_gate_if_missing": "yes",
+      "confidence_cap": 45,
+      "source_name": "Authored from special handling code logic + aviation security rules",
+      "source_url": "",
+      "confidence": "authored"
+    },
+    {
+      "rule_id": "H_STATUS_002",
+      "jurisdiction": "GLOBAL",
+      "applies_to": "SCO",
+      "condition": "security_code = SCO",
+      "required_security_action": "route as all-cargo aircraft only unless security status is upgraded/validated for passenger aircraft",
+      "hard_gate_if_missing": "yes_for_passenger_aircraft",
+      "confidence_cap": 55,
+      "source_name": "Authored from special handling code logic",
+      "source_url": "",
+      "confidence": "authored"
+    },
+    {
+      "rule_id": "H_STATUS_003",
+      "jurisdiction": "GLOBAL",
+      "applies_to": "SPX",
+      "condition": "security_code = SPX",
+      "required_security_action": "cargo can be treated as passenger/all-cargo security eligible only with station/carrier confirmation and other block checks",
+      "hard_gate_if_missing": "partial",
+      "confidence_cap": 75,
+      "source_name": "Authored from special handling code logic",
+      "source_url": "",
+      "confidence": "authored"
+    },
+    {
+      "rule_id": "H_STATUS_004",
+      "jurisdiction": "GLOBAL",
+      "applies_to": "SCY",
+      "condition": "security_code = SCY or cargo is personal effects requiring prescreening",
+      "required_security_action": "prescreen before routing as ready cargo",
+      "hard_gate_if_missing": "yes",
+      "confidence_cap": 55,
+      "source_name": "Authored from special handling code logic",
+      "source_url": "",
+      "confidence": "authored"
+    },
+    {
+      "rule_id": "H_STATUS_005",
+      "jurisdiction": "GLOBAL",
+      "applies_to": "SHR",
+      "condition": "cargo is high-risk secure cargo",
+      "required_security_action": "confirm enhanced/high-risk screening and chain-of-custody evidence",
+      "hard_gate_if_missing": "yes",
+      "confidence_cap": 55,
+      "source_name": "Authored from IATA cargo security concepts",
+      "source_url": "https://www.iata.org/en/programs/security/cargo-security/",
+      "confidence": "medium"
+    },
+    {
+      "rule_id": "H_VAL_001",
+      "jurisdiction": "GLOBAL",
+      "applies_to": "VAL,VUN",
+      "condition": "cargo is valuable or vulnerable",
+      "required_security_action": "secure storage, controlled handover, chain of custody, and station/carrier special-cargo confirmation",
+      "hard_gate_if_missing": "yes",
+      "confidence_cap": 65,
+      "source_name": "Authored from Block B/D/G security-sensitive cargo logic",
+      "source_url": "",
+      "confidence": "authored"
+    },
+    {
+      "rule_id": "H_QRT_001",
+      "jurisdiction": "GLOBAL",
+      "applies_to": "QRT",
+      "condition": "quick ramp transfer requested",
+      "required_security_action": "security status must be resolved before transfer; unresolved NSC/SCY status blocks quick transfer readiness",
+      "hard_gate_if_missing": "yes_for_tight_connection",
+      "confidence_cap": 60,
+      "source_name": "Authored from special handling code logic",
+      "source_url": "",
+      "confidence": "authored"
+    }
+  ],
+  "placi_minimum_data": [
+    {
+      "field_name": "shipper_name_address",
+      "required_for": "PLACI/advance cargo information",
+      "missing_data_impact": "high",
+      "notes": "Needed for risk assessment and shipment identification."
+    },
+    {
+      "field_name": "consignee_name_address",
+      "required_for": "PLACI/advance cargo information",
+      "missing_data_impact": "high",
+      "notes": "Needed for risk assessment and shipment identification."
+    },
+    {
+      "field_name": "goods_description",
+      "required_for": "PLACI/advance cargo information",
+      "missing_data_impact": "high",
+      "notes": "Vague descriptions should trigger confidence cap and data correction."
+    },
+    {
+      "field_name": "piece_count",
+      "required_for": "PLACI/advance cargo information",
+      "missing_data_impact": "medium",
+      "notes": "Used to validate shipment data consistency."
+    },
+    {
+      "field_name": "gross_weight",
+      "required_for": "PLACI/advance cargo information",
+      "missing_data_impact": "medium",
+      "notes": "Used to validate shipment data consistency."
+    },
+    {
+      "field_name": "origin_airport_country",
+      "required_for": "PLACI/advance cargo information",
+      "missing_data_impact": "high",
+      "notes": "Needed to evaluate route/security jurisdiction."
+    },
+    {
+      "field_name": "destination_airport_country",
+      "required_for": "PLACI/advance cargo information",
+      "missing_data_impact": "high",
+      "notes": "Needed to evaluate PLACI jurisdiction and risk."
+    },
+    {
+      "field_name": "air_waybill_or_house_waybill",
+      "required_for": "PLACI/advance cargo information",
+      "missing_data_impact": "medium",
+      "notes": "Needed for shipment filing and traceability."
+    },
+    {
+      "field_name": "security_status_code",
+      "required_for": "air cargo security readiness",
+      "missing_data_impact": "high",
+      "notes": "SPX/SCO/NSC/SCY/SHR or equivalent must be known."
+    },
+    {
+      "field_name": "screening_method_or_secure_supply_chain_proof",
+      "required_for": "secured cargo validation",
+      "missing_data_impact": "high",
+      "notes": "CSD or equivalent security audit trail should be available when secured status is claimed."
+    }
+  ],
+  "confidence_rules": [
+    {
+      "rule_id": "H_CONF_001",
+      "condition": "security_status_unknown",
+      "applies_to": "all_air_cargo",
+      "cap_percent": 55,
+      "message": "Cargo security status must be known before declaring shipment ready to fly."
+    },
+    {
+      "rule_id": "H_CONF_002",
+      "condition": "passenger_aircraft_selected_and_status_not_SPX_or_equivalent",
+      "applies_to": "passenger_belly_or_passenger_aircraft",
+      "cap_percent": 45,
+      "message": "Passenger aircraft cargo requires passenger-eligible screened/secured status."
+    },
+    {
+      "rule_id": "H_CONF_003",
+      "condition": "security_code_NSC",
+      "applies_to": "NSC",
+      "cap_percent": 45,
+      "message": "Not secured cargo is not ready for uplift until screening/security process is completed."
+    },
+    {
+      "rule_id": "H_CONF_004",
+      "condition": "EU_bound_from_non_EU_without_ACC3_or_secure_supply_chain_check",
+      "applies_to": "EU inbound cargo from third-country airport",
+      "cap_percent": 50,
+      "message": "EU-bound third-country cargo requires ACC3/secure supply-chain/screening validation."
+    },
+    {
+      "rule_id": "H_CONF_005",
+      "condition": "PLACI_jurisdiction_and_advance_data_incomplete",
+      "applies_to": "US,EU,UK,UAE,CANADA PLACI lanes",
+      "cap_percent": 60,
+      "message": "Advance cargo information must be complete for PLACI-regulated lanes."
+    },
+    {
+      "rule_id": "H_CONF_006",
+      "condition": "secured_status_claimed_without_CSD_or_equivalent_audit_trail",
+      "applies_to": "SPX,SCO,SHR,secure_supply_chain",
+      "cap_percent": 65,
+      "message": "Secured cargo should have CSD/equivalent audit trail showing who secured it, when and how."
+    },
+    {
+      "rule_id": "H_CONF_007",
+      "condition": "VAL_or_VUN_without_secure_storage_chain_of_custody",
+      "applies_to": "VAL,VUN",
+      "cap_percent": 65,
+      "message": "Valuable/vulnerable cargo needs secure storage and chain-of-custody confirmation."
+    },
+    {
+      "rule_id": "H_CONF_008",
+      "condition": "no_station_or_carrier_security_confirmation_for_special_cargo",
+      "applies_to": "all_special_security_codes",
+      "cap_percent": 75,
+      "message": "Security matrix is advisory; station/carrier security confirmation is required for special cargo."
+    }
+  ],
+  "source_refs": [
+    {
+      "source_id": "SRC_H_001",
+      "source_name": "IATA Consignment Security Declaration",
+      "source_url": "https://www.iata.org/en/programs/security/cargo-security/csd/",
+      "use_in_dataset": "CSD security audit trail concept: how, when and by whom cargo was secured."
+    },
+    {
+      "source_id": "SRC_H_002",
+      "source_name": "TSA Cargo Screening Program",
+      "source_url": "https://www.tsa.gov/for-industry/cargo-screening-program",
+      "use_in_dataset": "100% cargo screening requirement for cargo transported on passenger aircraft under TSA cargo program."
+    },
+    {
+      "source_id": "SRC_H_003",
+      "source_name": "European Commission ACC3 non-EU cargo/mail",
+      "source_url": "https://transport.ec.europa.eu/transport-modes/air/aviation-security/air-cargo-and-mail/non-eu-countries_en",
+      "use_in_dataset": "ACC3 requirement for air carriers flying cargo/mail into EU from non-EU airports."
+    },
+    {
+      "source_id": "SRC_H_004",
+      "source_name": "European Commission air cargo and mail security",
+      "source_url": "https://transport.ec.europa.eu/transport-modes/air/aviation-security/air-cargo-and-mail_en",
+      "use_in_dataset": "EU secure supply chain actors and cargo/mail security framework."
+    },
+    {
+      "source_id": "SRC_H_005",
+      "source_name": "IATA PLACI standard procedures",
+      "source_url": "https://www.iata.org/en/publications/manuals/placi-standard-procedures-for-preloading-advance-cargo-information/",
+      "use_in_dataset": "PLACI jurisdictions and pre-loading advance cargo information rule family."
+    },
+    {
+      "source_id": "SRC_H_006",
+      "source_name": "Block B special handling codes",
+      "source_url": "internal_dataset:cortex_air_block_b_special_handling_codes",
+      "use_in_dataset": "SPX, SCO, NSC, SCY, SHR, VAL, VUN, RAC, QRT security code mapping."
+    }
+  ]
+}

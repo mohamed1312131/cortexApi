@@ -1,0 +1,145 @@
+[
+  {
+    "record_id": "CHOKEPOINT_SUEZ",
+    "name": "Suez Canal / Red Sea route exposure",
+    "waterway_or_area": "Suez Canal, Red Sea approaches",
+    "region": "Egypt / Red Sea / Mediterranean-Indian Ocean corridor",
+    "risk_types": [
+      "geopolitical_security_disruption",
+      "rerouting",
+      "toll_cost_impact",
+      "convoy_navigation_rules"
+    ],
+    "typical_planning_impact": "If disrupted or avoided, Asia-Europe traffic may be rerouted around the Cape of Good Hope, adding major transit time and fuel/cost exposure.",
+    "readiness_action": "If route depends on Suez/Red Sea, check current Suez Canal Authority circulars, carrier route advisories, and security notices before confirming readiness.",
+    "hard_gate": false,
+    "hard_gate_condition": "Only hard gate if live authority/carrier/security advisory confirms closure, prohibition, or carrier refusal for the intended sailing.",
+    "planning_factor": true,
+    "requires_live_validation": true,
+    "live_validation_source_ids": [
+      "SUEZ_CANAL_AUTHORITY",
+      "SUEZ_CANAL_CIRCULARS",
+      "carrier_route_advisory"
+    ],
+    "_source": [
+      "UNCTAD_RMT_2024",
+      "SUEZ_CANAL_AUTHORITY",
+      "SUEZ_CANAL_CIRCULARS"
+    ],
+    "_confidence": "verified_reference_live_status_required",
+    "confidence_cap_if_missing": 0.7
+  },
+  {
+    "record_id": "CHOKEPOINT_PANAMA",
+    "name": "Panama Canal draft and transit exposure",
+    "waterway_or_area": "Panama Canal",
+    "region": "Panama / Atlantic-Pacific corridor",
+    "risk_types": [
+      "draft_restriction",
+      "transit_slot_restriction",
+      "drought_water_level_impact",
+      "booking_delay",
+      "toll_cost_impact"
+    ],
+    "typical_planning_impact": "Draft and daily transit-slot changes can force booking delays, lighter loading, alternate routing, or higher transit cost exposure.",
+    "readiness_action": "If route depends on Panama Canal, check current Panama Canal Authority advisories for maximum authorized draft, booking slots, and transit restrictions.",
+    "hard_gate": false,
+    "hard_gate_condition": "Hard gate only if current advisory shows the vessel/cargo plan cannot transit under current draft/slot rules.",
+    "planning_factor": true,
+    "requires_live_validation": true,
+    "live_validation_source_ids": [
+      "PANAMA_CANAL_ADVISORIES"
+    ],
+    "_source": [
+      "UNCTAD_RMT_2024",
+      "PANAMA_CANAL_ADVISORIES",
+      "PANAMA_CANAL_DRAFT_TRANSITS_2024"
+    ],
+    "_confidence": "verified_reference_live_status_required",
+    "confidence_cap_if_missing": 0.7
+  },
+  {
+    "record_id": "CHOKEPOINT_MALACCA",
+    "name": "Strait of Malacca exposure",
+    "waterway_or_area": "Strait of Malacca",
+    "region": "Southeast Asia",
+    "risk_types": [
+      "congestion",
+      "collision/navigational_risk",
+      "strategic_chokepoint_exposure",
+      "security_risk"
+    ],
+    "typical_planning_impact": "High-density Asia trade corridor; disruption or congestion can affect schedule reliability.",
+    "readiness_action": "Flag as strategic chokepoint exposure for Asia-Europe/Asia-Middle East routings; validate carrier ETA and schedule buffer.",
+    "hard_gate": false,
+    "hard_gate_condition": "Hard gate only if live authority/carrier/security advisory confirms closure or sailing restriction.",
+    "planning_factor": true,
+    "requires_live_validation": true,
+    "live_validation_source_ids": [
+      "carrier_schedule",
+      "maritime_security_advisory"
+    ],
+    "_source": [
+      "UNCTAD_RMT_2024",
+      "authored_chokepoint_reference"
+    ],
+    "_confidence": "authored_from_public_chokepoint_context",
+    "confidence_cap_if_missing": 0.75
+  },
+  {
+    "record_id": "CHOKEPOINT_BAB_EL_MANDEB",
+    "name": "Bab-el-Mandeb / Red Sea exposure",
+    "waterway_or_area": "Bab-el-Mandeb Strait / southern Red Sea",
+    "region": "Yemen / Djibouti / Eritrea approaches",
+    "risk_types": [
+      "geopolitical_security_disruption",
+      "rerouting",
+      "insurance_cost_impact",
+      "schedule_reliability_risk"
+    ],
+    "typical_planning_impact": "Security incidents can cause carrier avoidance of Red Sea/Suez route and rerouting via Cape of Good Hope.",
+    "readiness_action": "For routes using Red Sea/Suez, validate current carrier routing and security advisories before confirming timeline.",
+    "hard_gate": false,
+    "hard_gate_condition": "Hard gate only when carrier refuses the route or live security/authority notices block transit.",
+    "planning_factor": true,
+    "requires_live_validation": true,
+    "live_validation_source_ids": [
+      "carrier_route_advisory",
+      "maritime_security_advisory"
+    ],
+    "_source": [
+      "UNCTAD_RMT_2024",
+      "authored_chokepoint_reference"
+    ],
+    "_confidence": "verified_reference_live_status_required",
+    "confidence_cap_if_missing": 0.7
+  },
+  {
+    "record_id": "CHOKEPOINT_HORMUZ",
+    "name": "Strait of Hormuz exposure",
+    "waterway_or_area": "Strait of Hormuz",
+    "region": "Persian Gulf / Gulf of Oman",
+    "risk_types": [
+      "geopolitical_security_risk",
+      "energy_trade_exposure",
+      "insurance_cost_impact",
+      "rerouting_limited"
+    ],
+    "typical_planning_impact": "Strategic energy and Gulf trade chokepoint; disruption can affect insurance, carrier acceptance, and service reliability.",
+    "readiness_action": "For Gulf cargo, validate carrier acceptance, insurance/security advisories, and schedule buffer.",
+    "hard_gate": false,
+    "hard_gate_condition": "Hard gate only when carrier, authority, or security advisory blocks intended transit.",
+    "planning_factor": true,
+    "requires_live_validation": true,
+    "live_validation_source_ids": [
+      "carrier_route_advisory",
+      "maritime_security_advisory"
+    ],
+    "_source": [
+      "UNCTAD_RMT_2024",
+      "authored_chokepoint_reference"
+    ],
+    "_confidence": "authored_from_public_chokepoint_context",
+    "confidence_cap_if_missing": 0.75
+  }
+]

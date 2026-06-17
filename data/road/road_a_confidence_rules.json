@@ -1,0 +1,32 @@
+[
+  {
+    "condition": "Row extracted directly from ADR 2025 official Table A with validation passing",
+    "max_confidence": 95,
+    "_confidence": "verified",
+    "confidence_cap_if_missing": null
+  },
+  {
+    "condition": "Row extracted from a third-party structured dataset and checked against official ADR source",
+    "max_confidence": 85,
+    "_confidence": "verified_partial",
+    "confidence_cap_if_missing": 85
+  },
+  {
+    "condition": "Tunnel meaning derived from code mapping rather than row text",
+    "max_confidence": 80,
+    "_confidence": "authored_from_ADR_rule_structure",
+    "confidence_cap_if_missing": 80
+  },
+  {
+    "condition": "Dangerous goods row has malformed UN number, shifted proper shipping name, or missing class",
+    "max_confidence": 0,
+    "_confidence": "invalid",
+    "confidence_cap_if_missing": 0
+  },
+  {
+    "condition": "Carrier acceptance depends on UPS/API or carrier-specific precheck",
+    "max_confidence": 60,
+    "_confidence": "candidate_carrier_reference",
+    "confidence_cap_if_missing": 60
+  }
+]

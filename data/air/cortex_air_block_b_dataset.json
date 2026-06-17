@@ -1,0 +1,1160 @@
+{
+  "metadata": {
+    "dataset_name": "Cortex Air Mode - Block B Special Cargo Rules",
+    "version": "r_and_d_v1",
+    "generated_at_utc": "2026-06-03T10:15:18.670099+00:00",
+    "purpose": "Mock/reference dataset for Cortex air-mode R&D agents. Intended to trigger intake questions, hard gates, planning factors, and confidence caps for special cargo.",
+    "legal_note": "R&D/mock reference only. Not a production compliance dataset. Replace or validate with current licensed/API data before real commercial use.",
+    "coverage_summary": {
+      "special_handling_codes_count": 90,
+      "category_rules_count": 10,
+      "confidence_rules_count": 10,
+      "source_refs_count": 9
+    },
+    "main_categories": [
+      "pharma_temperature_controlled",
+      "perishable_general",
+      "live_animals",
+      "heavy_oversized_special_cargo",
+      "valuable_vulnerable_security",
+      "human_organs_blood_urgent_medical",
+      "human_remains",
+      "wet_leakage_obnoxious",
+      "diagnostic_infectious_medical_samples",
+      "active_uld_temperature_system"
+    ],
+    "integration_note": "Use Block B after Block A. If is_dg_code=true or category implies dangerous goods, cross-check the Block A DG dataset before final recommendation."
+  },
+  "special_handling_codes": [
+    {
+      "code": "ACT",
+      "description": "Active Temperature Controlled System",
+      "category_family": "temperature_control",
+      "primary_category": "temperature_controlled_pharma",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; FAA AC 120-85A active ULD guidance"
+    },
+    {
+      "code": "COL",
+      "description": "Cool Goods",
+      "category_family": "temperature_control",
+      "primary_category": "temperature_controlled_goods",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "medium",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "CRT",
+      "description": "Control Room Temperature +15C to +25C",
+      "category_family": "temperature_control",
+      "primary_category": "controlled_room_temperature",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; WHO TTSPP guidance"
+    },
+    {
+      "code": "PIL",
+      "description": "Pharmaceuticals",
+      "category_family": "temperature_control",
+      "primary_category": "pharma",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; WHO TTSPP guidance; Pharma.Aero CEIV white paper"
+    },
+    {
+      "code": "FRO",
+      "description": "Frozen Goods",
+      "category_family": "temperature_control",
+      "primary_category": "frozen_goods",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "medium",
+      "source_note": "Special Handling Codes list; Perishable cargo handling guide"
+    },
+    {
+      "code": "FRI",
+      "description": "Frozen Goods Subject to Veterinary/Phytosanitary Inspections",
+      "category_family": "temperature_control",
+      "primary_category": "frozen_goods_regulated",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "PER",
+      "description": "Perishable Cargo",
+      "category_family": "perishable",
+      "primary_category": "perishable_general",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; Perishable cargo handling guide"
+    },
+    {
+      "code": "PES",
+      "description": "Fish/Seafood",
+      "category_family": "perishable",
+      "primary_category": "fish_seafood",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; Perishable cargo handling guide"
+    },
+    {
+      "code": "PEM",
+      "description": "Meat",
+      "category_family": "perishable",
+      "primary_category": "meat",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; Perishable cargo handling guide"
+    },
+    {
+      "code": "PEP",
+      "description": "Fruits and Vegetables",
+      "category_family": "perishable",
+      "primary_category": "fruit_vegetables",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "medium",
+      "source_note": "Special Handling Codes list; Perishable cargo handling guide"
+    },
+    {
+      "code": "PEF",
+      "description": "Flowers",
+      "category_family": "perishable",
+      "primary_category": "flowers_plants",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "medium",
+      "source_note": "Special Handling Codes list; Perishable cargo handling guide"
+    },
+    {
+      "code": "EAT",
+      "description": "Foodstuffs",
+      "category_family": "perishable",
+      "primary_category": "foodstuffs",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "medium",
+      "source_note": "Special Handling Codes list; Perishable cargo handling guide"
+    },
+    {
+      "code": "HEG",
+      "description": "Hatching Eggs",
+      "category_family": "perishable",
+      "primary_category": "hatching_eggs",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; Perishable cargo handling guide"
+    },
+    {
+      "code": "AVI",
+      "description": "Live Animal",
+      "category_family": "live_animals",
+      "primary_category": "live_animals",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; live animal handling paper"
+    },
+    {
+      "code": "SPF",
+      "description": "Laboratory Animals",
+      "category_family": "live_animals",
+      "primary_category": "laboratory_animals",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; live animal handling paper"
+    },
+    {
+      "code": "LHO",
+      "description": "Living Human Organs/Blood",
+      "category_family": "medical_urgent",
+      "primary_category": "human_organs_blood",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "critical",
+      "source_note": "Special Handling Codes list; WHO TTSPP guidance"
+    },
+    {
+      "code": "SHL",
+      "description": "Save Human Life",
+      "category_family": "medical_urgent",
+      "primary_category": "save_human_life",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "critical",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "QRT",
+      "description": "Quick Ramp Transfer",
+      "category_family": "time_critical",
+      "primary_category": "quick_ramp_transfer",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "HEA",
+      "description": "Heavy Cargo/150 kilograms and over per piece",
+      "category_family": "heavy_oversized",
+      "primary_category": "heavy_cargo",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; FAA AC 120-85A special cargo guidance"
+    },
+    {
+      "code": "BIG",
+      "description": "Outsized",
+      "category_family": "heavy_oversized",
+      "primary_category": "outsized_cargo",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; FAA AC 120-85A special cargo guidance"
+    },
+    {
+      "code": "OHG",
+      "description": "Overhang Item",
+      "category_family": "heavy_oversized",
+      "primary_category": "overhang_item",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; FAA AC 120-85A special cargo guidance"
+    },
+    {
+      "code": "BUP",
+      "description": "Bulk Unitization Programme, Shipper/Consignee Handled Unit",
+      "category_family": "uld_loading",
+      "primary_category": "shipper_built_unit",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "medium",
+      "source_note": "Special Handling Codes list; FAA AC 120-85A ULD guidance"
+    },
+    {
+      "code": "VOL",
+      "description": "Volume",
+      "category_family": "capacity_planning",
+      "primary_category": "volume_cargo",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "medium",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "VAL",
+      "description": "Valuable Cargo",
+      "category_family": "security",
+      "primary_category": "valuable_cargo",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; IATA air cargo security position"
+    },
+    {
+      "code": "VUN",
+      "description": "Vulnerable Cargo",
+      "category_family": "security",
+      "primary_category": "vulnerable_cargo",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; IATA air cargo security position"
+    },
+    {
+      "code": "SPX",
+      "description": "Secured Freight for Passenger and All-Cargo Aircraft",
+      "category_family": "security",
+      "primary_category": "secured_passenger_allcargo",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "medium",
+      "source_note": "Special Handling Codes list; IATA air cargo security position"
+    },
+    {
+      "code": "SCO",
+      "description": "Cargo secure for All-Cargo Aircraft Only",
+      "category_family": "security",
+      "primary_category": "secured_allcargo_only",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "medium",
+      "source_note": "Special Handling Codes list; IATA air cargo security position"
+    },
+    {
+      "code": "NSC",
+      "description": "Cargo Not Secured yet for PAX or All Cargo Aircraft",
+      "category_family": "security",
+      "primary_category": "not_secured_cargo",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; IATA air cargo security position"
+    },
+    {
+      "code": "SCY",
+      "description": "Security Cargo - personal effects requiring prescreening",
+      "category_family": "security",
+      "primary_category": "security_cargo_prescreening",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; IATA air cargo security position"
+    },
+    {
+      "code": "SHR",
+      "description": "Cargo secure for All-Passenger, All-Cargo aircraft in accordance with high risk requirements",
+      "category_family": "security",
+      "primary_category": "high_risk_secured_cargo",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; IATA air cargo security position"
+    },
+    {
+      "code": "RAC",
+      "description": "Reserved Air Cargo",
+      "category_family": "booking_priority",
+      "primary_category": "reserved_air_cargo",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "medium",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "HUM",
+      "description": "Human Remains in Coffin",
+      "category_family": "human_remains",
+      "primary_category": "human_remains",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "WET",
+      "description": "Shipments of Wet Material not Packed in Watertight Containers",
+      "category_family": "leakage_risk",
+      "primary_category": "wet_material",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "medium",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "OBX",
+      "description": "Obnoxious Cargo",
+      "category_family": "nuisance_risk",
+      "primary_category": "obnoxious_cargo",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "medium",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "GOG",
+      "description": "Hanging Garments",
+      "category_family": "special_handling",
+      "primary_category": "hanging_garments",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "low",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "FIL",
+      "description": "Undeveloped/Unexposed Film",
+      "category_family": "sensitive_goods",
+      "primary_category": "film_sensitive",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "low",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "XPS",
+      "description": "Priority Small Package",
+      "category_family": "priority_service",
+      "primary_category": "priority_small_package",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "medium",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "ATT",
+      "description": "Goods Attached to Air Waybill",
+      "category_family": "documentation",
+      "primary_category": "awb_attachment",
+      "is_dg_code": false,
+      "is_block_b_relevant": false,
+      "risk_level": "low",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "LIC",
+      "description": "License Required",
+      "category_family": "legal_permit",
+      "primary_category": "license_required",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "CAT",
+      "description": "Cargo Attendant Accompanying Shipment",
+      "category_family": "special_handling",
+      "primary_category": "cargo_attendant",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "medium",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "PAC",
+      "description": "Passenger and Cargo",
+      "category_family": "aircraft_service",
+      "primary_category": "passenger_and_cargo",
+      "is_dg_code": false,
+      "is_block_b_relevant": false,
+      "risk_level": "low",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "SUR",
+      "description": "Surface Transportation",
+      "category_family": "mode_indicator",
+      "primary_category": "surface_transport",
+      "is_dg_code": false,
+      "is_block_b_relevant": false,
+      "risk_level": "low",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "AOG",
+      "description": "Aircraft on Ground",
+      "category_family": "urgent_aviation",
+      "primary_category": "aircraft_on_ground",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "COM",
+      "description": "Company Mail",
+      "category_family": "mail",
+      "primary_category": "company_mail",
+      "is_dg_code": false,
+      "is_block_b_relevant": false,
+      "risk_level": "low",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "DIP",
+      "description": "Diplomatic Mail",
+      "category_family": "mail",
+      "primary_category": "diplomatic_mail",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "medium",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "MAL",
+      "description": "Mail",
+      "category_family": "mail",
+      "primary_category": "mail",
+      "is_dg_code": false,
+      "is_block_b_relevant": false,
+      "risk_level": "low",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "NWP",
+      "description": "Newspapers, Magazines",
+      "category_family": "mail_print",
+      "primary_category": "newspapers_magazines",
+      "is_dg_code": false,
+      "is_block_b_relevant": false,
+      "risk_level": "low",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "EAP",
+      "description": "E-freight Consignment with Accompanying Paper Documents",
+      "category_family": "e_freight",
+      "primary_category": "efreight_with_paper",
+      "is_dg_code": false,
+      "is_block_b_relevant": false,
+      "risk_level": "low",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "EAW",
+      "description": "E-freight Consignment with No Accompanying Paper Documents",
+      "category_family": "e_freight",
+      "primary_category": "efreight_no_paper",
+      "is_dg_code": false,
+      "is_block_b_relevant": false,
+      "risk_level": "low",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "ECC",
+      "description": "Shipment with electronically concluded cargo contract with no accompanying paper AWB",
+      "category_family": "e_freight",
+      "primary_category": "electronic_contract_no_paper_awb",
+      "is_dg_code": false,
+      "is_block_b_relevant": false,
+      "risk_level": "low",
+      "source_note": "Special Handling Codes list"
+    },
+    {
+      "code": "CAO",
+      "description": "Cargo Aircraft Only",
+      "category_family": "dangerous_goods_air_limit",
+      "primary_category": "cargo_aircraft_only",
+      "is_dg_code": true,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; cross-reference Block A"
+    },
+    {
+      "code": "DGD",
+      "description": "Shipper's Declaration for Dangerous Goods",
+      "category_family": "dangerous_goods_document",
+      "primary_category": "dg_declaration",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "high",
+      "source_note": "Code sheet; Block A"
+    },
+    {
+      "code": "ELI",
+      "description": "Lithium Ion Batteries otherwise excepted from the IATA DGR",
+      "category_family": "dangerous_goods",
+      "primary_category": "excepted_lithium_ion",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "ELM",
+      "description": "Lithium Metal Batteries otherwise excepted from the IATA DGR",
+      "category_family": "dangerous_goods",
+      "primary_category": "excepted_lithium_metal",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "ICE",
+      "description": "Dry Ice",
+      "category_family": "dangerous_goods_temperature_support",
+      "primary_category": "dry_ice",
+      "is_dg_code": true,
+      "is_block_b_relevant": true,
+      "risk_level": "medium",
+      "source_note": "Special Handling Codes list; Block A + cold chain"
+    },
+    {
+      "code": "MAG",
+      "description": "Magnetized Material",
+      "category_family": "dangerous_goods_air_safety",
+      "primary_category": "magnetized_material",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "medium",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "MUW",
+      "description": "Munitions of War",
+      "category_family": "dangerous_goods_security",
+      "primary_category": "munitions_of_war",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "critical",
+      "source_note": "Special Handling Codes list; Block A + security"
+    },
+    {
+      "code": "RCL",
+      "description": "Cryogenic Liquids",
+      "category_family": "dangerous_goods",
+      "primary_category": "cryogenic_liquids",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RCM",
+      "description": "Corrosive",
+      "category_family": "dangerous_goods",
+      "primary_category": "corrosive",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RCX",
+      "description": "Explosives 1.3C",
+      "category_family": "dangerous_goods",
+      "primary_category": "explosive_1_3c",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "critical",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RDS",
+      "description": "Diagnostic Specimens / Biological Substance Category B",
+      "category_family": "medical_dg",
+      "primary_category": "diagnostic_specimens",
+      "is_dg_code": true,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; Block A + medical samples"
+    },
+    {
+      "code": "REQ",
+      "description": "Excepted Quantities of Dangerous Goods",
+      "category_family": "dangerous_goods",
+      "primary_category": "dg_excepted_quantities",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "medium",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "REX",
+      "description": "Reserved for normally forbidden explosives divisions",
+      "category_family": "dangerous_goods",
+      "primary_category": "reserved_forbidden_explosives",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "critical",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RFG",
+      "description": "Flammable Gas",
+      "category_family": "dangerous_goods",
+      "primary_category": "flammable_gas",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RFL",
+      "description": "Flammable Liquid",
+      "category_family": "dangerous_goods",
+      "primary_category": "flammable_liquid",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RFS",
+      "description": "Flammable Solid",
+      "category_family": "dangerous_goods",
+      "primary_category": "flammable_solid",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RFW",
+      "description": "Dangerous When Wet",
+      "category_family": "dangerous_goods",
+      "primary_category": "dangerous_when_wet",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RGX",
+      "description": "Explosives 1.3G",
+      "category_family": "dangerous_goods",
+      "primary_category": "explosive_1_3g",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "critical",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RIS",
+      "description": "Infectious Substance",
+      "category_family": "medical_dg",
+      "primary_category": "infectious_substance",
+      "is_dg_code": true,
+      "is_block_b_relevant": true,
+      "risk_level": "critical",
+      "source_note": "Special Handling Codes list; Block A + medical samples"
+    },
+    {
+      "code": "RLI",
+      "description": "Fully regulated Lithium Ion Batteries",
+      "category_family": "dangerous_goods",
+      "primary_category": "regulated_lithium_ion",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RLM",
+      "description": "Fully regulated Lithium Metal Batteries (Class 9)",
+      "category_family": "dangerous_goods",
+      "primary_category": "regulated_lithium_metal",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RMD",
+      "description": "Miscellaneous Dangerous Goods",
+      "category_family": "dangerous_goods",
+      "primary_category": "miscellaneous_dg",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "medium",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RNG",
+      "description": "Non-Flammable Non-Toxic Gas",
+      "category_family": "dangerous_goods",
+      "primary_category": "nonflammable_nontoxic_gas",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "medium",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "ROP",
+      "description": "Organic Peroxide",
+      "category_family": "dangerous_goods",
+      "primary_category": "organic_peroxide",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "ROX",
+      "description": "Oxidizer",
+      "category_family": "dangerous_goods",
+      "primary_category": "oxidizer",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RPB",
+      "description": "Toxic Substance",
+      "category_family": "dangerous_goods",
+      "primary_category": "toxic_substance",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RPG",
+      "description": "Toxic Gas",
+      "category_family": "dangerous_goods",
+      "primary_category": "toxic_gas",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "critical",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RRE",
+      "description": "Excepted Quantities / Packages of Radioactive Material",
+      "category_family": "dangerous_goods",
+      "primary_category": "radioactive_excepted",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RRW",
+      "description": "Radioactive Material Category I-White",
+      "category_family": "dangerous_goods",
+      "primary_category": "radioactive_i_white",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RRY",
+      "description": "Radioactive Material Categories II-Yellow and III-Yellow",
+      "category_family": "dangerous_goods",
+      "primary_category": "radioactive_yellow",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RSB",
+      "description": "Polymeric Beads",
+      "category_family": "dangerous_goods",
+      "primary_category": "polymeric_beads",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "medium",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RSC",
+      "description": "Spontaneously Combustible",
+      "category_family": "dangerous_goods",
+      "primary_category": "spontaneously_combustible",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RXB",
+      "description": "Explosives 1.4B",
+      "category_family": "dangerous_goods",
+      "primary_category": "explosive_1_4b",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "critical",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RXC",
+      "description": "Explosives 1.4C",
+      "category_family": "dangerous_goods",
+      "primary_category": "explosive_1_4c",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "critical",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RXD",
+      "description": "Explosives 1.4D",
+      "category_family": "dangerous_goods",
+      "primary_category": "explosive_1_4d",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "critical",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RXE",
+      "description": "Explosives 1.4E",
+      "category_family": "dangerous_goods",
+      "primary_category": "explosive_1_4e",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "critical",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RXG",
+      "description": "Explosives 1.4G",
+      "category_family": "dangerous_goods",
+      "primary_category": "explosive_1_4g",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "critical",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "RXS",
+      "description": "Explosives 1.4S",
+      "category_family": "dangerous_goods",
+      "primary_category": "explosive_1_4s",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "critical",
+      "source_note": "Special Handling Codes list; Block A"
+    },
+    {
+      "code": "SWP",
+      "description": "Sporting Weapons",
+      "category_family": "dangerous_goods_security",
+      "primary_category": "sporting_weapons",
+      "is_dg_code": true,
+      "is_block_b_relevant": false,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; Block A + security"
+    },
+    {
+      "code": "PEA",
+      "description": "Hunting Trophies, Skins, Hide and Articles of Species",
+      "category_family": "wildlife_permit",
+      "primary_category": "cites_articles",
+      "is_dg_code": false,
+      "is_block_b_relevant": true,
+      "risk_level": "high",
+      "source_note": "Special Handling Codes list; CITES relevance"
+    }
+  ],
+  "category_rules": [
+    {
+      "category_id": "pharma_temperature_controlled",
+      "category_name": "Pharmaceuticals / time-temperature-sensitive healthcare cargo",
+      "codes": "PIL,CRT,COL,ACT,LHO",
+      "required_intake_fields": "exact product type; required temperature range; allowed excursion tolerance; active/passive packaging; data logger required; max transit time; shipper instruction; 24h contact; origin/destination airport cold-chain capability; carrier pharma acceptance",
+      "hard_gates": "temperature range missing; packaging system unknown; no 24h contact for urgent/temperature-sensitive shipment; no cold-chain capability for airport/handler/carrier; active ULD not approved/compatible; missing permits for controlled medicines/biological products",
+      "planning_factors": "prefer direct/short transit; avoid long tarmac exposure; use active ULD or validated passive shipper; check cold room at origin/transit/destination; use CEIV-capable lane when available; monitor for temperature excursion risk",
+      "confidence_cap_if_missing": "temperature range missing: 45%; packaging unknown: 55%; cold-chain capability unknown: 65%; carrier acceptance unknown: 70%",
+      "source_docs": "WHO temperature-controlled transport supplement; Pharma.Aero CEIV white paper; FAA AC 120-85A active ULD guidance"
+    },
+    {
+      "category_id": "perishable_general",
+      "category_name": "Perishable cargo",
+      "codes": "PER,EAT,PEF,PEM,PEP,PES,FRO,FRI,HEG",
+      "required_intake_fields": "exact commodity; fresh/frozen/chilled status; temperature constraint; shelf life/expiry; packaging type; gross weight; dimensions; number of packages; 24h shipper and consignee contact; veterinary/phytosanitary requirement if applicable",
+      "hard_gates": "exact commodity missing; temperature constraint missing for chilled/frozen cargo; packaging unsuitable or unknown; 24h contact missing; required vet/phytosanitary inspection not known; route too slow for shelf life",
+      "planning_factors": "prefer express/prime service; avoid deferred service; require advanced booking; check labels such as PERISHABLE, KEEP COOL, KEEP FROZEN, THIS WAY UP, FRAGILE when relevant; check airport cold storage",
+      "confidence_cap_if_missing": "commodity missing: 40%; temperature unknown: 55%; packaging unknown: 60%; transit time unknown: 65%; inspection/permit unknown: 70%",
+      "source_docs": "Air Cargo Perishable Handling guide; Cargo Agent Handbook references to perishable cargo regulations"
+    },
+    {
+      "category_id": "live_animals",
+      "category_name": "Live animals and laboratory animals",
+      "codes": "AVI,SPF",
+      "required_intake_fields": "species; quantity; age/condition; container/crate type and dimensions; feeding/watering plan; origin/destination permits; CITES status if wildlife; airline live-animal acceptance; airport animal handling capability; transit time",
+      "hard_gates": "species missing; container/crate details missing; airline acceptance missing; import/export permit unknown; CITES check unknown for wildlife/endangered species; route has excessive journey time or unsuitable connections",
+      "planning_factors": "minimize journey time; avoid long connections; use trained handler; check temperature/ventilation; check welfare and documentation; confirm airline-specific rules",
+      "confidence_cap_if_missing": "species missing: 35%; crate details missing: 45%; permits unknown: 55%; airline acceptance unknown: 60%; animal handling capability unknown: 65%",
+      "source_docs": "Live animal handling process paper; Cargo Agent Handbook live animals/perishables board description"
+    },
+    {
+      "category_id": "heavy_oversized_special_cargo",
+      "category_name": "Heavy, outsized, overhang, or special cargo",
+      "codes": "HEA,BIG,OHG,BUP,VOL",
+      "required_intake_fields": "piece weight; piece dimensions; number of pieces; center of gravity if known; pallet/ULD type; main deck/lower deck requirement; aircraft type; door dimensions; floor loading/area load limit; restraint/tie-down requirement; loading equipment availability",
+      "hard_gates": "piece weight missing; dimensions missing; aircraft type unknown; door/ULD compatibility unknown; restraint method unknown; floor loading/area load not checked; aircraft W&B not checked",
+      "planning_factors": "evaluate aircraft capability before accepting; check ULD compatibility; check restraint/load plan; check weight and balance; verify cargo loading and supervision; consider main deck freighter for large pieces",
+      "confidence_cap_if_missing": "dimensions missing: 40%; aircraft type unknown: 50%; restraint unknown: 55%; W&B/floor loading unknown: 60%; loading equipment unknown: 70%",
+      "source_docs": "FAA AC 120-85A air cargo operations guidance"
+    },
+    {
+      "category_id": "valuable_vulnerable_security",
+      "category_name": "Valuable, vulnerable, secured, or high-risk cargo",
+      "codes": "VAL,VUN,SPX,SCO,NSC,SCY,SHR,RAC,DIP",
+      "required_intake_fields": "declared value; commodity description; security status; screening status; known/regulated shipper status; destination PLACI requirement; secure storage requirement; controlled handover requirement; insurance status; carrier/security acceptance",
+      "hard_gates": "security status unknown; not screened/secured and intended for passenger aircraft; PLACI data missing for regulated destination; EU-bound cargo from non-EU origin without ACC3/secure supply chain check; declared value/insurance unknown for valuable cargo",
+      "planning_factors": "secure storage; chain of custody; screening/prescreening; advance cargo data; controlled handover; avoid unnecessary transit; flag theft/tamper risk",
+      "confidence_cap_if_missing": "security status unknown: 45%; screening status unknown: 55%; PLACI data unknown: 65%; secure storage unknown for VAL/VUN: 70%; insurance unknown: 75%",
+      "source_docs": "IATA Air Cargo Security position paper"
+    },
+    {
+      "category_id": "human_organs_blood_urgent_medical",
+      "category_name": "Human organs, blood, urgent medical / save human life",
+      "codes": "LHO,SHL,QRT",
+      "required_intake_fields": "material type; temperature range; time critical deadline; packaging/validated shipper; medical/health documentation; 24h emergency contact; priority booking; ramp transfer requirement; destination clearance",
+      "hard_gates": "deadline missing; temperature range missing; packaging unknown; no 24h contact; no priority/ramp transfer plan for critical timing; import/health clearance unknown",
+      "planning_factors": "fastest routing; priority handling; quick ramp transfer; temperature monitoring; avoid multi-stop routes; coordinate consignee readiness before arrival",
+      "confidence_cap_if_missing": "deadline missing: 40%; temperature missing: 50%; 24h contact missing: 55%; clearance unknown: 65%",
+      "source_docs": "Special handling codes; WHO temperature-controlled transport supplement; Perishable handling guide"
+    },
+    {
+      "category_id": "human_remains",
+      "category_name": "Human remains in coffin",
+      "codes": "HUM",
+      "required_intake_fields": "country pair; death certificate; embalming/health certificate if required; coffin/container type; consular/import permit if required; airline acceptance; funeral agent/consignee contact",
+      "hard_gates": "documents unknown; carrier acceptance unknown; country import/transit rules unknown; packaging/coffin details missing",
+      "planning_factors": "coordinate with airline and destination agent; check transit restrictions; avoid unnecessary connections; handle discreetly",
+      "confidence_cap_if_missing": "documents unknown: 50%; carrier acceptance unknown: 60%; country rules unknown: 65%",
+      "source_docs": "Special handling codes; authored R&D rule"
+    },
+    {
+      "category_id": "wet_leakage_obnoxious",
+      "category_name": "Wet material, leakage risk, obnoxious cargo",
+      "codes": "WET,OBX",
+      "required_intake_fields": "liquid/wet content; packaging watertightness; odor/leakage risk; orientation requirement; absorbent material; compatibility with other cargo",
+      "hard_gates": "packaging unknown; leakage risk unmanaged; strong odor/contamination risk not assessed",
+      "planning_factors": "use watertight packaging; orientation labels; segregate from sensitive cargo; check carrier acceptance for odor/leakage risk",
+      "confidence_cap_if_missing": "packaging unknown: 55%; leakage risk unknown: 60%; carrier acceptance unknown: 75%",
+      "source_docs": "Special handling codes; perishable packaging guidance"
+    },
+    {
+      "category_id": "diagnostic_infectious_medical_samples",
+      "category_name": "Diagnostic specimens, biological substances, infectious substances",
+      "codes": "RDS,RIS",
+      "required_intake_fields": "UN/category if applicable; sample type; packaging instruction; temperature requirement; dry ice use; shipper declaration if required; origin/destination health permits; carrier DG acceptance",
+      "hard_gates": "classification missing; UN/category unknown; packaging unknown; temperature unknown if refrigerated/frozen; DG acceptance unknown for infectious substance",
+      "planning_factors": "cross-check Block A DG table; apply temperature-control rules if needed; check dry ice quantity if used; ensure documentation and labels",
+      "confidence_cap_if_missing": "classification missing: 35%; packaging unknown: 45%; DG acceptance unknown: 55%; temperature unknown: 65%",
+      "source_docs": "Special handling codes; Block A DG dataset; WHO supplement"
+    },
+    {
+      "category_id": "active_uld_temperature_system",
+      "category_name": "Active temperature-controlled ULD/system",
+      "codes": "ACT",
+      "required_intake_fields": "active ULD model; approval/compatibility; battery/power status; operating instructions; temperature set point; aircraft type; ULD position; maintenance/serviceability status",
+      "hard_gates": "active ULD not approved/compatible; operating instructions missing; battery/power state unknown; aircraft compatibility unknown",
+      "planning_factors": "verify ULD certificate/approval; check aircraft W&B/ULD compatibility; confirm recharge/ground handling; monitor set point and operating duration",
+      "confidence_cap_if_missing": "ULD model unknown: 50%; aircraft compatibility unknown: 55%; operating duration unknown: 65%; serviceability unknown: 70%",
+      "source_docs": "FAA AC 120-85A active ULD and temperature-controlled container guidance"
+    }
+  ],
+  "confidence_rules": [
+    {
+      "rule_id": "B_CONF_001",
+      "applies_to": "PIL,CRT,COL,ACT,LHO",
+      "condition": "temperature_range_missing",
+      "cap_percent": 45,
+      "message": "Temperature-sensitive cargo cannot be assessed confidently without a required temperature range."
+    },
+    {
+      "rule_id": "B_CONF_002",
+      "applies_to": "PER,PES,PEM,PEP,PEF,EAT,FRO,FRI,HEG",
+      "condition": "exact_commodity_missing",
+      "cap_percent": 40,
+      "message": "Perishable cargo requires exact commodity because handling, labels, and shelf-life differ."
+    },
+    {
+      "rule_id": "B_CONF_003",
+      "applies_to": "AVI,SPF",
+      "condition": "species_or_container_missing",
+      "cap_percent": 45,
+      "message": "Live animal cargo requires species and container/crate details before route suitability can be assessed."
+    },
+    {
+      "rule_id": "B_CONF_004",
+      "applies_to": "HEA,BIG,OHG",
+      "condition": "piece_dimensions_missing",
+      "cap_percent": 40,
+      "message": "Heavy/outsized cargo cannot be assessed without piece dimensions and piece weight."
+    },
+    {
+      "rule_id": "B_CONF_005",
+      "applies_to": "HEA,BIG,OHG,BUP",
+      "condition": "aircraft_or_uld_compatibility_unknown",
+      "cap_percent": 55,
+      "message": "Special cargo requires aircraft/ULD compatibility and loading constraints before acceptance."
+    },
+    {
+      "rule_id": "B_CONF_006",
+      "applies_to": "VAL,VUN,SPX,SCO,NSC,SCY,SHR",
+      "condition": "security_status_unknown",
+      "cap_percent": 45,
+      "message": "Security-sensitive cargo needs screening/secure supply-chain status before passenger/all-cargo suitability is assessed."
+    },
+    {
+      "rule_id": "B_CONF_007",
+      "applies_to": "VAL,VUN",
+      "condition": "secure_storage_unknown",
+      "cap_percent": 70,
+      "message": "Valuable/vulnerable cargo should not receive high confidence without secure storage and chain-of-custody checks."
+    },
+    {
+      "rule_id": "B_CONF_008",
+      "applies_to": "LHO,SHL,QRT",
+      "condition": "deadline_or_24h_contact_missing",
+      "cap_percent": 50,
+      "message": "Urgent medical cargo needs hard deadline and 24-hour contact details."
+    },
+    {
+      "rule_id": "B_CONF_009",
+      "applies_to": "HUM",
+      "condition": "country_documents_or_carrier_acceptance_unknown",
+      "cap_percent": 60,
+      "message": "Human remains require country documents and airline acceptance validation."
+    },
+    {
+      "rule_id": "B_CONF_010",
+      "applies_to": "RDS,RIS",
+      "condition": "classification_or_packaging_unknown",
+      "cap_percent": 45,
+      "message": "Medical specimens/infectious substances require classification and packaging checks, with Block A DG cross-check if applicable."
+    }
+  ],
+  "source_refs": [
+    {
+      "source_id": "SRC_B_001",
+      "source_name": "Special Handling Codes list / Cargo IMP codes sheet",
+      "use_in_dataset": "Base code dictionary and mapping to cargo categories",
+      "uploaded_file": "1-3-3.pdf"
+    },
+    {
+      "source_id": "SRC_B_002",
+      "source_name": "Air Cargo Perishable Handling",
+      "use_in_dataset": "Perishable categories, labels, intake questions, service preference",
+      "uploaded_file": "Air_Cargo_Perishable_Handling.pdf"
+    },
+    {
+      "source_id": "SRC_B_003",
+      "source_name": "WHO Temperature-controlled transport operations by road and by air",
+      "use_in_dataset": "Pharma/TTSPP rules, active/passive systems, risk controls, air transport process",
+      "uploaded_file": "trs961-annex9-supp12.pdf"
+    },
+    {
+      "source_id": "SRC_B_004",
+      "source_name": "Pharma.Aero CEIV validation white paper",
+      "use_in_dataset": "Pharma cold-chain quality, CEIV capability, temperature excursion risk",
+      "uploaded_file": "CEIV-1.0-Validation-project-by-the-shippers-White-Paper_Pharma.Aero_.pdf"
+    },
+    {
+      "source_id": "SRC_B_005",
+      "source_name": "The process of handling live animals in air transport",
+      "use_in_dataset": "Live animal complexity, need to minimize time, airline rules and terminal process",
+      "uploaded_file": "The_process_of_handling_live_animal.pdf"
+    },
+    {
+      "source_id": "SRC_B_006",
+      "source_name": "FAA AC 120-85A Air Cargo Operations",
+      "use_in_dataset": "Heavy/outsized/special cargo, W&B, ULDs, restraint, active ULD compatibility",
+      "uploaded_file": "ac_120-85a.pdf"
+    },
+    {
+      "source_id": "SRC_B_007",
+      "source_name": "IATA Air Cargo Security Position 2024",
+      "use_in_dataset": "Security-sensitive cargo, PLACI, ACC3, secure supply-chain logic",
+      "uploaded_file": "cargo-security.pdf"
+    },
+    {
+      "source_id": "SRC_B_008",
+      "source_name": "IATA Cargo Agent Handbook Resolution 801",
+      "use_in_dataset": "Industry context for cargo handling, live animals/perishables, ULDs, documentation",
+      "uploaded_file": "cah801-47-en-final.pdf"
+    },
+    {
+      "source_id": "SRC_B_009",
+      "source_name": "Carriage of Cargo, Mail and Baggage - Guidance for Operators",
+      "use_in_dataset": "Safety risk assessment framing: item hazards, operator capability, operational considerations, aircraft capability",
+      "uploaded_file": "carriage-of-cargo-mail-and-baggage.pdf"
+    }
+  ]
+}

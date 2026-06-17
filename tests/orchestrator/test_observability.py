@@ -84,16 +84,15 @@ def test_cortex_debug_trace_id_populated(monkeypatch):
 # --- logging does not break endpoints ------------------------------------- #
 def test_endpoints_do_not_crash_with_logging(monkeypatch, caplog):
     _patch_layer1(monkeypatch, ready=False)
-    with caplog.at_level(logging.INFO, logger="cortex"):
-        with TestClient(app) as client:
-            cortex = client.post(
-                "/api/v1/cortex/message",
-                json={"conversation_id": "obs-log", "message": "x"},
-            )
-            intake = client.post(
-                "/api/v1/intake/message",
-                json={"conversation_id": "obs-log", "message": "x"},
-            )
+    with caplog.at_level(logging.INFO, logger="cortex"), TestClient(app) as client:
+        cortex = client.post(
+            "/api/v1/cortex/message",
+            json={"conversation_id": "obs-log", "message": "x"},
+        )
+        intake = client.post(
+            "/api/v1/intake/message",
+            json={"conversation_id": "obs-log", "message": "x"},
+        )
     assert cortex.status_code == 200
     assert intake.status_code == 200
     messages = " ".join(r.getMessage() for r in caplog.records)
@@ -112,10 +111,12 @@ def test_redis_fallback_logs_warning(caplog):
     store = RedisCaseStateStore("redis://localhost:6390/0")
 
     class _Boom:
-        def get(self, *args, **kwargs):
+        @staticmethod
+        def get(*args, **kwargs):
             raise RedisError("connection refused")
 
-        def setex(self, *args, **kwargs):
+        @staticmethod
+        def setex(*args, **kwargs):
             raise RedisError("connection refused")
 
     store._redis = _Boom()

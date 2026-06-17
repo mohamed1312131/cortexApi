@@ -1,0 +1,150 @@
+[
+  {
+    "cargo_type": "general_dry_palletized",
+    "recommended_equipment": [
+      "20GP",
+      "40GP",
+      "40HC"
+    ],
+    "hard_gate_checks": [
+      "gross_weight <= reference_payload_kg",
+      "cargo_dimensions <= internal_dimensions if FCL"
+    ],
+    "planning_factors": [
+      "LCL vs FCL based on CBM, value, urgency, handling risk"
+    ],
+    "_confidence": "authored_backed_by_sources"
+  },
+  {
+    "cargo_type": "small_dry_lcl",
+    "recommended_equipment": [
+      "LCL_SERVICE"
+    ],
+    "hard_gate_checks": [
+      "single_package_weight/volume within carrier LCL limits",
+      "cargo acceptable for consolidation"
+    ],
+    "planning_factors": [
+      "below 15 CBM usually LCL candidate; quote both near threshold"
+    ],
+    "_confidence": "authored_backed_by_maersk"
+  },
+  {
+    "cargo_type": "temperature_controlled",
+    "recommended_equipment": [
+      "20RF",
+      "40RH"
+    ],
+    "hard_gate_checks": [
+      "temperature_setpoint provided",
+      "cargo fits reefer dimensions/payload",
+      "origin/destination reefer handling available"
+    ],
+    "planning_factors": [
+      "pre-cooling, monitoring, genset/drayage, terminal plugs"
+    ],
+    "_confidence": "authored_backed_by_sources"
+  },
+  {
+    "cargo_type": "bulk_liquid_non_dg",
+    "recommended_equipment": [
+      "20TK_20KL",
+      "20TK_26KL"
+    ],
+    "hard_gate_checks": [
+      "commodity compatibility checked",
+      "density within payload/capacity",
+      "cleaning/food-grade certificate if required"
+    ],
+    "planning_factors": [
+      "tank availability, heating/insulation if needed"
+    ],
+    "_confidence": "authored"
+  },
+  {
+    "cargo_type": "bulk_liquid_dg",
+    "recommended_equipment": [
+      "20TK_20KL",
+      "20TK_26KL"
+    ],
+    "hard_gate_checks": [
+      "SEA-A DG acceptance passed",
+      "tank compatibility checked",
+      "carrier/terminal DG acceptance confirmed"
+    ],
+    "planning_factors": [
+      "segregation, documentation, heating/venting needs"
+    ],
+    "_confidence": "authored"
+  },
+  {
+    "cargo_type": "overheight_top_loaded",
+    "recommended_equipment": [
+      "20OT",
+      "40OT"
+    ],
+    "hard_gate_checks": [
+      "length/width/payload fit",
+      "top loading possible",
+      "carrier OOG approval if over profile"
+    ],
+    "planning_factors": [
+      "weather protection, tarp suitability, crane availability"
+    ],
+    "_confidence": "authored_backed_by_sources"
+  },
+  {
+    "cargo_type": "oversized_heavy_machinery",
+    "recommended_equipment": [
+      "20FR",
+      "40FR",
+      "BREAKBULK"
+    ],
+    "hard_gate_checks": [
+      "payload/lashing plan provided",
+      "center of gravity declared",
+      "SEA-C crane/lift capability adequate"
+    ],
+    "planning_factors": [
+      "OOG surcharge, special handling, routing constraints"
+    ],
+    "_confidence": "authored_backed_by_sources"
+  },
+  {
+    "cargo_type": "vehicle_or_rolling_cargo",
+    "recommended_equipment": [
+      "RORO",
+      "20GP",
+      "40GP",
+      "40HC",
+      "20FR",
+      "40FR"
+    ],
+    "hard_gate_checks": [
+      "vehicle dimensions/weight declared",
+      "fuel/battery/DG status checked",
+      "RoRo capability at ports if RoRo selected"
+    ],
+    "planning_factors": [
+      "containerization vs RoRo cost/time, securing method"
+    ],
+    "_confidence": "authored"
+  },
+  {
+    "cargo_type": "too_large_for_container",
+    "recommended_equipment": [
+      "BREAKBULK",
+      "RORO",
+      "40FR"
+    ],
+    "hard_gate_checks": [
+      "lift/lashing plan",
+      "port capability from SEA-C",
+      "carrier project-cargo approval"
+    ],
+    "planning_factors": [
+      "route constraints, heavy lift equipment, surveyor requirements"
+    ],
+    "_confidence": "authored"
+  }
+]

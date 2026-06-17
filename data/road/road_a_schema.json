@@ -1,0 +1,100 @@
+{
+  "record_type": "road_a_dg_road_acceptance",
+  "required_fields": [
+    "identification_number",
+    "proper_shipping_name",
+    "hazard_class",
+    "packing_group",
+    "adr_tunnel_code",
+    "tunnel_code_meaning",
+    "limited_quantity",
+    "road_acceptance_status",
+    "hard_gate",
+    "factor_type",
+    "_source",
+    "_confidence"
+  ],
+  "fields": {
+    "identification_number": {
+      "type": "string",
+      "pattern": "^UN[0-9]{4}$",
+      "description": "UN identification number normalized as UN####."
+    },
+    "proper_shipping_name": {
+      "type": "string",
+      "description": "ADR proper shipping name in English. Must be clean text and must not start with a digit."
+    },
+    "hazard_class": {
+      "type": "string",
+      "description": "ADR hazard class or division, e.g. 3, 8, 6.1, 9."
+    },
+    "packing_group": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "allowed_examples": [
+        "I",
+        "II",
+        "III",
+        null
+      ],
+      "description": "Packing group where applicable."
+    },
+    "adr_tunnel_code": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "ADR tunnel restriction code from Table A column 15 where applicable."
+    },
+    "tunnel_code_meaning": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Plain-English operational interpretation of the tunnel code."
+    },
+    "limited_quantity": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Limited quantity value from ADR Table A where applicable."
+    },
+    "road_acceptance_status": {
+      "type": "string",
+      "allowed_values": [
+        "accepted_with_conditions",
+        "restricted",
+        "prohibited_or_not_accepted",
+        "check_required"
+      ],
+      "description": "Readiness status for road movement. This is a compliance flag, not handling advice."
+    },
+    "hard_gate": {
+      "type": "boolean",
+      "description": "True when missing required DG declaration/classification/documentation/driver/vehicle/tunnel constraints can block movement."
+    },
+    "factor_type": {
+      "type": "string",
+      "allowed_values": [
+        "HARD_GATE",
+        "PLANNING_FACTOR"
+      ]
+    },
+    "_source": {
+      "type": "string",
+      "description": "Source ID or source combination."
+    },
+    "_confidence": {
+      "type": "string",
+      "allowed_values": [
+        "verified",
+        "estimated",
+        "authored",
+        "candidate"
+      ]
+    }
+  }
+}

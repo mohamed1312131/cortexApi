@@ -1,0 +1,102 @@
+[
+  {
+    "rule_id": "I_ROUTE_001",
+    "rule_name": "Direct route preferred for time/temperature critical cargo",
+    "route_condition": "cargo_codes_include_PIL_CRT_COL_ACT_LHO_SHL_QRT_PER_PES_PEM_FRO_AVI",
+    "applies_to_cargo": "pharma, cold-chain, urgent medical, perishables, frozen goods, live animals",
+    "required_data": "origin_airport; destination_airport; direct_flight_available; transit_count; total_transit_time",
+    "risk_if_missing": "route may break cold chain, exceed shelf life, increase animal welfare risk, or miss medical deadline",
+    "confidence_cap": 65,
+    "message": "Prefer direct routing. If direct route is unavailable, every transit airport and carrier leg must be checked."
+  },
+  {
+    "rule_id": "I_ROUTE_002",
+    "rule_name": "Transit airport special-cargo capability required",
+    "route_condition": "route_has_transit AND special_cargo_present",
+    "applies_to_cargo": "DG, PIL, ACT, PER, FRO, AVI, VAL, HEA, BIG, HUM, RDS, RIS",
+    "required_data": "transit_airport_codes; Block C capability for each transit; handler capability; storage at transit",
+    "risk_if_missing": "shipment may be accepted at origin but fail during transit",
+    "confidence_cap": 60,
+    "message": "Special cargo requires transit airport/handler capability validation, not just origin and destination."
+  },
+  {
+    "rule_id": "I_ROUTE_003",
+    "rule_name": "Carrier acceptance must cover every leg",
+    "route_condition": "route_has_multiple_legs",
+    "applies_to_cargo": "all special cargo and DG",
+    "required_data": "carrier_per_leg; interline carrier; Block D acceptance per carrier; interline handover rules",
+    "risk_if_missing": "one carrier may accept while another refuses the cargo",
+    "confidence_cap": 60,
+    "message": "Every operating carrier and interline leg must accept the cargo category."
+  },
+  {
+    "rule_id": "I_ROUTE_004",
+    "rule_name": "CAO cargo needs freighter path",
+    "route_condition": "Block A air_status = cargo_aircraft_only OR code = CAO",
+    "applies_to_cargo": "cargo-aircraft-only DG or restricted cargo",
+    "required_data": "aircraft_type_per_leg; passenger_or_freighter; carrier CAO acceptance; flight freighter confirmation",
+    "risk_if_missing": "cargo may be incorrectly routed on passenger aircraft",
+    "confidence_cap": 45,
+    "message": "Cargo-aircraft-only shipments require confirmed freighter/all-cargo routing."
+  },
+  {
+    "rule_id": "I_ROUTE_005",
+    "rule_name": "Security all-cargo only path",
+    "route_condition": "security_code = SCO",
+    "applies_to_cargo": "SCO security cargo",
+    "required_data": "passenger_or_freighter per leg; security status; station security acceptance",
+    "risk_if_missing": "shipment may be placed on passenger aircraft despite security restriction",
+    "confidence_cap": 45,
+    "message": "SCO cargo is all-cargo aircraft only from security standpoint unless security status changes."
+  },
+  {
+    "rule_id": "I_ROUTE_006",
+    "rule_name": "Passenger belly requires passenger-eligible security status",
+    "route_condition": "selected_aircraft_role = passenger_belly",
+    "applies_to_cargo": "all cargo on passenger aircraft",
+    "required_data": "security_code; screening status; SPX/equivalent proof; station security confirmation",
+    "risk_if_missing": "cargo not legally/security-ready for passenger aircraft",
+    "confidence_cap": 45,
+    "message": "Passenger belly routing requires passenger-eligible screened/secured status."
+  },
+  {
+    "rule_id": "I_ROUTE_007",
+    "rule_name": "Aircraft fit confirmed for every leg",
+    "route_condition": "cargo_codes_include_HEA_BIG_OHG_ACT_BUP OR piece_dimensions_large",
+    "applies_to_cargo": "heavy, oversized, overhang, active ULD, built-up units",
+    "required_data": "aircraft_type_per_leg; ULD type; door dimensions; main/lower deck; piece dimensions/weight",
+    "risk_if_missing": "cargo may fit one leg but fail on another aircraft",
+    "confidence_cap": 55,
+    "message": "Physical fit must be checked for every aircraft leg, not only the first flight."
+  },
+  {
+    "rule_id": "I_ROUTE_008",
+    "rule_name": "PLACI lane requires advance data before loading",
+    "route_condition": "destination_or_transit in US/EU/UK/UAE/CANADA",
+    "applies_to_cargo": "all air cargo on PLACI-regulated lanes",
+    "required_data": "shipper; consignee; goods_description; pieces; weight; origin; destination; AWB/HAWB; security status",
+    "risk_if_missing": "pre-loading risk assessment may fail or delay cargo",
+    "confidence_cap": 60,
+    "message": "PLACI-style lanes require complete advance cargo information before loading."
+  },
+  {
+    "rule_id": "I_ROUTE_009",
+    "rule_name": "Time-critical deadline required",
+    "route_condition": "cargo_codes_include_LHO_SHL_QRT_PIL_PER_FRO",
+    "applies_to_cargo": "urgent medical, pharma, perishables, frozen goods",
+    "required_data": "latest_acceptable_arrival; shelf_life; temperature_runtime; delivery_deadline; cutoff time",
+    "risk_if_missing": "cannot evaluate whether route meets business/medical/quality deadline",
+    "confidence_cap": 50,
+    "message": "Time-critical cargo requires a hard deadline and cutoff/arrival timing data."
+  },
+  {
+    "rule_id": "I_ROUTE_010",
+    "rule_name": "Booking and capacity must be confirmed",
+    "route_condition": "route_selected_for_recommendation",
+    "applies_to_cargo": "all",
+    "required_data": "booking_status; capacity_status; carrier confirmation; flight date",
+    "risk_if_missing": "route may be theoretically plausible but not bookable",
+    "confidence_cap": 75,
+    "message": "Without booking/capacity confirmation, Cortex should say route is plausible, not available."
+  }
+]

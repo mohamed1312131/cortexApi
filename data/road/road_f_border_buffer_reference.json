@@ -1,0 +1,82 @@
+[
+  {
+    "buffer_id": "SCHENGEN_INTERNAL_OR_EU_INTERNAL",
+    "scenario": "Schengen/internal EU movement with no customs border for Union goods",
+    "min_hours": 0,
+    "typical_hours": 0.5,
+    "max_hours": 1,
+    "factor_type": "PLANNING_FACTOR",
+    "_source": "CORTEX_ROAD_TRANSIT_MODEL",
+    "_confidence": "estimated"
+  },
+  {
+    "buffer_id": "EU_EXTERNAL_BORDER",
+    "scenario": "EU external border without major customs complexity",
+    "min_hours": 2,
+    "typical_hours": 4,
+    "max_hours": 8,
+    "factor_type": "PLANNING_FACTOR",
+    "_source": "CORTEX_ROAD_TRANSIT_MODEL",
+    "_confidence": "estimated"
+  },
+  {
+    "buffer_id": "CUSTOMS_CLEARANCE_STANDARD",
+    "scenario": "Customs crossing requiring declaration/control/document check",
+    "min_hours": 4,
+    "typical_hours": 12,
+    "max_hours": 24,
+    "factor_type": "PLANNING_FACTOR",
+    "_source": "CORTEX_ROAD_TRANSIT_MODEL",
+    "_confidence": "estimated"
+  },
+  {
+    "buffer_id": "FERRY_OR_TUNNEL_RO_RO",
+    "scenario": "Ro-ro ferry/tunnel leg including check-in, waiting, loading and unloading",
+    "min_hours": 4,
+    "typical_hours": 8,
+    "max_hours": 12,
+    "factor_type": "PLANNING_FACTOR",
+    "_source": "CORTEX_ROAD_TRANSIT_MODEL",
+    "_confidence": "estimated"
+  },
+  {
+    "buffer_id": "EUROPE_NORTH_AFRICA_FERRY_CUSTOMS",
+    "scenario": "Europe to/from North Africa with ferry and customs uncertainty",
+    "min_hours": 12,
+    "typical_hours": 24,
+    "max_hours": 48,
+    "factor_type": "PLANNING_FACTOR",
+    "_source": "CORTEX_ROAD_TRANSIT_MODEL",
+    "_confidence": "estimated"
+  },
+  {
+    "buffer_id": "HIGH_UNCERTAINTY_BORDER",
+    "scenario": "Border with security, sanctions, congestion, or unstable process",
+    "min_hours": 24,
+    "typical_hours": 48,
+    "max_hours": 72,
+    "factor_type": "PLANNING_FACTOR",
+    "_source": "CORTEX_ROAD_TRANSIT_MODEL",
+    "_confidence": "estimated"
+  },
+  {
+    "buffer_id": "PICKUP_LOADING",
+    "scenario": "Loading, appointment, gate-in, waiting, document handover",
+    "min_hours": 2,
+    "typical_hours": 4,
+    "max_hours": 6,
+    "factor_type": "PLANNING_FACTOR",
+    "_source": "CORTEX_ROAD_TRANSIT_MODEL",
+    "_confidence": "estimated"
+  },
+  {
+    "buffer_id": "DELIVERY_UNLOADING",
+    "scenario": "Delivery appointment, waiting, unloading, POD/admin",
+    "min_hours": 2,
+    "typical_hours": 4,
+    "max_hours": 6,
+    "factor_type": "PLANNING_FACTOR",
+    "_source": "CORTEX_ROAD_TRANSIT_MODEL",
+    "_confidence": "estimated"
+  }
+]

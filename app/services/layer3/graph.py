@@ -135,11 +135,13 @@ class Layer3ReasoningGraph:
         return final_state["result"]
 
     # ---- nodes ---------------------------------------------------------- #
-    def _prepare_node(self, state: Layer3State) -> dict:
+    @staticmethod
+    def _prepare_node(state: Layer3State) -> dict:
         context = prepare_reasoning_context(state["fact_package"])
         return {"reasoning_context": context, "case_id": context.case_id}
 
-    def _engine_node(self, state: Layer3State) -> dict:
+    @staticmethod
+    def _engine_node(state: Layer3State) -> dict:
         decision, trace = build_deterministic_decision(
             state["reasoning_context"], trace_id=state.get("trace_id")
         )
@@ -177,7 +179,8 @@ class Layer3ReasoningGraph:
         )
         return {"critic_review": review}
 
-    def _safety_gate_node(self, state: Layer3State) -> dict:
+    @staticmethod
+    def _safety_gate_node(state: Layer3State) -> dict:
         report = run_safety_gate(
             context=state["reasoning_context"],
             decision=state["deterministic_decision"],
@@ -185,7 +188,8 @@ class Layer3ReasoningGraph:
         )
         return {"safety_gate_report": report, "next_action": report.next_action}
 
-    def _revise_node(self, state: Layer3State) -> dict:
+    @staticmethod
+    def _revise_node(state: Layer3State) -> dict:
         return {"revision_count": state.get("revision_count", 0) + 1}
 
     def _build_pass_node(self, state: Layer3State) -> dict:
@@ -230,8 +234,8 @@ class Layer3ReasoningGraph:
         return {"result": self._result(state, status=Layer3Status.request_layer2_fetch, route=ROUTE_FETCH)}
 
     # ---- result assembly ------------------------------------------------ #
+    @staticmethod
     def _result(
-        self,
         state: Layer3State,
         *,
         status: Layer3Status,

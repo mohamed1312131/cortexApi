@@ -1,0 +1,51 @@
+[
+  {
+    "rule_id": "F_CONF_001",
+    "condition": "no_block_f_jurisdiction_mapping_for_airport",
+    "applies_to": "all",
+    "cap_percent": 55,
+    "message": "If airport country has no Block F jurisdiction mapping, border-control confidence must be capped."
+  },
+  {
+    "rule_id": "F_CONF_002",
+    "condition": "cargo_category_requires_permit_but_status_unknown",
+    "applies_to": "PIL,AVI,SPF,PEM,PES,EAT,PEF,PEP,RDS,RIS,HUM,LIC",
+    "cap_percent": 50,
+    "message": "Special cargo with unknown import-permit status cannot be treated as customs-ready."
+  },
+  {
+    "rule_id": "F_CONF_003",
+    "condition": "cites_status_unknown_for_wildlife_or_protected_plants",
+    "applies_to": "AVI,SPF,PEA,PEF,wildlife_products,protected_plants",
+    "cap_percent": 50,
+    "message": "CITES-sensitive cargo requires species check and permit screening."
+  },
+  {
+    "rule_id": "F_CONF_004",
+    "condition": "EU_SPS_cargo_without_CHED_or_certificate_check",
+    "applies_to": "AVI,SPF,PEM,PES,EAT,PEF,PEP",
+    "cap_percent": 55,
+    "message": "EU SPS cargo requires TRACES/CHED/certificate validation before readiness."
+  },
+  {
+    "rule_id": "F_CONF_005",
+    "condition": "US_biological_or_infectious_without_CDC_APHIS_CBP_screening",
+    "applies_to": "RDS,RIS,LHO,biological_materials",
+    "cap_percent": 45,
+    "message": "US biological/infectious cargo needs CDC/APHIS/CBP permit screening."
+  },
+  {
+    "rule_id": "F_CONF_006",
+    "condition": "Tunisia_special_cargo_without_manual_validation",
+    "applies_to": "all_special_cargo_to_TUN",
+    "cap_percent": 45,
+    "message": "Tunisia category-specific public data is weak; manual authority validation is required."
+  },
+  {
+    "rule_id": "F_CONF_007",
+    "condition": "no_final_customs_broker_or_authority_validation",
+    "applies_to": "all",
+    "cap_percent": 85,
+    "message": "Block F is advisory; final customs/border authority or broker validation is required for production."
+  }
+]

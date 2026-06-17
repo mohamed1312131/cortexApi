@@ -1,0 +1,55 @@
+[
+  {
+    "rule_id": "SEA_I_CONF_001",
+    "condition": "route uses canal/chokepoint but no live authority or carrier advisory was checked",
+    "confidence_cap": 0.7,
+    "reason": "Static chokepoint records cannot confirm current closure, draft restriction, security situation, or carrier routing.",
+    "_source": [
+      "UNCTAD_RMT_2024",
+      "PANAMA_CANAL_ADVISORIES",
+      "SUEZ_CANAL_CIRCULARS"
+    ],
+    "_confidence": "authored"
+  },
+  {
+    "rule_id": "SEA_I_CONF_002",
+    "condition": "assigned sailing exists but gate-in/VGM/SI cutoffs are missing",
+    "confidence_cap": 0.6,
+    "reason": "Readiness cannot honestly confirm the shipment will make the sailing without carrier/terminal cutoff times.",
+    "_source": [
+      "MAERSK_CUTOFFS"
+    ],
+    "_confidence": "authored"
+  },
+  {
+    "rule_id": "SEA_I_CONF_003",
+    "condition": "demurrage/detention risk assessed without carrier/country tariff or free-time terms",
+    "confidence_cap": 0.65,
+    "reason": "Free-time concept is verified, but exact charge exposure is carrier/country/terminal specific.",
+    "_source": [
+      "MAERSK_DD_FREE_TIME"
+    ],
+    "_confidence": "authored"
+  },
+  {
+    "rule_id": "SEA_I_CONF_004",
+    "condition": "service frequency is unknown and system assumes weekly service",
+    "confidence_cap": 0.65,
+    "reason": "Weekly service-cycle delay is a planning heuristic, not a live schedule result.",
+    "_source": [
+      "MAERSK_SCHEDULES",
+      "authored_planning_heuristic"
+    ],
+    "_confidence": "authored"
+  },
+  {
+    "rule_id": "SEA_I_CONF_005",
+    "condition": "security-risk chokepoint exposure flagged without current maritime security advisory",
+    "confidence_cap": 0.7,
+    "reason": "Security situations can change quickly; current routing/insurance/carrier advisories are needed.",
+    "_source": [
+      "UNCTAD_RMT_2024"
+    ],
+    "_confidence": "authored"
+  }
+]

@@ -1,0 +1,140 @@
+{
+ "_meta": {
+  "mode": "air",
+  "sources": "OurAirports (airports), ACI World 2024 (cargo hubs), industry rate guides 2025-2026 (FreightAmigo/Webcargo/Drewry-cited), IATA volumetric standard, IATA DGR (rules summarized - full text must be licensed)",
+  "note": "Rates are PLANNING approximations for v1. Real quotes need live carrier API (v2)."
+ },
+ "chargeable_weight": {
+  "rule": "chargeable_kg = max(actual_kg, volumetric_kg)",
+  "volumetric_formula_cm": "(L_cm * W_cm * H_cm) / 6000",
+  "volumetric_density_threshold_kg_per_m3": 167,
+  "note": "Cargo below 167 kg/m3 is charged on volume, not actual weight. REQUIRES intake to capture dimensions."
+ },
+ "rate_reference_usd_per_kg": {
+  "_basis": "2025-2026 published ranges, China/Asia origin. Heavier shipments (>1000kg) ~10-20% lower per kg.",
+  "asia_to_europe": {
+   "low": 3.6,
+   "typical": 5.5,
+   "high": 9.0
+  },
+  "asia_to_north_america": {
+   "low": 4.0,
+   "typical": 6.5,
+   "high": 9.5
+  },
+  "asia_to_middle_east": {
+   "low": 3.0,
+   "typical": 4.5,
+   "high": 6.5
+  },
+  "general_default": {
+   "low": 3.5,
+   "typical": 5.5,
+   "high": 9.0
+  }
+ },
+ "surcharges_pct_of_base": {
+  "fuel": {
+   "low": 0.15,
+   "typical": 0.3,
+   "high": 0.4
+  },
+  "security": {
+   "typical": 0.05
+  },
+  "dangerous_goods": {
+   "low": 0.2,
+   "high": 0.5
+  },
+  "peak_season_nov_jan": {
+   "low": 0.2,
+   "high": 0.5
+  }
+ },
+ "transit_days_door_to_door": {
+  "asia_to_europe": {
+   "low": 2,
+   "typical": 4,
+   "high": 7
+  },
+  "asia_to_north_america": {
+   "low": 3,
+   "typical": 5,
+   "high": 8
+  },
+  "_note": "Flight itself is hours; door-to-door includes pickup, screening, customs."
+ },
+ "uld_specs": {
+  "LD3_AKE": {
+   "max_gross_kg": 1588,
+   "volume_m3": 4.5,
+   "note": "wide-body lower deck"
+  },
+  "LD6_ALF": {
+   "max_gross_kg": 3175,
+   "volume_m3": 8.9
+  },
+  "PMC_pallet": {
+   "max_gross_kg": 6804,
+   "footprint_cm": "318x244",
+   "note": "main-deck freighter"
+  },
+  "_note": "Belly (passenger) aircraft take LD-series only; oversized needs freighter + PMC."
+ },
+ "dangerous_goods_air_rules": {
+  "_source": "IATA DGR 67th Ed (2026) - summarized, license required for full per-UN tables",
+  "lithium_ion_UN3480": {
+   "class": 9,
+   "soc_limit_pct": 30,
+   "soc_rule": "from 1 Jan 2026 must ship at <=30% state of charge; above needs State-of-origin + State-of-operator written approval (Special Provision A331)",
+   "test_required": "UN Manual of Tests & Criteria 38.3",
+   "passenger_aircraft": "restricted/forbidden as cargo on many; cargo-aircraft-only common",
+   "required_doc": "IATA Shipper's Declaration for Dangerous Goods + lithium handling label"
+  },
+  "general": "each UN number has an assigned Packing Instruction and a passenger/cargo-only/forbidden status in the DGR table. THIS IS AN AUTHORED TABLE - no free dataset."
+ },
+ "documents_air": [
+  {
+   "doc": "Air Waybill (AWB)",
+   "responsible": "carrier/forwarder",
+   "hard_gate": true,
+   "lead_time": "at booking"
+  },
+  {
+   "doc": "Commercial invoice",
+   "responsible": "shipper",
+   "hard_gate": true,
+   "lead_time": "pre-booking"
+  },
+  {
+   "doc": "Packing list",
+   "responsible": "shipper",
+   "hard_gate": true,
+   "lead_time": "pre-booking"
+  },
+  {
+   "doc": "IATA DG Declaration",
+   "responsible": "shipper",
+   "hard_gate": "if DG",
+   "lead_time": "1-3 days, specialist"
+  },
+  {
+   "doc": "UN38.3 test summary",
+   "responsible": "shipper/manufacturer",
+   "hard_gate": "if lithium",
+   "lead_time": "obtain from cell maker - can be slow"
+  },
+  {
+   "doc": "Security screening / known-consignor status",
+   "responsible": "shipper/RA",
+   "hard_gate": true,
+   "lead_time": "varies"
+  },
+  {
+   "doc": "Export/import customs declaration",
+   "responsible": "broker",
+   "hard_gate": true,
+   "lead_time": "pre-departure"
+  }
+ ]
+}

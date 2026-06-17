@@ -1,0 +1,631 @@
+{
+  "metadata": {
+    "dataset_name": "Cortex Air Mode - Block F Import / Export Permits and Border Controls",
+    "version": "r_and_d_v1_first_pass",
+    "generated_at_utc": "2026-06-03T11:08:05.658112+00:00",
+    "purpose": "Mock/reference border-control rules matrix aligned with Block C airport countries for Cortex air-mode R&D readiness checks.",
+    "legal_note": "R&D/mock reference only. Customs, SPS, pharma, CITES and other border rules change and are commodity-specific. Final validation by customs broker, carrier, importer, and competent authority is required before real shipment.",
+    "coverage": {
+      "jurisdiction_map_rows": 9,
+      "rules_count": 20,
+      "confidence_rules": 7,
+      "source_refs": 15
+    },
+    "aligned_airports": [
+      "CDG",
+      "FRA",
+      "AMS",
+      "DXB",
+      "DOH",
+      "HKG",
+      "SIN",
+      "JFK",
+      "TUN"
+    ],
+    "strong_jurisdictions": [
+      "EU",
+      "US",
+      "HONG_KONG",
+      "SINGAPORE",
+      "GLOBAL_CITES"
+    ],
+    "medium_jurisdictions": [
+      "UAE",
+      "QATAR"
+    ],
+    "weak_jurisdictions": [
+      "TUNISIA_PLACEHOLDER"
+    ],
+    "integration_note": "Run Block F after cargo category classification from Blocks A/B and airport-country mapping from Block C. If a rule applies and required permit/certificate/prior notification is unknown, cap confidence and ask for manual customs/authority validation."
+  },
+  "airport_jurisdiction_map": [
+    {
+      "airport_code": "CDG",
+      "airport_name": "Paris Charles de Gaulle",
+      "country": "France",
+      "block_f_jurisdiction": "EU",
+      "notes": "EU SPS/TRACES rules apply for animal, plant, food/feed categories."
+    },
+    {
+      "airport_code": "FRA",
+      "airport_name": "Frankfurt Airport",
+      "country": "Germany",
+      "block_f_jurisdiction": "EU",
+      "notes": "EU SPS/TRACES rules apply for animal, plant, food/feed categories."
+    },
+    {
+      "airport_code": "AMS",
+      "airport_name": "Amsterdam Schiphol",
+      "country": "Netherlands",
+      "block_f_jurisdiction": "EU",
+      "notes": "EU SPS/TRACES rules apply for animal, plant, food/feed categories."
+    },
+    {
+      "airport_code": "DXB",
+      "airport_name": "Dubai International",
+      "country": "United Arab Emirates",
+      "block_f_jurisdiction": "UAE",
+      "notes": "MOCCAE / health / customs authority checks depending cargo category."
+    },
+    {
+      "airport_code": "DOH",
+      "airport_name": "Hamad International",
+      "country": "Qatar",
+      "block_f_jurisdiction": "QATAR",
+      "notes": "Food/meat import controls and customs declaration checks; other categories need manual validation."
+    },
+    {
+      "airport_code": "HKG",
+      "airport_name": "Hong Kong International",
+      "country": "Hong Kong SAR",
+      "block_f_jurisdiction": "HONG_KONG",
+      "notes": "AFCD permits for animals/plants/CITES; customs controlled imports."
+    },
+    {
+      "airport_code": "SIN",
+      "airport_name": "Singapore Changi",
+      "country": "Singapore",
+      "block_f_jurisdiction": "SINGAPORE",
+      "notes": "SFA/TradeNet food permits; NParks/AVS for animal/pet-food style controls."
+    },
+    {
+      "airport_code": "JFK",
+      "airport_name": "John F. Kennedy International",
+      "country": "United States",
+      "block_f_jurisdiction": "US",
+      "notes": "CBP plus CDC/APHIS/FDA/USFWS depending cargo category."
+    },
+    {
+      "airport_code": "TUN",
+      "airport_name": "Tunis-Carthage",
+      "country": "Tunisia",
+      "block_f_jurisdiction": "TUNISIA_PLACEHOLDER",
+      "notes": "Public category-specific data is weak; manual authority validation required."
+    }
+  ],
+  "border_rules": [
+    {
+      "rule_id": "F_EU_001",
+      "jurisdiction": "EU",
+      "destination_or_origin": "destination",
+      "cargo_category": "live_animals",
+      "applies_to_codes": "AVI,SPF",
+      "permit_required": "partial",
+      "prior_notification_required": "yes",
+      "certificate_required": "yes",
+      "inspection_required": "yes",
+      "system_or_authority": "TRACES / CHED-A / Border Control Post",
+      "required_documents": "CHED-A; veterinary/health certificate; import authorization if commodity requires it; CITES permit if species listed",
+      "hard_gate_if_missing": "yes",
+      "manual_validation_required": true,
+      "confidence_cap_if_unknown": 55,
+      "source_name": "EU TRACES modules",
+      "source_url": "https://food.ec.europa.eu/horizontal-topics/traces/modules_en",
+      "confidence": "high"
+    },
+    {
+      "rule_id": "F_EU_002",
+      "jurisdiction": "EU",
+      "destination_or_origin": "destination",
+      "cargo_category": "animal_products_meat_seafood_food",
+      "applies_to_codes": "PEM,PES,EAT,animal_products",
+      "permit_required": "partial",
+      "prior_notification_required": "yes",
+      "certificate_required": "yes",
+      "inspection_required": "yes",
+      "system_or_authority": "TRACES / CHED-P / Border Control Post",
+      "required_documents": "CHED-P; official health certificate; commercial invoice; packing list; halal/slaughter certificate if destination/product requires it",
+      "hard_gate_if_missing": "yes",
+      "manual_validation_required": true,
+      "confidence_cap_if_unknown": 60,
+      "source_name": "EU TRACES modules",
+      "source_url": "https://food.ec.europa.eu/horizontal-topics/traces/modules_en",
+      "confidence": "high"
+    },
+    {
+      "rule_id": "F_EU_003",
+      "jurisdiction": "EU",
+      "destination_or_origin": "destination",
+      "cargo_category": "plants_plant_products_flowers",
+      "applies_to_codes": "PEF,PEP,plants,plant_products",
+      "permit_required": "partial",
+      "prior_notification_required": "yes",
+      "certificate_required": "yes",
+      "inspection_required": "yes",
+      "system_or_authority": "TRACES / CHED-PP / Plant health authority",
+      "required_documents": "Phytosanitary certificate; CHED-PP when applicable; invoice; packing list",
+      "hard_gate_if_missing": "yes",
+      "manual_validation_required": true,
+      "confidence_cap_if_unknown": 60,
+      "source_name": "EU TRACES modules / EU plant health imports",
+      "source_url": "https://food.ec.europa.eu/horizontal-topics/traces/modules_en | https://food.ec.europa.eu/plants/plant-health-and-biosecurity/trade-plants-plant-products-non-eu-countries_en",
+      "confidence": "high"
+    },
+    {
+      "rule_id": "F_EU_004",
+      "jurisdiction": "EU",
+      "destination_or_origin": "destination",
+      "cargo_category": "food_feed_non_animal_origin",
+      "applies_to_codes": "EAT,food_feed_non_animal",
+      "permit_required": "partial",
+      "prior_notification_required": "yes",
+      "certificate_required": "partial",
+      "inspection_required": "yes",
+      "system_or_authority": "TRACES / CHED-D / Border Control Post",
+      "required_documents": "CHED-D when applicable; official certificate/test report if commodity requires it; invoice; packing list",
+      "hard_gate_if_missing": "yes",
+      "manual_validation_required": true,
+      "confidence_cap_if_unknown": 65,
+      "source_name": "EU TRACES modules",
+      "source_url": "https://food.ec.europa.eu/horizontal-topics/traces/modules_en",
+      "confidence": "high"
+    },
+    {
+      "rule_id": "F_US_001",
+      "jurisdiction": "US",
+      "destination_or_origin": "destination",
+      "cargo_category": "biological_infectious_materials",
+      "applies_to_codes": "RDS,RIS,LHO,biological_materials",
+      "permit_required": "yes_or_screening_required",
+      "prior_notification_required": "partial",
+      "certificate_required": "partial",
+      "inspection_required": "partial",
+      "system_or_authority": "CBP / CDC Import Permit Program",
+      "required_documents": "CDC import permit if applicable; shipment documentation; labels/packaging/declaration; CBP entry documents",
+      "hard_gate_if_missing": "yes",
+      "manual_validation_required": true,
+      "confidence_cap_if_unknown": 45,
+      "source_name": "CDC Import Permit Program / CBP biological materials",
+      "source_url": "https://www.cdc.gov/import-permit-program/php/index.html | https://www.cbp.gov/border-security/protecting-agriculture/importing-biological-materials-united-states",
+      "confidence": "high"
+    },
+    {
+      "rule_id": "F_US_002",
+      "jurisdiction": "US",
+      "destination_or_origin": "destination",
+      "cargo_category": "animal_products_organisms_vectors",
+      "applies_to_codes": "AVI,SPF,PEM,PES,animal_products,organisms,vectors",
+      "permit_required": "yes_or_screening_required",
+      "prior_notification_required": "partial",
+      "certificate_required": "yes_or_partial",
+      "inspection_required": "yes_or_partial",
+      "system_or_authority": "USDA APHIS / CBP",
+      "required_documents": "APHIS import permit if applicable; veterinary/health certificate; import declaration; CBP entry",
+      "hard_gate_if_missing": "yes",
+      "manual_validation_required": true,
+      "confidence_cap_if_unknown": 55,
+      "source_name": "APHIS organisms and vectors / animal product imports",
+      "source_url": "https://www.aphis.usda.gov/animal-product-import/organisms-vectors | https://www.aphis.usda.gov/animal-product-import",
+      "confidence": "high"
+    },
+    {
+      "rule_id": "F_GLOBAL_001",
+      "jurisdiction": "GLOBAL_CITES",
+      "destination_or_origin": "both",
+      "cargo_category": "cites_species_or_products",
+      "applies_to_codes": "AVI,SPF,PEA,PEF,wildlife_products,protected_plants,exotic_wood",
+      "permit_required": "yes_if_cites_listed",
+      "prior_notification_required": "depends_country",
+      "certificate_required": "yes",
+      "inspection_required": "yes",
+      "system_or_authority": "CITES Management Authority",
+      "required_documents": "CITES export permit; CITES import permit if required by destination; re-export certificate if applicable; species identification",
+      "hard_gate_if_missing": "yes",
+      "manual_validation_required": true,
+      "confidence_cap_if_unknown": 50,
+      "source_name": "CITES permit guidance",
+      "source_url": "https://www.gov.uk/guidance/cites-imports-and-exports | https://travel.gc.ca/travelling/documents/cites-permits",
+      "confidence": "high"
+    },
+    {
+      "rule_id": "F_HK_001",
+      "jurisdiction": "HONG_KONG",
+      "destination_or_origin": "destination",
+      "cargo_category": "live_animals_birds_reptiles_pets",
+      "applies_to_codes": "AVI,SPF",
+      "permit_required": "yes",
+      "prior_notification_required": "yes",
+      "certificate_required": "yes",
+      "inspection_required": "yes",
+      "system_or_authority": "AFCD",
+      "required_documents": "AFCD special/import permit; animal health certificate; vaccination/test documents when required; CITES if species listed",
+      "hard_gate_if_missing": "yes",
+      "manual_validation_required": true,
+      "confidence_cap_if_unknown": 50,
+      "source_name": "Hong Kong AFCD animal/bird import guidance",
+      "source_url": "https://www.afcd.gov.hk/english/quarantine/qua_ie/files/G103guideline_animal_and_bird_Sep15E.pdf",
+      "confidence": "high"
+    },
+    {
+      "rule_id": "F_HK_002",
+      "jurisdiction": "HONG_KONG",
+      "destination_or_origin": "both",
+      "cargo_category": "cites_endangered_species",
+      "applies_to_codes": "AVI,SPF,PEA,PEF,wildlife_products,protected_plants",
+      "permit_required": "yes_if_cites_listed",
+      "prior_notification_required": "depends",
+      "certificate_required": "yes",
+      "inspection_required": "yes",
+      "system_or_authority": "AFCD / CITES",
+      "required_documents": "CITES import/export permit; species documentation; commercial invoice",
+      "hard_gate_if_missing": "yes",
+      "manual_validation_required": true,
+      "confidence_cap_if_unknown": 50,
+      "source_name": "Hong Kong AFCD CITES",
+      "source_url": "https://www.afcd.gov.hk/english/conservation/con_end/con_end_cites/con_end_cites.html",
+      "confidence": "high"
+    },
+    {
+      "rule_id": "F_SG_001",
+      "jurisdiction": "SINGAPORE",
+      "destination_or_origin": "destination",
+      "cargo_category": "food_food_products",
+      "applies_to_codes": "EAT,PEM,PES,PEP,food_products",
+      "permit_required": "yes",
+      "prior_notification_required": "yes",
+      "certificate_required": "depends_commodity",
+      "inspection_required": "partial",
+      "system_or_authority": "SFA / Singapore Customs TradeNet",
+      "required_documents": "SFA licence/registration; TradeNet/Cargo Clearance Permit; health certificate if required; invoice; packing list",
+      "hard_gate_if_missing": "yes",
+      "manual_validation_required": true,
+      "confidence_cap_if_unknown": 55,
+      "source_name": "SFA import requirements / Singapore Customs SFA permit",
+      "source_url": "https://www.sfa.gov.sg/food-import-export/commercial-imports/import-requirements-for-food-food-products | https://www.customs.gov.sg/doing-business/quick-links-for-traders/tradenet/competent-authorities-requirements-for-controlled-items/singapore-food-agency/",
+      "confidence": "high"
+    },
+    {
+      "rule_id": "F_SG_002",
+      "jurisdiction": "SINGAPORE",
+      "destination_or_origin": "destination",
+      "cargo_category": "animal_feed_pet_food",
+      "applies_to_codes": "EAT,animal_feed,pet_food",
+      "permit_required": "yes",
+      "prior_notification_required": "yes",
+      "certificate_required": "partial",
+      "inspection_required": "partial",
+      "system_or_authority": "SFA / AVS-NParks / TradeNet",
+      "required_documents": "Cargo Clearance Permit / AVS import permit; product documents; invoice; packing list",
+      "hard_gate_if_missing": "yes",
+      "manual_validation_required": true,
+      "confidence_cap_if_unknown": 60,
+      "source_name": "Singapore Customs SFA / AVS pet food import",
+      "source_url": "https://www.customs.gov.sg/doing-business/quick-links-for-traders/tradenet/competent-authorities-requirements-for-controlled-items/singapore-food-agency/ | https://avs.nparks.gov.sg/pets/importing-exporting-a-pet/import/pet-food/",
+      "confidence": "medium_high"
+    },
+    {
+      "rule_id": "F_UAE_001",
+      "jurisdiction": "UAE",
+      "destination_or_origin": "destination",
+      "cargo_category": "agricultural_plants_plant_products",
+      "applies_to_codes": "PEF,PEP,plants,agricultural_consignment",
+      "permit_required": "yes",
+      "prior_notification_required": "yes",
+      "certificate_required": "yes_or_partial",
+      "inspection_required": "yes",
+      "system_or_authority": "MOCCAE",
+      "required_documents": "MOCCAE import permit before shipment; phytosanitary/commodity documents if required; invoice; packing list",
+      "hard_gate_if_missing": "yes",
+      "manual_validation_required": true,
+      "confidence_cap_if_unknown": 55,
+      "source_name": "UAE MOCCAE agricultural consignment import",
+      "source_url": "https://www.moccae.gov.ae/en/services/import-permit",
+      "confidence": "medium_high"
+    },
+    {
+      "rule_id": "F_UAE_002",
+      "jurisdiction": "UAE",
+      "destination_or_origin": "destination",
+      "cargo_category": "animal_feed_aquatic_food_animal_food",
+      "applies_to_codes": "EAT,PES,animal_feed,pet_food,aquatic_food",
+      "permit_required": "yes",
+      "prior_notification_required": "yes",
+      "certificate_required": "partial",
+      "inspection_required": "yes",
+      "system_or_authority": "MOCCAE",
+      "required_documents": "Import permit valid for defined period; supporting documents; port-of-entry check; invoice; packing list",
+      "hard_gate_if_missing": "yes",
+      "manual_validation_required": true,
+      "confidence_cap_if_unknown": 55,
+      "source_name": "UAE MOCCAE animal feed and food import",
+      "source_url": "https://moccae.gov.ae/en/services/%D8%A5%D8%B5%D8%AF%D8%A7%D8%B1-%D8%A7%D8%B0%D9%86-%D8%A7%D8%B3%D8%AA%D9%8A%D8%B1%D8%A7%D8%AF-%D8%A3%D8%B9%D9%84%D8%A7%D9%81-%D9%88%D8%A3%D8%BA%D8%B0%D9%8A%D8%A9-%D8%AD%D9%8A%D9%88%D8%A7%D9%86%D9%8A%D8%A9",
+      "confidence": "medium_high"
+    },
+    {
+      "rule_id": "F_UAE_003",
+      "jurisdiction": "UAE",
+      "destination_or_origin": "destination",
+      "cargo_category": "animal_products_byproducts",
+      "applies_to_codes": "PEM,PES,animal_products",
+      "permit_required": "yes",
+      "prior_notification_required": "yes",
+      "certificate_required": "yes_or_partial",
+      "inspection_required": "yes",
+      "system_or_authority": "MOCCAE",
+      "required_documents": "Import permit; proof of treatment method if required; health/supporting documents; invoice; packing list",
+      "hard_gate_if_missing": "yes",
+      "manual_validation_required": true,
+      "confidence_cap_if_unknown": 55,
+      "source_name": "UAE MOCCAE animal products/byproducts",
+      "source_url": "https://moccae.gov.ae/en/services/permit-import-ani-waste",
+      "confidence": "medium_high"
+    },
+    {
+      "rule_id": "F_QA_001",
+      "jurisdiction": "QATAR",
+      "destination_or_origin": "destination",
+      "cargo_category": "imported_food_meat_animal_derived",
+      "applies_to_codes": "EAT,PEM,PES,food,meat,animal_derived_products",
+      "permit_required": "partial",
+      "prior_notification_required": "yes_or_customs_declaration",
+      "certificate_required": "yes",
+      "inspection_required": "yes",
+      "system_or_authority": "Qatar Ministry of Public Health / Qatar Customs",
+      "required_documents": "Health certificate or certificate of conformity; halal/slaughter certificate where applicable; invoice; packing list if available; customs declaration",
+      "hard_gate_if_missing": "yes",
+      "manual_validation_required": true,
+      "confidence_cap_if_unknown": 60,
+      "source_name": "Qatar imported food inspection / Qatar Customs",
+      "source_url": "https://www.sharek.gov.qa/en/articles/ministry-of-public-health/inspection-of-imported-food/679bb3b06798e422f45aceec | https://www.customs.gov.qa/English/Procedures/Guide-to-Clearance-of-Imported-Goods/Pages/Chapter1.aspx",
+      "confidence": "medium_high"
+    },
+    {
+      "rule_id": "F_QA_002",
+      "jurisdiction": "QATAR",
+      "destination_or_origin": "destination",
+      "cargo_category": "pharma_live_animals_plants_placeholder",
+      "applies_to_codes": "PIL,AVI,SPF,PEF,PEP",
+      "permit_required": "unknown",
+      "prior_notification_required": "unknown",
+      "certificate_required": "unknown",
+      "inspection_required": "unknown",
+      "system_or_authority": "Qatar competent authority",
+      "required_documents": "Manual authority validation required",
+      "hard_gate_if_missing": "yes",
+      "manual_validation_required": true,
+      "confidence_cap_if_unknown": 50,
+      "source_name": "Placeholder pending direct official category source",
+      "source_url": "",
+      "confidence": "low"
+    },
+    {
+      "rule_id": "F_TN_001",
+      "jurisdiction": "TUNISIA_PLACEHOLDER",
+      "destination_or_origin": "destination",
+      "cargo_category": "all_restricted_or_special_cargo",
+      "applies_to_codes": "PIL,AVI,SPF,PEM,PES,EAT,PEF,PEP,HUM,LIC,RDS,RIS,DG",
+      "permit_required": "unknown",
+      "prior_notification_required": "unknown",
+      "certificate_required": "unknown",
+      "inspection_required": "unknown",
+      "system_or_authority": "Tunisian Customs / Ministry of Health / Agriculture / competent authority",
+      "required_documents": "Manual local authority validation required; do not assume permit clearance",
+      "hard_gate_if_missing": "yes_for_special_cargo",
+      "manual_validation_required": true,
+      "confidence_cap_if_unknown": 45,
+      "source_name": "Tunisia import requirements broad reference",
+      "source_url": "https://www.trade.gov/country-commercial-guides/tunisia-import-requirements-and-documentation",
+      "confidence": "low"
+    },
+    {
+      "rule_id": "F_GENERIC_001",
+      "jurisdiction": "GENERIC",
+      "destination_or_origin": "both",
+      "cargo_category": "license_required",
+      "applies_to_codes": "LIC,dual_use,controlled_goods",
+      "permit_required": "yes_or_screening_required",
+      "prior_notification_required": "depends_country",
+      "certificate_required": "depends",
+      "inspection_required": "depends",
+      "system_or_authority": "Export/import licensing authority",
+      "required_documents": "Import/export license if controlled; end-use/end-user documents if applicable; customs declaration",
+      "hard_gate_if_missing": "yes",
+      "manual_validation_required": true,
+      "confidence_cap_if_unknown": 45,
+      "source_name": "Authored R&D rule",
+      "source_url": "",
+      "confidence": "authored"
+    },
+    {
+      "rule_id": "F_GENERIC_002",
+      "jurisdiction": "GENERIC",
+      "destination_or_origin": "destination",
+      "cargo_category": "human_remains",
+      "applies_to_codes": "HUM",
+      "permit_required": "yes_or_screening_required",
+      "prior_notification_required": "depends_country",
+      "certificate_required": "yes",
+      "inspection_required": "depends_country",
+      "system_or_authority": "Consular / health / customs authority",
+      "required_documents": "Death certificate; embalming or health certificate if required; coffin/sealing certificate if required; consular clearance if required; airline acceptance",
+      "hard_gate_if_missing": "yes",
+      "manual_validation_required": true,
+      "confidence_cap_if_unknown": 50,
+      "source_name": "Authored R&D rule",
+      "source_url": "",
+      "confidence": "authored"
+    },
+    {
+      "rule_id": "F_GENERIC_003",
+      "jurisdiction": "GENERIC",
+      "destination_or_origin": "destination",
+      "cargo_category": "pharma_medicines_medical_products",
+      "applies_to_codes": "PIL,CRT,COL,ACT,LHO",
+      "permit_required": "yes_or_screening_required",
+      "prior_notification_required": "depends_country",
+      "certificate_required": "depends_product",
+      "inspection_required": "depends_country",
+      "system_or_authority": "National medicines/health authority",
+      "required_documents": "Import authorization if medicine/controlled health product; invoice; product certificate/COA if required; temperature documents for cold chain",
+      "hard_gate_if_missing": "yes_for_regulated_medicines",
+      "manual_validation_required": true,
+      "confidence_cap_if_unknown": 55,
+      "source_name": "Authored R&D rule",
+      "source_url": "",
+      "confidence": "authored"
+    }
+  ],
+  "confidence_rules": [
+    {
+      "rule_id": "F_CONF_001",
+      "condition": "no_block_f_jurisdiction_mapping_for_airport",
+      "applies_to": "all",
+      "cap_percent": 55,
+      "message": "If airport country has no Block F jurisdiction mapping, border-control confidence must be capped."
+    },
+    {
+      "rule_id": "F_CONF_002",
+      "condition": "cargo_category_requires_permit_but_status_unknown",
+      "applies_to": "PIL,AVI,SPF,PEM,PES,EAT,PEF,PEP,RDS,RIS,HUM,LIC",
+      "cap_percent": 50,
+      "message": "Special cargo with unknown import-permit status cannot be treated as customs-ready."
+    },
+    {
+      "rule_id": "F_CONF_003",
+      "condition": "cites_status_unknown_for_wildlife_or_protected_plants",
+      "applies_to": "AVI,SPF,PEA,PEF,wildlife_products,protected_plants",
+      "cap_percent": 50,
+      "message": "CITES-sensitive cargo requires species check and permit screening."
+    },
+    {
+      "rule_id": "F_CONF_004",
+      "condition": "EU_SPS_cargo_without_CHED_or_certificate_check",
+      "applies_to": "AVI,SPF,PEM,PES,EAT,PEF,PEP",
+      "cap_percent": 55,
+      "message": "EU SPS cargo requires TRACES/CHED/certificate validation before readiness."
+    },
+    {
+      "rule_id": "F_CONF_005",
+      "condition": "US_biological_or_infectious_without_CDC_APHIS_CBP_screening",
+      "applies_to": "RDS,RIS,LHO,biological_materials",
+      "cap_percent": 45,
+      "message": "US biological/infectious cargo needs CDC/APHIS/CBP permit screening."
+    },
+    {
+      "rule_id": "F_CONF_006",
+      "condition": "Tunisia_special_cargo_without_manual_validation",
+      "applies_to": "all_special_cargo_to_TUN",
+      "cap_percent": 45,
+      "message": "Tunisia category-specific public data is weak; manual authority validation is required."
+    },
+    {
+      "rule_id": "F_CONF_007",
+      "condition": "no_final_customs_broker_or_authority_validation",
+      "applies_to": "all",
+      "cap_percent": 85,
+      "message": "Block F is advisory; final customs/border authority or broker validation is required for production."
+    }
+  ],
+  "source_refs": [
+    {
+      "source_id": "SRC_F_001",
+      "source_name": "EU TRACES modules",
+      "source_url": "https://food.ec.europa.eu/horizontal-topics/traces/modules_en",
+      "use_in_dataset": "EU CHED-A, CHED-P, CHED-PP, CHED-D mapping"
+    },
+    {
+      "source_id": "SRC_F_002",
+      "source_name": "EU TRACES overview",
+      "source_url": "https://food.ec.europa.eu/horizontal-topics/traces_en",
+      "use_in_dataset": "EU SPS import/trade certification platform"
+    },
+    {
+      "source_id": "SRC_F_003",
+      "source_name": "CDC Import Permit Program",
+      "source_url": "https://www.cdc.gov/import-permit-program/php/index.html",
+      "use_in_dataset": "US infectious biological material import permit screening"
+    },
+    {
+      "source_id": "SRC_F_004",
+      "source_name": "APHIS organisms and vectors",
+      "source_url": "https://www.aphis.usda.gov/animal-product-import/organisms-vectors",
+      "use_in_dataset": "US organisms/vectors and animal pathogen permit rules"
+    },
+    {
+      "source_id": "SRC_F_005",
+      "source_name": "CBP biological materials import",
+      "source_url": "https://www.cbp.gov/border-security/protecting-agriculture/importing-biological-materials-united-states",
+      "use_in_dataset": "US biological materials documentation/permit conditions"
+    },
+    {
+      "source_id": "SRC_F_006",
+      "source_name": "Hong Kong AFCD animal/bird import guide",
+      "source_url": "https://www.afcd.gov.hk/english/quarantine/qua_ie/files/G103guideline_animal_and_bird_Sep15E.pdf",
+      "use_in_dataset": "Hong Kong animal/bird import permit rules"
+    },
+    {
+      "source_id": "SRC_F_007",
+      "source_name": "Hong Kong AFCD CITES",
+      "source_url": "https://www.afcd.gov.hk/english/conservation/con_end/con_end_cites/con_end_cites.html",
+      "use_in_dataset": "Hong Kong endangered species/CITES permit logic"
+    },
+    {
+      "source_id": "SRC_F_008",
+      "source_name": "Singapore SFA import requirements",
+      "source_url": "https://www.sfa.gov.sg/food-import-export/commercial-imports/import-requirements-for-food-food-products",
+      "use_in_dataset": "Singapore food import requirements"
+    },
+    {
+      "source_id": "SRC_F_009",
+      "source_name": "Singapore Customs SFA controlled items",
+      "source_url": "https://www.customs.gov.sg/doing-business/quick-links-for-traders/tradenet/competent-authorities-requirements-for-controlled-items/singapore-food-agency/",
+      "use_in_dataset": "Singapore TradeNet/SFA permit routing"
+    },
+    {
+      "source_id": "SRC_F_010",
+      "source_name": "UAE MOCCAE agricultural consignment import",
+      "source_url": "https://www.moccae.gov.ae/en/services/import-permit",
+      "use_in_dataset": "UAE agricultural/plants import permit rules"
+    },
+    {
+      "source_id": "SRC_F_011",
+      "source_name": "UAE MOCCAE animal feed and aquatic food import",
+      "source_url": "https://moccae.gov.ae/en/services/%D8%A5%D8%B5%D8%AF%D8%A7%D8%B1-%D8%A7%D8%B0%D9%86-%D8%A7%D8%B3%D8%AA%D9%8A%D8%B1%D8%A7%D8%AF-%D8%A3%D8%B9%D9%84%D8%A7%D9%81-%D9%88%D8%A3%D8%BA%D8%B0%D9%8A%D8%A9-%D8%AD%D9%8A%D9%88%D8%A7%D9%86%D9%8A%D8%A9",
+      "use_in_dataset": "UAE animal feed/aquatic food permits"
+    },
+    {
+      "source_id": "SRC_F_012",
+      "source_name": "Qatar imported food inspection",
+      "source_url": "https://www.sharek.gov.qa/en/articles/ministry-of-public-health/inspection-of-imported-food/679bb3b06798e422f45aceec",
+      "use_in_dataset": "Qatar food import documents"
+    },
+    {
+      "source_id": "SRC_F_013",
+      "source_name": "Qatar Customs GCC imported food controls",
+      "source_url": "https://www.customs.gov.qa/English/Procedures/Guide-to-Clearance-of-Imported-Goods/Pages/Chapter1.aspx",
+      "use_in_dataset": "Qatar/GCC imported food health certificate controls"
+    },
+    {
+      "source_id": "SRC_F_014",
+      "source_name": "CITES permit references",
+      "source_url": "https://www.gov.uk/guidance/cites-imports-and-exports | https://travel.gc.ca/travelling/documents/cites-permits",
+      "use_in_dataset": "Global CITES import/export permit screening"
+    },
+    {
+      "source_id": "SRC_F_015",
+      "source_name": "Tunisia import requirements broad reference",
+      "source_url": "https://www.trade.gov/country-commercial-guides/tunisia-import-requirements-and-documentation",
+      "use_in_dataset": "Tunisia placeholder/manual validation flag"
+    }
+  ]
+}

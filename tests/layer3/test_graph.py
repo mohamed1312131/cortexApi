@@ -591,9 +591,7 @@ def test_terminals_are_layer3_results():
 # 19. run_layer3 exported from app.services.layer3
 # --------------------------------------------------------------------------- #
 def test_run_layer3_is_exported():
-    from app.services.layer3 import run_layer3 as exported
-
-    assert callable(exported)
+    assert callable(run_layer3)
 
 
 # --------------------------------------------------------------------------- #

@@ -1,0 +1,21 @@
+{
+  "dataset_name": "Cortex Air Mode - Block E Aircraft Fit / ULD / Door Dimensions",
+  "version": "r_and_d_v1_first_pass",
+  "generated_at_utc": "2026-06-03T10:58:46.755989+00:00",
+  "purpose": "Mock/reference aircraft fit and ULD dataset for Cortex air-mode R&D readiness checks.",
+  "legal_note": "R&D/mock reference only. Aircraft fit must be validated by carrier/loadmaster, aircraft W&B manual, cargo loading manual, ULD compatibility, floor loading, CG, restraint and station procedures before operational use.",
+  "coverage": {
+    "aircraft_specs": 7,
+    "uld_specs": 10,
+    "fit_rules": 9,
+    "source_refs": 8
+  },
+  "integration_note": "Use Block E after Block A/B/C/D. If cargo is HEA/BIG/OHG/ACT/BUP or exceeds passenger-belly limits, run aircraft/ULD fit rules and cap confidence unless final station/loadmaster confirmation exists.",
+  "recommended_next_research": [
+    "B747-400F operator-specific specs",
+    "A320/A321/B737 exact belly door limits",
+    "RKN/RAP official Envirotainer datasheets with max gross weights",
+    "operator-specific ULD compatibility by aircraft registration/configuration",
+    "floor loading and restraint tables by aircraft position"
+  ]
+}

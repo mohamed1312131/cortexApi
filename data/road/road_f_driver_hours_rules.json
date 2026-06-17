@@ -1,0 +1,74 @@
+[
+  {
+    "rule_id": "EU_DRIVER_DAILY_DRIVING_NORMAL",
+    "rule": "normal_daily_driving_limit_hours",
+    "value": 9,
+    "unit": "hours",
+    "hard_gate": true,
+    "factor_type": "HARD_GATE",
+    "_source": "EU_REG_561_2006",
+    "_confidence": "verified"
+  },
+  {
+    "rule_id": "EU_DRIVER_DAILY_DRIVING_EXTENDED",
+    "rule": "extended_daily_driving_limit_hours",
+    "value": 10,
+    "unit": "hours",
+    "limit": "no more than twice during the week",
+    "hard_gate": true,
+    "factor_type": "HARD_GATE",
+    "_source": "EU_REG_561_2006",
+    "_confidence": "verified"
+  },
+  {
+    "rule_id": "EU_DRIVER_BREAK_AFTER_4_5H",
+    "rule": "break_after_continuous_driving",
+    "value": 45,
+    "unit": "minutes",
+    "trigger": "after 4.5 hours driving unless taking rest period",
+    "hard_gate": true,
+    "factor_type": "HARD_GATE",
+    "_source": "EU_REG_561_2006",
+    "_confidence": "verified"
+  },
+  {
+    "rule_id": "EU_DRIVER_WEEKLY_DRIVING_CAP",
+    "rule": "weekly_driving_cap",
+    "value": 56,
+    "unit": "hours",
+    "hard_gate": true,
+    "factor_type": "HARD_GATE",
+    "_source": "EU_REG_561_2006",
+    "_confidence": "verified"
+  },
+  {
+    "rule_id": "EU_DRIVER_FORTNIGHTLY_DRIVING_CAP",
+    "rule": "fortnightly_driving_cap",
+    "value": 90,
+    "unit": "hours",
+    "hard_gate": true,
+    "factor_type": "HARD_GATE",
+    "_source": "EU_REG_561_2006",
+    "_confidence": "verified"
+  },
+  {
+    "rule_id": "EU_DRIVER_REGULAR_DAILY_REST",
+    "rule": "regular_daily_rest",
+    "value": 11,
+    "unit": "hours",
+    "hard_gate": true,
+    "factor_type": "HARD_GATE",
+    "_source": "EU_REG_561_2006",
+    "_confidence": "verified"
+  },
+  {
+    "rule_id": "EU_DRIVER_REGULAR_WEEKLY_REST",
+    "rule": "regular_weekly_rest",
+    "value": 45,
+    "unit": "hours",
+    "hard_gate": true,
+    "factor_type": "HARD_GATE",
+    "_source": "EU_REG_561_2006",
+    "_confidence": "verified"
+  }
+]

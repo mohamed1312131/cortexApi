@@ -11,6 +11,13 @@ from app.services.layer2.fetch_planner import build_fetch_plan
 from app.services.layer2.registry import get_connector
 
 
+def _response_by_block_id(responses, block_id: str):
+    for response in responses:
+        if response.block_id == block_id:
+            return response
+    raise AssertionError(f"Expected block response {block_id}")
+
+
 def test_registry_contains_road_blocks():
     assert get_connector("AIR-A") is not None
     assert get_connector("AIR-B") is not None
@@ -51,9 +58,7 @@ def test_executor_still_uses_registry_for_road_c():
 
     responses = execute_fetch_plan(request, plan)
 
-    road_c_response = next(
-        response for response in responses if response.block_id == "ROAD-C"
-    )
+    road_c_response = _response_by_block_id(responses, "ROAD-C")
     assert any(
         gate.severity == GateSeverity.blocking
         and gate.status == GateStatus.triggered

@@ -1,0 +1,58 @@
+[
+  {
+    "rule_id": "SEA_D_LIVE_SCHEDULE_REQUIRED",
+    "factor_type": "HARD_GATE",
+    "trigger": "shipper asks for exact sailing or booking readiness",
+    "logic": "Do not infer exact departure from static carrier profile. A live carrier schedule lookup is required for origin, destination, date window, cargo type and equipment.",
+    "cortex_action": "request_live_schedule_or_mark_booking_not_confirmed",
+    "_confidence": "authored"
+  },
+  {
+    "rule_id": "SEA_D_NO_LIVE_SERVICE_FOUND",
+    "factor_type": "HARD_GATE",
+    "trigger": "live carrier schedule search returns no service for port pair/date window",
+    "logic": "Shipment cannot be booked on that carrier/service for that window without alternative routing.",
+    "cortex_action": "suggest_alternate_port_carrier_or_date",
+    "_confidence": "authored"
+  },
+  {
+    "rule_id": "SEA_D_DG_CARRIER_ACCEPTANCE",
+    "factor_type": "HARD_GATE",
+    "trigger": "cargo is dangerous goods",
+    "logic": "Carrier DG acceptance is required even if SEA-A regulatory reference says transport may be possible.",
+    "cortex_action": "require_carrier_DG_approval",
+    "_confidence": "authored"
+  },
+  {
+    "rule_id": "SEA_D_OOG_SPECIAL_CARGO_APPROVAL",
+    "factor_type": "HARD_GATE",
+    "trigger": "cargo is out-of-gauge, flat-rack, open-top, breakbulk, project cargo, or heavy lift",
+    "logic": "Special cargo desk/carrier approval is required before booking.",
+    "cortex_action": "require_special_cargo_approval",
+    "_confidence": "authored"
+  },
+  {
+    "rule_id": "SEA_D_REEFER_SERVICE_VALIDATION",
+    "factor_type": "PLANNING_FACTOR",
+    "trigger": "cargo requires reefer equipment",
+    "logic": "Carrier must offer reefer equipment/service on the route and terminal must support reefer handling.",
+    "cortex_action": "validate_reefer_service_and_equipment_availability",
+    "_confidence": "authored"
+  },
+  {
+    "rule_id": "SEA_D_TRANSSHIPMENT_RISK",
+    "factor_type": "PLANNING_FACTOR",
+    "trigger": "origin/destination likely not both mainline hub ports",
+    "logic": "Feeder/transshipment route may add delay, missed-connection risk, extra handling and documentation timing risk.",
+    "cortex_action": "flag_transshipment_and_connection_risk",
+    "_confidence": "authored"
+  },
+  {
+    "rule_id": "SEA_D_RATE_CAPACITY_OUT_OF_SCOPE",
+    "factor_type": "PLANNING_FACTOR",
+    "trigger": "user asks cost or space availability",
+    "logic": "Static carrier reference does not provide rate or space. Requires quote/API/TMS/carrier booking data.",
+    "cortex_action": "mark_rate_capacity_as_live_paid_data_required",
+    "_confidence": "authored"
+  }
+]

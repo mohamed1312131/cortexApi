@@ -24,10 +24,12 @@ from app.services.layer1.conversation_lock import conversation_guard
 
 
 class _BoomRedis:
-    def get(self, *args, **kwargs):
+    @staticmethod
+    def get(*args, **kwargs):
         raise RedisError("connection refused")
 
-    def setex(self, *args, **kwargs):
+    @staticmethod
+    def setex(*args, **kwargs):
         raise RedisError("connection refused")
 
 

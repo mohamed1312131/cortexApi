@@ -54,6 +54,13 @@ def _road_request(
     )
 
 
+def _block_response(package, block_id: str):
+    for response in package.block_responses:
+        if response.block_id == block_id:
+            return response
+    raise AssertionError(f"Expected block response {block_id}")
+
+
 def test_road_request_plans_road_cost_last():
     plan = build_fetch_plan(_road_request())
 
@@ -71,11 +78,7 @@ def test_layer2_service_road_runs_road_cost_when_road_c_not_blocked():
     package = build_fact_package_for_request(_road_request())
 
     assert "ROAD-COST" in [response.block_id for response in package.block_responses]
-    road_cost = next(
-        response
-        for response in package.block_responses
-        if response.block_id == "ROAD-COST"
-    )
+    road_cost = _block_response(package, "ROAD-COST")
     assert road_cost.status in {BlockStatus.found, BlockStatus.unknown}
     assert road_cost.data["cost_status"] == "planning_reference_not_a_quote"
     assert RequestedMode.road in package.derived_rollup.modes_covered
@@ -84,18 +87,12 @@ def test_layer2_service_road_runs_road_cost_when_road_c_not_blocked():
 def test_layer2_service_road_runs_road_cost_even_when_road_c_blocks():
     package = build_fact_package_for_request(_road_request("CN", "FR"))
 
-    road_c = next(
-        response for response in package.block_responses if response.block_id == "ROAD-C"
-    )
+    road_c = _block_response(package, "ROAD-C")
     assert any(
         gate.severity == GateSeverity.blocking
         and gate.status == GateStatus.triggered
         for gate in road_c.hard_gates
     )
-    road_cost = next(
-        response
-        for response in package.block_responses
-        if response.block_id == "ROAD-COST"
-    )
+    road_cost = _block_response(package, "ROAD-COST")
     # cascade-skip removed: cost reference still runs for a blocked corridor
     assert road_cost.status != BlockStatus.skipped

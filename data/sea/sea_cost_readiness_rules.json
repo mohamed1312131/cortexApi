@@ -1,0 +1,38 @@
+[
+  {
+    "rule_id": "COST_RULE_NOT_A_QUOTE",
+    "factor": "Any cost result from this file",
+    "gate_type": "PLANNING_FACTOR",
+    "message": "Always label as planning estimate only; require live quote before booking."
+  },
+  {
+    "rule_id": "COST_RULE_RATE_STALE",
+    "factor": "Rate source older than 14 days for market benchmark",
+    "gate_type": "PLANNING_FACTOR",
+    "message": "Rates may be stale; refresh benchmark or request quote."
+  },
+  {
+    "rule_id": "COST_RULE_LOCAL_CHARGES_MISSING",
+    "factor": "Local charges missing at origin/destination",
+    "gate_type": "PLANNING_FACTOR",
+    "message": "Ask carrier/forwarder for THC, doc, delivery order, port storage and local fees."
+  },
+  {
+    "rule_id": "COST_RULE_DD_RISK",
+    "factor": "Free-time unknown or cargo likely to dwell",
+    "gate_type": "PLANNING_FACTOR",
+    "message": "Flag demurrage/detention exposure and require last-free-day tracking."
+  },
+  {
+    "rule_id": "COST_RULE_SPECIAL_CARGO",
+    "factor": "DG, reefer, tank, OOG, flat rack, open top cargo",
+    "gate_type": "PLANNING_FACTOR",
+    "message": "Special cargo surcharge and carrier acceptance must be confirmed."
+  },
+  {
+    "rule_id": "COST_RULE_USER_ASKS_FINAL_PRICE",
+    "factor": "User asks for exact final price",
+    "gate_type": "HARD_GATE_FOR_PRICING_CLAIM",
+    "message": "Do not provide exact quote from reference data; require live carrier/forwarder quote."
+  }
+]

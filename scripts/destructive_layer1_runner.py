@@ -674,33 +674,37 @@ def evaluate(data: dict[str, Any], expect: dict[str, Any], prev_data: dict[str, 
     if "food_perishable_in" in expect and flags.get("food_perishable") not in expect["food_perishable_in"]:
         failures.append(f"food_perishable expected one of {expect['food_perishable_in']}, got {flags.get('food_perishable')!r}")
 
-    if expect.get("origin_city_is_null_or_not_country"):
-        if lane.get("origin_city") in {"Germany", "DE"}:
-            failures.append(f"origin_city should not be country, got {lane.get('origin_city')!r}")
+    if expect.get("origin_city_is_null_or_not_country") and lane.get("origin_city") in {"Germany", "DE"}:
+        failures.append(f"origin_city should not be country, got {lane.get('origin_city')!r}")
 
-    if expect.get("destination_city_is_null_or_not_country"):
-        if lane.get("destination_city") in {"Tunisia", "TN"}:
-            failures.append(f"destination_city should not be country, got {lane.get('destination_city')!r}")
+    if expect.get("destination_city_is_null_or_not_country") and lane.get("destination_city") in {"Tunisia", "TN"}:
+        failures.append(f"destination_city should not be country, got {lane.get('destination_city')!r}")
 
-    if expect.get("same_case") and prev_data is not None:
-        if data.get("case_id") != prev_data.get("case_id"):
-            failures.append(f"expected same case_id, got {prev_data.get('case_id')} then {data.get('case_id')}")
+    if (
+        expect.get("same_case")
+        and prev_data is not None
+        and data.get("case_id") != prev_data.get("case_id")
+    ):
+        failures.append(f"expected same case_id, got {prev_data.get('case_id')} then {data.get('case_id')}")
 
-    if expect.get("new_case_expected") and prev_data is not None:
-        if data.get("case_id") == prev_data.get("case_id"):
-            failures.append(f"expected new case_id, got same {data.get('case_id')}")
+    if (
+        expect.get("new_case_expected")
+        and prev_data is not None
+        and data.get("case_id") == prev_data.get("case_id")
+    ):
+        failures.append(f"expected new case_id, got same {data.get('case_id')}")
 
     # Consistency expectations.
     if expect.get("conflict_expected"):
         warnings = json.dumps(intake.get("inferred_flags", {})).lower()
         if "conflict" not in warnings and "warning" not in warnings:
             failures.append("conflict expected, but no visible warning/conflict was returned")
-        if data.get("ready_for_layer_2") is True:
-            failures.append("conflict expected, but request became ready_for_layer_2=true")
 
-    if expect.get("ambiguity_expected"):
-        if data.get("ready_for_layer_2") is True:
-            failures.append("ambiguous lane was marked ready_for_layer_2=true")
+    if expect.get("conflict_expected") and data.get("ready_for_layer_2") is True:
+        failures.append("conflict expected, but request became ready_for_layer_2=true")
+
+    if expect.get("ambiguity_expected") and data.get("ready_for_layer_2") is True:
+        failures.append("ambiguous lane was marked ready_for_layer_2=true")
 
     if expect.get("must_not_mix_multi_shipment"):
         desc = (cargo.get("cargo_description") or "").lower()

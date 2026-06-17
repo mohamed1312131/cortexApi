@@ -1,0 +1,308 @@
+{
+  "metadata": {
+    "block": "SEA-I",
+    "title": "Chokepoints + Schedule Readiness",
+    "generated_at": "2026-06-03T14:10:12Z",
+    "record_count": 12,
+    "source_model": "static reference + live validation flags"
+  },
+  "chokepoints": [
+    {
+      "record_id": "CHOKEPOINT_SUEZ",
+      "name": "Suez Canal / Red Sea route exposure",
+      "waterway_or_area": "Suez Canal, Red Sea approaches",
+      "region": "Egypt / Red Sea / Mediterranean-Indian Ocean corridor",
+      "risk_types": [
+        "geopolitical_security_disruption",
+        "rerouting",
+        "toll_cost_impact",
+        "convoy_navigation_rules"
+      ],
+      "typical_planning_impact": "If disrupted or avoided, Asia-Europe traffic may be rerouted around the Cape of Good Hope, adding major transit time and fuel/cost exposure.",
+      "readiness_action": "If route depends on Suez/Red Sea, check current Suez Canal Authority circulars, carrier route advisories, and security notices before confirming readiness.",
+      "hard_gate": false,
+      "hard_gate_condition": "Only hard gate if live authority/carrier/security advisory confirms closure, prohibition, or carrier refusal for the intended sailing.",
+      "planning_factor": true,
+      "requires_live_validation": true,
+      "live_validation_source_ids": [
+        "SUEZ_CANAL_AUTHORITY",
+        "SUEZ_CANAL_CIRCULARS",
+        "carrier_route_advisory"
+      ],
+      "_source": [
+        "UNCTAD_RMT_2024",
+        "SUEZ_CANAL_AUTHORITY",
+        "SUEZ_CANAL_CIRCULARS"
+      ],
+      "_confidence": "verified_reference_live_status_required",
+      "confidence_cap_if_missing": 0.7
+    },
+    {
+      "record_id": "CHOKEPOINT_PANAMA",
+      "name": "Panama Canal draft and transit exposure",
+      "waterway_or_area": "Panama Canal",
+      "region": "Panama / Atlantic-Pacific corridor",
+      "risk_types": [
+        "draft_restriction",
+        "transit_slot_restriction",
+        "drought_water_level_impact",
+        "booking_delay",
+        "toll_cost_impact"
+      ],
+      "typical_planning_impact": "Draft and daily transit-slot changes can force booking delays, lighter loading, alternate routing, or higher transit cost exposure.",
+      "readiness_action": "If route depends on Panama Canal, check current Panama Canal Authority advisories for maximum authorized draft, booking slots, and transit restrictions.",
+      "hard_gate": false,
+      "hard_gate_condition": "Hard gate only if current advisory shows the vessel/cargo plan cannot transit under current draft/slot rules.",
+      "planning_factor": true,
+      "requires_live_validation": true,
+      "live_validation_source_ids": [
+        "PANAMA_CANAL_ADVISORIES"
+      ],
+      "_source": [
+        "UNCTAD_RMT_2024",
+        "PANAMA_CANAL_ADVISORIES",
+        "PANAMA_CANAL_DRAFT_TRANSITS_2024"
+      ],
+      "_confidence": "verified_reference_live_status_required",
+      "confidence_cap_if_missing": 0.7
+    },
+    {
+      "record_id": "CHOKEPOINT_MALACCA",
+      "name": "Strait of Malacca exposure",
+      "waterway_or_area": "Strait of Malacca",
+      "region": "Southeast Asia",
+      "risk_types": [
+        "congestion",
+        "collision/navigational_risk",
+        "strategic_chokepoint_exposure",
+        "security_risk"
+      ],
+      "typical_planning_impact": "High-density Asia trade corridor; disruption or congestion can affect schedule reliability.",
+      "readiness_action": "Flag as strategic chokepoint exposure for Asia-Europe/Asia-Middle East routings; validate carrier ETA and schedule buffer.",
+      "hard_gate": false,
+      "hard_gate_condition": "Hard gate only if live authority/carrier/security advisory confirms closure or sailing restriction.",
+      "planning_factor": true,
+      "requires_live_validation": true,
+      "live_validation_source_ids": [
+        "carrier_schedule",
+        "maritime_security_advisory"
+      ],
+      "_source": [
+        "UNCTAD_RMT_2024",
+        "authored_chokepoint_reference"
+      ],
+      "_confidence": "authored_from_public_chokepoint_context",
+      "confidence_cap_if_missing": 0.75
+    },
+    {
+      "record_id": "CHOKEPOINT_BAB_EL_MANDEB",
+      "name": "Bab-el-Mandeb / Red Sea exposure",
+      "waterway_or_area": "Bab-el-Mandeb Strait / southern Red Sea",
+      "region": "Yemen / Djibouti / Eritrea approaches",
+      "risk_types": [
+        "geopolitical_security_disruption",
+        "rerouting",
+        "insurance_cost_impact",
+        "schedule_reliability_risk"
+      ],
+      "typical_planning_impact": "Security incidents can cause carrier avoidance of Red Sea/Suez route and rerouting via Cape of Good Hope.",
+      "readiness_action": "For routes using Red Sea/Suez, validate current carrier routing and security advisories before confirming timeline.",
+      "hard_gate": false,
+      "hard_gate_condition": "Hard gate only when carrier refuses the route or live security/authority notices block transit.",
+      "planning_factor": true,
+      "requires_live_validation": true,
+      "live_validation_source_ids": [
+        "carrier_route_advisory",
+        "maritime_security_advisory"
+      ],
+      "_source": [
+        "UNCTAD_RMT_2024",
+        "authored_chokepoint_reference"
+      ],
+      "_confidence": "verified_reference_live_status_required",
+      "confidence_cap_if_missing": 0.7
+    },
+    {
+      "record_id": "CHOKEPOINT_HORMUZ",
+      "name": "Strait of Hormuz exposure",
+      "waterway_or_area": "Strait of Hormuz",
+      "region": "Persian Gulf / Gulf of Oman",
+      "risk_types": [
+        "geopolitical_security_risk",
+        "energy_trade_exposure",
+        "insurance_cost_impact",
+        "rerouting_limited"
+      ],
+      "typical_planning_impact": "Strategic energy and Gulf trade chokepoint; disruption can affect insurance, carrier acceptance, and service reliability.",
+      "readiness_action": "For Gulf cargo, validate carrier acceptance, insurance/security advisories, and schedule buffer.",
+      "hard_gate": false,
+      "hard_gate_condition": "Hard gate only when carrier, authority, or security advisory blocks intended transit.",
+      "planning_factor": true,
+      "requires_live_validation": true,
+      "live_validation_source_ids": [
+        "carrier_route_advisory",
+        "maritime_security_advisory"
+      ],
+      "_source": [
+        "UNCTAD_RMT_2024",
+        "authored_chokepoint_reference"
+      ],
+      "_confidence": "authored_from_public_chokepoint_context",
+      "confidence_cap_if_missing": 0.75
+    }
+  ],
+  "schedule_readiness_rules": [
+    {
+      "rule_id": "CUTOFF_CARGO_GATE_IN",
+      "name": "Cargo / container gate-in cutoff",
+      "applies_when": "containerized ocean shipment has assigned sailing or vessel booking",
+      "required_input_fields": [
+        "etd",
+        "carrier",
+        "origin_terminal",
+        "gate_in_cutoff_datetime",
+        "container_ready_datetime"
+      ],
+      "deadline_type": "carrier_terminal_cutoff",
+      "default_deadline_assumption": "carrier/terminal specific; commonly days before sailing, do not infer exact time without schedule source",
+      "hard_gate": true,
+      "hard_gate_condition": "container_ready_datetime or terminal_gate_in_time is after gate_in_cutoff_datetime",
+      "planning_factor": false,
+      "readiness_message": "Container misses terminal gate-in cutoff; it cannot be loaded on that sailing unless carrier/terminal grants exception.",
+      "_source": [
+        "MAERSK_CUTOFFS"
+      ],
+      "_confidence": "verified_concept_live_cutoff_required",
+      "confidence_cap_if_missing": 0.6
+    },
+    {
+      "rule_id": "CUTOFF_VGM",
+      "name": "VGM cutoff",
+      "applies_when": "packed export container subject to SOLAS VGM",
+      "required_input_fields": [
+        "vgm_submitted",
+        "vgm_cutoff_datetime",
+        "vgm_submission_datetime"
+      ],
+      "deadline_type": "carrier_terminal_cutoff",
+      "default_deadline_assumption": "must be submitted before the carrier/terminal VGM cutoff and before vessel loading",
+      "hard_gate": true,
+      "hard_gate_condition": "VGM missing or submitted after VGM cutoff",
+      "planning_factor": false,
+      "readiness_message": "No timely VGM means no load for that sailing.",
+      "_source": [
+        "MAERSK_CUTOFFS",
+        "SEA_F_SOLAS_VGM"
+      ],
+      "_confidence": "verified_concept_live_cutoff_required",
+      "confidence_cap_if_missing": 0.6
+    },
+    {
+      "rule_id": "CUTOFF_SHIPPING_INSTRUCTIONS",
+      "name": "Shipping instructions / documentation cutoff",
+      "applies_when": "ocean shipment requires bill of lading or sea waybill generation",
+      "required_input_fields": [
+        "shipping_instructions_submitted",
+        "si_cutoff_datetime",
+        "si_submission_datetime"
+      ],
+      "deadline_type": "carrier_document_cutoff",
+      "default_deadline_assumption": "carrier/sailing specific; must be validated per booking",
+      "hard_gate": true,
+      "hard_gate_condition": "shipping instructions missing or submitted after carrier documentation cutoff",
+      "planning_factor": false,
+      "readiness_message": "Late shipping instructions can block B/L creation and cause shipment roll or documentation failure.",
+      "_source": [
+        "MAERSK_CUTOFFS"
+      ],
+      "_confidence": "verified_concept_live_cutoff_required",
+      "confidence_cap_if_missing": 0.6
+    },
+    {
+      "rule_id": "CUTOFF_DG_DOCUMENTS",
+      "name": "Dangerous goods document cutoff",
+      "applies_when": "shipment contains dangerous goods",
+      "required_input_fields": [
+        "dg_declaration_submitted",
+        "dg_cutoff_datetime",
+        "dg_submission_datetime"
+      ],
+      "deadline_type": "carrier_dg_document_cutoff",
+      "default_deadline_assumption": "carrier/sailing specific; often earlier than standard documentation cutoff",
+      "hard_gate": true,
+      "hard_gate_condition": "DG declaration or required DG packing certificate missing/late",
+      "planning_factor": false,
+      "readiness_message": "DG paperwork must be accepted before cargo can be planned for vessel stowage.",
+      "_source": [
+        "SEA_A",
+        "SEA_F",
+        "carrier_booking_cutoff_required"
+      ],
+      "_confidence": "authored_from_dg_document_rules_live_cutoff_required",
+      "confidence_cap_if_missing": 0.55
+    },
+    {
+      "rule_id": "SAILING_FREQUENCY_IMPACT",
+      "name": "Missed service-cycle impact",
+      "applies_when": "shipment misses intended sailing",
+      "required_input_fields": [
+        "intended_sailing_etd",
+        "service_frequency_days"
+      ],
+      "deadline_type": "planning_estimate",
+      "default_deadline_assumption": "if service_frequency_days unknown, weekly container service estimate = 7 days with low confidence",
+      "hard_gate": false,
+      "hard_gate_condition": "none; missing a sailing is a delay/cost planning factor unless cargo has a fixed latest acceptable arrival date",
+      "planning_factor": true,
+      "readiness_message": "Missing a weekly ocean service usually loses a service cycle, not a few hours.",
+      "_source": [
+        "MAERSK_SCHEDULES",
+        "authored_planning_heuristic"
+      ],
+      "_confidence": "authored_planning_heuristic",
+      "confidence_cap_if_missing": 0.65
+    },
+    {
+      "rule_id": "DEMURRAGE_FREE_TIME",
+      "name": "Demurrage / terminal free-time risk",
+      "applies_when": "full import container remains in terminal beyond free time",
+      "required_input_fields": [
+        "container_discharge_datetime",
+        "free_time_expiry_datetime",
+        "planned_pickup_datetime"
+      ],
+      "deadline_type": "carrier_terminal_free_time",
+      "default_deadline_assumption": "free time and tariff are carrier/country/terminal specific",
+      "hard_gate": false,
+      "hard_gate_condition": "none by default; may become operational block if charges/holds prevent release",
+      "planning_factor": true,
+      "readiness_message": "Pickup after free time expiry can trigger demurrage/storage charges.",
+      "_source": [
+        "MAERSK_DD_FREE_TIME"
+      ],
+      "_confidence": "verified_concept_tariff_required",
+      "confidence_cap_if_missing": 0.65
+    },
+    {
+      "rule_id": "DETENTION_FREE_TIME",
+      "name": "Detention / equipment free-time risk",
+      "applies_when": "empty container is returned after agreed free time",
+      "required_input_fields": [
+        "container_outgate_datetime",
+        "free_time_expiry_datetime",
+        "planned_empty_return_datetime"
+      ],
+      "deadline_type": "carrier_equipment_free_time",
+      "default_deadline_assumption": "free time and tariff are carrier/country/terminal specific",
+      "hard_gate": false,
+      "hard_gate_condition": "none by default; may become cost or equipment-release issue",
+      "planning_factor": true,
+      "readiness_message": "Late empty return can trigger detention charges.",
+      "_source": [
+        "MAERSK_DD_FREE_TIME"
+      ],
+      "_confidence": "verified_concept_tariff_required",
+      "confidence_cap_if_missing": 0.65
+    }
+  ]
+}

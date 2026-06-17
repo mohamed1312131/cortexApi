@@ -1,0 +1,257 @@
+{
+ "_meta": {
+  "purpose": "Approximate 'freighter vs belly' and 'who serves the lane' WITHOUT paid schedule APIs",
+  "method": "Layer 1: cargo carriers + freighter fleets + home hubs. Layer 2: aircraft capacity specs. Layer 3 (lane capacity) = PAID, not included.",
+  "sources": "Wikipedia 747/777 operator lists, AeroTime, SimpleFlying, carrier fleet pages 2024-2026",
+  "honest_limit": "This tells you WHICH carriers COULD fly cargo on a lane (both ends served by a freighter carrier's network). It does NOT give live schedules, space, or frequency - that is paid (Cirium/OAG/WebCargo)."
+ },
+ "aircraft_cargo_specs": {
+  "_note": "Fixed reference - max structural payload (tonnes) and deck type",
+  "B747-8F": {
+   "max_payload_t": 137,
+   "deck": "main+lower",
+   "nose_door": true,
+   "max_piece_len_m": 45,
+   "role": "heavy/oversized intercontinental"
+  },
+  "B747-400F": {
+   "max_payload_t": 112,
+   "deck": "main+lower",
+   "nose_door": true,
+   "role": "heavy intercontinental"
+  },
+  "B777F": {
+   "max_payload_t": 102,
+   "deck": "main+lower",
+   "nose_door": false,
+   "side_door_m": "3.65x3.04",
+   "role": "workhorse long-haul"
+  },
+  "B767-300F": {
+   "max_payload_t": 52,
+   "deck": "main+lower",
+   "role": "regional/medium-haul express"
+  },
+  "B757-200F": {
+   "max_payload_t": 39,
+   "deck": "main+lower",
+   "role": "regional express"
+  },
+  "A330-200F": {
+   "max_payload_t": 70,
+   "deck": "main+lower",
+   "role": "medium/long-haul"
+  },
+  "MD-11F": {
+   "max_payload_t": 91,
+   "deck": "main+lower",
+   "role": "long-haul (legacy)"
+  },
+  "A300-600F": {
+   "max_payload_t": 48,
+   "deck": "main+lower",
+   "role": "regional express"
+  },
+  "belly_widebody_A350_B777_pax": {
+   "max_payload_t": 15,
+   "deck": "lower_only",
+   "role": "passenger belly - LD3/LD6 ULDs only, no main-deck/oversized"
+  },
+  "belly_narrowbody_A320_B737_pax": {
+   "max_payload_t": 2.5,
+   "deck": "lower_only",
+   "role": "passenger belly - very limited, bulk/small only"
+  }
+ },
+ "cargo_carriers": [
+  {
+   "name": "FedEx Express",
+   "type": "integrator",
+   "home_hubs": [
+    "MEM",
+    "IND",
+    "CDG",
+    "CAN"
+   ],
+   "freighters": [
+    "B777F",
+    "B767-300F",
+    "MD-11F",
+    "A300-600F"
+   ],
+   "network": "global express"
+  },
+  {
+   "name": "UPS Airlines",
+   "type": "integrator",
+   "home_hubs": [
+    "SDF",
+    "CGN",
+    "PVG"
+   ],
+   "freighters": [
+    "B747-8F",
+    "B767-300F",
+    "B757-200F",
+    "MD-11F",
+    "A300-600F"
+   ],
+   "network": "global express"
+  },
+  {
+   "name": "DHL Aviation",
+   "type": "integrator",
+   "home_hubs": [
+    "LEJ",
+    "CVG",
+    "HKG"
+   ],
+   "freighters": [
+    "B777F",
+    "B767-300F",
+    "B757-200F",
+    "A330-200F"
+   ],
+   "network": "global express"
+  },
+  {
+   "name": "Cathay Cargo",
+   "type": "all-cargo+belly",
+   "home_hubs": [
+    "HKG"
+   ],
+   "freighters": [
+    "B747-8F",
+    "B747-400ERF",
+    "B777F"
+   ],
+   "network": "Asia-Europe-NAm"
+  },
+  {
+   "name": "Qatar Airways Cargo",
+   "type": "all-cargo+belly",
+   "home_hubs": [
+    "DOH"
+   ],
+   "freighters": [
+    "B777F",
+    "B747-8F"
+   ],
+   "network": "global, MidEast crossroads"
+  },
+  {
+   "name": "Emirates SkyCargo",
+   "type": "all-cargo+belly",
+   "home_hubs": [
+    "DXB"
+   ],
+   "freighters": [
+    "B777F"
+   ],
+   "network": "global, MidEast crossroads"
+  },
+  {
+   "name": "Korean Air Cargo",
+   "type": "all-cargo+belly",
+   "home_hubs": [
+    "ICN"
+   ],
+   "freighters": [
+    "B777F",
+    "B747-8F"
+   ],
+   "network": "Asia-NAm-Europe"
+  },
+  {
+   "name": "Cargolux",
+   "type": "all-cargo",
+   "home_hubs": [
+    "LUX"
+   ],
+   "freighters": [
+    "B747-8F",
+    "B747-400F"
+   ],
+   "network": "global, Europe's largest all-cargo"
+  },
+  {
+   "name": "Lufthansa Cargo",
+   "type": "all-cargo+belly",
+   "home_hubs": [
+    "FRA"
+   ],
+   "freighters": [
+    "B777F",
+    "MD-11F"
+   ],
+   "network": "Europe-Asia-NAm-Africa"
+  },
+  {
+   "name": "Air France-KLM Martinair Cargo",
+   "type": "all-cargo+belly",
+   "home_hubs": [
+    "CDG",
+    "AMS"
+   ],
+   "freighters": [
+    "B777F"
+   ],
+   "network": "intercontinental"
+  },
+  {
+   "name": "Turkish Cargo",
+   "type": "all-cargo+belly",
+   "home_hubs": [
+    "IST"
+   ],
+   "freighters": [
+    "B777F",
+    "A330-200F"
+   ],
+   "network": "global, fast-growing"
+  },
+  {
+   "name": "China Airlines Cargo",
+   "type": "all-cargo+belly",
+   "home_hubs": [
+    "TPE"
+   ],
+   "freighters": [
+    "B747-8F",
+    "B777F"
+   ],
+   "network": "Asia-NAm-Europe"
+  },
+  {
+   "name": "Atlas Air",
+   "type": "ACMI/charter",
+   "home_hubs": [
+    "JFK",
+    "CVG"
+   ],
+   "freighters": [
+    "B747-8F",
+    "B747-400F",
+    "B777F"
+   ],
+   "network": "charter/wet-lease global"
+  },
+  {
+   "name": "Singapore Airlines Cargo",
+   "type": "all-cargo+belly",
+   "home_hubs": [
+    "SIN"
+   ],
+   "freighters": [
+    "B747-400F"
+   ],
+   "network": "Asia-Europe-NAm"
+  }
+ ],
+ "lane_inference_rule": {
+  "description": "v1 approximation for 'freighter available on lane A->B'",
+  "rule": "IF origin_hub in any carrier.home_hubs OR is mega_hub/major_cargo_hub AND destination_hub likewise, THEN freighter service is plausible (list matching carriers). ELSE assume belly-only or requires transshipment via nearest mega_hub.",
+  "freighter_needed_when": "cargo > ~15t OR oversized OR main-deck-only DG OR needs nose-door loading",
+  "belly_sufficient_when": "cargo < ~15t AND fits LD3/LD6 AND not main-deck-restricted"
+ }
+}

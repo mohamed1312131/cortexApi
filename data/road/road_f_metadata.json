@@ -1,0 +1,60 @@
+{
+  "block_id": "ROAD-F",
+  "block_name": "Road documents, driver requirements and realistic transit time",
+  "version": "v1.0",
+  "generated_at": "2026-06-05",
+  "purpose": "Road readiness gate for documents, professional-driver rules, customs transit and realistic transit-time estimation.",
+  "not_a_route_optimizer": true,
+  "coverage_summary": {
+    "document_requirement_records": 15,
+    "driver_hours_rule_records": 7,
+    "border_buffer_records": 8,
+    "confidence_rule_records": 6,
+    "transit_model_records": 1
+  },
+  "known_limitations": [
+    "Border buffers are planning estimates, not live waits.",
+    "No country-specific public holiday truck bans.",
+    "No carrier appointment cutoffs.",
+    "No live ferry schedules or port congestion.",
+    "EU-centered driver-hours rules; non-EU corridor rules may require local validation.",
+    "Customs quick-info is explanatory; authentic legal text remains EU Official Journal legislation."
+  ],
+  "sources": {
+    "CMR_CONVENTION": {
+      "title": "Convention on the Contract for the International Carriage of Goods by Road (CMR)",
+      "url": "https://unece.org/DAM/trans/conventn/cmr_e.pdf",
+      "_confidence": "verified"
+    },
+    "UNECE_TIR_CONVENTION": {
+      "title": "TIR Convention / UNECE TIR information",
+      "url": "https://unece.org/tir/welcome-to-tir",
+      "_confidence": "verified"
+    },
+    "EU_REG_561_2006": {
+      "title": "Regulation (EC) No 561/2006 driving times, breaks and rest periods",
+      "url": "https://eur-lex.europa.eu/eli/reg/2006/561/oj/eng",
+      "_confidence": "verified"
+    },
+    "EU_DRIVER_CPC_2003_59": {
+      "title": "Directive 2003/59/EC driver qualification and periodic training",
+      "url": "https://eur-lex.europa.eu/eli/dir/2003/59/oj/eng",
+      "_confidence": "verified"
+    },
+    "ADR_2025_VOL_II": {
+      "title": "ADR 2025 Volume II",
+      "url": "https://unece.org/transport/documents/2025/01/standards/adr-2025-volume-2",
+      "_confidence": "verified"
+    },
+    "EU_CUSTOMS_TRANSIT_QUICK_INFO": {
+      "title": "European Commission Customs Transit Quick Info uploaded by user",
+      "url": null,
+      "_confidence": "verified"
+    },
+    "CORTEX_ROAD_TRANSIT_MODEL": {
+      "title": "Cortex authored realistic transit model",
+      "url": null,
+      "_confidence": "authored"
+    }
+  }
+}

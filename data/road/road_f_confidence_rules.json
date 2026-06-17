@@ -1,0 +1,50 @@
+[
+  {
+    "condition": "CMR required and missing",
+    "confidence_cap_if_missing": 55,
+    "max_confidence": 55,
+    "reason": "International road carriage documentation gate missing.",
+    "_source": "CMR_CONVENTION",
+    "_confidence": "verified"
+  },
+  {
+    "condition": "DG shipment and ADR transport document / ADR driver certificate status unknown",
+    "confidence_cap_if_missing": 35,
+    "max_confidence": 35,
+    "reason": "Dangerous goods readiness cannot be cleared without ADR documentation and driver compliance.",
+    "_source": "ADR_2025_VOL_II",
+    "_confidence": "verified"
+  },
+  {
+    "condition": "Customs transit applies and T1/T2/NCTS status unknown",
+    "confidence_cap_if_missing": 40,
+    "max_confidence": 40,
+    "reason": "Transit procedure is a hard customs gate when goods are under customs control.",
+    "_source": "EU_CUSTOMS_TRANSIT_QUICK_INFO",
+    "_confidence": "verified"
+  },
+  {
+    "condition": "TIR route selected and TIR carnet/eTIR status unknown",
+    "confidence_cap_if_missing": 35,
+    "max_confidence": 35,
+    "reason": "TIR movement depends on carnet/guarantee/approved vehicle/container procedure.",
+    "_source": "UNECE_TIR_CONVENTION + EU_CUSTOMS_TRANSIT_QUICK_INFO",
+    "_confidence": "verified"
+  },
+  {
+    "condition": "Driver hours unavailable",
+    "confidence_cap_if_missing": 60,
+    "max_confidence": 60,
+    "reason": "Raw routing time is only a floor; missing hours-of-service planning prevents reliable delivery estimate.",
+    "_source": "EU_REG_561_2006",
+    "_confidence": "verified"
+  },
+  {
+    "condition": "Border/ferry/customs buffers unknown",
+    "confidence_cap_if_missing": 65,
+    "max_confidence": 65,
+    "reason": "Transit estimate lacks operational buffers; do not present as firm ETA.",
+    "_source": "CORTEX_ROAD_TRANSIT_MODEL",
+    "_confidence": "estimated"
+  }
+]

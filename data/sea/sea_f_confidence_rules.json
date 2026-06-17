@@ -1,0 +1,93 @@
+[
+  {
+    "rule_id": "CONF_F_001",
+    "condition": "required_document_missing",
+    "confidence_cap": 0.4,
+    "applies_to": [
+      "VGM_SOLAS",
+      "ISF_10_2_US",
+      "ENS_ICS2_EU",
+      "IMO_DGD",
+      "CPC"
+    ],
+    "reason": "Core regulatory/security/DG document is missing.",
+    "_source": [
+      "IMO_SOLAS_VGM",
+      "CBP_ISF_10_2",
+      "EU_ICS2",
+      "IMO_IMDG_OVERVIEW"
+    ],
+    "_confidence": "authored_from_verified_requirement"
+  },
+  {
+    "rule_id": "CONF_F_002",
+    "condition": "carrier_or_terminal_cutoff_unknown",
+    "confidence_cap": 0.7,
+    "applies_to": [
+      "VGM_SOLAS",
+      "SHIPPING_INSTRUCTIONS",
+      "IMO_DGD",
+      "CPC"
+    ],
+    "reason": "Exact cutoff is carrier/sailing-specific and belongs to SEA-I; cannot guarantee readiness without cutoff validation.",
+    "_source": [
+      "CORTEX_AUTHORED_OPS_RULES"
+    ],
+    "_confidence": "authored"
+  },
+  {
+    "rule_id": "CONF_F_003",
+    "condition": "ics2_filing_party_unknown",
+    "confidence_cap": 0.65,
+    "applies_to": [
+      "ENS_ICS2_EU"
+    ],
+    "reason": "ICS2 responsibility can depend on master/house filing model and involved economic operators.",
+    "_source": [
+      "EU_ICS2"
+    ],
+    "_confidence": "authored_from_verified_requirement"
+  },
+  {
+    "rule_id": "CONF_F_004",
+    "condition": "dg_cargo_without_dg_documentation_status",
+    "confidence_cap": 0.35,
+    "applies_to": [
+      "IMO_DGD",
+      "CPC"
+    ],
+    "reason": "DG cargo cannot be treated as ready without DG declaration/packing certificate status.",
+    "_source": [
+      "IMO_IMDG_OVERVIEW",
+      "UK_DANGEROUS_GOODS_FORM"
+    ],
+    "_confidence": "authored_from_verified_concept"
+  },
+  {
+    "rule_id": "CONF_F_005",
+    "condition": "cross_border_without_invoice_or_packing_list",
+    "confidence_cap": 0.55,
+    "applies_to": [
+      "COMMERCIAL_INVOICE",
+      "PACKING_LIST"
+    ],
+    "reason": "General customs clearance cannot be treated as clean without core commercial/packing documents.",
+    "_source": [
+      "CORTEX_AUTHORED_OPS_RULES"
+    ],
+    "_confidence": "authored"
+  },
+  {
+    "rule_id": "CONF_F_006",
+    "condition": "regulated_goods_permit_status_unknown",
+    "confidence_cap": 0.7,
+    "applies_to": [
+      "EXPORT_IMPORT_PERMIT"
+    ],
+    "reason": "Regulated cargo may require permits/licenses; v1 does not include country/product compliance database.",
+    "_source": [
+      "CORTEX_AUTHORED_OPS_RULES"
+    ],
+    "_confidence": "authored"
+  }
+]

@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from app.services.layer2.data_catalog import build_data_catalog, summarize_catalog
+from app.services.layer2.data_catalog import build_data_catalog, summarize_catalog  # noqa: E402
 
 
 def main() -> int:

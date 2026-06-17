@@ -1,0 +1,92 @@
+[
+  {
+    "limit_id": "EU_STANDARD_WIDTH_GENERAL",
+    "parameter": "max_width_general_m",
+    "value": 2.55,
+    "unit": "m",
+    "applies_to": "general road vehicles except temperature-controlled superstructures where specific allowance applies",
+    "hard_gate_if_exceeded": true,
+    "_source": "EU_DIRECTIVE_96_53_EC",
+    "_confidence": "verified"
+  },
+  {
+    "limit_id": "EU_STANDARD_WIDTH_REFRIGERATED",
+    "parameter": "max_width_refrigerated_m",
+    "value": 2.6,
+    "unit": "m",
+    "applies_to": "refrigerated/conditioned vehicle superstructures where applicable",
+    "hard_gate_if_exceeded": true,
+    "_source": "EU_DIRECTIVE_96_53_EC",
+    "_confidence": "verified"
+  },
+  {
+    "limit_id": "EU_STANDARD_HEIGHT_COMMON",
+    "parameter": "max_height_common_m",
+    "value": 4.0,
+    "unit": "m",
+    "applies_to": "common EU/international road planning baseline; check national rules",
+    "hard_gate_if_exceeded": true,
+    "_source": "EU_DIRECTIVE_96_53_EC",
+    "_confidence": "verified"
+  },
+  {
+    "limit_id": "EU_ARTICULATED_VEHICLE_LENGTH",
+    "parameter": "max_articulated_vehicle_length_m",
+    "value": 16.5,
+    "unit": "m",
+    "applies_to": "articulated vehicle",
+    "hard_gate_if_exceeded": true,
+    "_source": "EU_DIRECTIVE_96_53_EC",
+    "_confidence": "verified"
+  },
+  {
+    "limit_id": "EU_ROAD_TRAIN_LENGTH",
+    "parameter": "max_road_train_length_m",
+    "value": 18.75,
+    "unit": "m",
+    "applies_to": "road train",
+    "hard_gate_if_exceeded": true,
+    "_source": "EU_DIRECTIVE_96_53_EC",
+    "_confidence": "verified"
+  },
+  {
+    "limit_id": "EU_GROSS_WEIGHT_COMMON",
+    "parameter": "max_gross_weight_common_tonnes",
+    "value": 40,
+    "unit": "tonnes",
+    "applies_to": "common international road gross vehicle weight baseline depending axle/configuration",
+    "hard_gate_if_exceeded": true,
+    "_source": "EU_DIRECTIVE_96_53_EC",
+    "_confidence": "verified"
+  },
+  {
+    "limit_id": "EU_INTERMODAL_GROSS_WEIGHT_COMMON",
+    "parameter": "max_gross_weight_intermodal_common_tonnes",
+    "value": 44,
+    "unit": "tonnes",
+    "applies_to": "certain intermodal/container transport configurations depending axle/configuration",
+    "hard_gate_if_exceeded": true,
+    "_source": "EU_DIRECTIVE_96_53_EC",
+    "_confidence": "verified"
+  },
+  {
+    "limit_id": "UK_ABNORMAL_LOAD_EXAMPLE_WIDTH",
+    "parameter": "abnormal_width_example_uk_m",
+    "value": 2.9,
+    "unit": "m",
+    "applies_to": "UK abnormal-load guidance example; do not generalize as EU law",
+    "hard_gate_if_exceeded": true,
+    "_source": "NATIONAL_HIGHWAYS_ABNORMAL_LOADS",
+    "_confidence": "verified_for_UK_context"
+  },
+  {
+    "limit_id": "UK_ABNORMAL_LOAD_EXAMPLE_WEIGHT",
+    "parameter": "abnormal_weight_example_uk_kg",
+    "value": 44000,
+    "unit": "kg",
+    "applies_to": "UK abnormal-load guidance example; do not generalize as EU law",
+    "hard_gate_if_exceeded": true,
+    "_source": "NATIONAL_HIGHWAYS_ABNORMAL_LOADS",
+    "_confidence": "verified_for_UK_context"
+  }
+]

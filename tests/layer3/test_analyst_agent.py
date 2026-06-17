@@ -193,12 +193,14 @@ class _JsonModel:
 
 
 class _FailingRunnable:
-    def invoke(self, prompt: str):
+    @staticmethod
+    def invoke(prompt: str):
         raise RuntimeError("provider unavailable")
 
 
 class _FailingStructuredModel:
-    def with_structured_output(self, schema):
+    @staticmethod
+    def with_structured_output(schema):
         return _FailingRunnable()
 
 

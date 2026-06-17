@@ -1,0 +1,92 @@
+[
+  {
+    "trade_lane_code": "ASIA_EUROPE",
+    "trade_lane_name": "Asia–Europe",
+    "typical_service_pattern": "mainline_deepsea_ocean_service",
+    "typical_frequency_hint": "weekly_or_multiple_weekly_on_major_port_pairs",
+    "planning_implication": "high carrier choice on major ports; check live schedules and capacity",
+    "_confidence": "authored_from_public_carrier_network_pages",
+    "confidence_cap_if_missing": "cap_65_without_live_port_pair_schedule"
+  },
+  {
+    "trade_lane_code": "TRANS_PACIFIC",
+    "trade_lane_name": "Trans-Pacific",
+    "typical_service_pattern": "mainline_deepsea_ocean_service",
+    "typical_frequency_hint": "weekly_or_multiple_weekly_on_major_port_pairs",
+    "planning_implication": "major East-West lane; live blank sailings and capacity matter",
+    "_confidence": "authored_from_public_carrier_network_pages",
+    "confidence_cap_if_missing": "cap_65_without_live_port_pair_schedule"
+  },
+  {
+    "trade_lane_code": "TRANS_ATLANTIC",
+    "trade_lane_name": "Trans-Atlantic",
+    "typical_service_pattern": "mainline_deepsea_ocean_service",
+    "typical_frequency_hint": "weekly_on_major_port_pairs",
+    "planning_implication": "major lane; fewer options than Asia-Europe/Trans-Pacific on many pairs",
+    "_confidence": "authored_from_public_carrier_network_pages",
+    "confidence_cap_if_missing": "cap_65_without_live_port_pair_schedule"
+  },
+  {
+    "trade_lane_code": "INTRA_ASIA",
+    "trade_lane_name": "Intra-Asia",
+    "typical_service_pattern": "regional_mainline_and_feeder",
+    "typical_frequency_hint": "frequent_on_major_hubs; variable_on_secondary_ports",
+    "planning_implication": "hub-and-feeder routing common; transshipment risk should be flagged",
+    "_confidence": "authored_from_public_carrier_network_pages",
+    "confidence_cap_if_missing": "cap_65_without_live_port_pair_schedule"
+  },
+  {
+    "trade_lane_code": "MEDITERRANEAN_EUROPE_FEEDER",
+    "trade_lane_name": "Mediterranean / Europe feeder",
+    "typical_service_pattern": "shortsea_feeder_and_mainline_connections",
+    "typical_frequency_hint": "weekly_or_more_from_major_hubs; variable_secondary_ports",
+    "planning_implication": "transshipment via hubs likely for smaller ports",
+    "_confidence": "authored_from_public_carrier_network_pages",
+    "confidence_cap_if_missing": "cap_60_without_feeder_schedule"
+  },
+  {
+    "trade_lane_code": "MIDDLE_EAST_INDIAN_SUBCONTINENT",
+    "trade_lane_name": "Middle East / Indian Subcontinent",
+    "typical_service_pattern": "regional_mainline_and_feeder",
+    "typical_frequency_hint": "weekly_on_major_ports; variable_on secondary ports",
+    "planning_implication": "chokepoint/geopolitical validation may be needed depending route",
+    "_confidence": "authored_from_public_carrier_network_pages",
+    "confidence_cap_if_missing": "cap_65_without_live_port_pair_schedule"
+  },
+  {
+    "trade_lane_code": "LATIN_AMERICA",
+    "trade_lane_name": "Latin America",
+    "typical_service_pattern": "deepsea_and_regional_feeder",
+    "typical_frequency_hint": "weekly_on_major services; variable secondary ports",
+    "planning_implication": "often needs hub routing for smaller ports",
+    "_confidence": "authored_from_public_carrier_network_pages",
+    "confidence_cap_if_missing": "cap_65_without_live_port_pair_schedule"
+  },
+  {
+    "trade_lane_code": "AFRICA",
+    "trade_lane_name": "Africa",
+    "typical_service_pattern": "deepsea_and_feeder",
+    "typical_frequency_hint": "weekly_or less depending corridor and port",
+    "planning_implication": "port coverage and transshipment validation important",
+    "_confidence": "authored_from_public_carrier_network_pages",
+    "confidence_cap_if_missing": "cap_60_without_live_port_pair_schedule"
+  },
+  {
+    "trade_lane_code": "OCEANIA",
+    "trade_lane_name": "Oceania",
+    "typical_service_pattern": "deepsea_mainline_and_regional_connections",
+    "typical_frequency_hint": "weekly_on_major corridors; variable otherwise",
+    "planning_implication": "capacity and cutoffs can be tight; live schedule needed",
+    "_confidence": "authored_from_public_carrier_network_pages",
+    "confidence_cap_if_missing": "cap_65_without_live_port_pair_schedule"
+  },
+  {
+    "trade_lane_code": "REGIONAL_FEEDER_TRANSSHIPMENT",
+    "trade_lane_name": "Regional feeder / transshipment",
+    "typical_service_pattern": "feeder_service_linking_secondary_ports_to_hubs",
+    "typical_frequency_hint": "variable_by_region_and_port",
+    "planning_implication": "adds transshipment, delay, missed-connection risk",
+    "_confidence": "authored_from_public_carrier_network_pages",
+    "confidence_cap_if_missing": "cap_55_without_feeder_service_validation"
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "dataset_name": "Cortex Air Mode - Block D Carrier Capability and Restrictions",
+  "version": "r_and_d_v1_first_pass",
+  "generated_at_utc": "2026-06-03T10:34:44.724884+00:00",
+  "purpose": "Mock/reference carrier capability matrix for Cortex air-mode R&D readiness checks.",
+  "legal_note": "R&D/mock reference only. Carrier acceptance changes by station, route, product, contract, commodity, and current regulation. Replace or validate with carrier APIs/contracts/manuals before production use.",
+  "coverage": {
+    "carrier_rows": 10,
+    "confidence_rules": 9
+  },
+  "conservative_policy": "Use yes only when public carrier sources clearly support capability. Use partial when capability is lane/station/product dependent. Use unknown rather than guessing.",
+  "recommended_next_research": [
+    "Singapore Airlines Cargo direct product capability sheet",
+    "FedEx special cargo beyond DG/dry ice",
+    "DHL live animals, valuables, human remains",
+    "UPS non-DG special cargo acceptance",
+    "station-level carrier acceptance per airport/lane"
+  ]
+}

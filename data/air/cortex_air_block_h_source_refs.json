@@ -1,0 +1,38 @@
+[
+  {
+    "source_id": "SRC_H_001",
+    "source_name": "IATA Consignment Security Declaration",
+    "source_url": "https://www.iata.org/en/programs/security/cargo-security/csd/",
+    "use_in_dataset": "CSD security audit trail concept: how, when and by whom cargo was secured."
+  },
+  {
+    "source_id": "SRC_H_002",
+    "source_name": "TSA Cargo Screening Program",
+    "source_url": "https://www.tsa.gov/for-industry/cargo-screening-program",
+    "use_in_dataset": "100% cargo screening requirement for cargo transported on passenger aircraft under TSA cargo program."
+  },
+  {
+    "source_id": "SRC_H_003",
+    "source_name": "European Commission ACC3 non-EU cargo/mail",
+    "source_url": "https://transport.ec.europa.eu/transport-modes/air/aviation-security/air-cargo-and-mail/non-eu-countries_en",
+    "use_in_dataset": "ACC3 requirement for air carriers flying cargo/mail into EU from non-EU airports."
+  },
+  {
+    "source_id": "SRC_H_004",
+    "source_name": "European Commission air cargo and mail security",
+    "source_url": "https://transport.ec.europa.eu/transport-modes/air/aviation-security/air-cargo-and-mail_en",
+    "use_in_dataset": "EU secure supply chain actors and cargo/mail security framework."
+  },
+  {
+    "source_id": "SRC_H_005",
+    "source_name": "IATA PLACI standard procedures",
+    "source_url": "https://www.iata.org/en/publications/manuals/placi-standard-procedures-for-preloading-advance-cargo-information/",
+    "use_in_dataset": "PLACI jurisdictions and pre-loading advance cargo information rule family."
+  },
+  {
+    "source_id": "SRC_H_006",
+    "source_name": "Block B special handling codes",
+    "source_url": "internal_dataset:cortex_air_block_b_special_handling_codes",
+    "use_in_dataset": "SPX, SCO, NSC, SCY, SHR, VAL, VUN, RAC, QRT security code mapping."
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "rule_id": "C_CONF_001",
+    "applies_to": "PIL,CRT,COL,ACT,LHO",
+    "required_airport_fields": "pharma_cold_chain; temperature_controlled_storage",
+    "condition": "origin_or_destination_pharma_cold_chain_unknown",
+    "cap_percent": 65,
+    "message": "Temperature-sensitive/pharma cargo should not receive high confidence if airport cold-chain capability is unknown."
+  },
+  {
+    "rule_id": "C_CONF_002",
+    "applies_to": "PER,PES,PEM,PEP,PEF,EAT,FRO,FRI,HEG",
+    "required_airport_fields": "perishable_handling; frozen_storage or temperature_controlled_storage when relevant",
+    "condition": "perishable_or_cold_storage_unknown",
+    "cap_percent": 70,
+    "message": "Perishable cargo needs airport handling and storage capability matched to commodity and temperature."
+  },
+  {
+    "rule_id": "C_CONF_003",
+    "applies_to": "AVI,SPF",
+    "required_airport_fields": "live_animals_handling",
+    "condition": "live_animal_facility_unknown",
+    "cap_percent": 60,
+    "message": "Live animal cargo requires airport/handler animal handling capability and carrier acceptance."
+  },
+  {
+    "rule_id": "C_CONF_004",
+    "applies_to": "HEA,BIG,OHG",
+    "required_airport_fields": "heavy_oversized_handling; uld_handling; main_deck_freighter_handling",
+    "condition": "heavy_or_oversized_airport_capability_unknown",
+    "cap_percent": 60,
+    "message": "Heavy/outsized cargo needs airport loading equipment, ULD/main-deck capability, and piece fit checks."
+  },
+  {
+    "rule_id": "C_CONF_005",
+    "applies_to": "VAL,VUN",
+    "required_airport_fields": "valuable_secure_storage",
+    "condition": "valuable_secure_storage_no_or_unknown",
+    "cap_percent": 65,
+    "message": "Valuable/vulnerable cargo needs secure storage or controlled handover; no VAL means block or reroute."
+  },
+  {
+    "rule_id": "C_CONF_006",
+    "applies_to": "DG from Block A",
+    "required_airport_fields": "dangerous_goods_handling",
+    "condition": "dg_handling_unknown",
+    "cap_percent": 65,
+    "message": "Dangerous goods cargo requires airport/handler DG acceptance and storage capability."
+  }
+]

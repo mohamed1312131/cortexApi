@@ -1,0 +1,60 @@
+{
+  "block_id": "SEA-A",
+  "name": "DG sea acceptance per UN/NA identification number",
+  "purpose": "Supports Cortex readiness checks for dangerous-goods cargo by identifying the hazardous material, hazard class, packing group, vessel stowage category, and vessel stowage/handling provision codes before sea booking.",
+  "sources": [
+    {
+      "name": "eCFR 49 CFR 172.101 - Hazardous Materials Table",
+      "url": "https://www.ecfr.gov/current/title-49/subtitle-B/chapter-I/subchapter-C/part-172/subpart-B/section-172.101",
+      "use": "Authoritative column definitions and current regulatory reference; web source confirms Table purpose and vessel stowage column meanings."
+    },
+    {
+      "name": "Marshall University Safety Office DOT Hazardous Materials Excel extract",
+      "url": "https://www.marshall.edu/safety/files/2013/03/DOT_hazardous_materials.xls",
+      "use": "Structured extraction source used to populate the row dataset; legacy Excel source, not guaranteed current."
+    },
+    {
+      "name": "eCFR 49 CFR 176.63 - Stowage locations",
+      "url": "https://www.ecfr.gov/current/title-49/subtitle-B/chapter-I/subchapter-C/part-176/subpart-C/section-176.63",
+      "use": "Physical requirements for authorized stowage locations."
+    },
+    {
+      "name": "eCFR 49 CFR 176.84 - Other stowage, handling and segregation requirements",
+      "url": "https://www.ecfr.gov/current/title-49/subtitle-B/chapter-I/subchapter-C/part-176/subpart-D/section-176.84",
+      "use": "Reference for vessel stowage/handling provision codes in column 10B."
+    },
+    {
+      "name": "IMO IMDG Code overview",
+      "url": "https://www.imo.org/en/ourwork/safety/pages/dangerousgoods-default.aspx",
+      "use": "International maritime DG context and limitation: full IMDG Dangerous Goods List is not included."
+    }
+  ],
+  "coverage_summary": {
+    "total_structured_rows_read": 3594,
+    "total_dg_records_in_main_dataset": 2912,
+    "unique_identification_numbers": 2298,
+    "un_records": 2840,
+    "na_records": 72,
+    "records_with_vessel_stowage_category": 2892,
+    "records_with_vessel_stowage_provisions": 1566,
+    "records_flagged_with_possible_segregation_or_handling_codes": 1399,
+    "records_requiring_manual_review_missing_stowage": 378,
+    "excluded_rows_without_identification_number": 682,
+    "continuation_rows_inherited_name_and_id": 0,
+    "proper_shipping_name_starts_with_digit_violations_after_normalization": 0,
+    "numeric_leading_names_normalized_and_preserved_in_raw": 103,
+    "proper_shipping_name_digit_validation_passed": true
+  },
+  "known_limitations": [
+    "Main row population uses a legacy structured Excel extract because a current eCFR machine-readable table extract was not available in this environment. Treat row values as R&D/reference and re-validate against current eCFR/PHMSA before production.",
+    "This is not a full IMDG Code Dangerous Goods List and does not replace certified dangerous goods review.",
+    "IMDG segregation groups are not fully derived; rows are flagged for manual review where provision codes suggest stowage/handling/segregation constraints.",
+    "Carrier-specific DG acceptance, terminal-specific DG acceptance, vessel Document of Compliance, and live local restrictions are out of scope.",
+    "Air quantity limitation columns are retained as source context but SEA-A readiness logic focuses on sea/vessel stowage."
+  ],
+  "quality_controls": [
+    "Proper shipping name digit-start validation applied. Numeric-leading source names are normalized with a non-numeric prefix and the original is preserved in _raw to prevent the air-style column-shift parser bug.",
+    "Continuation rows for multi-packing-group entries inherited prior proper shipping name and identification number.",
+    "Rows without UN/NA identification numbers were excluded from main per-identification-number dataset and counted in coverage summary."
+  ]
+}

@@ -1,0 +1,112 @@
+[
+  {
+    "adr_tunnel_code": "A",
+    "meaning": "No ADR tunnel restriction from the tunnel-code perspective. Category A tunnels are the least restrictive.",
+    "forbidden_tunnel_categories": [],
+    "_source": "GOV_UK_ADR_TUNNEL_CATEGORIES",
+    "_confidence": "verified"
+  },
+  {
+    "adr_tunnel_code": "B",
+    "meaning": "Passage forbidden through tunnel categories B, C, D and E.",
+    "forbidden_tunnel_categories": [
+      "B",
+      "C",
+      "D",
+      "E"
+    ],
+    "_source": "ADR_TUNNEL_RESTRICTION_CODE_LOGIC",
+    "_confidence": "authored_from_ADR_rule_structure"
+  },
+  {
+    "adr_tunnel_code": "C",
+    "meaning": "Passage forbidden through tunnel categories C, D and E.",
+    "forbidden_tunnel_categories": [
+      "C",
+      "D",
+      "E"
+    ],
+    "_source": "ADR_TUNNEL_RESTRICTION_CODE_LOGIC",
+    "_confidence": "authored_from_ADR_rule_structure"
+  },
+  {
+    "adr_tunnel_code": "D",
+    "meaning": "Passage forbidden through tunnel categories D and E.",
+    "forbidden_tunnel_categories": [
+      "D",
+      "E"
+    ],
+    "_source": "ADR_TUNNEL_RESTRICTION_CODE_LOGIC",
+    "_confidence": "authored_from_ADR_rule_structure"
+  },
+  {
+    "adr_tunnel_code": "E",
+    "meaning": "Passage forbidden through tunnel category E.",
+    "forbidden_tunnel_categories": [
+      "E"
+    ],
+    "_source": "GOV_UK_ADR_TUNNEL_CATEGORIES + ADR_TUNNEL_RESTRICTION_CODE_LOGIC",
+    "_confidence": "verified_partial_authored"
+  },
+  {
+    "adr_tunnel_code": "B/D",
+    "meaning": "Tank carriage: forbidden through B, C, D and E. Other carriage: forbidden through D and E.",
+    "forbidden_tunnel_categories": [
+      "B",
+      "C",
+      "D",
+      "E"
+    ],
+    "conditional_meaning": "Depends on tank vs other carriage.",
+    "_source": "ADR_TUNNEL_RESTRICTION_CODE_LOGIC",
+    "_confidence": "authored_from_ADR_rule_structure"
+  },
+  {
+    "adr_tunnel_code": "B/E",
+    "meaning": "Tank carriage: forbidden through B, C, D and E. Other carriage: forbidden through E.",
+    "forbidden_tunnel_categories": [
+      "B",
+      "C",
+      "D",
+      "E"
+    ],
+    "conditional_meaning": "Depends on tank vs other carriage.",
+    "_source": "ADR_TUNNEL_RESTRICTION_CODE_LOGIC",
+    "_confidence": "authored_from_ADR_rule_structure"
+  },
+  {
+    "adr_tunnel_code": "C/D",
+    "meaning": "Tank carriage: forbidden through C, D and E. Other carriage: forbidden through D and E.",
+    "forbidden_tunnel_categories": [
+      "C",
+      "D",
+      "E"
+    ],
+    "conditional_meaning": "Depends on tank vs other carriage.",
+    "_source": "ADR_TUNNEL_RESTRICTION_CODE_LOGIC",
+    "_confidence": "authored_from_ADR_rule_structure"
+  },
+  {
+    "adr_tunnel_code": "C/E",
+    "meaning": "Tank carriage: forbidden through C, D and E. Other carriage: forbidden through E.",
+    "forbidden_tunnel_categories": [
+      "C",
+      "D",
+      "E"
+    ],
+    "conditional_meaning": "Depends on tank vs other carriage.",
+    "_source": "ADR_TUNNEL_RESTRICTION_CODE_LOGIC",
+    "_confidence": "authored_from_ADR_rule_structure"
+  },
+  {
+    "adr_tunnel_code": "D/E",
+    "meaning": "Tank carriage: forbidden through D and E. Other carriage: forbidden through E.",
+    "forbidden_tunnel_categories": [
+      "D",
+      "E"
+    ],
+    "conditional_meaning": "Depends on tank vs other carriage.",
+    "_source": "ADR_TUNNEL_RESTRICTION_CODE_LOGIC",
+    "_confidence": "authored_from_ADR_rule_structure"
+  }
+]

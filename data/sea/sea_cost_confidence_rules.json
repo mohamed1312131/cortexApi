@@ -1,0 +1,44 @@
+[
+  {
+    "rule_id": "COST_CONF_LIVE_QUOTE_MISSING",
+    "condition": "No live carrier/forwarder quote attached",
+    "confidence_cap": 40,
+    "reason": "Freight rates are volatile; public indices are not quotes."
+  },
+  {
+    "rule_id": "COST_CONF_EXACT_PORT_PAIR_MISSING",
+    "condition": "Only broad lane family known, exact origin/destination port missing",
+    "confidence_cap": 50,
+    "reason": "Port-pair rates and local charges vary widely."
+  },
+  {
+    "rule_id": "COST_CONF_EQUIPMENT_MISSING",
+    "condition": "Equipment type not known",
+    "confidence_cap": 60,
+    "reason": "20/40/reefer/DG/OOG charges differ."
+  },
+  {
+    "rule_id": "COST_CONF_DG_REEFER_OOG_UNKNOWN",
+    "condition": "DG, reefer or OOG surcharge status unknown",
+    "confidence_cap": 50,
+    "reason": "Special cargo charges can materially change total cost."
+  },
+  {
+    "rule_id": "COST_CONF_HISTORICAL_LOCAL_CHARGE",
+    "condition": "Source is old local charge PDF or historical quote",
+    "confidence_cap": 55,
+    "reason": "Local charges change; use as historical planning only."
+  },
+  {
+    "rule_id": "COST_CONF_NO_INCOTERM",
+    "condition": "Incoterm missing",
+    "confidence_cap": 65,
+    "reason": "Which party pays which charge depends on Incoterm and contract."
+  },
+  {
+    "rule_id": "COST_CONF_NO_FREE_TIME",
+    "condition": "Free-time allowance unknown",
+    "confidence_cap": 60,
+    "reason": "Demurrage/detention exposure cannot be assessed without free-time days."
+  }
+]

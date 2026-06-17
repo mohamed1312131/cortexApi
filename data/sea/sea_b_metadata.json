@@ -1,0 +1,87 @@
+{
+  "block": "SEA-B",
+  "title": "Container fit rules",
+  "status": "final_reviewed_v1_for_pfe_rd",
+  "generated_at": "2026-06-03T14:00:06.697769+00:00",
+  "sources": {
+    "DCSA_container_types": {
+      "name": "DCSA Shipping Container Types: A Guide",
+      "url": "https://dcsa.org/newsroom/shipping-container-types-a-guide",
+      "use": "Container taxonomy and general purpose by family: dry, reefer, tank, flat rack, open top, etc."
+    },
+    "CMA_CGM_container_brochure": {
+      "name": "CMA CGM Container Technical Brochures",
+      "url": "https://www.cma-cgm.com/assets/public/documents/Container%20Technical%20Brochures.pdf",
+      "use": "Carrier-specific reference dimensions, gross weight, tare, payload, and container family specs."
+    },
+    "ONE_container_specs": {
+      "name": "ONE Container Specifications",
+      "url": "https://www.one-line.com/en/dry-containers",
+      "use": "Cross-check source for dry, reefer, open-top and flat-rack dimensions/payloads."
+    },
+    "Hapag_container_offerings": {
+      "name": "Hapag-Lloyd Container Offerings",
+      "url": "https://www.hapag-lloyd.com/en/services-information/cargo-fleet/container.html",
+      "use": "Cross-check source for ISO-compliant carrier equipment and special container families."
+    },
+    "Maersk_fcl_lcl": {
+      "name": "Maersk FCL vs LCL Shipping Guidance",
+      "url": "https://www.maersk.com/logistics-explained/transportation-and-freight/2023/12/15/understanding-ocean-freight",
+      "use": "Planning heuristic for FCL around 15+ CBM and cargo sensitivity/speed factors."
+    },
+    "Maersk_lcl_limits": {
+      "name": "Maersk LCL Service Limits",
+      "url": "https://www.maersk.com/transportation-services/lcl",
+      "use": "Example LCL limits: single package and booking limits; used only as carrier-specific planning reference."
+    }
+  },
+  "coverage_summary": {
+    "equipment_records": 14,
+    "containerized_equipment_records": 12,
+    "non_container_modes": 2,
+    "families_covered": [
+      "breakbulk",
+      "dry",
+      "flat_rack",
+      "high_cube",
+      "open_top",
+      "reefer",
+      "roro",
+      "tank"
+    ],
+    "records_with_internal_dimensions": 10,
+    "records_with_reference_payload": 12,
+    "cargo_type_mapping_records": 9,
+    "readiness_rules": 9,
+    "confidence_rules": 7
+  },
+  "verified_fields": [
+    "equipment taxonomy",
+    "carrier reference internal dimensions",
+    "carrier reference payload/gross/tare where listed",
+    "container family purpose"
+  ],
+  "authored_fields": [
+    "cargo type to equipment mapping",
+    "hard gate readiness rules",
+    "FCL/LCL heuristic interpretation",
+    "confidence caps",
+    "non-container breakbulk/RoRo mode records"
+  ],
+  "estimated_or_limited_fields": [
+    "carrier-neutral reference payload",
+    "tank commodity compatibility",
+    "OOG acceptance",
+    "reefer port plug availability",
+    "lane-specific equipment availability"
+  ],
+  "known_limitations": [
+    "Exact payload and internal dimensions vary by carrier, manufacturer, equipment age and specific container number.",
+    "Reference payload must not replace the container CSC plate or carrier booking confirmation.",
+    "Flat-rack/open-top dimensional fit does not mean carrier OOG approval is granted.",
+    "Reefer suitability requires setpoint, commodity requirements and terminal reefer plug validation.",
+    "Tank cargo requires commodity compatibility, cleaning, lining, DG and carrier approval checks.",
+    "Live equipment availability, rates and cutoffs are out of scope."
+  ],
+  "confidence_policy": "Use verified_carrier_reference for dimensions/payload from carrier pages; use authored for Cortex logic; cap confidence when exact unit, special approval, reefer plugs or tank compatibility are missing."
+}

@@ -2,9 +2,6 @@ from app.schemas import (
     BlockStatus,
     CargoFlags,
     FlagState,
-    GateSeverity,
-    GateStatus,
-    RequestedMode,
     SourceConfidence,
     ValidatedShipmentRequest,
 )

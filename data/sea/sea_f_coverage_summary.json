@@ -1,0 +1,42 @@
+{
+  "block": "SEA-F",
+  "generated_at": "2026-06-03",
+  "record_count": 11,
+  "hard_gate_count": 9,
+  "conditional_records": 2,
+  "verified_requirement_records": 5,
+  "authored_records": 6,
+  "official_source_count": 6,
+  "jurisdictions_covered": [
+    "EU_NI_NO_CH_import_or_transit",
+    "IMDG_maritime_DG",
+    "SOLAS_global_container_shipping",
+    "US_import",
+    "conditional_customs_trade_preference",
+    "conditional_regulated_goods",
+    "cross_border_customs_and_operations_general",
+    "cross_border_customs_general",
+    "global_operational"
+  ],
+  "documents_covered": [
+    "BL_OR_SWB",
+    "SHIPPING_INSTRUCTIONS",
+    "VGM_SOLAS",
+    "IMO_DGD",
+    "CPC",
+    "ISF_10_2_US",
+    "ENS_ICS2_EU",
+    "COMMERCIAL_INVOICE",
+    "PACKING_LIST",
+    "CERTIFICATE_OF_ORIGIN",
+    "EXPORT_IMPORT_PERMIT"
+  ],
+  "known_gaps": [
+    "No country-by-country customs document matrix",
+    "No live carrier/terminal cutoffs",
+    "No sanctions/export-control screening",
+    "No product-specific certificate database",
+    "No live customs filing status",
+    "No licensed full IMDG document/rule set"
+  ]
+}

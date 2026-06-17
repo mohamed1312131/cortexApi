@@ -1,0 +1,74 @@
+[
+  {
+    "rule_id": "D_CONF_001",
+    "applies_to": "DG cargo from Block A",
+    "required_carrier_fields": "accepts_dangerous_goods",
+    "condition": "carrier_dg_unknown_or_no",
+    "cap_percent": 50,
+    "message": "Dangerous goods require carrier DG acceptance. If carrier DG capability is unknown or no, do not recommend the carrier."
+  },
+  {
+    "rule_id": "D_CONF_002",
+    "applies_to": "CAO cargo from Block A",
+    "required_carrier_fields": "accepts_cargo_aircraft_only; has_freighter_network",
+    "condition": "cao_or_freighter_capability_unknown",
+    "cap_percent": 55,
+    "message": "Cargo-aircraft-only cargo requires carrier CAO/freighter capability and station confirmation."
+  },
+  {
+    "rule_id": "D_CONF_003",
+    "applies_to": "PIL,CRT,COL,ACT,LHO",
+    "required_carrier_fields": "accepts_pharma; accepts_temperature_controlled",
+    "condition": "temperature_or_pharma_capability_unknown",
+    "cap_percent": 60,
+    "message": "Pharma/temperature-sensitive cargo requires carrier cold-chain product capability."
+  },
+  {
+    "rule_id": "D_CONF_004",
+    "applies_to": "PER,PES,PEM,PEP,PEF,EAT,FRO,FRI,HEG",
+    "required_carrier_fields": "accepts_perishables",
+    "condition": "perishable_capability_unknown",
+    "cap_percent": 65,
+    "message": "Perishable cargo requires carrier perishables/fresh-product acceptance and booking confirmation."
+  },
+  {
+    "rule_id": "D_CONF_005",
+    "applies_to": "AVI,SPF",
+    "required_carrier_fields": "accepts_live_animals",
+    "condition": "live_animals_not_yes",
+    "cap_percent": 55,
+    "message": "Live animal cargo requires explicit carrier live-animal acceptance. Partial or unknown needs manual confirmation."
+  },
+  {
+    "rule_id": "D_CONF_006",
+    "applies_to": "VAL,VUN",
+    "required_carrier_fields": "accepts_valuable_cargo",
+    "condition": "valuable_cargo_not_yes",
+    "cap_percent": 65,
+    "message": "Valuable/vulnerable cargo requires secure carrier product or station handling confirmation."
+  },
+  {
+    "rule_id": "D_CONF_007",
+    "applies_to": "HUM",
+    "required_carrier_fields": "accepts_human_remains",
+    "condition": "human_remains_unknown",
+    "cap_percent": 60,
+    "message": "Human remains require carrier acceptance and country/station documentation validation."
+  },
+  {
+    "rule_id": "D_CONF_008",
+    "applies_to": "HEA,BIG,OHG",
+    "required_carrier_fields": "accepts_heavy_oversized; has_freighter_network",
+    "condition": "heavy_oversized_unknown",
+    "cap_percent": 60,
+    "message": "Heavy/oversized cargo requires carrier heavy cargo/freighter capability plus aircraft fit confirmation."
+  },
+  {
+    "rule_id": "D_CONF_009",
+    "applies_to": "all_special_cargo",
+    "required_carrier_fields": "requires_station_confirmation",
+    "condition": "station_confirmation_missing",
+    "cap_percent": 75,
+    "message": "Carrier-level product capability is not enough; special cargo normally requires station/lane confirmation."
+  }
+]

@@ -127,14 +127,17 @@ def run_safety_gate(
 
     # 5. hard gate visibility (status read from ReasoningFactor.status, never details)
     for gate in context.hard_gates:
-        if gate.status == "triggered" and gate.severity in _SERIOUS_GATE_SEVERITIES:
-            if not _is_surfaced(gate.code, gate.evidence_refs, blob_lower, narrative_refs):
-                _add(
-                    "HIDDEN_HARD_GATE",
-                    _BLOCKING,
-                    f"Triggered {gate.severity} hard gate {gate.code!r} is not surfaced in the draft.",
-                    evidence_refs=list(gate.evidence_refs),
-                )
+        if (
+            gate.status == "triggered"
+            and gate.severity in _SERIOUS_GATE_SEVERITIES
+            and not _is_surfaced(gate.code, gate.evidence_refs, blob_lower, narrative_refs)
+        ):
+            _add(
+                "HIDDEN_HARD_GATE",
+                _BLOCKING,
+                f"Triggered {gate.severity} hard gate {gate.code!r} is not surfaced in the draft.",
+                evidence_refs=list(gate.evidence_refs),
+            )
 
     # 6. unknown visibility (critical/high, or any unknown under a DG/lithium profile)
     for unknown in context.unknowns:

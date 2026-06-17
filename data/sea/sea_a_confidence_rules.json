@@ -1,0 +1,60 @@
+{
+  "rules": [
+    {
+      "rule_id": "SEA_A_CONF_001",
+      "field": "identification_number",
+      "condition": "missing or invalid",
+      "confidence_cap": 0.0,
+      "effect": "Hard gate; DG cargo cannot be accepted without a valid identification number.",
+      "_confidence": "authored"
+    },
+    {
+      "rule_id": "SEA_A_CONF_002",
+      "field": "proper_shipping_name",
+      "condition": "missing or starts with digit",
+      "confidence_cap": 0.0,
+      "effect": "Reject parsed row; probable column shift or invalid DG declaration.",
+      "_confidence": "authored"
+    },
+    {
+      "rule_id": "SEA_A_CONF_003",
+      "field": "vessel_stowage_category",
+      "condition": "missing",
+      "confidence_cap": 0.55,
+      "effect": "Manual DG review required before sea acceptance.",
+      "_confidence": "authored"
+    },
+    {
+      "rule_id": "SEA_A_CONF_004",
+      "field": "vessel_stowage_provision_codes",
+      "condition": "present but not decoded",
+      "confidence_cap": 0.8,
+      "effect": "Provision codes must be decoded against 49 CFR 176.84 / IMDG before final booking.",
+      "_confidence": "authored"
+    },
+    {
+      "rule_id": "SEA_A_CONF_005",
+      "field": "imdg_segregation_group",
+      "condition": "unknown",
+      "confidence_cap": 0.75,
+      "effect": "Do not perform final compatibility/segregation approval; use manual DG specialist validation.",
+      "_confidence": "authored"
+    },
+    {
+      "rule_id": "SEA_A_CONF_006",
+      "field": "carrier_terminal_acceptance",
+      "condition": "not verified",
+      "confidence_cap": 0.7,
+      "effect": "Carrier/terminal may reject even if regulatory table permits stowage.",
+      "_confidence": "authored"
+    },
+    {
+      "rule_id": "SEA_A_CONF_007",
+      "field": "source_currentness",
+      "condition": "legacy structured row source",
+      "confidence_cap": 0.85,
+      "effect": "Reference layer acceptable for PFE/R&D; production must refresh against current eCFR/PHMSA/IMDG.",
+      "_confidence": "authored"
+    }
+  ]
+}

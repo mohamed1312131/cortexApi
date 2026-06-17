@@ -1,0 +1,50 @@
+[
+  {
+    "condition": "User asks for real quote / current price",
+    "confidence_cap_if_missing": 30,
+    "max_confidence": 30,
+    "reason": "Static ranges are not live quotes. Require carrier quote, fuel, toll, ferry and capacity data.",
+    "_source": "CORTEX_AUTHORED_COST_RANGES",
+    "_confidence": "authored"
+  },
+  {
+    "condition": "Lane distance known but toll/ferry/border costs unknown",
+    "confidence_cap_if_missing": 60,
+    "max_confidence": 60,
+    "reason": "Line-haul estimate can be computed, but total landed road cost is incomplete.",
+    "_source": "CORTEX_AUTHORED_COST_RANGES",
+    "_confidence": "authored"
+  },
+  {
+    "condition": "Fuel price not refreshed from live source",
+    "confidence_cap_if_missing": 70,
+    "max_confidence": 70,
+    "reason": "Diesel prices change weekly; EU Weekly Oil Bulletin or national fuel data should be checked.",
+    "_source": "EU_WEEKLY_OIL_BULLETIN",
+    "_confidence": "verified"
+  },
+  {
+    "condition": "Ferry/tunnel leg present and live booking unavailable",
+    "confidence_cap_if_missing": 55,
+    "max_confidence": 55,
+    "reason": "Ferry/tunnel prices vary by date, vehicle, peak day, surcharges and availability.",
+    "_source": "EUROTUNNEL_LESHUTTLE_FREIGHT_RATES + CORTEX_AUTHORED_COST_RANGES",
+    "_confidence": "verified_partial_estimated"
+  },
+  {
+    "condition": "Abnormal load permit/escort costs unknown",
+    "confidence_cap_if_missing": 40,
+    "max_confidence": 40,
+    "reason": "Abnormal movement cost can dominate total price and requires route-specific authority/carrier confirmation.",
+    "_source": "CORTEX_AUTHORED_COST_RANGES",
+    "_confidence": "estimated"
+  },
+  {
+    "condition": "Customs broker/admin costs unknown for cross-border non-EU move",
+    "confidence_cap_if_missing": 60,
+    "max_confidence": 60,
+    "reason": "Customs/admin can materially change cost and readiness.",
+    "_source": "CORTEX_AUTHORED_COST_RANGES",
+    "_confidence": "estimated"
+  }
+]

@@ -1,9 +1,13 @@
 .git
 .pytest_cache
+.ruff_cache
 .venv
 __pycache__
 *.pyc
 .env
+.claude
+skills-lock.json
+tmp
 data/*
 !data/.gitkeep
 

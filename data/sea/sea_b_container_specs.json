@@ -1,0 +1,539 @@
+[
+  {
+    "equipment_code": "20GP",
+    "equipment_name": "20 ft general purpose dry container",
+    "family": "dry",
+    "iso_type_family": "22Gx",
+    "internal_length_mm": 5898,
+    "internal_width_mm": 2352,
+    "internal_height_mm": 2393,
+    "door_width_mm": 2340,
+    "door_height_mm": 2280,
+    "capacity_cbm": 33.1,
+    "max_gross_kg": 30480,
+    "tare_kg": 2280,
+    "reference_payload_kg": 28200,
+    "temperature_controlled": false,
+    "top_open": false,
+    "sides_open": false,
+    "tank_capacity_liters": null,
+    "suits_cargo_types": [
+      "general_dry",
+      "palletized",
+      "cartons",
+      "bags",
+      "non_temperature_sensitive_consumer_goods"
+    ],
+    "avoid_for": [
+      "reefer_required",
+      "bulk_liquid",
+      "overheight",
+      "overwidth",
+      "very_heavy_single_piece_without_lashing_plan"
+    ],
+    "_source": "CMA CGM container technical brochure; ONE cross-check",
+    "_source_urls": [
+      "https://www.cma-cgm.com/assets/public/documents/Container%20Technical%20Brochures.pdf",
+      "https://www.one-line.com/en/dry-containers"
+    ],
+    "_confidence": "verified_carrier_reference",
+    "confidence_cap_if_missing": null,
+    "source_note": "Common reference dry-container dimensions; validate exact serial-container CSC plate at booking."
+  },
+  {
+    "equipment_code": "40GP",
+    "equipment_name": "40 ft general purpose dry container",
+    "family": "dry",
+    "iso_type_family": "42Gx",
+    "internal_length_mm": 12032,
+    "internal_width_mm": 2352,
+    "internal_height_mm": 2393,
+    "door_width_mm": 2340,
+    "door_height_mm": 2280,
+    "capacity_cbm": 67.7,
+    "max_gross_kg": 30480,
+    "tare_kg": 3700,
+    "reference_payload_kg": 26780,
+    "temperature_controlled": false,
+    "top_open": false,
+    "sides_open": false,
+    "tank_capacity_liters": null,
+    "suits_cargo_types": [
+      "general_dry",
+      "palletized",
+      "cartons",
+      "bags",
+      "light_voluminous_cargo"
+    ],
+    "avoid_for": [
+      "reefer_required",
+      "bulk_liquid",
+      "overheight",
+      "overwidth"
+    ],
+    "_source": "CMA CGM container technical brochure; ONE cross-check",
+    "_source_urls": [
+      "https://www.cma-cgm.com/assets/public/documents/Container%20Technical%20Brochures.pdf",
+      "https://www.one-line.com/en/dry-containers"
+    ],
+    "_confidence": "verified_carrier_reference",
+    "confidence_cap_if_missing": null,
+    "source_note": "Payload varies by carrier/unit; volume-sensitive cargo often uses 40GP/40HC."
+  },
+  {
+    "equipment_code": "40HC",
+    "equipment_name": "40 ft high cube dry container",
+    "family": "high_cube",
+    "iso_type_family": "45Gx",
+    "internal_length_mm": 12032,
+    "internal_width_mm": 2352,
+    "internal_height_mm": 2698,
+    "door_width_mm": 2340,
+    "door_height_mm": 2585,
+    "capacity_cbm": 76.3,
+    "max_gross_kg": 30480,
+    "tare_kg": 3900,
+    "reference_payload_kg": 26580,
+    "temperature_controlled": false,
+    "top_open": false,
+    "sides_open": false,
+    "tank_capacity_liters": null,
+    "suits_cargo_types": [
+      "general_dry",
+      "palletized",
+      "cartons",
+      "bags",
+      "light_voluminous_cargo",
+      "tall_non_reefer_cargo"
+    ],
+    "avoid_for": [
+      "reefer_required",
+      "bulk_liquid",
+      "overwidth",
+      "overheight_above_internal_height"
+    ],
+    "_source": "CMA CGM container technical brochure; ONE cross-check",
+    "_source_urls": [
+      "https://www.cma-cgm.com/assets/public/documents/Container%20Technical%20Brochures.pdf",
+      "https://www.one-line.com/en/dry-containers"
+    ],
+    "_confidence": "verified_carrier_reference",
+    "confidence_cap_if_missing": null,
+    "source_note": "High cube gives extra height but not unlimited payload."
+  },
+  {
+    "equipment_code": "45HC",
+    "equipment_name": "45 ft high cube dry container",
+    "family": "high_cube",
+    "iso_type_family": "L5Gx",
+    "internal_length_mm": 13556,
+    "internal_width_mm": 2352,
+    "internal_height_mm": 2698,
+    "door_width_mm": 2340,
+    "door_height_mm": 2585,
+    "capacity_cbm": 86.0,
+    "max_gross_kg": 30480,
+    "tare_kg": 4800,
+    "reference_payload_kg": 25680,
+    "temperature_controlled": false,
+    "top_open": false,
+    "sides_open": false,
+    "tank_capacity_liters": null,
+    "suits_cargo_types": [
+      "light_voluminous_cargo",
+      "long_light_dry_cargo",
+      "retail_goods"
+    ],
+    "avoid_for": [
+      "heavy_cargo",
+      "reefer_required",
+      "bulk_liquid",
+      "lanes_without_45hc_availability"
+    ],
+    "_source": "CMA CGM container technical brochure",
+    "_source_urls": [
+      "https://www.cma-cgm.com/assets/public/documents/Container%20Technical%20Brochures.pdf"
+    ],
+    "_confidence": "verified_carrier_reference",
+    "confidence_cap_if_missing": 85,
+    "source_note": "45HC availability is lane/carrier-specific; use as planning option only."
+  },
+  {
+    "equipment_code": "20RF",
+    "equipment_name": "20 ft reefer container",
+    "family": "reefer",
+    "iso_type_family": "22Rx",
+    "internal_length_mm": 5456,
+    "internal_width_mm": 2294,
+    "internal_height_mm": 2263,
+    "door_width_mm": 2290,
+    "door_height_mm": 2264,
+    "capacity_cbm": 28.3,
+    "max_gross_kg": 30480,
+    "tare_kg": 3050,
+    "reference_payload_kg": 27430,
+    "temperature_controlled": true,
+    "top_open": false,
+    "sides_open": false,
+    "tank_capacity_liters": null,
+    "suits_cargo_types": [
+      "chilled_goods",
+      "frozen_goods",
+      "pharma_temperature_controlled",
+      "food_temperature_controlled"
+    ],
+    "avoid_for": [
+      "non_temperature_cargo_where_dry_is_sufficient",
+      "cargo_without_setpoint",
+      "bulk_liquid"
+    ],
+    "_source": "CMA CGM reefer technical specifications; ONE cross-check",
+    "_source_urls": [
+      "https://www.cmacgm-group.com/en/activities/shipping-everything/reefer/technical-specifications",
+      "https://www.one-line.com/en/dry-containers"
+    ],
+    "_confidence": "verified_carrier_reference",
+    "confidence_cap_if_missing": 70,
+    "source_note": "Reefer booking requires setpoint, ventilation/humidity needs, and reefer plug availability at terminals."
+  },
+  {
+    "equipment_code": "40RH",
+    "equipment_name": "40 ft high cube reefer container",
+    "family": "reefer",
+    "iso_type_family": "45Rx",
+    "internal_length_mm": 11583,
+    "internal_width_mm": 2294,
+    "internal_height_mm": 2554,
+    "door_width_mm": 2290,
+    "door_height_mm": 2569,
+    "capacity_cbm": 67.9,
+    "max_gross_kg": 34000,
+    "tare_kg": 4740,
+    "reference_payload_kg": 29260,
+    "temperature_controlled": true,
+    "top_open": false,
+    "sides_open": false,
+    "tank_capacity_liters": null,
+    "suits_cargo_types": [
+      "chilled_goods",
+      "frozen_goods",
+      "pharma_temperature_controlled",
+      "food_temperature_controlled",
+      "larger_reefer_shipments"
+    ],
+    "avoid_for": [
+      "cargo_without_setpoint",
+      "bulk_liquid",
+      "overheight"
+    ],
+    "_source": "CMA CGM reefer technical specifications; ONE cross-check",
+    "_source_urls": [
+      "https://www.cmacgm-group.com/en/activities/shipping-everything/reefer/technical-specifications",
+      "https://www.one-line.com/en/dry-containers"
+    ],
+    "_confidence": "verified_carrier_reference",
+    "confidence_cap_if_missing": 70,
+    "source_note": "CMA CGM public reefer page gives 40HC reefer max gross 34,000 kg, tare 4,740 kg, payload 29,260 kg."
+  },
+  {
+    "equipment_code": "20OT",
+    "equipment_name": "20 ft open top container",
+    "family": "open_top",
+    "iso_type_family": "22Ux",
+    "internal_length_mm": 5898,
+    "internal_width_mm": 2350,
+    "internal_height_mm": 2348,
+    "door_width_mm": 2340,
+    "door_height_mm": 2280,
+    "capacity_cbm": 32.5,
+    "max_gross_kg": 30480,
+    "tare_kg": 2240,
+    "reference_payload_kg": 28240,
+    "temperature_controlled": false,
+    "top_open": true,
+    "sides_open": false,
+    "tank_capacity_liters": null,
+    "suits_cargo_types": [
+      "overheight_loaded_from_top",
+      "machinery",
+      "crated_heavy_cargo",
+      "cargo_needing_crane_loading"
+    ],
+    "avoid_for": [
+      "cargo_needing_temperature_control",
+      "bulk_liquid",
+      "cargo_exposed_to_weather_without_protection"
+    ],
+    "_source": "ONE open-top specifications; CMA CGM cross-check",
+    "_source_urls": [
+      "https://www.one-line.com/en/dry-containers",
+      "https://www.cma-cgm.com/assets/public/documents/Container%20Technical%20Brochures.pdf"
+    ],
+    "_confidence": "verified_carrier_reference",
+    "confidence_cap_if_missing": 80,
+    "source_note": "Open-top still has width/length/payload limits; out-of-gauge requires carrier approval."
+  },
+  {
+    "equipment_code": "40OT",
+    "equipment_name": "40 ft open top container",
+    "family": "open_top",
+    "iso_type_family": "42Ux",
+    "internal_length_mm": 12022,
+    "internal_width_mm": 2350,
+    "internal_height_mm": 2348,
+    "door_width_mm": 2340,
+    "door_height_mm": 2280,
+    "capacity_cbm": 66.3,
+    "max_gross_kg": 30480,
+    "tare_kg": 3880,
+    "reference_payload_kg": 26600,
+    "temperature_controlled": false,
+    "top_open": true,
+    "sides_open": false,
+    "tank_capacity_liters": null,
+    "suits_cargo_types": [
+      "long_overheight_loaded_from_top",
+      "machinery",
+      "industrial_parts"
+    ],
+    "avoid_for": [
+      "cargo_needing_temperature_control",
+      "bulk_liquid",
+      "weather_sensitive_unprotected_cargo"
+    ],
+    "_source": "ONE open-top specifications; CMA CGM cross-check",
+    "_source_urls": [
+      "https://www.one-line.com/en/dry-containers",
+      "https://www.cma-cgm.com/assets/public/documents/Container%20Technical%20Brochures.pdf"
+    ],
+    "_confidence": "verified_carrier_reference",
+    "confidence_cap_if_missing": 80,
+    "source_note": "ONE public specs list 40OT inside dimensions and max load weight; carrier approval needed for OOG."
+  },
+  {
+    "equipment_code": "20FR",
+    "equipment_name": "20 ft flat rack container",
+    "family": "flat_rack",
+    "iso_type_family": "22Px",
+    "internal_length_mm": 5638,
+    "internal_width_mm": 2194,
+    "internal_height_mm": 2233,
+    "door_width_mm": null,
+    "door_height_mm": null,
+    "capacity_cbm": null,
+    "max_gross_kg": 45000,
+    "tare_kg": 2900,
+    "reference_payload_kg": 42100,
+    "temperature_controlled": false,
+    "top_open": true,
+    "sides_open": true,
+    "tank_capacity_liters": null,
+    "suits_cargo_types": [
+      "heavy_machinery",
+      "vehicles_not_roro",
+      "pipes",
+      "wide_cargo",
+      "oversized_cargo_with_lashing_plan"
+    ],
+    "avoid_for": [
+      "loose_unsecured_cargo",
+      "temperature_controlled_cargo",
+      "bulk_liquid"
+    ],
+    "_source": "Hapag-Lloyd/CMA CGM/ONE flat-rack specs cross-check",
+    "_source_urls": [
+      "https://www.hapag-lloyd.com/en/services-information/cargo-fleet/container.html",
+      "https://www.cma-cgm.com/assets/public/documents/Container%20Technical%20Brochures.pdf",
+      "https://www.one-line.com/en/dry-containers"
+    ],
+    "_confidence": "verified_carrier_reference",
+    "confidence_cap_if_missing": 75,
+    "source_note": "Flat-rack specs vary significantly. Treat as reference and require OOG/lashing/carrier approval."
+  },
+  {
+    "equipment_code": "40FR",
+    "equipment_name": "40 ft flat rack container",
+    "family": "flat_rack",
+    "iso_type_family": "42Px/45Px",
+    "internal_length_mm": 11652,
+    "internal_width_mm": 2374,
+    "internal_height_mm": 1955,
+    "door_width_mm": null,
+    "door_height_mm": null,
+    "capacity_cbm": null,
+    "max_gross_kg": 45000,
+    "tare_kg": 5500,
+    "reference_payload_kg": 39500,
+    "temperature_controlled": false,
+    "top_open": true,
+    "sides_open": true,
+    "tank_capacity_liters": null,
+    "suits_cargo_types": [
+      "heavy_machinery",
+      "long_cargo",
+      "wide_cargo",
+      "industrial_equipment",
+      "oversized_cargo_with_lashing_plan"
+    ],
+    "avoid_for": [
+      "temperature_controlled_cargo",
+      "bulk_liquid",
+      "cargo_without_lashing_plan"
+    ],
+    "_source": "Hapag-Lloyd/CMA CGM/ONE flat-rack specs cross-check",
+    "_source_urls": [
+      "https://www.hapag-lloyd.com/en/services-information/cargo-fleet/container.html",
+      "https://www.cma-cgm.com/assets/public/documents/Container%20Technical%20Brochures.pdf",
+      "https://www.one-line.com/en/dry-containers"
+    ],
+    "_confidence": "verified_carrier_reference",
+    "confidence_cap_if_missing": 75,
+    "source_note": "Flat-rack uses special-cargo approval; dimensional fit alone is not enough."
+  },
+  {
+    "equipment_code": "20TK_20KL",
+    "equipment_name": "20 ft ISO tank container around 20,000 L",
+    "family": "tank",
+    "iso_type_family": "22Tx",
+    "internal_length_mm": null,
+    "internal_width_mm": null,
+    "internal_height_mm": null,
+    "door_width_mm": null,
+    "door_height_mm": null,
+    "capacity_cbm": 20.0,
+    "max_gross_kg": 36000,
+    "tare_kg": 3600,
+    "reference_payload_kg": 32400,
+    "tank_capacity_liters": 20000,
+    "temperature_controlled": false,
+    "top_open": false,
+    "sides_open": false,
+    "suits_cargo_types": [
+      "bulk_liquid_food_grade_if_compatible",
+      "bulk_liquid_chemical_if_compatible",
+      "non_containerized_liquid_in_iso_tank"
+    ],
+    "avoid_for": [
+      "dry_cargo",
+      "liquid_without_compatibility_check",
+      "dg_liquid_without_dg_acceptance_check"
+    ],
+    "_source": "CMA CGM tank container specifications; DCSA tank taxonomy",
+    "_source_urls": [
+      "https://www.cma-cgm.com/assets/public/documents/Container%20Technical%20Brochures.pdf",
+      "https://dcsa.org/newsroom/shipping-container-types-a-guide"
+    ],
+    "_confidence": "verified_carrier_reference",
+    "confidence_cap_if_missing": 65,
+    "source_note": "Tank compatibility depends on commodity, previous cargo, lining, cleaning certificate, DG status, and carrier acceptance."
+  },
+  {
+    "equipment_code": "20TK_26KL",
+    "equipment_name": "20 ft ISO tank container around 26,000 L",
+    "family": "tank",
+    "iso_type_family": "22Tx",
+    "internal_length_mm": null,
+    "internal_width_mm": null,
+    "internal_height_mm": null,
+    "door_width_mm": null,
+    "door_height_mm": null,
+    "capacity_cbm": 26.0,
+    "max_gross_kg": 36000,
+    "tare_kg": 3700,
+    "reference_payload_kg": 32300,
+    "tank_capacity_liters": 26000,
+    "temperature_controlled": false,
+    "top_open": false,
+    "sides_open": false,
+    "suits_cargo_types": [
+      "bulk_liquid_food_grade_if_compatible",
+      "bulk_liquid_chemical_if_compatible",
+      "higher_volume_liquid"
+    ],
+    "avoid_for": [
+      "dry_cargo",
+      "liquid_without_compatibility_check",
+      "dg_liquid_without_dg_acceptance_check"
+    ],
+    "_source": "CMA CGM tank container specifications; DCSA tank taxonomy",
+    "_source_urls": [
+      "https://www.cma-cgm.com/assets/public/documents/Container%20Technical%20Brochures.pdf",
+      "https://dcsa.org/newsroom/shipping-container-types-a-guide"
+    ],
+    "_confidence": "verified_carrier_reference",
+    "confidence_cap_if_missing": 65,
+    "source_note": "Capacity is useful for planning only; actual tank type and approvals must be checked."
+  },
+  {
+    "equipment_code": "BREAKBULK",
+    "equipment_name": "Breakbulk / non-containerized sea cargo",
+    "family": "breakbulk",
+    "iso_type_family": null,
+    "internal_length_mm": null,
+    "internal_width_mm": null,
+    "internal_height_mm": null,
+    "door_width_mm": null,
+    "door_height_mm": null,
+    "capacity_cbm": null,
+    "max_gross_kg": null,
+    "tare_kg": null,
+    "reference_payload_kg": null,
+    "tank_capacity_liters": null,
+    "temperature_controlled": false,
+    "top_open": true,
+    "sides_open": true,
+    "suits_cargo_types": [
+      "too_large_for_container",
+      "project_cargo",
+      "heavy_lift",
+      "non_containerizable_units"
+    ],
+    "avoid_for": [
+      "cargo_without_lift_plan",
+      "cargo_without_lashing_plan",
+      "cargo_requiring_container_security"
+    ],
+    "_source": "Authored Cortex equipment mode, informed by container taxonomy",
+    "_source_urls": [
+      "https://dcsa.org/newsroom/shipping-container-types-a-guide"
+    ],
+    "_confidence": "authored",
+    "confidence_cap_if_missing": 60,
+    "source_note": "Not a container spec. Requires port/crane capability from SEA-C and carrier/project-cargo validation."
+  },
+  {
+    "equipment_code": "RORO",
+    "equipment_name": "Roll-on/Roll-off sea mode",
+    "family": "roro",
+    "iso_type_family": null,
+    "internal_length_mm": null,
+    "internal_width_mm": null,
+    "internal_height_mm": null,
+    "door_width_mm": null,
+    "door_height_mm": null,
+    "capacity_cbm": null,
+    "max_gross_kg": null,
+    "tare_kg": null,
+    "reference_payload_kg": null,
+    "tank_capacity_liters": null,
+    "temperature_controlled": false,
+    "top_open": false,
+    "sides_open": false,
+    "suits_cargo_types": [
+      "self_driving_vehicle",
+      "rolling_machinery",
+      "trailerized_cargo",
+      "vehicles"
+    ],
+    "avoid_for": [
+      "non_rolling_cargo_without_trailer",
+      "cargo_without_roro_port_pair",
+      "dg_vehicle_without_carrier_acceptance"
+    ],
+    "_source": "Authored Cortex equipment mode, links to SEA-C RoRo port capability",
+    "_source_urls": [],
+    "_confidence": "authored",
+    "confidence_cap_if_missing": 60,
+    "source_note": "Requires SEA-C RoRo capability at origin/destination and carrier RoRo schedule acceptance."
+  }
+]

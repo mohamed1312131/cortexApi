@@ -1,0 +1,128 @@
+[
+  {
+    "schedule_field": "origin_airport",
+    "required_for": "all route checks",
+    "why_needed": "Defines start node and jurisdiction/security/capability context.",
+    "missing_impact": "hard_gate",
+    "example": "TUN"
+  },
+  {
+    "schedule_field": "destination_airport",
+    "required_for": "all route checks",
+    "why_needed": "Defines destination node and border/security context.",
+    "missing_impact": "hard_gate",
+    "example": "CDG"
+  },
+  {
+    "schedule_field": "transit_airports",
+    "required_for": "multi-leg routing and special cargo",
+    "why_needed": "Transit airports need Block C/F/H checks.",
+    "missing_impact": "high_confidence_cap",
+    "example": "IST, FRA"
+  },
+  {
+    "schedule_field": "carrier_per_leg",
+    "required_for": "Block D carrier acceptance",
+    "why_needed": "Carrier acceptance must pass for every leg.",
+    "missing_impact": "high_confidence_cap",
+    "example": "TK, LH"
+  },
+  {
+    "schedule_field": "flight_number",
+    "required_for": "schedule/booking/tracking",
+    "why_needed": "Needed to link shipment to a flight leg and milestone events.",
+    "missing_impact": "medium_confidence_cap",
+    "example": "TK663"
+  },
+  {
+    "schedule_field": "flight_date",
+    "required_for": "schedule/booking/cutoff",
+    "why_needed": "Capacity, cutoff and acceptance are date-specific.",
+    "missing_impact": "medium_confidence_cap",
+    "example": "2026-06-10"
+  },
+  {
+    "schedule_field": "departure_time",
+    "required_for": "transit and cutoff planning",
+    "why_needed": "Needed to evaluate cutoff and connection timing.",
+    "missing_impact": "medium_confidence_cap",
+    "example": "14:20"
+  },
+  {
+    "schedule_field": "arrival_time",
+    "required_for": "transit and deadline planning",
+    "why_needed": "Needed to evaluate total transit and latest delivery deadline.",
+    "missing_impact": "medium_confidence_cap",
+    "example": "18:05"
+  },
+  {
+    "schedule_field": "aircraft_type",
+    "required_for": "Block E fit and cargo type restrictions",
+    "why_needed": "Door/deck/ULD/passenger-freighter logic depends on aircraft type.",
+    "missing_impact": "high_confidence_cap",
+    "example": "B777F"
+  },
+  {
+    "schedule_field": "passenger_or_freighter",
+    "required_for": "DG CAO/SCO/security and fit checks",
+    "why_needed": "Some cargo cannot move on passenger aircraft.",
+    "missing_impact": "high_confidence_cap",
+    "example": "freighter"
+  },
+  {
+    "schedule_field": "cutoff_time",
+    "required_for": "operational readiness",
+    "why_needed": "Cargo must be tendered and accepted before cutoff.",
+    "missing_impact": "medium_confidence_cap",
+    "example": "D-1 18:00"
+  },
+  {
+    "schedule_field": "minimum_connection_time",
+    "required_for": "multi-leg route viability",
+    "why_needed": "Transit must allow handling, screening, storage, and transfer.",
+    "missing_impact": "high_confidence_cap",
+    "example": "6 hours"
+  },
+  {
+    "schedule_field": "capacity_status",
+    "required_for": "booking realism",
+    "why_needed": "Schedule is useless if no cargo capacity is available.",
+    "missing_impact": "high_confidence_cap",
+    "example": "available / unknown"
+  },
+  {
+    "schedule_field": "booking_status",
+    "required_for": "readiness",
+    "why_needed": "Distinguishes plausible route from confirmed route.",
+    "missing_impact": "confidence_cap",
+    "example": "planned / booked / confirmed"
+  },
+  {
+    "schedule_field": "temperature_storage_at_transit",
+    "required_for": "PIL/CRT/COL/FRO/PER/LHO",
+    "why_needed": "Cold-chain may fail at transit without storage/handler plan.",
+    "missing_impact": "high_confidence_cap",
+    "example": "+2/+8 cold room"
+  },
+  {
+    "schedule_field": "security_status_at_origin",
+    "required_for": "Block H",
+    "why_needed": "Cargo may be blocked before loading if not screened/secured.",
+    "missing_impact": "hard_gate_for_passenger",
+    "example": "SPX"
+  },
+  {
+    "schedule_field": "PLACI_data_complete",
+    "required_for": "US/EU/UK/UAE/Canada lanes",
+    "why_needed": "Advance cargo information must be complete before loading.",
+    "missing_impact": "high_confidence_cap",
+    "example": "true"
+  },
+  {
+    "schedule_field": "AWB_or_HAWB",
+    "required_for": "tracking and filing",
+    "why_needed": "Tracking milestones are linked to AWB/HAWB references.",
+    "missing_impact": "medium_confidence_cap",
+    "example": "020-12345675"
+  }
+]

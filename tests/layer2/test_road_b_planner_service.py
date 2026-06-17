@@ -40,6 +40,13 @@ def _road_request() -> ValidatedShipmentRequest:
     )
 
 
+def _block_response(package, block_id: str):
+    for response in package.block_responses:
+        if response.block_id == block_id:
+            return response
+    raise AssertionError(f"Expected block response {block_id}")
+
+
 def test_road_request_plans_road_b_after_road_c():
     plan = build_fetch_plan(_road_request())
     blocks = [item.block_id for item in plan.items]
@@ -54,9 +61,7 @@ def test_layer2_service_road_runs_road_b_after_road_c_without_gate():
 
     assert blocks == ["ROAD-C", "ROAD-A", "ROAD-B", "ROAD-F", "ROAD-COST"]
     assert blocks.index("ROAD-C") < blocks.index("ROAD-B")
-    road_b = next(
-        response for response in package.block_responses if response.block_id == "ROAD-B"
-    )
+    road_b = _block_response(package, "ROAD-B")
     assert road_b.status in {BlockStatus.found, BlockStatus.unknown}
     assert road_b.data["fit_status"] == "planning_only_requires_carrier_validation"
     assert isinstance(road_b.data["candidate_vehicle_examples"], list)

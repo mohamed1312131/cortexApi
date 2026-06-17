@@ -1,0 +1,282 @@
+[
+  {
+    "document_code": "BL_OR_SWB",
+    "document": "Bill of Lading or Sea Waybill",
+    "jurisdiction": "global_operational",
+    "mode_scope": "sea",
+    "when_required": "Required for ocean carriage documentation and cargo release; exact form depends on carrier, contract, and release model.",
+    "trigger_conditions": [
+      "sea_shipment"
+    ],
+    "deadline": "Before document release and cargo release; shipping instructions normally before carrier documentation cutoff.",
+    "responsible_party": "carrier_issues; shipper_or_forwarder_provides_instructions",
+    "hard_gate_if_missing": true,
+    "gate_type": "HARD_GATE",
+    "cortex_action": "Require B/L or sea waybill path and shipping instructions before shipment readiness can be marked clean.",
+    "dependencies": [
+      "SHIPPING_INSTRUCTIONS"
+    ],
+    "_source": [
+      "CORTEX_AUTHORED_OPS_RULES"
+    ],
+    "_confidence": "authored",
+    "confidence_cap_if_missing": 0.65,
+    "known_limitations": "Operational rule; legal effects differ between negotiable original B/L, sea waybill, and telex/electronic release."
+  },
+  {
+    "document_code": "SHIPPING_INSTRUCTIONS",
+    "document": "Shipping Instructions",
+    "jurisdiction": "global_operational",
+    "mode_scope": "sea",
+    "when_required": "Required by carrier/forwarder to prepare transport document and manifest data.",
+    "trigger_conditions": [
+      "sea_shipment"
+    ],
+    "deadline": "Before carrier documentation cutoff; exact cutoff is sailing/carrier-specific.",
+    "responsible_party": "shipper_or_forwarder",
+    "hard_gate_if_missing": true,
+    "gate_type": "HARD_GATE",
+    "cortex_action": "Block clean readiness if shipping instructions are missing before document cutoff.",
+    "dependencies": [],
+    "_source": [
+      "CORTEX_AUTHORED_OPS_RULES"
+    ],
+    "_confidence": "authored",
+    "confidence_cap_if_missing": 0.7,
+    "known_limitations": "Exact cutoff belongs to SEA-I schedule readiness and carrier/local terminal data."
+  },
+  {
+    "document_code": "VGM_SOLAS",
+    "document": "Verified Gross Mass (VGM)",
+    "jurisdiction": "SOLAS_global_container_shipping",
+    "mode_scope": "sea_container",
+    "when_required": "Required for packed containers before vessel loading.",
+    "trigger_conditions": [
+      "containerized_cargo",
+      "packed_container"
+    ],
+    "deadline": "Before vessel loading and before the carrier/terminal VGM cutoff.",
+    "responsible_party": "shipper",
+    "hard_gate_if_missing": true,
+    "gate_type": "HARD_GATE",
+    "cortex_action": "No VGM means no clean readiness for loading; prompt for verified gross mass method and submission status.",
+    "dependencies": [
+      "PACKING_LIST"
+    ],
+    "_source": [
+      "IMO_SOLAS_VGM"
+    ],
+    "_confidence": "verified",
+    "confidence_cap_if_missing": 0.4,
+    "known_limitations": "Exact submission cutoff is carrier/terminal-specific and belongs to SEA-I."
+  },
+  {
+    "document_code": "IMO_DGD",
+    "document": "IMO Dangerous Goods Declaration",
+    "jurisdiction": "IMDG_maritime_DG",
+    "mode_scope": "sea",
+    "when_required": "Required when shipment contains dangerous goods offered for sea transport.",
+    "trigger_conditions": [
+      "dangerous_goods",
+      "un_number_present"
+    ],
+    "deadline": "Before carrier DG acceptance/documentation cutoff; before loading.",
+    "responsible_party": "shipper_or_authorized_DG_declarant",
+    "hard_gate_if_missing": true,
+    "gate_type": "HARD_GATE",
+    "cortex_action": "If SEA-A identifies DG cargo, require DG declaration before readiness can pass.",
+    "dependencies": [
+      "SEA_A_DG_RECORD",
+      "CPC"
+    ],
+    "_source": [
+      "IMO_IMDG_OVERVIEW",
+      "UK_DANGEROUS_GOODS_FORM"
+    ],
+    "_confidence": "verified_concept",
+    "confidence_cap_if_missing": 0.35,
+    "known_limitations": "Full IMDG Code details are not embedded; carrier/terminal DG acceptance still required."
+  },
+  {
+    "document_code": "CPC",
+    "document": "Container/Vehicle Packing Certificate",
+    "jurisdiction": "IMDG_maritime_DG",
+    "mode_scope": "sea_container",
+    "when_required": "Required/expected when dangerous goods are packed into a container or vehicle for sea transport.",
+    "trigger_conditions": [
+      "dangerous_goods",
+      "containerized_cargo"
+    ],
+    "deadline": "Before carrier DG/documentation cutoff; before loading.",
+    "responsible_party": "person_responsible_for_packing_container_or_vehicle",
+    "hard_gate_if_missing": true,
+    "gate_type": "HARD_GATE",
+    "cortex_action": "For DG container shipments, require packing certificate status and packer responsible party.",
+    "dependencies": [
+      "IMO_DGD"
+    ],
+    "_source": [
+      "IMO_IMDG_OVERVIEW",
+      "UK_DANGEROUS_GOODS_FORM"
+    ],
+    "_confidence": "verified_concept",
+    "confidence_cap_if_missing": 0.35,
+    "known_limitations": "Form format may vary by jurisdiction/carrier and IMDG edition."
+  },
+  {
+    "document_code": "ISF_10_2_US",
+    "document": "Importer Security Filing (ISF 10+2)",
+    "jurisdiction": "US_import",
+    "mode_scope": "sea_import_to_US",
+    "when_required": "Required for ocean cargo destined to the United States, with exceptions such as some bulk/breakbulk cases.",
+    "trigger_conditions": [
+      "destination_country=US",
+      "sea_shipment",
+      "import"
+    ],
+    "deadline": "No later than 24 hours before cargo is loaded on the vessel destined to the United States.",
+    "responsible_party": "importer_or_ISF_filer",
+    "hard_gate_if_missing": true,
+    "gate_type": "HARD_GATE",
+    "cortex_action": "For US imports, block clean readiness unless ISF status, filer, and deadline are confirmed.",
+    "dependencies": [
+      "COMMERCIAL_INVOICE",
+      "PACKING_LIST",
+      "HTS_CLASSIFICATION"
+    ],
+    "_source": [
+      "CBP_ISF_10_2"
+    ],
+    "_confidence": "verified",
+    "confidence_cap_if_missing": 0.4,
+    "known_limitations": "Detailed ISF element validation and exceptions are not fully modeled in v1."
+  },
+  {
+    "document_code": "ENS_ICS2_EU",
+    "document": "Entry Summary Declaration (ENS) / ICS2 filing",
+    "jurisdiction": "EU_NI_NO_CH_import_or_transit",
+    "mode_scope": "sea_import_or_transit",
+    "when_required": "Required for goods brought to or transiting through the EU under ICS2, including maritime/inland waterway phase.",
+    "trigger_conditions": [
+      "destination_or_transit_in=EU/NI/NO/CH",
+      "sea_shipment"
+    ],
+    "deadline": "Advance safety/security filing before arrival; for maritime containerized freight, validate pre-loading filing timing with filer/carrier.",
+    "responsible_party": "carrier_forwarder_house_level_filer_or_relevant_economic_operator",
+    "hard_gate_if_missing": true,
+    "gate_type": "HARD_GATE",
+    "cortex_action": "For EU/NI/NO/CH inbound or transit shipments, require ENS/ICS2 responsibility and submission status.",
+    "dependencies": [
+      "COMMERCIAL_INVOICE",
+      "PACKING_LIST",
+      "EORI_IF_REQUIRED"
+    ],
+    "_source": [
+      "EU_ICS2",
+      "EU_ICS2_MARITIME_LIVE"
+    ],
+    "_confidence": "verified_requirement_deadline_model_dependent",
+    "confidence_cap_if_missing": 0.45,
+    "known_limitations": "Exact party/deadline can differ by master/house filing model and release phase; needs filer validation."
+  },
+  {
+    "document_code": "COMMERCIAL_INVOICE",
+    "document": "Commercial Invoice",
+    "jurisdiction": "cross_border_customs_general",
+    "mode_scope": "sea_cross_border",
+    "when_required": "Generally required for customs valuation, classification, and clearance of cross-border commercial goods.",
+    "trigger_conditions": [
+      "cross_border",
+      "commercial_goods"
+    ],
+    "deadline": "Before export/import customs declaration and before destination clearance.",
+    "responsible_party": "seller_exporter_or_shipper",
+    "hard_gate_if_missing": true,
+    "gate_type": "HARD_GATE",
+    "cortex_action": "Require invoice data for cross-border commercial goods.",
+    "dependencies": [],
+    "_source": [
+      "CORTEX_AUTHORED_OPS_RULES"
+    ],
+    "_confidence": "authored_general_customs_rule",
+    "confidence_cap_if_missing": 0.55,
+    "known_limitations": "Country-specific invoice formats and data elements are not fully modeled in v1."
+  },
+  {
+    "document_code": "PACKING_LIST",
+    "document": "Packing List",
+    "jurisdiction": "cross_border_customs_and_operations_general",
+    "mode_scope": "sea_cross_border",
+    "when_required": "Generally required for package-level description, inspection, cargo handling, and customs support.",
+    "trigger_conditions": [
+      "cross_border",
+      "packed_cargo"
+    ],
+    "deadline": "Before export/import customs declaration and before cargo handover if needed for handling.",
+    "responsible_party": "shipper_or_packer",
+    "hard_gate_if_missing": true,
+    "gate_type": "HARD_GATE",
+    "cortex_action": "Require package count, weight, dimensions, marks, and contents summary.",
+    "dependencies": [],
+    "_source": [
+      "CORTEX_AUTHORED_OPS_RULES"
+    ],
+    "_confidence": "authored_general_customs_rule",
+    "confidence_cap_if_missing": 0.6,
+    "known_limitations": "Country/carrier-specific packing list requirements may vary."
+  },
+  {
+    "document_code": "CERTIFICATE_OF_ORIGIN",
+    "document": "Certificate of Origin",
+    "jurisdiction": "conditional_customs_trade_preference",
+    "mode_scope": "sea_cross_border",
+    "when_required": "Conditionally required when buyer, destination country, preferential tariff claim, letter of credit, or trade agreement requires origin proof.",
+    "trigger_conditions": [
+      "origin_preference_claimed",
+      "buyer_requires_origin_doc",
+      "destination_requires_origin_doc"
+    ],
+    "deadline": "Before customs clearance or banking/document presentation deadline.",
+    "responsible_party": "exporter_chamber_of_commerce_or_authorized_body",
+    "hard_gate_if_missing": false,
+    "gate_type": "PLANNING_FACTOR_CONDITIONAL_GATE",
+    "cortex_action": "Ask whether preferential origin or buyer/bank requirements apply; hard gate only if required.",
+    "dependencies": [
+      "COMMERCIAL_INVOICE"
+    ],
+    "_source": [
+      "CORTEX_AUTHORED_OPS_RULES"
+    ],
+    "_confidence": "authored_conditional_rule",
+    "confidence_cap_if_missing": 0.75,
+    "known_limitations": "Country/product-specific origin rules are not modeled in v1."
+  },
+  {
+    "document_code": "EXPORT_IMPORT_PERMIT",
+    "document": "Export/Import Permit or License",
+    "jurisdiction": "conditional_regulated_goods",
+    "mode_scope": "sea_cross_border",
+    "when_required": "Conditionally required for regulated, restricted, controlled, dual-use, food, pharmaceutical, wildlife, cultural, strategic, or other permit-controlled goods.",
+    "trigger_conditions": [
+      "regulated_goods",
+      "restricted_goods",
+      "controlled_goods"
+    ],
+    "deadline": "Before export release, import clearance, or booking where carrier requires permit evidence.",
+    "responsible_party": "shipper_exporter_importer_or_authorized_agent",
+    "hard_gate_if_missing": false,
+    "gate_type": "PLANNING_FACTOR_CONDITIONAL_HARD_GATE",
+    "cortex_action": "Flag regulated cargo for manual permit check; become hard gate if a permit is required.",
+    "dependencies": [
+      "COMMERCIAL_INVOICE",
+      "HS_CLASSIFICATION",
+      "PRODUCT_DESCRIPTION"
+    ],
+    "_source": [
+      "CORTEX_AUTHORED_OPS_RULES"
+    ],
+    "_confidence": "authored_conditional_rule",
+    "confidence_cap_if_missing": 0.7,
+    "known_limitations": "Product/country-specific licensing is out of scope for v1 and needs trade compliance data."
+  }
+]

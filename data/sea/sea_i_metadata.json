@@ -1,0 +1,106 @@
+{
+  "block": "SEA-I",
+  "title": "Chokepoints + Schedule Readiness",
+  "status": "final_v1_static_reference_layer",
+  "generated_at": "2026-06-03T14:10:12Z",
+  "scope": "Static planning/readiness reference for chokepoint exposure, carrier cutoff logic, free-time risk, and missed-service-cycle impact. Not a live routing/schedule engine.",
+  "design_principle": "Code does the math; LLM does judgment. SEA-I provides deterministic rules and confidence caps for readiness reasoning.",
+  "sources": [
+    {
+      "source_id": "UNCTAD_RMT_2024",
+      "title": "UNCTAD Review of Maritime Transport 2024",
+      "url": "https://unctad.org/publication/review-maritime-transport-2024",
+      "source_type": "intergovernmental_report",
+      "use": "Strategic chokepoint risk context for Suez, Panama, Red Sea and global maritime disruption exposure.",
+      "_confidence": "verified"
+    },
+    {
+      "source_id": "PANAMA_CANAL_ADVISORIES",
+      "title": "Panama Canal Authority - Advisories to Shipping",
+      "url": "https://pancanal.com/en/maritime-services/advisory-to-shipping/",
+      "source_type": "official_authority_advisories",
+      "use": "Official source for maximum authorized draft, booking slot, and transit advisory changes.",
+      "_confidence": "verified_live_source_required"
+    },
+    {
+      "source_id": "PANAMA_CANAL_DRAFT_TRANSITS_2024",
+      "title": "Panama Canal Authority - Increase in draft and daily transit announcements",
+      "url": "https://pancanal.com/en/announces-new-increase-in-draft-and-daily-transit/",
+      "source_type": "official_authority_announcement",
+      "use": "Example that Panama Canal transit slots and draft limits change based on Gatun Lake levels.",
+      "_confidence": "verified_historical_example"
+    },
+    {
+      "source_id": "SUEZ_CANAL_AUTHORITY",
+      "title": "Suez Canal Authority official site",
+      "url": "https://www.suezcanal.gov.eg/",
+      "source_type": "official_authority",
+      "use": "Official source for tolls, navigation circulars, toll calculator and toll tables.",
+      "_confidence": "verified_live_source_required"
+    },
+    {
+      "source_id": "SUEZ_CANAL_CIRCULARS",
+      "title": "Suez Canal Authority - Navigation Circulars",
+      "url": "https://www.suezcanal.gov.eg/English/Navigation/NavigationCirculars/Pages/default.aspx",
+      "source_type": "official_authority_circulars",
+      "use": "Official source for current navigation circulars and toll/rebate updates.",
+      "_confidence": "verified_live_source_required"
+    },
+    {
+      "source_id": "MAERSK_CUTOFFS",
+      "title": "Maersk support - vessel cut-off times",
+      "url": "https://www.maersk.com/support/faqs/how-can-i-find-out-the-vessel-cut-off-time",
+      "source_type": "carrier_support",
+      "use": "Carrier example showing cutoffs include container gate-in, VGM, and shipping instruction deadlines.",
+      "_confidence": "verified_concept_live_schedule_required"
+    },
+    {
+      "source_id": "MAERSK_DD_FREE_TIME",
+      "title": "Maersk support - detention and demurrage",
+      "url": "https://www.maersk.com/support/faqs/detention-and-demurrage",
+      "source_type": "carrier_support",
+      "use": "Carrier explanation of demurrage, detention, and free-time concepts.",
+      "_confidence": "verified_concept_tariff_required"
+    },
+    {
+      "source_id": "MAERSK_SCHEDULES",
+      "title": "Maersk schedules",
+      "url": "https://www.maersk.com/schedules/",
+      "source_type": "carrier_schedule_portal",
+      "use": "Example of carrier schedule lookup source; not ingested as static schedule data.",
+      "_confidence": "verified_live_source_required"
+    }
+  ],
+  "coverage_summary": {
+    "chokepoint_records": 5,
+    "schedule_readiness_rules": 7,
+    "confidence_rules": 5,
+    "field_mapping_records": 8,
+    "official_authority_sources": 3,
+    "carrier_operational_sources": 3,
+    "intergovernmental_sources": 1
+  },
+  "known_limitations": [
+    "Does not include live canal status, closure notices, or current draft/transit restrictions.",
+    "Does not include live carrier schedules or exact sailing-specific cutoff timestamps.",
+    "Does not include live demurrage/detention tariffs by carrier/country/terminal.",
+    "Does not include live security advisories, war-risk premiums, insurance status, or AIS tracking.",
+    "Chokepoint exposure is a planning factor unless a live advisory makes it a hard gate.",
+    "Weekly missed-sailing impact is an authored planning heuristic and must be replaced by actual service frequency when available."
+  ],
+  "paid_or_live_data_needed_for_v2": [
+    "carrier schedule APIs",
+    "terminal cutoff APIs",
+    "canal authority live advisory feeds",
+    "AIS/vessel tracking feeds",
+    "maritime security intelligence feeds",
+    "carrier demurrage/detention tariff APIs",
+    "freight forwarder TMS data"
+  ],
+  "confidence_policy": {
+    "verified": "Directly supported by official authority/carrier/intergovernmental source.",
+    "verified_reference_live_status_required": "The concept/source is verified, but current status must be checked live.",
+    "authored": "Cortex-authored operational logic derived from verified concepts.",
+    "estimated": "Planning approximation only; not a booking guarantee."
+  }
+}

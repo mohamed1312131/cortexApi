@@ -1,0 +1,33 @@
+{
+  "model_id": "ROAD_F_REALISTIC_TRANSIT_DAYS_V1",
+  "purpose": "Convert raw routing-engine driving duration into realistic planning transit estimate.",
+  "routing_engine_duration_is": "floor_not_final_estimate",
+  "formula": {
+    "routing_hours": "input from routing engine",
+    "driving_days_floor": "ceil(routing_hours / 9)",
+    "break_hours": "floor(routing_hours / 4.5) * 0.75",
+    "border_buffer_hours": "sum(buffer hours for each border/ferry/customs crossing)",
+    "loading_unloading_buffer_hours": "pickup_loading_buffer + delivery_unloading_buffer",
+    "realistic_hours": "routing_hours + break_hours + border_buffer_hours + loading_unloading_buffer_hours",
+    "realistic_days": "ceil(realistic_hours / practical_daily_window_hours)"
+  },
+  "default_parameters": {
+    "normal_daily_driving_hours": 9,
+    "extended_daily_driving_hours": 10,
+    "extended_days_per_week_limit": 2,
+    "break_after_driving_hours": 4.5,
+    "break_duration_hours": 0.75,
+    "practical_daily_window_hours_default": 12,
+    "weekly_driving_cap_hours": 56,
+    "fortnightly_driving_cap_hours": 90
+  },
+  "hard_gate_flags": [
+    "driver_hours_missing_or_exceeded",
+    "required_transit_declaration_missing",
+    "required_cmr_missing",
+    "required_dg_documents_missing",
+    "required_road_permit_missing"
+  ],
+  "_source": "EU_REG_561_2006 + CORTEX_ROAD_TRANSIT_MODEL",
+  "_confidence": "verified_for_driver_rules_estimated_for_buffers"
+}

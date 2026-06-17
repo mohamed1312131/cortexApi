@@ -1,0 +1,62 @@
+[
+  {
+    "field_name": "shipper_name_address",
+    "required_for": "PLACI/advance cargo information",
+    "missing_data_impact": "high",
+    "notes": "Needed for risk assessment and shipment identification."
+  },
+  {
+    "field_name": "consignee_name_address",
+    "required_for": "PLACI/advance cargo information",
+    "missing_data_impact": "high",
+    "notes": "Needed for risk assessment and shipment identification."
+  },
+  {
+    "field_name": "goods_description",
+    "required_for": "PLACI/advance cargo information",
+    "missing_data_impact": "high",
+    "notes": "Vague descriptions should trigger confidence cap and data correction."
+  },
+  {
+    "field_name": "piece_count",
+    "required_for": "PLACI/advance cargo information",
+    "missing_data_impact": "medium",
+    "notes": "Used to validate shipment data consistency."
+  },
+  {
+    "field_name": "gross_weight",
+    "required_for": "PLACI/advance cargo information",
+    "missing_data_impact": "medium",
+    "notes": "Used to validate shipment data consistency."
+  },
+  {
+    "field_name": "origin_airport_country",
+    "required_for": "PLACI/advance cargo information",
+    "missing_data_impact": "high",
+    "notes": "Needed to evaluate route/security jurisdiction."
+  },
+  {
+    "field_name": "destination_airport_country",
+    "required_for": "PLACI/advance cargo information",
+    "missing_data_impact": "high",
+    "notes": "Needed to evaluate PLACI jurisdiction and risk."
+  },
+  {
+    "field_name": "air_waybill_or_house_waybill",
+    "required_for": "PLACI/advance cargo information",
+    "missing_data_impact": "medium",
+    "notes": "Needed for shipment filing and traceability."
+  },
+  {
+    "field_name": "security_status_code",
+    "required_for": "air cargo security readiness",
+    "missing_data_impact": "high",
+    "notes": "SPX/SCO/NSC/SCY/SHR or equivalent must be known."
+  },
+  {
+    "field_name": "screening_method_or_secure_supply_chain_proof",
+    "required_for": "secured cargo validation",
+    "missing_data_impact": "high",
+    "notes": "CSD or equivalent security audit trail should be available when secured status is claimed."
+  }
+]

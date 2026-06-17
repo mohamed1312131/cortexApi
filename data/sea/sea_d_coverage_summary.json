@@ -1,0 +1,27 @@
+[
+  {
+    "metric": "carrier_profiles",
+    "count": 7,
+    "notes": "Top global container lines requested by user"
+  },
+  {
+    "metric": "trade_lane_families",
+    "count": 10,
+    "notes": "Broad lane families for inference only"
+  },
+  {
+    "metric": "readiness_rules",
+    "count": 7,
+    "notes": "HARD GATE and PLANNING FACTOR rules"
+  },
+  {
+    "metric": "confidence_rules",
+    "count": 7,
+    "notes": "Caps for missing live schedule/rate/capacity/acceptance"
+  },
+  {
+    "metric": "official_source_backed_carriers",
+    "count": 7,
+    "notes": "Each carrier record has public official source reference"
+  }
+]

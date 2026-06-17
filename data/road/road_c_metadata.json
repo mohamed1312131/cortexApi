@@ -1,0 +1,167 @@
+{
+  "block_id": "ROAD-C",
+  "block_name": "Road corridor viability",
+  "version": "v1.0",
+  "generated_at": "2026-06-05",
+  "purpose": "Anti-nonsense gate for road-mode shipment readiness. Determines whether a country-pair road corridor is liberalized, permit-required, restricted, ferry-dependent, or likely impractical.",
+  "not_a_route_optimizer": true,
+  "design_principle": "Code does deterministic lookups and math; LLM performs judgment over these gates and confidence caps.",
+  "coverage_summary": {
+    "total_corridor_records": 5150,
+    "directional_eu_eu_records": 650,
+    "cyprus_special_records": 52,
+    "ecmt_records": 1072,
+    "russia_restriction_records": 88,
+    "uk_context_overlay_records": 72,
+    "europe_north_africa_records": 384,
+    "turkiye_transit_records": 114,
+    "intercontinental_anti_nonsense_records": 1664,
+    "fallback_records": 1038,
+    "country_groups": {
+      "EU_COUNTRIES": 27,
+      "ECMT_SYSTEM_COUNTRIES": 43,
+      "EEA_NON_EU": 3,
+      "SWITZERLAND_GROUP": 1,
+      "UK_GROUP": 1,
+      "WESTERN_BALKANS_GROUP": 6,
+      "TURKIYE_GROUP": 1,
+      "NORTH_AFRICA_GROUP": 6,
+      "CENTRAL_ASIA_GROUP": 5,
+      "EAST_ASIA_GROUP": 5,
+      "WESTERN_ASIA_MIDDLE_EAST_GROUP": 12
+    },
+    "viability_counts": {
+      "not_viable_or_restricted": 88,
+      "liberalized": 650,
+      "not_simple_road_move": 52,
+      "ecmt_permit_required": 1072,
+      "special_licence_required": 56,
+      "bilateral_permit_required": 1552,
+      "requires_multi_country_permits_and_likely_impractical": 1664,
+      "operator_context_specific_no_permit_usually_needed": 16
+    },
+    "confidence_counts": {
+      "verified": 1810,
+      "verified_partial_authored_operational_flag": 52,
+      "verified_for_UK_operator_context": 72,
+      "verified_partial_authored_generalization": 384,
+      "verified_for_UK_operator_context_authored_generalization": 114,
+      "authored": 2702,
+      "verified_for_UK_operator_context_only": 16
+    }
+  },
+  "known_limitations": [
+    "No free global country-pair bilateral road-permit database was found; bilateral permit rows are framework/fallback records, not full legal clearance.",
+    "Live border closures, sanctions updates, strikes, ferry capacity, real-time border waits, security conditions and live tolls are out of scope for static v1.",
+    "UK operator-specific rules are verified for UK guidance context and must not be generalized to all operators.",
+    "Europe-North Africa logic is strong for Tunisia/Morocco examples in UK guidance, but exact bilateral requirements still need country-pair authority confirmation.",
+    "Intercontinental overland corridors are intentionally flagged as likely impractical unless a specialized carrier feasibility study is provided.",
+    "This bundle validates corridor viability only; it does not estimate route, price, distance, or live transit time."
+  ],
+  "sources": {
+    "EU_REG_1072_2009": {
+      "title": "Regulation (EC) No 1072/2009 on common rules for access to the international road haulage market",
+      "url": "https://eur-lex.europa.eu/eli/reg/2009/1072/oj/eng",
+      "source_type": "official_regulation",
+      "confidence": "verified",
+      "used_for": [
+        "EU market access",
+        "Community Licence",
+        "EU/EU liberalized logic"
+      ]
+    },
+    "EU_ROAD_HAULAGE_MARKET_ACCESS_SUMMARY": {
+      "title": "EUR-Lex summary: Joint rules on access to the EU road haulage market",
+      "url": "https://eur-lex.europa.eu/EN/legal-content/summary/joint-rules-on-access-to-the-eu-road-haulage-market.html",
+      "source_type": "official_summary",
+      "confidence": "verified",
+      "used_for": [
+        "Community Licence requirement",
+        "cabotage summary"
+      ]
+    },
+    "EU_COUNTRIES_OFFICIAL": {
+      "title": "European Union official country list",
+      "url": "https://european-union.europa.eu/principles-countries-history/eu-countries_en",
+      "source_type": "official_reference",
+      "confidence": "verified",
+      "used_for": [
+        "EU country group"
+      ]
+    },
+    "ITF_ECMT_USER_GUIDE_2026": {
+      "title": "ECMT Multilateral Quota User Guide 2026",
+      "url": "https://www.itf-oecd.org/ecmt-multilateral-quota-user-guide-2026",
+      "source_type": "official_document",
+      "confidence": "verified",
+      "used_for": [
+        "ECMT quota framework",
+        "ECMT licence concept",
+        "member-country system"
+      ]
+    },
+    "ITF_ECMT_COUNTRY_LICENCES": {
+      "title": "ITF ECMT Country Licences",
+      "url": "https://www.itf-oecd.org/country-licences",
+      "source_type": "official_reference",
+      "confidence": "verified",
+      "used_for": [
+        "country licence status",
+        "participating countries"
+      ]
+    },
+    "UK_GOV_ECMT_PERMITS_2026": {
+      "title": "GOV.UK: Get ECMT permits to transport goods internationally",
+      "url": "https://www.gov.uk/guidance/ecmt-international-road-haulage-permits",
+      "source_type": "official_guidance",
+      "confidence": "verified",
+      "used_for": [
+        "ECMT member list",
+        "3.5t threshold",
+        "permit validity",
+        "UK operator rules",
+        "bilateral-permit examples",
+        "Russia ECMT restriction",
+        "documents driver must carry"
+      ]
+    },
+    "UK_GOV_NON_UK_OPERATOR_GUIDANCE": {
+      "title": "GOV.UK: Transporting goods into the UK as a non-UK operator",
+      "url": "https://www.gov.uk/guidance/eu-operators-transporting-goods-into-the-uk",
+      "source_type": "official_guidance",
+      "confidence": "verified",
+      "used_for": [
+        "UK triangular traffic and ECMT permit context"
+      ]
+    },
+    "UN_M49": {
+      "title": "UNSD Methodology: Standard country or area codes for statistical use (M49)",
+      "url": "https://unstats.un.org/unsd/methodology/m49/",
+      "source_type": "official_reference",
+      "confidence": "verified",
+      "used_for": [
+        "regional group classifications for North Africa, Central Asia, East Asia, Western Asia"
+      ]
+    },
+    "CORTEX_AUTHORED_CORRIDOR_RULES": {
+      "title": "Cortex authored operational anti-nonsense corridor rules",
+      "url": null,
+      "source_type": "authored_rules",
+      "confidence": "authored",
+      "used_for": [
+        "intercontinental road requests are not simple road moves",
+        "unknown country pairs require bilateral permit check",
+        "Europe-North Africa generalized ferry/bilateral logic"
+      ]
+    }
+  },
+  "files_in_bundle": [
+    "road_c_corridor_viability.json",
+    "road_c_corridor_viability.csv",
+    "road_c_country_groups.json",
+    "road_c_pair_generation_rules.json",
+    "road_c_metadata.json",
+    "road_c_confidence_rules.json",
+    "road_c_confidence_rules.csv"
+  ]
+}

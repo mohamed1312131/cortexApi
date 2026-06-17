@@ -1,0 +1,44 @@
+[
+  {
+    "rule_id": "ROAD_A_UN_NUMBER_FORMAT",
+    "severity": "error",
+    "condition": "identification_number must match ^UN[0-9]{4}$",
+    "fix": "Normalize numeric values like 1203 to UN1203; reject malformed values.",
+    "hard_gate": true
+  },
+  {
+    "rule_id": "ROAD_A_PSN_NO_LEADING_DIGIT",
+    "severity": "error",
+    "condition": "proper_shipping_name must not start with a digit",
+    "fix": "Columns likely shifted during extraction. Preserve original in _raw and re-parse.",
+    "hard_gate": true
+  },
+  {
+    "rule_id": "ROAD_A_HAZARD_CLASS_REQUIRED",
+    "severity": "error",
+    "condition": "hazard_class must be present for a DG row",
+    "fix": "Do not clear as road-ready until class is verified.",
+    "hard_gate": true
+  },
+  {
+    "rule_id": "ROAD_A_TUNNEL_CODE_ALLOWED_PATTERN",
+    "severity": "warning",
+    "condition": "adr_tunnel_code must be empty or one of A,B,C,D,E,B/D,B/E,C/D,C/E,D/E or known ADR quantity variants",
+    "fix": "Flag for manual review; do not silently clean.",
+    "hard_gate": false
+  },
+  {
+    "rule_id": "ROAD_A_DUPLICATE_UN_ALLOWED",
+    "severity": "info",
+    "condition": "same UN number may appear multiple times with different proper shipping name/packing group/classification details",
+    "fix": "Do not deduplicate only by UN number. Use compound key.",
+    "hard_gate": false
+  },
+  {
+    "rule_id": "ROAD_A_COPYRIGHT_SAFE_INGESTION",
+    "severity": "policy",
+    "condition": "do not publish a full reproduced ADR Table A extracted from copyrighted PDFs",
+    "fix": "Use licensed/open structured data or perform internal project-local ingestion without redistributing the full table.",
+    "hard_gate": true
+  }
+]

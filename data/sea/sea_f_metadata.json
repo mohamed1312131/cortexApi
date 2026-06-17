@@ -1,0 +1,150 @@
+{
+  "block": "SEA-F",
+  "name": "Maritime documents and border gates",
+  "version": "1.0-final",
+  "generated_at": "2026-06-03",
+  "status": "R&D_reference_layer_not_live_compliance_engine",
+  "description": "Core maritime documentation and border-readiness gates for Cortex SEA mode. Covers global sea operational documents, SOLAS VGM, maritime DG documentation, US ISF, EU ICS2/ENS, and general customs document readiness.",
+  "source_strategy": "Official regulatory/customs sources for VGM, ISF, ICS2/ENS, and IMDG concepts; authored operational rules for general B/L, shipping instructions, invoice, packing list, certificate of origin, and permits.",
+  "sources": [
+    {
+      "source_id": "IMO_SOLAS_VGM",
+      "title": "IMO - Verification of the gross mass of a packed container",
+      "url": "https://www.imo.org/en/OurWork/Safety/Pages/Verification-of-the-gross-mass.aspx",
+      "used_for": [
+        "VGM_SOLAS"
+      ],
+      "source_type": "official_regulatory_context",
+      "confidence": "verified"
+    },
+    {
+      "source_id": "CBP_ISF_10_2",
+      "title": "U.S. Customs and Border Protection - Import Security Filing (ISF) when to submit",
+      "url": "https://www.help.cbp.gov/s/article/Article-1868",
+      "used_for": [
+        "ISF_10_2_US"
+      ],
+      "source_type": "official_customs_guidance",
+      "confidence": "verified"
+    },
+    {
+      "source_id": "EU_ICS2",
+      "title": "European Commission - Import Control System 2 (ICS2)",
+      "url": "https://taxation-customs.ec.europa.eu/customs/customs-security/import-control-system-2_en",
+      "used_for": [
+        "ENS_ICS2_EU"
+      ],
+      "source_type": "official_customs_guidance",
+      "confidence": "verified"
+    },
+    {
+      "source_id": "EU_ICS2_MARITIME_LIVE",
+      "title": "European Commission - ICS2 live for maritime and inland waterway transport",
+      "url": "https://taxation-customs.ec.europa.eu/news/import-control-system-2-ics2-live-maritime-and-inland-waterway-transport-2024-06-03_en",
+      "used_for": [
+        "ENS_ICS2_EU"
+      ],
+      "source_type": "official_customs_guidance",
+      "confidence": "verified"
+    },
+    {
+      "source_id": "IMO_IMDG_OVERVIEW",
+      "title": "IMO - International Maritime Dangerous Goods (IMDG) Code",
+      "url": "https://www.imo.org/en/ourwork/safety/pages/dangerousgoods-default.aspx",
+      "used_for": [
+        "IMO_DGD",
+        "CPC"
+      ],
+      "source_type": "official_regulatory_context",
+      "confidence": "verified_concept"
+    },
+    {
+      "source_id": "UK_DANGEROUS_GOODS_FORM",
+      "title": "UK GOV - Dangerous goods form reproduced from IMDG Code Chapter 5.4",
+      "url": "https://www.gov.uk/government/publications/dangerous-goods-declaration-note",
+      "used_for": [
+        "IMO_DGD",
+        "CPC"
+      ],
+      "source_type": "government_form_reference",
+      "confidence": "verified_form_reference"
+    },
+    {
+      "source_id": "CORTEX_AUTHORED_OPS_RULES",
+      "title": "Cortex authored operational documentation rules",
+      "url": null,
+      "used_for": [
+        "BL_OR_SWB",
+        "SHIPPING_INSTRUCTIONS",
+        "COMMERCIAL_INVOICE",
+        "PACKING_LIST",
+        "CERTIFICATE_OF_ORIGIN",
+        "EXPORT_IMPORT_PERMIT"
+      ],
+      "source_type": "authored_operational_rule",
+      "confidence": "authored"
+    }
+  ],
+  "coverage_summary": {
+    "block": "SEA-F",
+    "generated_at": "2026-06-03",
+    "record_count": 11,
+    "hard_gate_count": 9,
+    "conditional_records": 2,
+    "verified_requirement_records": 5,
+    "authored_records": 6,
+    "official_source_count": 6,
+    "jurisdictions_covered": [
+      "EU_NI_NO_CH_import_or_transit",
+      "IMDG_maritime_DG",
+      "SOLAS_global_container_shipping",
+      "US_import",
+      "conditional_customs_trade_preference",
+      "conditional_regulated_goods",
+      "cross_border_customs_and_operations_general",
+      "cross_border_customs_general",
+      "global_operational"
+    ],
+    "documents_covered": [
+      "BL_OR_SWB",
+      "SHIPPING_INSTRUCTIONS",
+      "VGM_SOLAS",
+      "IMO_DGD",
+      "CPC",
+      "ISF_10_2_US",
+      "ENS_ICS2_EU",
+      "COMMERCIAL_INVOICE",
+      "PACKING_LIST",
+      "CERTIFICATE_OF_ORIGIN",
+      "EXPORT_IMPORT_PERMIT"
+    ],
+    "known_gaps": [
+      "No country-by-country customs document matrix",
+      "No live carrier/terminal cutoffs",
+      "No sanctions/export-control screening",
+      "No product-specific certificate database",
+      "No live customs filing status",
+      "No licensed full IMDG document/rule set"
+    ]
+  },
+  "known_limitations": [
+    "No country-by-country customs document matrix",
+    "No live carrier/terminal cutoffs",
+    "No sanctions/export-control screening",
+    "No product-specific certificate database",
+    "No live customs filing status",
+    "No licensed full IMDG document/rule set"
+  ],
+  "confidence_policy": {
+    "verified": "Directly supported by official regulatory/customs source.",
+    "verified_concept": "Concept supported by official source, but exact form or implementation can vary.",
+    "authored": "Cortex operational rule authored from common logistics practice; not a universal statute.",
+    "estimated": "Used only for planning/cutoff approximations; live validation required."
+  },
+  "integration_notes": [
+    "SEA-F links to SEA-A: if cargo is dangerous goods, require IMO_DGD and CPC when containerized.",
+    "SEA-F links to SEA-B: if containerized, require VGM; if reefer or special equipment, document/cutoff validation should be handled by SEA-I/booking layer.",
+    "SEA-F links to SEA-I: carrier/terminal document cutoffs and sailing-specific deadlines belong to SEA-I.",
+    "SEA-F should output readiness blockers, not legal advice."
+  ]
+}

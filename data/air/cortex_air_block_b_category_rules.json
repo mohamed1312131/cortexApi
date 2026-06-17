@@ -1,0 +1,102 @@
+[
+  {
+    "category_id": "pharma_temperature_controlled",
+    "category_name": "Pharmaceuticals / time-temperature-sensitive healthcare cargo",
+    "codes": "PIL,CRT,COL,ACT,LHO",
+    "required_intake_fields": "exact product type; required temperature range; allowed excursion tolerance; active/passive packaging; data logger required; max transit time; shipper instruction; 24h contact; origin/destination airport cold-chain capability; carrier pharma acceptance",
+    "hard_gates": "temperature range missing; packaging system unknown; no 24h contact for urgent/temperature-sensitive shipment; no cold-chain capability for airport/handler/carrier; active ULD not approved/compatible; missing permits for controlled medicines/biological products",
+    "planning_factors": "prefer direct/short transit; avoid long tarmac exposure; use active ULD or validated passive shipper; check cold room at origin/transit/destination; use CEIV-capable lane when available; monitor for temperature excursion risk",
+    "confidence_cap_if_missing": "temperature range missing: 45%; packaging unknown: 55%; cold-chain capability unknown: 65%; carrier acceptance unknown: 70%",
+    "source_docs": "WHO temperature-controlled transport supplement; Pharma.Aero CEIV white paper; FAA AC 120-85A active ULD guidance"
+  },
+  {
+    "category_id": "perishable_general",
+    "category_name": "Perishable cargo",
+    "codes": "PER,EAT,PEF,PEM,PEP,PES,FRO,FRI,HEG",
+    "required_intake_fields": "exact commodity; fresh/frozen/chilled status; temperature constraint; shelf life/expiry; packaging type; gross weight; dimensions; number of packages; 24h shipper and consignee contact; veterinary/phytosanitary requirement if applicable",
+    "hard_gates": "exact commodity missing; temperature constraint missing for chilled/frozen cargo; packaging unsuitable or unknown; 24h contact missing; required vet/phytosanitary inspection not known; route too slow for shelf life",
+    "planning_factors": "prefer express/prime service; avoid deferred service; require advanced booking; check labels such as PERISHABLE, KEEP COOL, KEEP FROZEN, THIS WAY UP, FRAGILE when relevant; check airport cold storage",
+    "confidence_cap_if_missing": "commodity missing: 40%; temperature unknown: 55%; packaging unknown: 60%; transit time unknown: 65%; inspection/permit unknown: 70%",
+    "source_docs": "Air Cargo Perishable Handling guide; Cargo Agent Handbook references to perishable cargo regulations"
+  },
+  {
+    "category_id": "live_animals",
+    "category_name": "Live animals and laboratory animals",
+    "codes": "AVI,SPF",
+    "required_intake_fields": "species; quantity; age/condition; container/crate type and dimensions; feeding/watering plan; origin/destination permits; CITES status if wildlife; airline live-animal acceptance; airport animal handling capability; transit time",
+    "hard_gates": "species missing; container/crate details missing; airline acceptance missing; import/export permit unknown; CITES check unknown for wildlife/endangered species; route has excessive journey time or unsuitable connections",
+    "planning_factors": "minimize journey time; avoid long connections; use trained handler; check temperature/ventilation; check welfare and documentation; confirm airline-specific rules",
+    "confidence_cap_if_missing": "species missing: 35%; crate details missing: 45%; permits unknown: 55%; airline acceptance unknown: 60%; animal handling capability unknown: 65%",
+    "source_docs": "Live animal handling process paper; Cargo Agent Handbook live animals/perishables board description"
+  },
+  {
+    "category_id": "heavy_oversized_special_cargo",
+    "category_name": "Heavy, outsized, overhang, or special cargo",
+    "codes": "HEA,BIG,OHG,BUP,VOL",
+    "required_intake_fields": "piece weight; piece dimensions; number of pieces; center of gravity if known; pallet/ULD type; main deck/lower deck requirement; aircraft type; door dimensions; floor loading/area load limit; restraint/tie-down requirement; loading equipment availability",
+    "hard_gates": "piece weight missing; dimensions missing; aircraft type unknown; door/ULD compatibility unknown; restraint method unknown; floor loading/area load not checked; aircraft W&B not checked",
+    "planning_factors": "evaluate aircraft capability before accepting; check ULD compatibility; check restraint/load plan; check weight and balance; verify cargo loading and supervision; consider main deck freighter for large pieces",
+    "confidence_cap_if_missing": "dimensions missing: 40%; aircraft type unknown: 50%; restraint unknown: 55%; W&B/floor loading unknown: 60%; loading equipment unknown: 70%",
+    "source_docs": "FAA AC 120-85A air cargo operations guidance"
+  },
+  {
+    "category_id": "valuable_vulnerable_security",
+    "category_name": "Valuable, vulnerable, secured, or high-risk cargo",
+    "codes": "VAL,VUN,SPX,SCO,NSC,SCY,SHR,RAC,DIP",
+    "required_intake_fields": "declared value; commodity description; security status; screening status; known/regulated shipper status; destination PLACI requirement; secure storage requirement; controlled handover requirement; insurance status; carrier/security acceptance",
+    "hard_gates": "security status unknown; not screened/secured and intended for passenger aircraft; PLACI data missing for regulated destination; EU-bound cargo from non-EU origin without ACC3/secure supply chain check; declared value/insurance unknown for valuable cargo",
+    "planning_factors": "secure storage; chain of custody; screening/prescreening; advance cargo data; controlled handover; avoid unnecessary transit; flag theft/tamper risk",
+    "confidence_cap_if_missing": "security status unknown: 45%; screening status unknown: 55%; PLACI data unknown: 65%; secure storage unknown for VAL/VUN: 70%; insurance unknown: 75%",
+    "source_docs": "IATA Air Cargo Security position paper"
+  },
+  {
+    "category_id": "human_organs_blood_urgent_medical",
+    "category_name": "Human organs, blood, urgent medical / save human life",
+    "codes": "LHO,SHL,QRT",
+    "required_intake_fields": "material type; temperature range; time critical deadline; packaging/validated shipper; medical/health documentation; 24h emergency contact; priority booking; ramp transfer requirement; destination clearance",
+    "hard_gates": "deadline missing; temperature range missing; packaging unknown; no 24h contact; no priority/ramp transfer plan for critical timing; import/health clearance unknown",
+    "planning_factors": "fastest routing; priority handling; quick ramp transfer; temperature monitoring; avoid multi-stop routes; coordinate consignee readiness before arrival",
+    "confidence_cap_if_missing": "deadline missing: 40%; temperature missing: 50%; 24h contact missing: 55%; clearance unknown: 65%",
+    "source_docs": "Special handling codes; WHO temperature-controlled transport supplement; Perishable handling guide"
+  },
+  {
+    "category_id": "human_remains",
+    "category_name": "Human remains in coffin",
+    "codes": "HUM",
+    "required_intake_fields": "country pair; death certificate; embalming/health certificate if required; coffin/container type; consular/import permit if required; airline acceptance; funeral agent/consignee contact",
+    "hard_gates": "documents unknown; carrier acceptance unknown; country import/transit rules unknown; packaging/coffin details missing",
+    "planning_factors": "coordinate with airline and destination agent; check transit restrictions; avoid unnecessary connections; handle discreetly",
+    "confidence_cap_if_missing": "documents unknown: 50%; carrier acceptance unknown: 60%; country rules unknown: 65%",
+    "source_docs": "Special handling codes; authored R&D rule"
+  },
+  {
+    "category_id": "wet_leakage_obnoxious",
+    "category_name": "Wet material, leakage risk, obnoxious cargo",
+    "codes": "WET,OBX",
+    "required_intake_fields": "liquid/wet content; packaging watertightness; odor/leakage risk; orientation requirement; absorbent material; compatibility with other cargo",
+    "hard_gates": "packaging unknown; leakage risk unmanaged; strong odor/contamination risk not assessed",
+    "planning_factors": "use watertight packaging; orientation labels; segregate from sensitive cargo; check carrier acceptance for odor/leakage risk",
+    "confidence_cap_if_missing": "packaging unknown: 55%; leakage risk unknown: 60%; carrier acceptance unknown: 75%",
+    "source_docs": "Special handling codes; perishable packaging guidance"
+  },
+  {
+    "category_id": "diagnostic_infectious_medical_samples",
+    "category_name": "Diagnostic specimens, biological substances, infectious substances",
+    "codes": "RDS,RIS",
+    "required_intake_fields": "UN/category if applicable; sample type; packaging instruction; temperature requirement; dry ice use; shipper declaration if required; origin/destination health permits; carrier DG acceptance",
+    "hard_gates": "classification missing; UN/category unknown; packaging unknown; temperature unknown if refrigerated/frozen; DG acceptance unknown for infectious substance",
+    "planning_factors": "cross-check Block A DG table; apply temperature-control rules if needed; check dry ice quantity if used; ensure documentation and labels",
+    "confidence_cap_if_missing": "classification missing: 35%; packaging unknown: 45%; DG acceptance unknown: 55%; temperature unknown: 65%",
+    "source_docs": "Special handling codes; Block A DG dataset; WHO supplement"
+  },
+  {
+    "category_id": "active_uld_temperature_system",
+    "category_name": "Active temperature-controlled ULD/system",
+    "codes": "ACT",
+    "required_intake_fields": "active ULD model; approval/compatibility; battery/power status; operating instructions; temperature set point; aircraft type; ULD position; maintenance/serviceability status",
+    "hard_gates": "active ULD not approved/compatible; operating instructions missing; battery/power state unknown; aircraft compatibility unknown",
+    "planning_factors": "verify ULD certificate/approval; check aircraft W&B/ULD compatibility; confirm recharge/ground handling; monitor set point and operating duration",
+    "confidence_cap_if_missing": "ULD model unknown: 50%; aircraft compatibility unknown: 55%; operating duration unknown: 65%; serviceability unknown: 70%",
+    "source_docs": "FAA AC 120-85A active ULD and temperature-controlled container guidance"
+  }
+]

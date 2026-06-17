@@ -31,6 +31,13 @@ def _block_ref(mode: RequestedMode) -> EvidenceRef:
     return EvidenceRef(ref_id=f"block:{block_id}", source_type="block", source_block=block_id, mode=mode)
 
 
+def _readiness_option(result, mode: RequestedMode):
+    for option in result.ranked_readiness_options:
+        if option.mode is mode:
+            return option
+    raise AssertionError(f"Expected readiness option for {mode.value}")
+
+
 def _ctx(
     *,
     modes=None,
@@ -203,7 +210,7 @@ def test_global_factors_remain_visible():
     # unknowns visible at top
     assert any(u.field == "classification" for u in out.global_unknowns)
     # hard gate visible on the road option (typed HardGate)
-    road = next(o for o in out.ranked_readiness_options if o.mode is RequestedMode.road)
+    road = _readiness_option(out, RequestedMode.road)
     assert any(isinstance(g, HardGate) and g.gate_id == "G1" for g in road.hard_gates)
     # missing field + conflict surfaced in next actions
     assert any("weight" in a for a in out.global_next_actions)

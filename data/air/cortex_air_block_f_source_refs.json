@@ -1,0 +1,92 @@
+[
+  {
+    "source_id": "SRC_F_001",
+    "source_name": "EU TRACES modules",
+    "source_url": "https://food.ec.europa.eu/horizontal-topics/traces/modules_en",
+    "use_in_dataset": "EU CHED-A, CHED-P, CHED-PP, CHED-D mapping"
+  },
+  {
+    "source_id": "SRC_F_002",
+    "source_name": "EU TRACES overview",
+    "source_url": "https://food.ec.europa.eu/horizontal-topics/traces_en",
+    "use_in_dataset": "EU SPS import/trade certification platform"
+  },
+  {
+    "source_id": "SRC_F_003",
+    "source_name": "CDC Import Permit Program",
+    "source_url": "https://www.cdc.gov/import-permit-program/php/index.html",
+    "use_in_dataset": "US infectious biological material import permit screening"
+  },
+  {
+    "source_id": "SRC_F_004",
+    "source_name": "APHIS organisms and vectors",
+    "source_url": "https://www.aphis.usda.gov/animal-product-import/organisms-vectors",
+    "use_in_dataset": "US organisms/vectors and animal pathogen permit rules"
+  },
+  {
+    "source_id": "SRC_F_005",
+    "source_name": "CBP biological materials import",
+    "source_url": "https://www.cbp.gov/border-security/protecting-agriculture/importing-biological-materials-united-states",
+    "use_in_dataset": "US biological materials documentation/permit conditions"
+  },
+  {
+    "source_id": "SRC_F_006",
+    "source_name": "Hong Kong AFCD animal/bird import guide",
+    "source_url": "https://www.afcd.gov.hk/english/quarantine/qua_ie/files/G103guideline_animal_and_bird_Sep15E.pdf",
+    "use_in_dataset": "Hong Kong animal/bird import permit rules"
+  },
+  {
+    "source_id": "SRC_F_007",
+    "source_name": "Hong Kong AFCD CITES",
+    "source_url": "https://www.afcd.gov.hk/english/conservation/con_end/con_end_cites/con_end_cites.html",
+    "use_in_dataset": "Hong Kong endangered species/CITES permit logic"
+  },
+  {
+    "source_id": "SRC_F_008",
+    "source_name": "Singapore SFA import requirements",
+    "source_url": "https://www.sfa.gov.sg/food-import-export/commercial-imports/import-requirements-for-food-food-products",
+    "use_in_dataset": "Singapore food import requirements"
+  },
+  {
+    "source_id": "SRC_F_009",
+    "source_name": "Singapore Customs SFA controlled items",
+    "source_url": "https://www.customs.gov.sg/doing-business/quick-links-for-traders/tradenet/competent-authorities-requirements-for-controlled-items/singapore-food-agency/",
+    "use_in_dataset": "Singapore TradeNet/SFA permit routing"
+  },
+  {
+    "source_id": "SRC_F_010",
+    "source_name": "UAE MOCCAE agricultural consignment import",
+    "source_url": "https://www.moccae.gov.ae/en/services/import-permit",
+    "use_in_dataset": "UAE agricultural/plants import permit rules"
+  },
+  {
+    "source_id": "SRC_F_011",
+    "source_name": "UAE MOCCAE animal feed and aquatic food import",
+    "source_url": "https://moccae.gov.ae/en/services/%D8%A5%D8%B5%D8%AF%D8%A7%D8%B1-%D8%A7%D8%B0%D9%86-%D8%A7%D8%B3%D8%AA%D9%8A%D8%B1%D8%A7%D8%AF-%D8%A3%D8%B9%D9%84%D8%A7%D9%81-%D9%88%D8%A3%D8%BA%D8%B0%D9%8A%D8%A9-%D8%AD%D9%8A%D9%88%D8%A7%D9%86%D9%8A%D8%A9",
+    "use_in_dataset": "UAE animal feed/aquatic food permits"
+  },
+  {
+    "source_id": "SRC_F_012",
+    "source_name": "Qatar imported food inspection",
+    "source_url": "https://www.sharek.gov.qa/en/articles/ministry-of-public-health/inspection-of-imported-food/679bb3b06798e422f45aceec",
+    "use_in_dataset": "Qatar food import documents"
+  },
+  {
+    "source_id": "SRC_F_013",
+    "source_name": "Qatar Customs GCC imported food controls",
+    "source_url": "https://www.customs.gov.qa/English/Procedures/Guide-to-Clearance-of-Imported-Goods/Pages/Chapter1.aspx",
+    "use_in_dataset": "Qatar/GCC imported food health certificate controls"
+  },
+  {
+    "source_id": "SRC_F_014",
+    "source_name": "CITES permit references",
+    "source_url": "https://www.gov.uk/guidance/cites-imports-and-exports | https://travel.gc.ca/travelling/documents/cites-permits",
+    "use_in_dataset": "Global CITES import/export permit screening"
+  },
+  {
+    "source_id": "SRC_F_015",
+    "source_name": "Tunisia import requirements broad reference",
+    "source_url": "https://www.trade.gov/country-commercial-guides/tunisia-import-requirements-and-documentation",
+    "use_in_dataset": "Tunisia placeholder/manual validation flag"
+  }
+]

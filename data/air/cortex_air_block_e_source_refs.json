@@ -1,0 +1,50 @@
+[
+  {
+    "source_id": "SRC_E_001",
+    "source_name": "Boeing 747-8F freighter PDF",
+    "use_in_dataset": "B747-8F door dimensions, pallet positions, payload, lower hold and main deck layout",
+    "source_url": "https://www.boeing.com/content/dam/boeing/boeingdotcom/company/about_bca/startup/pdf/freighters/747-8F-freighter.pdf"
+  },
+  {
+    "source_id": "SRC_E_002",
+    "source_name": "Lufthansa Cargo pallet specifications",
+    "use_in_dataset": "88in, 96in, 60.4in, 16ft and 20ft pallet dimensions and max gross weights",
+    "source_url": "https://www.lufthansa-cargo.com/en/fleet-ulds/ulds/pallets"
+  },
+  {
+    "source_id": "SRC_E_003",
+    "source_name": "Lufthansa Cargo B777F fleet specs",
+    "use_in_dataset": "B777F pallet positions, side cargo door and loading height",
+    "source_url": "https://www.lufthansa-cargo.com/en/fleet-ulds/fleet/b777f"
+  },
+  {
+    "source_id": "SRC_E_004",
+    "source_name": "ANA Cargo B777F / B767F specs",
+    "use_in_dataset": "B777F and B767F cargo door dimensions and B767F heavy-duty pallet note",
+    "source_url": "https://www.anacargo.jp/en/int/specification/b7f.html | https://www.anacargo.jp/en/int/specification/b6_300f.html | https://www.anacargo.jp/en/int/specification/b7f_b6f/"
+  },
+  {
+    "source_id": "SRC_E_005",
+    "source_name": "Airbus A330-200F official freighter page",
+    "use_in_dataset": "A330-200F main deck pallet count and 96x125 pallet capability",
+    "source_url": "https://www.aircraft.airbus.com/en/aircraft/freighters/a330-200f"
+  },
+  {
+    "source_id": "SRC_E_006",
+    "source_name": "LD3/AKE container specifications",
+    "use_in_dataset": "LD3/AKE lower-deck container dimensions, weight and volume",
+    "source_url": "https://www.ld3containers.com/ld3ake.html | https://www.iagcargo.com/en/fleet/ulds/ld3-ake/"
+  },
+  {
+    "source_id": "SRC_E_007",
+    "source_name": "NCA other container PDF",
+    "use_in_dataset": "RAP e2, RKN t2, RAP t2 temperature container data",
+    "source_url": "https://www.nca.aero/e/service/transport/pdf/other_container.pdf"
+  },
+  {
+    "source_id": "SRC_E_008",
+    "source_name": "FAA AC 120-85A Air Cargo Operations",
+    "use_in_dataset": "Special cargo final acceptance caveat: W&B, restraint, loading, ULD compatibility and aircraft capability must be confirmed",
+    "source_url": "uploaded_file:ac_120-85a.pdf"
+  }
+]

@@ -1,0 +1,25 @@
+{
+  "block_id": "ROAD-A",
+  "block_name": "Dangerous goods road acceptance",
+  "version": "v0.1-framework",
+  "generated_at": "2026-06-05",
+  "status": "framework_ready_not_full_substance_table",
+  "why_no_full_table": [
+    "ADR Table A is an official copyrighted publication; the bundle avoids reproducing the full table.",
+    "PDF Table A is wide and extraction-prone; column-shift validation is mandatory.",
+    "For production, use a licensed/open structured dataset or internal ingestion from official PDFs without redistributing the full table."
+  ],
+  "coverage_summary": {
+    "substance_rows_included": 0,
+    "schema_defined": true,
+    "tunnel_code_meanings": 10,
+    "validation_rules": 6,
+    "confidence_rules": 5,
+    "source_inventory_entries": 4
+  },
+  "known_limitations": [
+    "No full UN-number substance table is included in this framework bundle.",
+    "Carrier-specific acceptance such as UPS precheck is not legal ADR acceptance.",
+    "This bundle is safety/compliance metadata only; it does not provide handling instructions or procurement guidance for dangerous substances."
+  ]
+}

@@ -66,7 +66,8 @@ class CortexFullGraph:
         return final_state["result"]
 
     # ---- nodes ---------------------------------------------------------- #
-    def _intake_node(self, state: CortexFullState) -> dict:
+    @staticmethod
+    def _intake_node(state: CortexFullState) -> dict:
         layer1 = handle_intake_message(
             message=state["message"],
             conversation_id=state.get("conversation_id"),
@@ -227,7 +228,8 @@ class CortexFullGraph:
             "cache_status": _cache_status(state, "layer4", layer4_cache),
         }
 
-    def _ask_user_node(self, state: CortexFullState) -> dict:
+    @staticmethod
+    def _ask_user_node(state: CortexFullState) -> dict:
         layer1 = state["layer1"]
         result = CortexFullOrchestratorResult(
             conversation_id=layer1.conversation_id,
@@ -250,7 +252,8 @@ class CortexFullGraph:
         )
         return {"result": result}
 
-    def _layer2_error_node(self, state: CortexFullState) -> dict:
+    @staticmethod
+    def _layer2_error_node(state: CortexFullState) -> dict:
         layer1 = state["layer1"]
         result = CortexFullOrchestratorResult(
             conversation_id=layer1.conversation_id,
@@ -278,7 +281,8 @@ class CortexFullGraph:
         )
         return {"result": result}
 
-    def _layer3_error_node(self, state: CortexFullState) -> dict:
+    @staticmethod
+    def _layer3_error_node(state: CortexFullState) -> dict:
         layer1 = state["layer1"]
         result = CortexFullOrchestratorResult(
             conversation_id=layer1.conversation_id,
@@ -307,7 +311,8 @@ class CortexFullGraph:
         )
         return {"result": result}
 
-    def _layer4_error_node(self, state: CortexFullState) -> dict:
+    @staticmethod
+    def _layer4_error_node(state: CortexFullState) -> dict:
         layer1 = state["layer1"]
         layer3 = state["layer3"]
         result = CortexFullOrchestratorResult(
@@ -337,7 +342,8 @@ class CortexFullGraph:
         )
         return {"result": result}
 
-    def _final_report_node(self, state: CortexFullState) -> dict:
+    @staticmethod
+    def _final_report_node(state: CortexFullState) -> dict:
         layer1 = state["layer1"]
         layer3 = state["layer3"]
         layer4 = state["layer4"]
@@ -363,22 +369,26 @@ class CortexFullGraph:
         return {"result": result}
 
     # ---- routes --------------------------------------------------------- #
-    def _route_after_intake(self, state: CortexFullState) -> str:
+    @staticmethod
+    def _route_after_intake(state: CortexFullState) -> str:
         if _is_safe_for_layer_2(state["layer1"]):
             return _ROUTE_LAYER2
         return _ROUTE_ASK_USER
 
-    def _route_after_layer2(self, state: CortexFullState) -> str:
+    @staticmethod
+    def _route_after_layer2(state: CortexFullState) -> str:
         if state.get("error"):
             return _ROUTE_LAYER2_ERROR
         return "layer3"
 
-    def _route_after_layer3(self, state: CortexFullState) -> str:
+    @staticmethod
+    def _route_after_layer3(state: CortexFullState) -> str:
         if state.get("error"):
             return _ROUTE_LAYER3_ERROR
         return "layer4"
 
-    def _route_after_layer4(self, state: CortexFullState) -> str:
+    @staticmethod
+    def _route_after_layer4(state: CortexFullState) -> str:
         if state.get("error"):
             return _ROUTE_LAYER4_ERROR
         return _ROUTE_FINAL_REPORT

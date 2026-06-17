@@ -1,0 +1,133 @@
+[
+  {
+    "rule_id": "SEA_F_GATE_001",
+    "name": "No VGM, no load",
+    "if": "containerized_cargo=true AND vgm_status != submitted_or_accepted",
+    "then": "HARD_GATE",
+    "message": "Packed container requires Verified Gross Mass before loading.",
+    "related_documents": [
+      "VGM_SOLAS"
+    ],
+    "_source": [
+      "IMO_SOLAS_VGM"
+    ],
+    "_confidence": "verified_requirement_authored_gate"
+  },
+  {
+    "rule_id": "SEA_F_GATE_002",
+    "name": "US ocean import requires ISF",
+    "if": "destination_country=US AND mode=sea AND is_import=true AND isf_status != filed",
+    "then": "HARD_GATE",
+    "message": "ISF 10+2 must be filed no later than 24 hours before vessel loading for US-bound ocean cargo.",
+    "related_documents": [
+      "ISF_10_2_US"
+    ],
+    "_source": [
+      "CBP_ISF_10_2"
+    ],
+    "_confidence": "verified_requirement_authored_gate"
+  },
+  {
+    "rule_id": "SEA_F_GATE_003",
+    "name": "EU/NI/NO/CH inbound or transit requires ENS/ICS2 path",
+    "if": "destination_or_transit_in=EU/NI/NO/CH AND mode=sea AND ens_ics2_status NOT IN [filed, responsible_party_confirmed]",
+    "then": "HARD_GATE",
+    "message": "ENS/ICS2 safety/security data path must be confirmed for goods brought to or transiting covered territories.",
+    "related_documents": [
+      "ENS_ICS2_EU"
+    ],
+    "_source": [
+      "EU_ICS2",
+      "EU_ICS2_MARITIME_LIVE"
+    ],
+    "_confidence": "verified_requirement_authored_gate"
+  },
+  {
+    "rule_id": "SEA_F_GATE_004",
+    "name": "DG declaration required for dangerous goods",
+    "if": "dangerous_goods=true AND dg_declaration_status != complete",
+    "then": "HARD_GATE",
+    "message": "Dangerous goods require DG declaration before sea readiness can pass.",
+    "related_documents": [
+      "IMO_DGD"
+    ],
+    "_source": [
+      "IMO_IMDG_OVERVIEW",
+      "UK_DANGEROUS_GOODS_FORM"
+    ],
+    "_confidence": "verified_concept_authored_gate"
+  },
+  {
+    "rule_id": "SEA_F_GATE_005",
+    "name": "DG container packing certificate required",
+    "if": "dangerous_goods=true AND containerized_cargo=true AND cpc_status != complete",
+    "then": "HARD_GATE",
+    "message": "DG packed in a container/vehicle requires packing certificate status.",
+    "related_documents": [
+      "CPC"
+    ],
+    "_source": [
+      "IMO_IMDG_OVERVIEW",
+      "UK_DANGEROUS_GOODS_FORM"
+    ],
+    "_confidence": "verified_concept_authored_gate"
+  },
+  {
+    "rule_id": "SEA_F_GATE_006",
+    "name": "Shipping instructions required",
+    "if": "sea_shipment=true AND shipping_instructions_status = missing",
+    "then": "HARD_GATE",
+    "message": "Carrier documentation cannot proceed without shipping instructions.",
+    "related_documents": [
+      "SHIPPING_INSTRUCTIONS",
+      "BL_OR_SWB"
+    ],
+    "_source": [
+      "CORTEX_AUTHORED_OPS_RULES"
+    ],
+    "_confidence": "authored_operational_gate"
+  },
+  {
+    "rule_id": "SEA_F_GATE_007",
+    "name": "Cross-border commercial docs required",
+    "if": "cross_border=true AND commercial_goods=true AND (commercial_invoice_status=missing OR packing_list_status=missing)",
+    "then": "HARD_GATE",
+    "message": "Cross-border commercial shipment needs invoice and packing list readiness.",
+    "related_documents": [
+      "COMMERCIAL_INVOICE",
+      "PACKING_LIST"
+    ],
+    "_source": [
+      "CORTEX_AUTHORED_OPS_RULES"
+    ],
+    "_confidence": "authored_general_customs_gate"
+  },
+  {
+    "rule_id": "SEA_F_PLAN_001",
+    "name": "Certificate of origin conditional check",
+    "if": "origin_preference_claimed=true OR buyer_requires_origin_doc=true OR destination_requires_origin_doc=true",
+    "then": "CONDITIONAL_HARD_GATE",
+    "message": "Certificate of origin may be required; validate before customs or document presentation.",
+    "related_documents": [
+      "CERTIFICATE_OF_ORIGIN"
+    ],
+    "_source": [
+      "CORTEX_AUTHORED_OPS_RULES"
+    ],
+    "_confidence": "authored_conditional_gate"
+  },
+  {
+    "rule_id": "SEA_F_PLAN_002",
+    "name": "Regulated cargo permit check",
+    "if": "regulated_goods=true OR restricted_goods=true OR controlled_goods=true",
+    "then": "CONDITIONAL_HARD_GATE",
+    "message": "Regulated cargo needs export/import permit screening before clean readiness.",
+    "related_documents": [
+      "EXPORT_IMPORT_PERMIT"
+    ],
+    "_source": [
+      "CORTEX_AUTHORED_OPS_RULES"
+    ],
+    "_confidence": "authored_conditional_gate"
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "condition": "Cargo dimensions and gross weight known and within EU standard baseline",
+    "confidence_cap_if_missing": null,
+    "max_confidence": 85,
+    "reason": "Vehicle fit can be checked deterministically against baseline, but national rules and actual vehicle configuration still matter.",
+    "_source": "EU_DIRECTIVE_96_53_EC",
+    "_confidence": "verified"
+  },
+  {
+    "condition": "Cargo dimensions missing",
+    "confidence_cap_if_missing": 55,
+    "max_confidence": 55,
+    "reason": "Vehicle fit cannot be confirmed without length/width/height.",
+    "_source": "CORTEX_AUTHORED_VEHICLE_FIT_RULES",
+    "_confidence": "authored"
+  },
+  {
+    "condition": "Cargo weight missing",
+    "confidence_cap_if_missing": 55,
+    "max_confidence": 55,
+    "reason": "Gross vehicle weight and axle load cannot be checked without cargo weight.",
+    "_source": "CORTEX_AUTHORED_VEHICLE_FIT_RULES",
+    "_confidence": "authored"
+  },
+  {
+    "condition": "Abnormal permit status unknown for oversized/heavy cargo",
+    "confidence_cap_if_missing": 35,
+    "max_confidence": 35,
+    "reason": "Shipment cannot be road-ready until abnormal/special movement permit and route feasibility are confirmed.",
+    "_source": "EU_DIRECTIVE_96_53_EC + NATIONAL_HIGHWAYS_ABNORMAL_LOADS",
+    "_confidence": "verified_partial"
+  },
+  {
+    "condition": "Specialized vehicle availability unknown",
+    "confidence_cap_if_missing": 50,
+    "max_confidence": 50,
+    "reason": "Low-loader, tanker, reefer, inloader or specialized carrier availability can block shipment.",
+    "_source": "CORTEX_AUTHORED_VEHICLE_FIT_RULES",
+    "_confidence": "authored"
+  }
+]

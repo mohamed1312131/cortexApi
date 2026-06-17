@@ -1,0 +1,50 @@
+[
+  {
+    "rule_id": "I_CONF_001",
+    "condition": "no_live_schedule_source",
+    "cap_percent": 70,
+    "message": "Without live schedule data, Cortex can only say route is plausible, not available."
+  },
+  {
+    "rule_id": "I_CONF_002",
+    "condition": "no_capacity_or_booking_confirmation",
+    "cap_percent": 75,
+    "message": "Without capacity/booking confirmation, route readiness is not confirmed."
+  },
+  {
+    "rule_id": "I_CONF_003",
+    "condition": "multi_leg_special_cargo_transit_unchecked",
+    "cap_percent": 60,
+    "message": "Special cargo with transit requires capability and acceptance checks at every transit point."
+  },
+  {
+    "rule_id": "I_CONF_004",
+    "condition": "tracking_milestone_missing_after_planned_departure",
+    "cap_percent": 65,
+    "message": "If DEP/ARR/RCF milestones are missing after expected time, tracking confidence drops."
+  },
+  {
+    "rule_id": "I_CONF_005",
+    "condition": "exception_milestone_received",
+    "cap_percent": 30,
+    "message": "OFLD/DIS/MSCA/OVCD are exceptions; shipment status should be escalated."
+  },
+  {
+    "rule_id": "I_CONF_006",
+    "condition": "time_critical_deadline_missing",
+    "cap_percent": 50,
+    "message": "Urgent or cold-chain cargo requires delivery deadline/shelf-life/runtime data."
+  },
+  {
+    "rule_id": "I_CONF_007",
+    "condition": "aircraft_type_unknown_for_fit_sensitive_cargo",
+    "cap_percent": 55,
+    "message": "HEA/BIG/OHG/ACT/BUP cargo requires aircraft type per leg."
+  },
+  {
+    "rule_id": "I_CONF_008",
+    "condition": "PLACI_data_incomplete",
+    "cap_percent": 60,
+    "message": "Advance cargo data must be complete for PLACI-regulated lanes."
+  }
+]

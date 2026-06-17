@@ -1,0 +1,20 @@
+{
+  "equipment_records": 14,
+  "containerized_equipment_records": 12,
+  "non_container_modes": 2,
+  "families_covered": [
+    "breakbulk",
+    "dry",
+    "flat_rack",
+    "high_cube",
+    "open_top",
+    "reefer",
+    "roro",
+    "tank"
+  ],
+  "records_with_internal_dimensions": 10,
+  "records_with_reference_payload": 12,
+  "cargo_type_mapping_records": 9,
+  "readiness_rules": 9,
+  "confidence_rules": 7
+}

@@ -1,0 +1,72 @@
+[
+  {
+    "rule_id": "B_CONF_001",
+    "applies_to": "PIL,CRT,COL,ACT,LHO",
+    "condition": "temperature_range_missing",
+    "cap_percent": 45,
+    "message": "Temperature-sensitive cargo cannot be assessed confidently without a required temperature range."
+  },
+  {
+    "rule_id": "B_CONF_002",
+    "applies_to": "PER,PES,PEM,PEP,PEF,EAT,FRO,FRI,HEG",
+    "condition": "exact_commodity_missing",
+    "cap_percent": 40,
+    "message": "Perishable cargo requires exact commodity because handling, labels, and shelf-life differ."
+  },
+  {
+    "rule_id": "B_CONF_003",
+    "applies_to": "AVI,SPF",
+    "condition": "species_or_container_missing",
+    "cap_percent": 45,
+    "message": "Live animal cargo requires species and container/crate details before route suitability can be assessed."
+  },
+  {
+    "rule_id": "B_CONF_004",
+    "applies_to": "HEA,BIG,OHG",
+    "condition": "piece_dimensions_missing",
+    "cap_percent": 40,
+    "message": "Heavy/outsized cargo cannot be assessed without piece dimensions and piece weight."
+  },
+  {
+    "rule_id": "B_CONF_005",
+    "applies_to": "HEA,BIG,OHG,BUP",
+    "condition": "aircraft_or_uld_compatibility_unknown",
+    "cap_percent": 55,
+    "message": "Special cargo requires aircraft/ULD compatibility and loading constraints before acceptance."
+  },
+  {
+    "rule_id": "B_CONF_006",
+    "applies_to": "VAL,VUN,SPX,SCO,NSC,SCY,SHR",
+    "condition": "security_status_unknown",
+    "cap_percent": 45,
+    "message": "Security-sensitive cargo needs screening/secure supply-chain status before passenger/all-cargo suitability is assessed."
+  },
+  {
+    "rule_id": "B_CONF_007",
+    "applies_to": "VAL,VUN",
+    "condition": "secure_storage_unknown",
+    "cap_percent": 70,
+    "message": "Valuable/vulnerable cargo should not receive high confidence without secure storage and chain-of-custody checks."
+  },
+  {
+    "rule_id": "B_CONF_008",
+    "applies_to": "LHO,SHL,QRT",
+    "condition": "deadline_or_24h_contact_missing",
+    "cap_percent": 50,
+    "message": "Urgent medical cargo needs hard deadline and 24-hour contact details."
+  },
+  {
+    "rule_id": "B_CONF_009",
+    "applies_to": "HUM",
+    "condition": "country_documents_or_carrier_acceptance_unknown",
+    "cap_percent": 60,
+    "message": "Human remains require country documents and airline acceptance validation."
+  },
+  {
+    "rule_id": "B_CONF_010",
+    "applies_to": "RDS,RIS",
+    "condition": "classification_or_packaging_unknown",
+    "cap_percent": 45,
+    "message": "Medical specimens/infectious substances require classification and packaging checks, with Block A DG cross-check if applicable."
+  }
+]

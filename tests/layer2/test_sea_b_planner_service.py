@@ -32,6 +32,13 @@ def _sea_request() -> ValidatedShipmentRequest:
     )
 
 
+def _block_response(package, block_id: str):
+    for response in package.block_responses:
+        if response.block_id == block_id:
+            return response
+    raise AssertionError(f"Expected block response {block_id}")
+
+
 def test_sea_request_plans_sea_c_then_sea_b_then_sea_f():
     plan = build_fetch_plan(_sea_request())
 
@@ -67,9 +74,7 @@ def test_layer2_service_sea_runs_sea_c_sea_b_and_sea_f():
         "SEA-I",
         "SEA-COST",
     ]
-    sea_b = next(
-        response for response in package.block_responses if response.block_id == "SEA-B"
-    )
+    sea_b = _block_response(package, "SEA-B")
     assert sea_b.status in {BlockStatus.found, BlockStatus.unknown}
     assert sea_b.data["fit_status"] == (
         "planning_only_requires_forwarder_carrier_validation"

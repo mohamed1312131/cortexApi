@@ -1,0 +1,83 @@
+{
+  "block_id": "ROAD-B",
+  "block_name": "Vehicle fit and abnormal load",
+  "version": "v1.0",
+  "generated_at": "2026-06-05",
+  "purpose": "Map cargo profiles to required road vehicle types and determine when standard limits or abnormal-load permits become hard gates.",
+  "not_a_route_optimizer": true,
+  "coverage_summary": {
+    "cargo_profile_records": 36,
+    "standard_limit_records": 9,
+    "abnormal_load_rule_records": 5,
+    "confidence_rule_records": 5
+  },
+  "known_limitations": [
+    "EU Directive 96/53/EC is a baseline; national rules, road classes and local permits may differ.",
+    "Actual axle loads, center of gravity, securement method and route survey are not computed in static v1.",
+    "Abnormal permit fees and live lead times are out of scope.",
+    "Vehicle dimensions vary by carrier equipment; this block maps readiness category, not exact fleet availability.",
+    "UK abnormal-load thresholds are included as verified examples but are not generalized as EU law."
+  ],
+  "sources": {
+    "EU_DIRECTIVE_96_53_EC": {
+      "title": "Council Directive 96/53/EC on maximum authorised dimensions and weights",
+      "url": "https://eur-lex.europa.eu/eli/dir/1996/53/2019-08-14/eng",
+      "source_type": "official_regulation",
+      "confidence": "verified",
+      "used_for": [
+        "EU standard vehicle dimensions",
+        "EU international max weight framework",
+        "abnormal-load threshold baseline"
+      ]
+    },
+    "EU_WEIGHTS_DIMENSIONS_PAGE": {
+      "title": "European Commission Weights and Dimensions",
+      "url": "https://transport.ec.europa.eu/transport-modes/road/weights-and-dimensions_en",
+      "source_type": "official_summary",
+      "confidence": "verified",
+      "used_for": [
+        "purpose and scope of EU weights/dimensions directive"
+      ]
+    },
+    "NATIONAL_HIGHWAYS_ABNORMAL_LOADS": {
+      "title": "National Highways: Abnormal loads and ESDAL",
+      "url": "https://nationalhighways.co.uk/road-safety/abnormal-loads-and-the-esdal-system/",
+      "source_type": "official_guidance",
+      "confidence": "verified_for_UK_context",
+      "used_for": [
+        "abnormal-load example thresholds",
+        "44t, 2.9m width, axle load, rigid length trigger"
+      ]
+    },
+    "UK_SPECIAL_TYPES_ENFORCEMENT_GUIDE": {
+      "title": "GOV.UK Special types enforcement guide",
+      "url": "https://www.gov.uk/government/publications/special-types-enforcement-guide/special-types-enforcement-guide",
+      "source_type": "official_guidance",
+      "confidence": "verified_for_UK_context",
+      "used_for": [
+        "special order movement examples and notification lead-time concept"
+      ]
+    },
+    "CORTEX_AUTHORED_VEHICLE_FIT_RULES": {
+      "title": "Cortex authored cargo-profile-to-vehicle mapping",
+      "url": null,
+      "source_type": "authored_rules",
+      "confidence": "authored",
+      "used_for": [
+        "cargo profile mappings",
+        "vehicle selection rules",
+        "planning confidence caps"
+      ]
+    }
+  },
+  "files_in_bundle": [
+    "road_b_vehicle_fit_profiles.json",
+    "road_b_vehicle_fit_profiles.csv",
+    "road_b_standard_limits.json",
+    "road_b_abnormal_load_rules.json",
+    "road_b_metadata.json",
+    "road_b_confidence_rules.json",
+    "road_b_confidence_rules.csv",
+    "README.md"
+  ]
+}

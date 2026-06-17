@@ -1,0 +1,59 @@
+{
+  "block_id": "ROAD-A",
+  "block_name": "Dangerous goods road acceptance framework",
+  "version": "v0.1-framework",
+  "generated_at": "2026-06-05",
+  "purpose": "Safety/compliance framework for dangerous-goods road-shipment readiness. This bundle defines schema, source map, tunnel-code meanings, confidence rules, and validation rules. It does not reproduce the full ADR Table A dangerous-goods list.",
+  "sources": [
+    {
+      "source_id": "UNECE_ADR_2025_VOL_I",
+      "name": "ADR 2025 Volume I",
+      "type": "official_regulation_pdf",
+      "use": [
+        "Chapter 3.2 Table A dangerous goods list",
+        "UN numbers",
+        "proper shipping names",
+        "hazard classes",
+        "packing groups",
+        "limited quantities",
+        "tunnel restriction codes"
+      ],
+      "confidence": "verified"
+    },
+    {
+      "source_id": "UNECE_ADR_2025_VOL_II",
+      "name": "ADR 2025 Volume II",
+      "type": "official_regulation_pdf",
+      "use": [
+        "packing and tank provisions",
+        "marking and labelling",
+        "documentation",
+        "vehicle and equipment requirements"
+      ],
+      "confidence": "verified"
+    },
+    {
+      "source_id": "GOV_UK_ADR_TUNNEL_CATEGORIES",
+      "name": "GOV.UK transporting dangerous goods: ADR tunnel categories",
+      "type": "official_guidance",
+      "use": [
+        "plain-English tunnel category explanation",
+        "Category A low-risk/no restriction concept",
+        "Category E high-risk/few dangerous goods allowed concept"
+      ],
+      "confidence": "verified"
+    },
+    {
+      "source_id": "UPS_DANGEROUS_GOODS_API_SPEC",
+      "name": "UPS Dangerous Goods Utility API OpenAPI file uploaded by user",
+      "type": "carrier_api_spec",
+      "use": [
+        "carrier acceptance audit precheck concept",
+        "chemical reference data lookup concept"
+      ],
+      "confidence": "candidate_carrier_api_reference",
+      "note": "Useful for future carrier precheck integration. Not a legal source and not used as the main ADR authority."
+    }
+  ],
+  "copyright_and_safety_note": "The full ADR Table A is a copyrighted official publication. This framework avoids reproducing the full table and instead prepares a safe schema/validation layer. Row-level ingestion should be performed inside the user's own project from licensed/official sources or an openly licensed structured dataset."
+}

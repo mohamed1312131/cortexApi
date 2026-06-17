@@ -1,0 +1,23 @@
+{
+  "dataset_name": "Cortex Air Mode - Block I Route, Schedule and Tracking Readiness",
+  "version": "r_and_d_v1_first_pass",
+  "generated_at_utc": "2026-06-03T12:17:10.738165+00:00",
+  "purpose": "Mock/reference route feasibility, schedule input, tracking milestone, and route risk dataset for Cortex air-mode R&D readiness checks.",
+  "legal_note": "R&D/mock reference only. It does not provide live schedules, live capacity, booking confirmation, or real AWB tracking. Use live carrier/forwarder/schedule/tracking APIs before operational use.",
+  "coverage": {
+    "route_feasibility_rules": 10,
+    "schedule_input_requirements": 18,
+    "tracking_milestones": 17,
+    "route_risk_rules": 10,
+    "confidence_rules": 8,
+    "source_refs": 9
+  },
+  "integration_note": "Run Block I after Blocks A-H. It turns the previous readiness checks into route-level readiness: direct/transit route, carrier per leg, aircraft per leg, transit capability, security/PLACI, booking status, capacity status and tracking milestones.",
+  "recommended_next_research": [
+    "Live schedule/capacity APIs: CargoAi, WebCargo, OAG, Cirium, SITA, carrier APIs",
+    "AWB tracking APIs from carriers or aggregators",
+    "Lane-specific minimum connection times for cargo",
+    "Carrier cutoff times by station",
+    "Temperature-controlled transit dwell-time and active container runtime monitoring"
+  ]
+}

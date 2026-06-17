@@ -1,0 +1,39 @@
+{
+  "dataset_name": "Cortex Air Mode - Block F Import / Export Permits and Border Controls",
+  "version": "r_and_d_v1_first_pass",
+  "generated_at_utc": "2026-06-03T11:08:05.658112+00:00",
+  "purpose": "Mock/reference border-control rules matrix aligned with Block C airport countries for Cortex air-mode R&D readiness checks.",
+  "legal_note": "R&D/mock reference only. Customs, SPS, pharma, CITES and other border rules change and are commodity-specific. Final validation by customs broker, carrier, importer, and competent authority is required before real shipment.",
+  "coverage": {
+    "jurisdiction_map_rows": 9,
+    "rules_count": 20,
+    "confidence_rules": 7,
+    "source_refs": 15
+  },
+  "aligned_airports": [
+    "CDG",
+    "FRA",
+    "AMS",
+    "DXB",
+    "DOH",
+    "HKG",
+    "SIN",
+    "JFK",
+    "TUN"
+  ],
+  "strong_jurisdictions": [
+    "EU",
+    "US",
+    "HONG_KONG",
+    "SINGAPORE",
+    "GLOBAL_CITES"
+  ],
+  "medium_jurisdictions": [
+    "UAE",
+    "QATAR"
+  ],
+  "weak_jurisdictions": [
+    "TUNISIA_PLACEHOLDER"
+  ],
+  "integration_note": "Run Block F after cargo category classification from Blocks A/B and airport-country mapping from Block C. If a rule applies and required permit/certificate/prior notification is unknown, cap confidence and ask for manual customs/authority validation."
+}

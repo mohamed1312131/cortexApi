@@ -1,0 +1,581 @@
+{
+  "metadata": {
+    "dataset_name": "Cortex Air Mode - Block I Route, Schedule and Tracking Readiness",
+    "version": "r_and_d_v1_first_pass",
+    "generated_at_utc": "2026-06-03T12:17:10.738165+00:00",
+    "purpose": "Mock/reference route feasibility, schedule input, tracking milestone, and route risk dataset for Cortex air-mode R&D readiness checks.",
+    "legal_note": "R&D/mock reference only. It does not provide live schedules, live capacity, booking confirmation, or real AWB tracking. Use live carrier/forwarder/schedule/tracking APIs before operational use.",
+    "coverage": {
+      "route_feasibility_rules": 10,
+      "schedule_input_requirements": 18,
+      "tracking_milestones": 17,
+      "route_risk_rules": 10,
+      "confidence_rules": 8,
+      "source_refs": 9
+    },
+    "integration_note": "Run Block I after Blocks A-H. It turns the previous readiness checks into route-level readiness: direct/transit route, carrier per leg, aircraft per leg, transit capability, security/PLACI, booking status, capacity status and tracking milestones.",
+    "recommended_next_research": [
+      "Live schedule/capacity APIs: CargoAi, WebCargo, OAG, Cirium, SITA, carrier APIs",
+      "AWB tracking APIs from carriers or aggregators",
+      "Lane-specific minimum connection times for cargo",
+      "Carrier cutoff times by station",
+      "Temperature-controlled transit dwell-time and active container runtime monitoring"
+    ]
+  },
+  "route_feasibility_rules": [
+    {
+      "rule_id": "I_ROUTE_001",
+      "rule_name": "Direct route preferred for time/temperature critical cargo",
+      "route_condition": "cargo_codes_include_PIL_CRT_COL_ACT_LHO_SHL_QRT_PER_PES_PEM_FRO_AVI",
+      "applies_to_cargo": "pharma, cold-chain, urgent medical, perishables, frozen goods, live animals",
+      "required_data": "origin_airport; destination_airport; direct_flight_available; transit_count; total_transit_time",
+      "risk_if_missing": "route may break cold chain, exceed shelf life, increase animal welfare risk, or miss medical deadline",
+      "confidence_cap": 65,
+      "message": "Prefer direct routing. If direct route is unavailable, every transit airport and carrier leg must be checked."
+    },
+    {
+      "rule_id": "I_ROUTE_002",
+      "rule_name": "Transit airport special-cargo capability required",
+      "route_condition": "route_has_transit AND special_cargo_present",
+      "applies_to_cargo": "DG, PIL, ACT, PER, FRO, AVI, VAL, HEA, BIG, HUM, RDS, RIS",
+      "required_data": "transit_airport_codes; Block C capability for each transit; handler capability; storage at transit",
+      "risk_if_missing": "shipment may be accepted at origin but fail during transit",
+      "confidence_cap": 60,
+      "message": "Special cargo requires transit airport/handler capability validation, not just origin and destination."
+    },
+    {
+      "rule_id": "I_ROUTE_003",
+      "rule_name": "Carrier acceptance must cover every leg",
+      "route_condition": "route_has_multiple_legs",
+      "applies_to_cargo": "all special cargo and DG",
+      "required_data": "carrier_per_leg; interline carrier; Block D acceptance per carrier; interline handover rules",
+      "risk_if_missing": "one carrier may accept while another refuses the cargo",
+      "confidence_cap": 60,
+      "message": "Every operating carrier and interline leg must accept the cargo category."
+    },
+    {
+      "rule_id": "I_ROUTE_004",
+      "rule_name": "CAO cargo needs freighter path",
+      "route_condition": "Block A air_status = cargo_aircraft_only OR code = CAO",
+      "applies_to_cargo": "cargo-aircraft-only DG or restricted cargo",
+      "required_data": "aircraft_type_per_leg; passenger_or_freighter; carrier CAO acceptance; flight freighter confirmation",
+      "risk_if_missing": "cargo may be incorrectly routed on passenger aircraft",
+      "confidence_cap": 45,
+      "message": "Cargo-aircraft-only shipments require confirmed freighter/all-cargo routing."
+    },
+    {
+      "rule_id": "I_ROUTE_005",
+      "rule_name": "Security all-cargo only path",
+      "route_condition": "security_code = SCO",
+      "applies_to_cargo": "SCO security cargo",
+      "required_data": "passenger_or_freighter per leg; security status; station security acceptance",
+      "risk_if_missing": "shipment may be placed on passenger aircraft despite security restriction",
+      "confidence_cap": 45,
+      "message": "SCO cargo is all-cargo aircraft only from security standpoint unless security status changes."
+    },
+    {
+      "rule_id": "I_ROUTE_006",
+      "rule_name": "Passenger belly requires passenger-eligible security status",
+      "route_condition": "selected_aircraft_role = passenger_belly",
+      "applies_to_cargo": "all cargo on passenger aircraft",
+      "required_data": "security_code; screening status; SPX/equivalent proof; station security confirmation",
+      "risk_if_missing": "cargo not legally/security-ready for passenger aircraft",
+      "confidence_cap": 45,
+      "message": "Passenger belly routing requires passenger-eligible screened/secured status."
+    },
+    {
+      "rule_id": "I_ROUTE_007",
+      "rule_name": "Aircraft fit confirmed for every leg",
+      "route_condition": "cargo_codes_include_HEA_BIG_OHG_ACT_BUP OR piece_dimensions_large",
+      "applies_to_cargo": "heavy, oversized, overhang, active ULD, built-up units",
+      "required_data": "aircraft_type_per_leg; ULD type; door dimensions; main/lower deck; piece dimensions/weight",
+      "risk_if_missing": "cargo may fit one leg but fail on another aircraft",
+      "confidence_cap": 55,
+      "message": "Physical fit must be checked for every aircraft leg, not only the first flight."
+    },
+    {
+      "rule_id": "I_ROUTE_008",
+      "rule_name": "PLACI lane requires advance data before loading",
+      "route_condition": "destination_or_transit in US/EU/UK/UAE/CANADA",
+      "applies_to_cargo": "all air cargo on PLACI-regulated lanes",
+      "required_data": "shipper; consignee; goods_description; pieces; weight; origin; destination; AWB/HAWB; security status",
+      "risk_if_missing": "pre-loading risk assessment may fail or delay cargo",
+      "confidence_cap": 60,
+      "message": "PLACI-style lanes require complete advance cargo information before loading."
+    },
+    {
+      "rule_id": "I_ROUTE_009",
+      "rule_name": "Time-critical deadline required",
+      "route_condition": "cargo_codes_include_LHO_SHL_QRT_PIL_PER_FRO",
+      "applies_to_cargo": "urgent medical, pharma, perishables, frozen goods",
+      "required_data": "latest_acceptable_arrival; shelf_life; temperature_runtime; delivery_deadline; cutoff time",
+      "risk_if_missing": "cannot evaluate whether route meets business/medical/quality deadline",
+      "confidence_cap": 50,
+      "message": "Time-critical cargo requires a hard deadline and cutoff/arrival timing data."
+    },
+    {
+      "rule_id": "I_ROUTE_010",
+      "rule_name": "Booking and capacity must be confirmed",
+      "route_condition": "route_selected_for_recommendation",
+      "applies_to_cargo": "all",
+      "required_data": "booking_status; capacity_status; carrier confirmation; flight date",
+      "risk_if_missing": "route may be theoretically plausible but not bookable",
+      "confidence_cap": 75,
+      "message": "Without booking/capacity confirmation, Cortex should say route is plausible, not available."
+    }
+  ],
+  "schedule_input_requirements": [
+    {
+      "schedule_field": "origin_airport",
+      "required_for": "all route checks",
+      "why_needed": "Defines start node and jurisdiction/security/capability context.",
+      "missing_impact": "hard_gate",
+      "example": "TUN"
+    },
+    {
+      "schedule_field": "destination_airport",
+      "required_for": "all route checks",
+      "why_needed": "Defines destination node and border/security context.",
+      "missing_impact": "hard_gate",
+      "example": "CDG"
+    },
+    {
+      "schedule_field": "transit_airports",
+      "required_for": "multi-leg routing and special cargo",
+      "why_needed": "Transit airports need Block C/F/H checks.",
+      "missing_impact": "high_confidence_cap",
+      "example": "IST, FRA"
+    },
+    {
+      "schedule_field": "carrier_per_leg",
+      "required_for": "Block D carrier acceptance",
+      "why_needed": "Carrier acceptance must pass for every leg.",
+      "missing_impact": "high_confidence_cap",
+      "example": "TK, LH"
+    },
+    {
+      "schedule_field": "flight_number",
+      "required_for": "schedule/booking/tracking",
+      "why_needed": "Needed to link shipment to a flight leg and milestone events.",
+      "missing_impact": "medium_confidence_cap",
+      "example": "TK663"
+    },
+    {
+      "schedule_field": "flight_date",
+      "required_for": "schedule/booking/cutoff",
+      "why_needed": "Capacity, cutoff and acceptance are date-specific.",
+      "missing_impact": "medium_confidence_cap",
+      "example": "2026-06-10"
+    },
+    {
+      "schedule_field": "departure_time",
+      "required_for": "transit and cutoff planning",
+      "why_needed": "Needed to evaluate cutoff and connection timing.",
+      "missing_impact": "medium_confidence_cap",
+      "example": "14:20"
+    },
+    {
+      "schedule_field": "arrival_time",
+      "required_for": "transit and deadline planning",
+      "why_needed": "Needed to evaluate total transit and latest delivery deadline.",
+      "missing_impact": "medium_confidence_cap",
+      "example": "18:05"
+    },
+    {
+      "schedule_field": "aircraft_type",
+      "required_for": "Block E fit and cargo type restrictions",
+      "why_needed": "Door/deck/ULD/passenger-freighter logic depends on aircraft type.",
+      "missing_impact": "high_confidence_cap",
+      "example": "B777F"
+    },
+    {
+      "schedule_field": "passenger_or_freighter",
+      "required_for": "DG CAO/SCO/security and fit checks",
+      "why_needed": "Some cargo cannot move on passenger aircraft.",
+      "missing_impact": "high_confidence_cap",
+      "example": "freighter"
+    },
+    {
+      "schedule_field": "cutoff_time",
+      "required_for": "operational readiness",
+      "why_needed": "Cargo must be tendered and accepted before cutoff.",
+      "missing_impact": "medium_confidence_cap",
+      "example": "D-1 18:00"
+    },
+    {
+      "schedule_field": "minimum_connection_time",
+      "required_for": "multi-leg route viability",
+      "why_needed": "Transit must allow handling, screening, storage, and transfer.",
+      "missing_impact": "high_confidence_cap",
+      "example": "6 hours"
+    },
+    {
+      "schedule_field": "capacity_status",
+      "required_for": "booking realism",
+      "why_needed": "Schedule is useless if no cargo capacity is available.",
+      "missing_impact": "high_confidence_cap",
+      "example": "available / unknown"
+    },
+    {
+      "schedule_field": "booking_status",
+      "required_for": "readiness",
+      "why_needed": "Distinguishes plausible route from confirmed route.",
+      "missing_impact": "confidence_cap",
+      "example": "planned / booked / confirmed"
+    },
+    {
+      "schedule_field": "temperature_storage_at_transit",
+      "required_for": "PIL/CRT/COL/FRO/PER/LHO",
+      "why_needed": "Cold-chain may fail at transit without storage/handler plan.",
+      "missing_impact": "high_confidence_cap",
+      "example": "+2/+8 cold room"
+    },
+    {
+      "schedule_field": "security_status_at_origin",
+      "required_for": "Block H",
+      "why_needed": "Cargo may be blocked before loading if not screened/secured.",
+      "missing_impact": "hard_gate_for_passenger",
+      "example": "SPX"
+    },
+    {
+      "schedule_field": "PLACI_data_complete",
+      "required_for": "US/EU/UK/UAE/Canada lanes",
+      "why_needed": "Advance cargo information must be complete before loading.",
+      "missing_impact": "high_confidence_cap",
+      "example": "true"
+    },
+    {
+      "schedule_field": "AWB_or_HAWB",
+      "required_for": "tracking and filing",
+      "why_needed": "Tracking milestones are linked to AWB/HAWB references.",
+      "missing_impact": "medium_confidence_cap",
+      "example": "020-12345675"
+    }
+  ],
+  "tracking_milestones": [
+    {
+      "milestone_code": "BKD",
+      "milestone_name": "Booked",
+      "meaning": "Consignment booked on a specific flight or routing.",
+      "normal_sequence_order": 10,
+      "is_exception": false,
+      "cortex_interpretation": "Planned booking exists, but cargo is not yet accepted."
+    },
+    {
+      "milestone_code": "FOH",
+      "milestone_name": "Freight on hand",
+      "meaning": "Freight is on hand with the carrier/handler before ready-for-carriage acceptance.",
+      "normal_sequence_order": 20,
+      "is_exception": false,
+      "cortex_interpretation": "Cargo is physically present but not necessarily accepted as ready."
+    },
+    {
+      "milestone_code": "RCS",
+      "milestone_name": "Received from shipper / accepted",
+      "meaning": "Consignment physically received from shipper/agent and accepted for carriage.",
+      "normal_sequence_order": 30,
+      "is_exception": false,
+      "cortex_interpretation": "Readiness moved from planned to accepted for carriage."
+    },
+    {
+      "milestone_code": "MAN",
+      "milestone_name": "Manifested",
+      "meaning": "Shipment manifested on a specific flight.",
+      "normal_sequence_order": 40,
+      "is_exception": false,
+      "cortex_interpretation": "Shipment is planned/declared on flight manifest."
+    },
+    {
+      "milestone_code": "CLD",
+      "milestone_name": "Cargo loaded",
+      "meaning": "Shipment has been loaded onto the flight.",
+      "normal_sequence_order": 45,
+      "is_exception": false,
+      "cortex_interpretation": "Cargo appears loaded; await departure confirmation."
+    },
+    {
+      "milestone_code": "DEP",
+      "milestone_name": "Departed",
+      "meaning": "Shipment departed on a specific flight.",
+      "normal_sequence_order": 50,
+      "is_exception": false,
+      "cortex_interpretation": "Cargo has left origin or transfer airport."
+    },
+    {
+      "milestone_code": "ARR",
+      "milestone_name": "Arrived",
+      "meaning": "Flight/shipment arrived at airport.",
+      "normal_sequence_order": 60,
+      "is_exception": false,
+      "cortex_interpretation": "Aircraft arrived; cargo still needs handler receipt/processing."
+    },
+    {
+      "milestone_code": "RCF",
+      "milestone_name": "Received from flight",
+      "meaning": "Shipment unloaded/received from flight by handler.",
+      "normal_sequence_order": 70,
+      "is_exception": false,
+      "cortex_interpretation": "Cargo is physically received after flight arrival."
+    },
+    {
+      "milestone_code": "TFD",
+      "milestone_name": "Transferred",
+      "meaning": "Shipment transferred to another carrier, flight, or airport area.",
+      "normal_sequence_order": 75,
+      "is_exception": false,
+      "cortex_interpretation": "Transit/interline handover occurred; check next leg and dwell risk."
+    },
+    {
+      "milestone_code": "NFD",
+      "milestone_name": "Notified",
+      "meaning": "Consignee/agent notified that shipment has arrived or will be ready for collection.",
+      "normal_sequence_order": 80,
+      "is_exception": false,
+      "cortex_interpretation": "Cargo is near pickup/clearance stage."
+    },
+    {
+      "milestone_code": "AWD",
+      "milestone_name": "Documents delivered",
+      "meaning": "Shipment documents delivered to consignee or agent.",
+      "normal_sequence_order": 85,
+      "is_exception": false,
+      "cortex_interpretation": "Documentation handover occurred; can support clearance/pickup."
+    },
+    {
+      "milestone_code": "CCD",
+      "milestone_name": "Customs cleared",
+      "meaning": "Shipment cleared by customs.",
+      "normal_sequence_order": 90,
+      "is_exception": false,
+      "cortex_interpretation": "Border clearance milestone reached."
+    },
+    {
+      "milestone_code": "DLV",
+      "milestone_name": "Delivered",
+      "meaning": "Shipment delivered to consignee or agent.",
+      "normal_sequence_order": 100,
+      "is_exception": false,
+      "cortex_interpretation": "Shipment complete/delivered."
+    },
+    {
+      "milestone_code": "OFLD",
+      "milestone_name": "Offloaded",
+      "meaning": "Shipment was offloaded from planned flight or routing.",
+      "normal_sequence_order": 55,
+      "is_exception": true,
+      "cortex_interpretation": "Disruption. Re-route, capacity, acceptance or security issue may exist."
+    },
+    {
+      "milestone_code": "DIS",
+      "milestone_name": "Discrepancy",
+      "meaning": "Shipment has discrepancy.",
+      "normal_sequence_order": 65,
+      "is_exception": true,
+      "cortex_interpretation": "Exception. Investigate piece count, weight, documents or damage."
+    },
+    {
+      "milestone_code": "MSCA",
+      "milestone_name": "Missing cargo",
+      "meaning": "Cargo missing or not located as expected.",
+      "normal_sequence_order": 66,
+      "is_exception": true,
+      "cortex_interpretation": "Critical exception. Escalate to carrier/handler."
+    },
+    {
+      "milestone_code": "OVCD",
+      "milestone_name": "Overcarried",
+      "meaning": "Cargo carried beyond planned destination/transfer point.",
+      "normal_sequence_order": 67,
+      "is_exception": true,
+      "cortex_interpretation": "Critical route exception. Re-routing/recovery required."
+    }
+  ],
+  "route_risk_rules": [
+    {
+      "risk_code": "ROUTE_SPECIAL_TRANSIT_UNKNOWN",
+      "condition": "special cargo and transit airport capability unknown",
+      "risk_level": "high",
+      "applies_to": "DG,PIL,ACT,PER,FRO,AVI,VAL,HEA,BIG,HUM",
+      "confidence_impact": "cap_60",
+      "recommended_action": "Check Block C transit capability or choose direct route."
+    },
+    {
+      "risk_code": "ROUTE_TIME_CRITICAL_MULTIPLE_TRANSITS",
+      "condition": "LHO/SHL/QRT cargo with more than one transit",
+      "risk_level": "critical",
+      "applies_to": "LHO,SHL,QRT",
+      "confidence_impact": "cap_45",
+      "recommended_action": "Prefer direct route or one secure short transit with confirmed handover."
+    },
+    {
+      "risk_code": "ROUTE_COLD_CHAIN_BREAK",
+      "condition": "temperature cargo with unknown transit cold storage or container runtime",
+      "risk_level": "high",
+      "applies_to": "PIL,CRT,COL,ACT,FRO,LHO",
+      "confidence_impact": "cap_55",
+      "recommended_action": "Confirm cold storage at every transit and active/passive container runtime."
+    },
+    {
+      "risk_code": "ROUTE_CAO_NO_FREIGHTER",
+      "condition": "CAO cargo but no confirmed freighter/all-cargo leg",
+      "risk_level": "critical",
+      "applies_to": "CAO,cargo_aircraft_only_DG",
+      "confidence_impact": "hard_block",
+      "recommended_action": "Use confirmed freighter path only."
+    },
+    {
+      "risk_code": "ROUTE_SCO_PASSENGER_BELLY",
+      "condition": "SCO security cargo routed on passenger aircraft",
+      "risk_level": "critical",
+      "applies_to": "SCO",
+      "confidence_impact": "hard_block",
+      "recommended_action": "Use all-cargo aircraft or resolve security status."
+    },
+    {
+      "risk_code": "ROUTE_PASSENGER_SECURITY_NOT_SPX",
+      "condition": "passenger aircraft selected but cargo security not SPX/equivalent",
+      "risk_level": "critical",
+      "applies_to": "all passenger belly cargo",
+      "confidence_impact": "hard_block",
+      "recommended_action": "Screen/secure cargo or switch to eligible route."
+    },
+    {
+      "risk_code": "ROUTE_PLACI_INCOMPLETE",
+      "condition": "PLACI-regulated lane but advance cargo data incomplete",
+      "risk_level": "high",
+      "applies_to": "US,EU,UK,UAE,CANADA lanes",
+      "confidence_impact": "cap_60",
+      "recommended_action": "Complete shipper, consignee, description, pieces, weight, AWB/HAWB and route data."
+    },
+    {
+      "risk_code": "ROUTE_FIT_UNKNOWN_PER_LEG",
+      "condition": "large cargo and aircraft type/ULD unknown on one or more legs",
+      "risk_level": "high",
+      "applies_to": "HEA,BIG,OHG,BUP,ACT",
+      "confidence_impact": "cap_55",
+      "recommended_action": "Run Block E aircraft/ULD fit for every leg."
+    },
+    {
+      "risk_code": "ROUTE_CAPACITY_UNKNOWN",
+      "condition": "route exists but booking/capacity status unknown",
+      "risk_level": "medium_high",
+      "applies_to": "all",
+      "confidence_impact": "cap_75",
+      "recommended_action": "Mark route as plausible only; require carrier/forwarder capacity confirmation."
+    },
+    {
+      "risk_code": "ROUTE_TRACKING_EXCEPTION",
+      "condition": "tracking event OFLD/DIS/MSCA/OVCD received",
+      "risk_level": "critical",
+      "applies_to": "all active shipments",
+      "confidence_impact": "active_exception",
+      "recommended_action": "Escalate to carrier/handler and recalculate ETA/routing."
+    }
+  ],
+  "confidence_rules": [
+    {
+      "rule_id": "I_CONF_001",
+      "condition": "no_live_schedule_source",
+      "cap_percent": 70,
+      "message": "Without live schedule data, Cortex can only say route is plausible, not available."
+    },
+    {
+      "rule_id": "I_CONF_002",
+      "condition": "no_capacity_or_booking_confirmation",
+      "cap_percent": 75,
+      "message": "Without capacity/booking confirmation, route readiness is not confirmed."
+    },
+    {
+      "rule_id": "I_CONF_003",
+      "condition": "multi_leg_special_cargo_transit_unchecked",
+      "cap_percent": 60,
+      "message": "Special cargo with transit requires capability and acceptance checks at every transit point."
+    },
+    {
+      "rule_id": "I_CONF_004",
+      "condition": "tracking_milestone_missing_after_planned_departure",
+      "cap_percent": 65,
+      "message": "If DEP/ARR/RCF milestones are missing after expected time, tracking confidence drops."
+    },
+    {
+      "rule_id": "I_CONF_005",
+      "condition": "exception_milestone_received",
+      "cap_percent": 30,
+      "message": "OFLD/DIS/MSCA/OVCD are exceptions; shipment status should be escalated."
+    },
+    {
+      "rule_id": "I_CONF_006",
+      "condition": "time_critical_deadline_missing",
+      "cap_percent": 50,
+      "message": "Urgent or cold-chain cargo requires delivery deadline/shelf-life/runtime data."
+    },
+    {
+      "rule_id": "I_CONF_007",
+      "condition": "aircraft_type_unknown_for_fit_sensitive_cargo",
+      "cap_percent": 55,
+      "message": "HEA/BIG/OHG/ACT/BUP cargo requires aircraft type per leg."
+    },
+    {
+      "rule_id": "I_CONF_008",
+      "condition": "PLACI_data_incomplete",
+      "cap_percent": 60,
+      "message": "Advance cargo data must be complete for PLACI-regulated lanes."
+    }
+  ],
+  "source_refs": [
+    {
+      "source_id": "SRC_I_001",
+      "source_name": "IATA ONE Record",
+      "source_url": "https://www.iata.org/en/programs/cargo/e/one-record/",
+      "use_in_dataset": "Digital cargo data-sharing concept and single shipment record vision."
+    },
+    {
+      "source_id": "SRC_I_002",
+      "source_name": "IATA ONE Record specification",
+      "source_url": "https://iata-cargo.github.io/ONE-Record/2025-07/",
+      "use_in_dataset": "ONE Record as common data model and standardized secured web API."
+    },
+    {
+      "source_id": "SRC_I_003",
+      "source_name": "IATA e-AWB SOP IST",
+      "source_url": "https://www.iata.org/contentassets/b559d10aeb734d5196332b4953dcf312/e-awb-sop-ist.pdf",
+      "use_in_dataset": "FSU/RCS and FSU/DEP examples for cargo status messages."
+    },
+    {
+      "source_id": "SRC_I_004",
+      "source_name": "CargoAi Track and Trace API event codes",
+      "source_url": "https://help.cargoai.co/en/articles/6352646-track-and-trace-api-event-codes",
+      "use_in_dataset": "Event code meanings including RCF, NFD, AWD, DLV, CLC, CLD, RCT, TFD."
+    },
+    {
+      "source_id": "SRC_I_005",
+      "source_name": "Lufthansa Cargo Shipment Tracking API",
+      "source_url": "https://developer.lufthansa-cargo.com/docs/read/apis/shipmenttracking",
+      "use_in_dataset": "Carrier shipment tracking event type examples such as BKD and RCS."
+    },
+    {
+      "source_id": "SRC_I_006",
+      "source_name": "OAG Flight Info API",
+      "source_url": "https://www.oag.com/flight-info-api",
+      "use_in_dataset": "Current schedule/status API concept including schedules, flight status, cargo operations."
+    },
+    {
+      "source_id": "SRC_I_007",
+      "source_name": "OAG Airline Schedules Data",
+      "source_url": "https://www.oag.com/airline-schedules-data",
+      "use_in_dataset": "Schedule data fields: carrier, flight number, departure/arrival, flight date, origin/destination, aircraft type, stops."
+    },
+    {
+      "source_id": "SRC_I_008",
+      "source_name": "CargoAi Route and Schedule APIs",
+      "source_url": "https://www.cargoai.co/blog/route-and-schedule-apis-impact-aircargo/",
+      "use_in_dataset": "Route/schedule APIs provide access to flight schedules, routes and capacity information from carriers."
+    },
+    {
+      "source_id": "SRC_I_009",
+      "source_name": "Cirium flight schedules data",
+      "source_url": "https://www.cirium.com/data/flight-schedules/",
+      "use_in_dataset": "Schedules/routes data for planning and connections."
+    }
+  ]
+}

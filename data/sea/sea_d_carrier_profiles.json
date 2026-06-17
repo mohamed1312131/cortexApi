@@ -1,0 +1,263 @@
+[
+  {
+    "carrier_code": "MAERSK",
+    "carrier_name": "Maersk",
+    "carrier_type": "global_container_line",
+    "headquarters_region": "Europe",
+    "public_network_reference": true,
+    "public_schedule_lookup": true,
+    "public_booking_or_quote_portal": true,
+    "main_trade_lane_families": [
+      "Asia-Europe",
+      "Trans-Pacific",
+      "Trans-Atlantic",
+      "Intra-Asia",
+      "Middle East/Indian Subcontinent",
+      "Latin America",
+      "Africa",
+      "Oceania",
+      "regional_feeder"
+    ],
+    "service_capability_tags": [
+      "dry_container",
+      "reefer",
+      "dangerous_goods_requires_acceptance",
+      "special_cargo_requires_approval",
+      "schedule_lookup_available"
+    ],
+    "verified_public_claims": [
+      "Ocean freight service to 500+ global destinations",
+      "public sailing schedule lookup available"
+    ],
+    "source_refs": [
+      "maersk_ocean_transport",
+      "maersk_schedules"
+    ],
+    "_source": "Maersk public ocean transport and schedules pages",
+    "_confidence": "verified_for_carrier_presence_and_public_schedule_tool; authored_for_lane_family_inference",
+    "confidence_cap_if_missing": "cap_60_if_no_live_schedule_for_origin_destination_pair"
+  },
+  {
+    "carrier_code": "MSC",
+    "carrier_name": "MSC Mediterranean Shipping Company",
+    "carrier_type": "global_container_line",
+    "headquarters_region": "Europe",
+    "public_network_reference": true,
+    "public_schedule_lookup": true,
+    "public_booking_or_quote_portal": true,
+    "main_trade_lane_families": [
+      "Asia-Europe",
+      "Trans-Pacific",
+      "Trans-Atlantic",
+      "Intra-Asia",
+      "Middle East/Indian Subcontinent",
+      "Latin America",
+      "Africa",
+      "Oceania",
+      "regional_feeder"
+    ],
+    "service_capability_tags": [
+      "dry_container",
+      "reefer",
+      "dangerous_goods_requires_acceptance",
+      "special_cargo_requires_approval",
+      "global_trade_services"
+    ],
+    "verified_public_claims": [
+      "300 global routes",
+      "520 ports",
+      "155+ countries",
+      "675 offices"
+    ],
+    "source_refs": [
+      "msc_trade_services"
+    ],
+    "_source": "MSC official trade services page",
+    "_confidence": "verified_for_public_network_scale; authored_for_lane_family_inference",
+    "confidence_cap_if_missing": "cap_60_if_no_live_schedule_for_origin_destination_pair"
+  },
+  {
+    "carrier_code": "CMA_CGM",
+    "carrier_name": "CMA CGM",
+    "carrier_type": "global_container_line",
+    "headquarters_region": "Europe",
+    "public_network_reference": true,
+    "public_schedule_lookup": true,
+    "public_booking_or_quote_portal": true,
+    "main_trade_lane_families": [
+      "Africa",
+      "Asia",
+      "Caribbean/Central America",
+      "Europe",
+      "Mediterranean",
+      "Middle East",
+      "North America",
+      "Oceania",
+      "South America"
+    ],
+    "service_capability_tags": [
+      "dry_container",
+      "reefer",
+      "dangerous_goods_requires_acceptance",
+      "special_cargo_requires_approval",
+      "line_services_by_trade"
+    ],
+    "verified_public_claims": [
+      "line-services search by from/to zones",
+      "point-to-point schedule search available"
+    ],
+    "source_refs": [
+      "cma_cgm_line_services",
+      "cma_cgm_schedules"
+    ],
+    "_source": "CMA CGM public line-services and schedules pages",
+    "_confidence": "verified_for_public_line_service_tool; authored_for_lane_family_inference",
+    "confidence_cap_if_missing": "cap_60_if_no_live_schedule_for_origin_destination_pair"
+  },
+  {
+    "carrier_code": "HAPAG_LLOYD",
+    "carrier_name": "Hapag-Lloyd",
+    "carrier_type": "global_container_line",
+    "headquarters_region": "Europe",
+    "public_network_reference": true,
+    "public_schedule_lookup": true,
+    "public_booking_or_quote_portal": true,
+    "main_trade_lane_families": [
+      "Asia-Europe",
+      "Trans-Pacific",
+      "Trans-Atlantic",
+      "Intra-Asia",
+      "Mediterranean",
+      "Latin America",
+      "Africa",
+      "Middle East/Indian Subcontinent",
+      "Oceania"
+    ],
+    "service_capability_tags": [
+      "dry_container",
+      "reefer",
+      "dangerous_goods_requires_acceptance",
+      "special_cargo_requires_approval",
+      "real_time_schedule_data_available"
+    ],
+    "verified_public_claims": [
+      "vessel schedule provides detailed route information and real-time schedule data",
+      "reefer special cargo and dangerous goods categories listed"
+    ],
+    "source_refs": [
+      "hapag_lloyd_schedule",
+      "hapag_lloyd_services"
+    ],
+    "_source": "Hapag-Lloyd vessel schedule and services information pages",
+    "_confidence": "verified_for_public_schedule_and_cargo_categories; authored_for_lane_family_inference",
+    "confidence_cap_if_missing": "cap_60_if_no_live_schedule_for_origin_destination_pair"
+  },
+  {
+    "carrier_code": "COSCO",
+    "carrier_name": "COSCO Shipping Lines",
+    "carrier_type": "global_container_line",
+    "headquarters_region": "Asia",
+    "public_network_reference": true,
+    "public_schedule_lookup": true,
+    "public_booking_or_quote_portal": true,
+    "main_trade_lane_families": [
+      "Trans-Pacific",
+      "Asia-Europe",
+      "Europe Feeder",
+      "Trans-Atlantic",
+      "Intra-Asia",
+      "Intra-Europe",
+      "Oceania",
+      "Asia-South Africa-South America",
+      "Southeast/South Asia"
+    ],
+    "service_capability_tags": [
+      "dry_container",
+      "reefer",
+      "dangerous_goods_requires_acceptance",
+      "special_cargo_requires_approval",
+      "schedule_by_city_service_or_vessel"
+    ],
+    "verified_public_claims": [
+      "official schedule pages include service schedule, city pair, service, and vessel schedule search categories"
+    ],
+    "source_refs": [
+      "cosco_schedule"
+    ],
+    "_source": "COSCO Shipping Lines public service schedule pages",
+    "_confidence": "verified_for_public_schedule_categories; authored_for_lane_family_inference",
+    "confidence_cap_if_missing": "cap_60_if_no_live_schedule_for_origin_destination_pair"
+  },
+  {
+    "carrier_code": "ONE",
+    "carrier_name": "Ocean Network Express (ONE)",
+    "carrier_type": "global_container_line",
+    "headquarters_region": "Asia",
+    "public_network_reference": true,
+    "public_schedule_lookup": true,
+    "public_booking_or_quote_portal": true,
+    "main_trade_lane_families": [
+      "Asia-Europe",
+      "Trans-Pacific",
+      "Trans-Atlantic",
+      "Intra-Asia",
+      "Middle East/Indian Subcontinent",
+      "Latin America",
+      "Africa",
+      "Oceania",
+      "regional_feeder"
+    ],
+    "service_capability_tags": [
+      "dry_container",
+      "reefer",
+      "dangerous_goods_requires_acceptance",
+      "special_cargo_requires_approval",
+      "service_maps_available"
+    ],
+    "verified_public_claims": [
+      "service maps expose global routes and lanes, sailing schedules, terminals, port calls and port-to-port details"
+    ],
+    "source_refs": [
+      "one_service_maps"
+    ],
+    "_source": "ONE official service maps and point-to-point schedule pages",
+    "_confidence": "verified_for_public_service_maps; authored_for_lane_family_inference",
+    "confidence_cap_if_missing": "cap_60_if_no_live_schedule_for_origin_destination_pair"
+  },
+  {
+    "carrier_code": "EVERGREEN",
+    "carrier_name": "Evergreen Line",
+    "carrier_type": "global_container_line",
+    "headquarters_region": "Asia",
+    "public_network_reference": true,
+    "public_schedule_lookup": true,
+    "public_booking_or_quote_portal": true,
+    "main_trade_lane_families": [
+      "Asia-Europe",
+      "Trans-Pacific",
+      "Trans-Atlantic",
+      "Intra-Asia",
+      "Middle East/Indian Subcontinent",
+      "Latin America",
+      "Africa",
+      "Oceania",
+      "regional_feeder"
+    ],
+    "service_capability_tags": [
+      "dry_container",
+      "reefer",
+      "dangerous_goods_requires_acceptance",
+      "special_cargo_requires_approval",
+      "schedule_booking_tracking_portal"
+    ],
+    "verified_public_claims": [
+      "official portal supports sailing schedules, booking and cargo tracking; some services require registration"
+    ],
+    "source_refs": [
+      "evergreen_portal"
+    ],
+    "_source": "Evergreen official shipping portal",
+    "_confidence": "verified_for_public_portal; authored_for_lane_family_inference",
+    "confidence_cap_if_missing": "cap_55_if_only_portal_confirmed_without_lane_family_detail"
+  }
+]

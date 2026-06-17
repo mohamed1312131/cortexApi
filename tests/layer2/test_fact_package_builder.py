@@ -45,6 +45,13 @@ def _package_for_lane(origin_country: str, destination_country: str):
     return request, build_fact_package(request, plan, responses)
 
 
+def _block_response(package, block_id: str):
+    for response in package.block_responses:
+        if response.block_id == block_id:
+            return response
+    raise AssertionError(f"Expected block response {block_id}")
+
+
 def test_rollup_includes_road_c_blocking_gate():
     request, package = _package_for_lane("CN", "FR")
 
@@ -125,8 +132,8 @@ def test_rollup_includes_confidence_cap_from_block():
 def test_real_sea_i_blocking_gate_still_runs_sea_cost():
     package = build_fact_package_for_request(_sea_dg_request())
 
-    sea_i = next(response for response in package.block_responses if response.block_id == "SEA-I")
-    sea_cost = next(response for response in package.block_responses if response.block_id == "SEA-COST")
+    sea_i = _block_response(package, "SEA-I")
+    sea_cost = _block_response(package, "SEA-COST")
 
     assert sea_i.status == BlockStatus.found
     assert any(

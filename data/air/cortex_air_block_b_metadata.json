@@ -1,0 +1,26 @@
+{
+  "dataset_name": "Cortex Air Mode - Block B Special Cargo Rules",
+  "version": "r_and_d_v1",
+  "generated_at_utc": "2026-06-03T10:15:18.670099+00:00",
+  "purpose": "Mock/reference dataset for Cortex air-mode R&D agents. Intended to trigger intake questions, hard gates, planning factors, and confidence caps for special cargo.",
+  "legal_note": "R&D/mock reference only. Not a production compliance dataset. Replace or validate with current licensed/API data before real commercial use.",
+  "coverage_summary": {
+    "special_handling_codes_count": 90,
+    "category_rules_count": 10,
+    "confidence_rules_count": 10,
+    "source_refs_count": 9
+  },
+  "main_categories": [
+    "pharma_temperature_controlled",
+    "perishable_general",
+    "live_animals",
+    "heavy_oversized_special_cargo",
+    "valuable_vulnerable_security",
+    "human_organs_blood_urgent_medical",
+    "human_remains",
+    "wet_leakage_obnoxious",
+    "diagnostic_infectious_medical_samples",
+    "active_uld_temperature_system"
+  ],
+  "integration_note": "Use Block B after Block A. If is_dg_code=true or category implies dangerous goods, cross-check the Block A DG dataset before final recommendation."
+}

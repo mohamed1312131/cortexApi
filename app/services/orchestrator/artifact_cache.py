@@ -166,8 +166,8 @@ class OrchestratorArtifactCache:
                 exc,
             )
 
+    @staticmethod
     def _artifact_key(
-        self,
         case_id: str,
         shipment_request_version: int | None,
         artifact: str,

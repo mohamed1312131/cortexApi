@@ -19,9 +19,13 @@ build/
 dist/
 *.egg-info/
 
-# Data blocks
-data/*
-!data/.gitkeep
+# Claude Code / AI tooling (not part of the product)
+.claude/
+skills-lock.json
+
+# Scratch / run artifacts
+tmp/
+*.log
 
 # OS/editor
 .DS_Store

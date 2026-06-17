@@ -81,18 +81,21 @@ def _oversized_road_request() -> ValidatedShipmentRequest:
     )
 
 
+def _block_response(package, block_id: str):
+    for response in package.block_responses:
+        if response.block_id == block_id:
+            return response
+    raise AssertionError(f"Expected block response {block_id}")
+
+
 def test_layer2_service_road_runs_road_f_even_after_road_b_blocking_gate():
     package = build_fact_package_for_request(_oversized_road_request())
     blocks = [response.block_id for response in package.block_responses]
 
     assert blocks == ["ROAD-C", "ROAD-A", "ROAD-B", "ROAD-F", "ROAD-COST"]
     assert blocks.index("ROAD-C") < blocks.index("ROAD-F")
-    road_b = next(
-        response for response in package.block_responses if response.block_id == "ROAD-B"
-    )
-    road_f = next(
-        response for response in package.block_responses if response.block_id == "ROAD-F"
-    )
+    road_b = _block_response(package, "ROAD-B")
+    road_f = _block_response(package, "ROAD-F")
     assert road_b.hard_gates
     # cascade-skip removed: ROAD-F still runs to surface documents/driver-hours/timing
     assert road_f.status != BlockStatus.skipped

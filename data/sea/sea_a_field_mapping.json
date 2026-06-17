@@ -1,0 +1,49 @@
+{
+  "field_mapping": [
+    {
+      "source_column": "(1) Symbols",
+      "target_field": "symbols",
+      "notes": "Modal or regulatory symbol flags such as A, D, G, I, W where present."
+    },
+    {
+      "source_column": "(2) Hazardous materials description and proper shipping names",
+      "target_field": "proper_shipping_name",
+      "notes": "Validated not to start with digit; continuation rows inherit prior name."
+    },
+    {
+      "source_column": "(3) Hazard class or Division",
+      "target_field": "hazard_class_or_division",
+      "notes": "Also may contain Forbidden for named non-accepted entries."
+    },
+    {
+      "source_column": "(4) ID Numbers",
+      "target_field": "identification_number",
+      "notes": "UN/NA/ID number; main key for SEA-A records."
+    },
+    {
+      "source_column": "(5) PG",
+      "target_field": "packing_group",
+      "notes": "Packing group I/II/III where applicable."
+    },
+    {
+      "source_column": "(6) Label Codes",
+      "target_field": "label_codes",
+      "notes": "Hazard label codes."
+    },
+    {
+      "source_column": "(7) Special provisions",
+      "target_field": "special_provisions",
+      "notes": "49 CFR 172.102 provision references."
+    },
+    {
+      "source_column": "(10A) Location",
+      "target_field": "vessel_stowage_category",
+      "notes": "Category A-E or 01-05; mapped to stowage_location."
+    },
+    {
+      "source_column": "(10B) Other",
+      "target_field": "vessel_stowage_provision_codes",
+      "notes": "Codes requiring lookup in 49 CFR 176.84; not fully decoded in this block."
+    }
+  ]
+}

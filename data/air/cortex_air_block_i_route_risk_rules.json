@@ -1,0 +1,82 @@
+[
+  {
+    "risk_code": "ROUTE_SPECIAL_TRANSIT_UNKNOWN",
+    "condition": "special cargo and transit airport capability unknown",
+    "risk_level": "high",
+    "applies_to": "DG,PIL,ACT,PER,FRO,AVI,VAL,HEA,BIG,HUM",
+    "confidence_impact": "cap_60",
+    "recommended_action": "Check Block C transit capability or choose direct route."
+  },
+  {
+    "risk_code": "ROUTE_TIME_CRITICAL_MULTIPLE_TRANSITS",
+    "condition": "LHO/SHL/QRT cargo with more than one transit",
+    "risk_level": "critical",
+    "applies_to": "LHO,SHL,QRT",
+    "confidence_impact": "cap_45",
+    "recommended_action": "Prefer direct route or one secure short transit with confirmed handover."
+  },
+  {
+    "risk_code": "ROUTE_COLD_CHAIN_BREAK",
+    "condition": "temperature cargo with unknown transit cold storage or container runtime",
+    "risk_level": "high",
+    "applies_to": "PIL,CRT,COL,ACT,FRO,LHO",
+    "confidence_impact": "cap_55",
+    "recommended_action": "Confirm cold storage at every transit and active/passive container runtime."
+  },
+  {
+    "risk_code": "ROUTE_CAO_NO_FREIGHTER",
+    "condition": "CAO cargo but no confirmed freighter/all-cargo leg",
+    "risk_level": "critical",
+    "applies_to": "CAO,cargo_aircraft_only_DG",
+    "confidence_impact": "hard_block",
+    "recommended_action": "Use confirmed freighter path only."
+  },
+  {
+    "risk_code": "ROUTE_SCO_PASSENGER_BELLY",
+    "condition": "SCO security cargo routed on passenger aircraft",
+    "risk_level": "critical",
+    "applies_to": "SCO",
+    "confidence_impact": "hard_block",
+    "recommended_action": "Use all-cargo aircraft or resolve security status."
+  },
+  {
+    "risk_code": "ROUTE_PASSENGER_SECURITY_NOT_SPX",
+    "condition": "passenger aircraft selected but cargo security not SPX/equivalent",
+    "risk_level": "critical",
+    "applies_to": "all passenger belly cargo",
+    "confidence_impact": "hard_block",
+    "recommended_action": "Screen/secure cargo or switch to eligible route."
+  },
+  {
+    "risk_code": "ROUTE_PLACI_INCOMPLETE",
+    "condition": "PLACI-regulated lane but advance cargo data incomplete",
+    "risk_level": "high",
+    "applies_to": "US,EU,UK,UAE,CANADA lanes",
+    "confidence_impact": "cap_60",
+    "recommended_action": "Complete shipper, consignee, description, pieces, weight, AWB/HAWB and route data."
+  },
+  {
+    "risk_code": "ROUTE_FIT_UNKNOWN_PER_LEG",
+    "condition": "large cargo and aircraft type/ULD unknown on one or more legs",
+    "risk_level": "high",
+    "applies_to": "HEA,BIG,OHG,BUP,ACT",
+    "confidence_impact": "cap_55",
+    "recommended_action": "Run Block E aircraft/ULD fit for every leg."
+  },
+  {
+    "risk_code": "ROUTE_CAPACITY_UNKNOWN",
+    "condition": "route exists but booking/capacity status unknown",
+    "risk_level": "medium_high",
+    "applies_to": "all",
+    "confidence_impact": "cap_75",
+    "recommended_action": "Mark route as plausible only; require carrier/forwarder capacity confirmation."
+  },
+  {
+    "risk_code": "ROUTE_TRACKING_EXCEPTION",
+    "condition": "tracking event OFLD/DIS/MSCA/OVCD received",
+    "risk_level": "critical",
+    "applies_to": "all active shipments",
+    "confidence_impact": "active_exception",
+    "recommended_action": "Escalate to carrier/handler and recalculate ETA/routing."
+  }
+]

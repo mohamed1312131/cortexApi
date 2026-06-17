@@ -1,0 +1,44 @@
+[
+  {
+    "cortex_field": "carrier_code",
+    "source_field": "carrier public identity",
+    "source_type": "carrier official page",
+    "confidence": "verified"
+  },
+  {
+    "cortex_field": "carrier_name",
+    "source_field": "carrier public identity",
+    "source_type": "carrier official page",
+    "confidence": "verified"
+  },
+  {
+    "cortex_field": "public_schedule_lookup",
+    "source_field": "public schedule/service map pages",
+    "source_type": "carrier official page",
+    "confidence": "verified"
+  },
+  {
+    "cortex_field": "main_trade_lane_families",
+    "source_field": "public route/service categories + authored lane families",
+    "source_type": "carrier official pages + authored",
+    "confidence": "verified_or_authored"
+  },
+  {
+    "cortex_field": "service_capability_tags",
+    "source_field": "carrier cargo/service category pages",
+    "source_type": "carrier official pages + authored",
+    "confidence": "verified_or_authored"
+  },
+  {
+    "cortex_field": "hard_gate_logic",
+    "source_field": "Cortex authored readiness rules",
+    "source_type": "authored",
+    "confidence": "authored"
+  },
+  {
+    "cortex_field": "schedule_lookup_required",
+    "source_field": "all carrier pages expose schedule tools but exact date/port pair is live",
+    "source_type": "authored from verified schedule tools",
+    "confidence": "authored"
+  }
+]

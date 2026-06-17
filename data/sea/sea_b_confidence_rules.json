@@ -1,0 +1,44 @@
+[
+  {
+    "rule_id": "CONF_B_EXACT_CONTAINER_SERIAL_UNKNOWN",
+    "applies_when": "booking is not tied to a specific container number/CSC plate",
+    "confidence_cap": 90,
+    "reason": "carrier specs are reference values; actual unit can vary"
+  },
+  {
+    "rule_id": "CONF_B_SINGLE_SOURCE_SPEC",
+    "applies_when": "equipment spec is verified by one carrier only",
+    "confidence_cap": 85,
+    "reason": "carrier-specific value, not universal"
+  },
+  {
+    "rule_id": "CONF_B_OOG_NO_APPROVAL",
+    "applies_when": "open-top/flat-rack/breakbulk cargo lacks carrier OOG approval",
+    "confidence_cap": 60,
+    "reason": "special cargo fit requires carrier engineering/commercial acceptance"
+  },
+  {
+    "rule_id": "CONF_B_REEFER_NO_PORT_PLUG_CHECK",
+    "applies_when": "reefer cargo without terminal reefer plug/handling validation",
+    "confidence_cap": 70,
+    "reason": "reefer equipment alone does not guarantee port readiness"
+  },
+  {
+    "rule_id": "CONF_B_TANK_NO_COMPATIBILITY",
+    "applies_when": "tank cargo without commodity compatibility/cleaning/DG validation",
+    "confidence_cap": 65,
+    "reason": "ISO tank suitability depends on commodity and approvals"
+  },
+  {
+    "rule_id": "CONF_B_AUTHORED_MAPPING",
+    "applies_when": "cargo_type_to_equipment mapping is used without lane/carrier validation",
+    "confidence_cap": 85,
+    "reason": "mapping is deterministic but authored"
+  },
+  {
+    "rule_id": "CONF_B_LCL_FCL_HEURISTIC",
+    "applies_when": "LCL/FCL recommendation is based only on CBM threshold",
+    "confidence_cap": 80,
+    "reason": "actual choice depends on lane, rates, handling risk, value and urgency"
+  }
+]

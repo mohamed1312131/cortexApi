@@ -1,0 +1,18 @@
+{
+  "dataset_name": "Cortex Air Mode - Block C Airport Capability",
+  "version": "r_and_d_v1_first_pass",
+  "generated_at_utc": "2026-06-03T10:29:19.295301+00:00",
+  "purpose": "Mock/reference airport capability matrix for Cortex air-mode R&D readiness checks.",
+  "legal_note": "R&D/mock reference only. Values are first-pass capability flags from public web sources; replace/validate with paid APIs, airport/handler contracts, or live station data before production use.",
+  "coverage": {
+    "airport_rows": 9,
+    "confidence_rules": 6
+  },
+  "recommended_next_research": [
+    "JFK handler-specific capability search",
+    "TUN local/OACA/Tunisair Handling special-cargo capability documents",
+    "DOH detailed station/handler capability",
+    "DXB dnata/Emirates SkyCargo special cargo pages",
+    "aircraft fit / ULD and door dimensions dataset"
+  ]
+}

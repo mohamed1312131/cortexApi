@@ -1,0 +1,49 @@
+{
+  "block_id": "SEA-D",
+  "block_name": "Carrier / trade-lane reference",
+  "generated_at": "2026-06-03T14:15:40.743819+00:00",
+  "status": "final_pfe_reference_layer",
+  "scope": "Public carrier network inference only. Not a live schedule, rate, capacity, or booking dataset.",
+  "sources": {
+    "maersk_ocean_transport": "Maersk Global Ocean Transport Services, public carrier page; states ocean freight to 500+ global destinations and provides cargo solutions.",
+    "maersk_schedules": "Maersk public schedules page; route/vessel/port-call schedule lookup concept.",
+    "msc_trade_services": "MSC Trade Services official page; states 300 global routes, 520 ports, 155+ countries, 675 offices.",
+    "cma_cgm_line_services": "CMA CGM Shipping Lines Search; line services by trade/zones and schedules.",
+    "cma_cgm_schedules": "CMA CGM schedules search; point-to-point schedule lookup up to listed period.",
+    "hapag_lloyd_schedule": "Hapag-Lloyd Vessel Schedule; detailed route and real-time schedule data concept.",
+    "hapag_lloyd_services": "Hapag-Lloyd services information; reefer, special cargo and dangerous goods service categories.",
+    "cosco_schedule": "COSCO Shipping Lines official schedule pages; service categories such as Trans-Pacific, Europe, Europe Feeder, Trans-Atlantic, Intra-Asia, Oceania, Asia/South Africa/South America.",
+    "one_service_maps": "ONE official service maps; global routes/lanes, sailing/vessel schedules, terminals, port calls and port-to-port details.",
+    "evergreen_portal": "Evergreen Shipping Agency portal; sailing schedules, booking and cargo tracking portal; registration required for some services."
+  },
+  "coverage_summary": {
+    "carrier_profiles": 7,
+    "trade_lane_families": 10,
+    "readiness_rules": 7,
+    "confidence_rules": 7,
+    "carriers": [
+      "Maersk",
+      "MSC",
+      "CMA CGM",
+      "Hapag-Lloyd",
+      "COSCO Shipping Lines",
+      "ONE",
+      "Evergreen Line"
+    ]
+  },
+  "known_limitations": [
+    "SEA-D does not include live schedules, space, capacity or rates.",
+    "Exact port-pair service requires live carrier schedule lookup.",
+    "DG, reefer, OOG and project cargo require carrier-specific acceptance/approval.",
+    "Carrier public sites can change; schedule data is time-sensitive.",
+    "Broad trade-lane families are inference/reference, not contractual service commitments."
+  ],
+  "v2_paid_or_live_data_needed": [
+    "carrier schedule APIs",
+    "booking/space availability",
+    "spot/contract rates",
+    "carrier DG acceptance feeds",
+    "special cargo approval workflow",
+    "TMS/forwarder network data"
+  ]
+}

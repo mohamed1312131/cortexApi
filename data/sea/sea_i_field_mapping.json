@@ -1,0 +1,50 @@
+[
+  {
+    "cortex_field": "record_id",
+    "source_field": "authored stable key",
+    "source": "authored",
+    "_confidence": "authored"
+  },
+  {
+    "cortex_field": "name",
+    "source_field": "chokepoint/cutoff/free-time concept name",
+    "source": "UNCTAD / authorities / carriers / authored",
+    "_confidence": "verified_or_authored"
+  },
+  {
+    "cortex_field": "risk_types",
+    "source_field": "source-described risk + authored categorization",
+    "source": "UNCTAD / canal authorities / authored",
+    "_confidence": "verified_or_authored"
+  },
+  {
+    "cortex_field": "hard_gate",
+    "source_field": "authored readiness decision",
+    "source": "Cortex rule design",
+    "_confidence": "authored"
+  },
+  {
+    "cortex_field": "hard_gate_condition",
+    "source_field": "authored from operational cutoff/canal validation logic",
+    "source": "Cortex rule design",
+    "_confidence": "authored"
+  },
+  {
+    "cortex_field": "requires_live_validation",
+    "source_field": "derived from volatility of source data",
+    "source": "Cortex rule design",
+    "_confidence": "authored"
+  },
+  {
+    "cortex_field": "confidence_cap_if_missing",
+    "source_field": "authored confidence policy",
+    "source": "Cortex confidence rules",
+    "_confidence": "authored"
+  },
+  {
+    "cortex_field": "_source",
+    "source_field": "source ids",
+    "source": "metadata sources",
+    "_confidence": "verified"
+  }
+]

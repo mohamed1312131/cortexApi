@@ -1,0 +1,44 @@
+[
+  {
+    "rule_id": "CONF_SEA_D_CARRIER_PROFILE",
+    "condition": "carrier presence and public service/schedule page exists",
+    "max_confidence": "verified",
+    "action": "carrier can be considered a candidate carrier family, not a confirmed booking option"
+  },
+  {
+    "rule_id": "CONF_SEA_D_NO_LIVE_SCHEDULE",
+    "condition": "no live schedule checked for exact origin/destination/date",
+    "confidence_cap_if_missing": 60,
+    "action": "do not state exact service availability"
+  },
+  {
+    "rule_id": "CONF_SEA_D_NO_CAPACITY",
+    "condition": "no live capacity/space data",
+    "confidence_cap_if_missing": 55,
+    "action": "do not state booking space is available"
+  },
+  {
+    "rule_id": "CONF_SEA_D_NO_RATE",
+    "condition": "no live rate/quote",
+    "confidence_cap_if_missing": 50,
+    "action": "do not quote cost from SEA-D"
+  },
+  {
+    "rule_id": "CONF_SEA_D_DG_ACCEPTANCE_UNKNOWN",
+    "condition": "DG cargo without carrier approval",
+    "confidence_cap_if_missing": 45,
+    "action": "hard gate until carrier accepts UN/class/packing details"
+  },
+  {
+    "rule_id": "CONF_SEA_D_SPECIAL_CARGO_UNKNOWN",
+    "condition": "OOG/project/special cargo without carrier approval",
+    "confidence_cap_if_missing": 45,
+    "action": "hard gate until special cargo desk approves"
+  },
+  {
+    "rule_id": "CONF_SEA_D_FEEDER_INFERENCE",
+    "condition": "small port route inferred to need feeder/transshipment without schedule confirmation",
+    "confidence_cap_if_missing": 55,
+    "action": "mark as planning risk, not confirmed route"
+  }
+]

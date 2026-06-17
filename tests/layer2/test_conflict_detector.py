@@ -56,6 +56,13 @@ def _blocking_gate(block_id: str, mode: RequestedMode) -> HardGate:
     )
 
 
+def _block_response(package, block_id: str):
+    for response in package.block_responses:
+        if response.block_id == block_id:
+            return response
+    raise AssertionError(f"Expected block response {block_id}")
+
+
 def test_no_conflicts_for_normal_road_it_fr():
     package = build_fact_package_for_request(_road_request("IT", "FR"))
 
@@ -71,9 +78,7 @@ def test_road_blocks_run_even_after_cn_fr_road_c_block():
     # deeper road blocks, so the worker still gets a complete report.
     package = build_fact_package_for_request(_road_request("CN", "FR"))
 
-    road_c = next(
-        response for response in package.block_responses if response.block_id == "ROAD-C"
-    )
+    road_c = _block_response(package, "ROAD-C")
     assert any(
         gate.severity == GateSeverity.blocking
         and gate.status == GateStatus.triggered

@@ -1,0 +1,58 @@
+[
+  {
+    "rule_id": "H_CONF_001",
+    "condition": "security_status_unknown",
+    "applies_to": "all_air_cargo",
+    "cap_percent": 55,
+    "message": "Cargo security status must be known before declaring shipment ready to fly."
+  },
+  {
+    "rule_id": "H_CONF_002",
+    "condition": "passenger_aircraft_selected_and_status_not_SPX_or_equivalent",
+    "applies_to": "passenger_belly_or_passenger_aircraft",
+    "cap_percent": 45,
+    "message": "Passenger aircraft cargo requires passenger-eligible screened/secured status."
+  },
+  {
+    "rule_id": "H_CONF_003",
+    "condition": "security_code_NSC",
+    "applies_to": "NSC",
+    "cap_percent": 45,
+    "message": "Not secured cargo is not ready for uplift until screening/security process is completed."
+  },
+  {
+    "rule_id": "H_CONF_004",
+    "condition": "EU_bound_from_non_EU_without_ACC3_or_secure_supply_chain_check",
+    "applies_to": "EU inbound cargo from third-country airport",
+    "cap_percent": 50,
+    "message": "EU-bound third-country cargo requires ACC3/secure supply-chain/screening validation."
+  },
+  {
+    "rule_id": "H_CONF_005",
+    "condition": "PLACI_jurisdiction_and_advance_data_incomplete",
+    "applies_to": "US,EU,UK,UAE,CANADA PLACI lanes",
+    "cap_percent": 60,
+    "message": "Advance cargo information must be complete for PLACI-regulated lanes."
+  },
+  {
+    "rule_id": "H_CONF_006",
+    "condition": "secured_status_claimed_without_CSD_or_equivalent_audit_trail",
+    "applies_to": "SPX,SCO,SHR,secure_supply_chain",
+    "cap_percent": 65,
+    "message": "Secured cargo should have CSD/equivalent audit trail showing who secured it, when and how."
+  },
+  {
+    "rule_id": "H_CONF_007",
+    "condition": "VAL_or_VUN_without_secure_storage_chain_of_custody",
+    "applies_to": "VAL,VUN",
+    "cap_percent": 65,
+    "message": "Valuable/vulnerable cargo needs secure storage and chain-of-custody confirmation."
+  },
+  {
+    "rule_id": "H_CONF_008",
+    "condition": "no_station_or_carrier_security_confirmation_for_special_cargo",
+    "applies_to": "all_special_security_codes",
+    "cap_percent": 75,
+    "message": "Security matrix is advisory; station/carrier security confirmation is required for special cargo."
+  }
+]
