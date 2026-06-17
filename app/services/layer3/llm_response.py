@@ -1,11 +1,18 @@
 from __future__ import annotations
 
+import re
+
 
 _THOUGHT_TYPES = {"thinking", "reasoning"}
+_THINK_TAG_RE = re.compile(r"<think>.*?</think>", re.IGNORECASE | re.DOTALL)
+
+
+def strip_thinking_tags(text: str) -> str:
+    return _THINK_TAG_RE.sub("", text).strip()
 
 
 def strip_code_fences(text: str) -> str:
-    cleaned = text.strip()
+    cleaned = strip_thinking_tags(text)
     if cleaned.startswith("```"):
         cleaned = cleaned.split("\n", 1)[1] if "\n" in cleaned else cleaned
         if cleaned.endswith("```"):
@@ -16,10 +23,10 @@ def strip_code_fences(text: str) -> str:
 def extract_model_text(raw: object) -> str:
     text = getattr(raw, "text", None)
     if isinstance(text, str) and text.strip():
-        return text.strip()
+        return strip_thinking_tags(text)
 
     content = getattr(raw, "content", raw)
-    return extract_text_content(content)
+    return strip_thinking_tags(extract_text_content(content))
 
 
 def extract_text_content(content: object) -> str:

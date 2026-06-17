@@ -25,4 +25,8 @@ class CortexFullState(TypedDict, total=False):
     layer4: Layer4Result
 
     result: CortexFullOrchestratorResult
+    # Set by a layer node when it fails; the matching error route reads it and
+    # ends the graph. Safe today because every error edge goes straight to END.
+    # If retry/loop edges are ever added, clear this between attempts so a stale
+    # error from an earlier pass doesn't leak into a later route decision.
     error: str

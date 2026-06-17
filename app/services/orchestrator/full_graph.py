@@ -317,7 +317,7 @@ class CortexFullGraph:
         layer3 = state["layer3"]
         result = CortexFullOrchestratorResult(
             conversation_id=layer1.conversation_id,
-            case_id=layer3.case_id,
+            case_id=layer1.case_id,
             assistant_message=(
                 "Cortex completed fact building and reasoning, but the final report "
                 "agent failed before it could produce the user-facing transport "
@@ -349,7 +349,7 @@ class CortexFullGraph:
         layer4 = state["layer4"]
         result = CortexFullOrchestratorResult(
             conversation_id=layer1.conversation_id,
-            case_id=layer4.case_id,
+            case_id=layer1.case_id,
             assistant_message=layer4.assistant_message,
             layer1=layer1,
             layer2=state["layer2"],
@@ -493,6 +493,20 @@ def _cache_read_debug(cache_read) -> dict:
     return out
 
 
+_GRAPH: CortexFullGraph | None = None
+
+
+def _get_graph() -> CortexFullGraph:
+    # Lazy module-level singleton: the compiled graph and its Redis client are
+    # stateless across requests, so we build them once instead of recompiling
+    # the graph and opening a new connection pool on every /full-message call.
+    # Lazy (not import-time) so importing this module never opens a connection.
+    global _GRAPH
+    if _GRAPH is None:
+        _GRAPH = CortexFullGraph()
+    return _GRAPH
+
+
 def handle_full_cortex_message(
     *,
     message: str,
@@ -502,8 +516,7 @@ def handle_full_cortex_message(
     company_id: str | None = None,
     trace_id: str | None = None,
 ) -> CortexFullOrchestratorResult:
-    graph = CortexFullGraph()
-    return graph.run(
+    return _get_graph().run(
         message=message,
         conversation_id=conversation_id,
         case_id=case_id,

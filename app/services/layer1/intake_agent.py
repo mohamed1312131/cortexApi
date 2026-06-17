@@ -22,6 +22,7 @@ from app.schemas import (
     IntakeIntent,
     ValidatedShipmentRequest,
 )
+from app.services.layer3.llm_response import strip_thinking_tags
 
 
 class IntakeAgentError(RuntimeError):
@@ -45,7 +46,7 @@ class AgentTurn(BaseModel):
 # --------------------------------------------------------------------------- #
 def extract_text_content(content: object) -> str:
     if isinstance(content, str):
-        return content
+        return strip_thinking_tags(content)
     if isinstance(content, list):
         parts: list[str] = []
         for part in content:
@@ -56,20 +57,20 @@ def extract_text_content(content: object) -> str:
                     continue
                 if part.get("type") in {"text", "output_text"} and isinstance(part.get("text"), str):
                     parts.append(part["text"])
-        return "\n".join(parts).strip()
-    return str(content).strip()
+        return strip_thinking_tags("\n".join(parts))
+    return strip_thinking_tags(str(content))
 
 
 def extract_model_text(raw: object) -> str:
     text = getattr(raw, "text", None)
     if isinstance(text, str) and text.strip():
-        return text.strip()
+        return strip_thinking_tags(text)
     content = getattr(raw, "content", raw)
     return extract_text_content(content)
 
 
 def _strip_code_fences(text: str) -> str:
-    t = text.strip()
+    t = strip_thinking_tags(text)
     if t.startswith("```"):
         t = t.split("\n", 1)[1] if "\n" in t else t
         if t.endswith("```"):
@@ -95,7 +96,7 @@ step (Layer 2), and write the reply to the user.
 </security>
 
 <turn_output>
-Return ONE JSON object, nothing else (no markdown, no commentary):
+Return ONE JSON object, nothing else (no markdown, no commentary, no <think> block):
 
 {
   "case_action": one of "create_new_case" | "update_existing_case" | "answer_intake_question" | "clarify_missing_field" | "ask_detail_about_existing_report" | "compare_mode_request" | "change_mode" | "filter_existing_report" | "start_new_case" | "unknown",

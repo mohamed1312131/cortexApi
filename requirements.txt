@@ -3,6 +3,7 @@ uvicorn[standard]==0.32.1
 langgraph==0.2.60
 langchain==0.3.13
 langchain-openai==0.2.14
+langchain-ollama>=0.2.2,<0.3.0
 langsmith==0.2.3
 SQLAlchemy==2.0.36
 asyncpg==0.30.0

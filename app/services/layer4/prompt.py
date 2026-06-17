@@ -133,7 +133,8 @@ Use these sections when relevant:
 __INPUT_PACKET_JSON__
 </input_packet>
 
-Return only the final assistant message.
+Return only the final assistant message. Do not include markdown code fences,
+debug notes, or <think> reasoning blocks.
 """
 
 

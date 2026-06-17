@@ -22,6 +22,9 @@ class Settings(BaseSettings):
     orchestrator_cache_enabled: bool = True
     orchestrator_cache_ttl_seconds: int = 60 * 60 * 24 * 7
     llm_provider: str = "none"
+    llm_intake_provider: str = ""
+    llm_layer3_provider: str = ""
+    llm_layer4_provider: str = ""
     llm_model: str = "gpt-4o-mini"
     llm_api_key: str = ""
     google_ai_api_key: str = ""
@@ -39,6 +42,12 @@ class Settings(BaseSettings):
     google_ai_intake_thinking_budget: int = -2
     google_ai_layer3_thinking_budget: int = -2
     google_ai_layer4_thinking_budget: int = -2
+    ollama_base_url: str = "http://localhost:11434"
+    ollama_model: str = "qwen3:8b"
+    ollama_intake_model: str = ""
+    ollama_layer3_model: str = ""
+    ollama_layer4_model: str = ""
+    ollama_temperature: float = 0.0
     langsmith_tracing: bool = False
     langsmith_api_key: str = ""
     langsmith_project: str = "cortex-api"
@@ -66,7 +75,7 @@ def iter_model_config_debug_values(
     values: list[tuple[str, object]] = []
     for name in type(selected).model_fields:
         lower = name.lower()
-        if not any(token in lower for token in ("model", "google", "gemini", "llm")):
+        if not any(token in lower for token in ("model", "google", "gemini", "llm", "ollama")):
             continue
         try:
             value = getattr(selected, name)

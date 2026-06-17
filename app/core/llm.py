@@ -7,6 +7,21 @@ def _configured(value: str) -> str:
     return value.strip()
 
 
+def get_layer_provider(
+    *,
+    intake: bool = False,
+    layer3: bool = False,
+    layer4: bool = False,
+) -> str:
+    if intake and _configured(settings.llm_intake_provider):
+        return _configured(settings.llm_intake_provider).lower()
+    if layer3 and _configured(settings.llm_layer3_provider):
+        return _configured(settings.llm_layer3_provider).lower()
+    if layer4 and _configured(settings.llm_layer4_provider):
+        return _configured(settings.llm_layer4_provider).lower()
+    return _configured(settings.llm_provider).lower()
+
+
 def get_google_model_name(
     *,
     intake: bool = False,
@@ -26,7 +41,22 @@ def get_google_model_name(
     return _configured(settings.google_ai_model)
 
 
-def get_google_max_tokens(
+def get_ollama_model_name(
+    *,
+    intake: bool = False,
+    layer3: bool = False,
+    layer4: bool = False,
+) -> str:
+    if intake:
+        return _configured(settings.ollama_intake_model) or _configured(settings.ollama_model)
+    if layer3:
+        return _configured(settings.ollama_layer3_model) or _configured(settings.ollama_model)
+    if layer4:
+        return _configured(settings.ollama_layer4_model) or _configured(settings.ollama_model)
+    return _configured(settings.ollama_model)
+
+
+def get_layer_max_tokens(
     *,
     intake: bool = False,
     layer3: bool = False,
@@ -70,7 +100,7 @@ def get_chat_model(
     layer3=True selects the Layer 3 model when configured.
     layer4=True selects the Layer 4 report model when configured.
     """
-    provider = settings.llm_provider.strip().lower()
+    provider = get_layer_provider(intake=intake, layer3=layer3, layer4=layer4)
 
     if provider in {"", "none", "disabled"}:
         return None
@@ -96,7 +126,7 @@ def get_chat_model(
         kwargs = {
             "model": model_name,
             "api_key": settings.google_ai_api_key,
-            "max_tokens": get_google_max_tokens(
+            "max_tokens": get_layer_max_tokens(
                 intake=intake,
                 layer3=layer3,
                 layer4=layer4,
@@ -119,4 +149,28 @@ def get_chat_model(
             kwargs.pop("thinking_budget")
             return ChatGoogleGenerativeAI(**kwargs)
 
-    raise ValueError(f"Unsupported LLM_PROVIDER: {settings.llm_provider}")
+    if provider in {"ollama", "local"}:
+        try:
+            from langchain_ollama import ChatOllama
+        except ImportError as exc:
+            raise RuntimeError(
+                "langchain-ollama is required when using provider=ollama. "
+                "Install dependencies or rebuild the api image."
+            ) from exc
+
+        model_name = get_ollama_model_name(intake=intake, layer3=layer3, layer4=layer4)
+        if not model_name:
+            raise RuntimeError("OLLAMA_MODEL is required when using provider=ollama.")
+
+        kwargs = {
+            "model": model_name,
+            "base_url": settings.ollama_base_url,
+            "temperature": settings.ollama_temperature,
+            "timeout": 60,
+        }
+        max_tokens = get_layer_max_tokens(intake=intake, layer3=layer3, layer4=layer4)
+        if max_tokens is not None:
+            kwargs["num_predict"] = max_tokens
+        return ChatOllama(**kwargs)
+
+    raise ValueError(f"Unsupported LLM_PROVIDER: {provider}")
