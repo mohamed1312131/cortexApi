@@ -310,7 +310,11 @@ def _schedule_input_unknowns(
     request: ValidatedShipmentRequest,
     dataset: dict[str, Any],
 ) -> list[Unknown]:
-    unknowns: list[Unknown] = []
+    # Live air schedule/booking fields (transit airports, flight numbers, times,
+    # capacity, PLACI status, ...) are ONE concept: live carrier data the user
+    # can't supply at intake. Roll the whole set into a single unknown instead of
+    # emitting ~18 separate "critical unknowns" that flood the readiness report.
+    missing_fields: list[str] = []
     seen_fields: set[str] = set()
     for item in _record_list(dataset, "schedule_input_requirements"):
         if not _is_required(item):
@@ -320,14 +324,22 @@ def _schedule_input_unknowns(
         if not field_name or field in seen_fields or _request_has_field(request, field):
             continue
         seen_fields.add(field)
-        unknowns.append(
-            Unknown(
-                field=field,
-                reason=str(item.get("reason") or item.get("why_needed") or "schedule input missing"),
-                impact=str(item.get("impact") or item.get("missing_impact") or "Air schedule readiness cannot be fully checked."),
-            )
+        missing_fields.append(field)
+    if not missing_fields:
+        return []
+    return [
+        Unknown(
+            field="schedule.live_schedule_data",
+            reason=(
+                "Live air schedule/booking data not yet available: "
+                + ", ".join(missing_fields)
+            ),
+            impact=(
+                "Air schedule readiness cannot be fully checked until the "
+                "forwarder/airline provides live schedule and booking details."
+            ),
         )
-    return unknowns
+    ]
 
 
 def _is_required(item: dict[str, Any]) -> bool:
@@ -371,14 +383,18 @@ def _hard_gate_results(
                     basis=rule_id,
                 )
             )
-        elif hard_gate is False:
+        elif hard_gate is False or hard_gate is None:
+            # Absent hard_gate = planning/route rule, not a gate. These rules
+            # express themselves via risk_if_missing/required_data, not a gate
+            # boolean, so a missing one is expected — do NOT emit a noise unknown.
             continue
         else:
             unknowns.append(
                 Unknown(
                     field="air_i.hard_gate",
                     reason=(
-                        f"AIR-I rule {rule_id} has missing or malformed hard_gate"
+                        f"AIR-I rule {rule_id} has malformed hard_gate "
+                        f"(expected true/false, got {hard_gate!r})"
                     ),
                     impact="Route feasibility rule cannot be treated as clear.",
                 )

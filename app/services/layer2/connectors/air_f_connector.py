@@ -322,14 +322,18 @@ def _hard_gate_results(
                     basis=rule_id,
                 )
             )
-        elif hard_gate is False:
+        elif hard_gate is False or hard_gate is None:
+            # Absent hard_gate = planning/border rule, not a gate. These rules
+            # express themselves via required_documents/permits, not a gate
+            # boolean, so a missing one is expected — do NOT emit a noise unknown.
             continue
         else:
             unknowns.append(
                 Unknown(
                     field="air_f.hard_gate",
                     reason=(
-                        f"AIR-F rule {rule_id} has missing or malformed hard_gate"
+                        f"AIR-F rule {rule_id} has malformed hard_gate "
+                        f"(expected true/false, got {hard_gate!r})"
                     ),
                     impact="Border/permit rule cannot be treated as clear.",
                 )

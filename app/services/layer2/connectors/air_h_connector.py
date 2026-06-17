@@ -344,14 +344,18 @@ def _hard_gate_results(
                     basis=rule_id,
                 )
             )
-        elif hard_gate is False:
+        elif hard_gate is False or hard_gate is None:
+            # Absent hard_gate = planning/security rule, not a gate. These rules
+            # express themselves via required_security_action, not a gate
+            # boolean, so a missing one is expected — do NOT emit a noise unknown.
             continue
         else:
             unknowns.append(
                 Unknown(
                     field="air_h.hard_gate",
                     reason=(
-                        f"AIR-H rule {rule_id} has missing or malformed hard_gate"
+                        f"AIR-H rule {rule_id} has malformed hard_gate "
+                        f"(expected true/false, got {hard_gate!r})"
                     ),
                     impact="Security rule cannot be treated as clear.",
                 )
