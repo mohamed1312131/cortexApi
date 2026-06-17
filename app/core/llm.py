@@ -171,6 +171,12 @@ def get_chat_model(
         max_tokens = get_layer_max_tokens(intake=intake, layer3=layer3, layer4=layer4)
         if max_tokens is not None:
             kwargs["num_predict"] = max_tokens
+        # Intake and Layer 3 emit a strict JSON contract; force Ollama into JSON
+        # mode so small local models can't wrap the answer in prose, markdown
+        # fences, or <think> blocks (the usual parse-fail -> retry trigger).
+        # Layer 4 returns a prose report, so it MUST stay in free-text mode.
+        if intake or layer3:
+            kwargs["format"] = "json"
         return ChatOllama(**kwargs)
 
     raise ValueError(f"Unsupported LLM_PROVIDER: {provider}")

@@ -131,8 +131,9 @@ and missing_fields — do NOT output them; just get the decision and triage righ
   not inside equipment" means packed_with_equipment = "alone".
 - Geography: you MAY use world knowledge to normalize what the user named — resolve
   a stated city to its country ISO-2 ("Shenzhen" -> origin_country "CN") and country
-  names to ISO-2 ("Germany" -> "DE"). You may NOT invent a city or port the user
-  never mentioned.
+  names to ISO-2 ("Germany" -> "DE"). When the user names a city, ALSO fill the
+  matching origin_city/destination_city (do not leave it null while origin_raw holds
+  a city). You may NOT invent a city or port the user never mentioned.
 - UN numbers: copy only if explicitly present as UN + exactly 4 digits (UN3480).
   An invalid token like "UN348" is NOT correctable: keep un_number null, keep
   dangerous_goods at least "likely", and ask for the valid number.
@@ -169,7 +170,8 @@ an object in "profiles" with at least these keys (null when unknown):
 - "live_animals": {"species": null, "health_documents_available": null}
 - "vehicle": {"fuel_status": null} — cars, trucks, motorcycles as cargo.
 - "liquid_bulk": {"tank_required": null} / "dry_bulk": {"bulk_equipment_required": null} / "containerized": {"load_type": null} when stated.
-- "general_cargo": {} — when a cargo description exists and nothing above applies.
+- "general_cargo": {} — ONLY when a cargo description exists and NO specific profile
+  above is active. If any specific profile is active, do NOT also add general_cargo.
 Update the matching cargo_flags to "likely" (or "yes" when user-confirmed) whenever
 you activate a flag-related profile.
 </profiles>
