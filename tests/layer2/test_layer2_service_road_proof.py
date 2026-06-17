@@ -53,7 +53,7 @@ def test_layer2_service_milan_paris_road_not_blocked():
     }
 
 
-def test_layer2_service_shenzhen_paris_road_blocked_at_corridor_gate():
+def test_layer2_service_shenzhen_paris_road_runs_all_blocks_at_corridor_gate():
     request = ValidatedShipmentRequest(
         case_id="case-road-cn-fr",
         lane=Lane(
@@ -84,12 +84,10 @@ def test_layer2_service_shenzhen_paris_road_blocked_at_corridor_gate():
     response = package.block_responses[0]
     assert response.block_id == "ROAD-C"
     assert response.status == BlockStatus.found
-    assert [item.status for item in package.block_responses[1:]] == [
-        BlockStatus.skipped,
-        BlockStatus.skipped,
-        BlockStatus.skipped,
-        BlockStatus.skipped,
-    ]
+    # cascade-skip removed: deeper road blocks still run; the gate keeps completeness blocked
+    assert all(
+        item.status != BlockStatus.skipped for item in package.block_responses[1:]
+    )
     assert package.completeness.status == CompletenessStatus.blocked
     blocking_triggered_gates = [
         gate

@@ -108,26 +108,23 @@ def test_build_layer2_trace_for_blocked_cn_fr():
     if road_cost is None:
         assert "ROAD-COST" not in trace["called_blocks"]
     else:
-        assert road_cost.status == BlockStatus.skipped
+        # cascade-skip removed: ROAD-COST runs even for a blocked corridor
+        assert road_cost.status != BlockStatus.skipped
 
 
 def test_trace_includes_conflict_count():
     request = _road_request("CN", "FR")
+    # duplicate block responses still surface as a conflict in the trace
     responses = [
-        _response(
-            "ROAD-C",
-            RequestedMode.road,
-            BlockStatus.found,
-            hard_gates=[_blocking_gate("ROAD-C", RequestedMode.road)],
-        ),
         _response("ROAD-B", RequestedMode.road, BlockStatus.found),
+        _response("ROAD-B", RequestedMode.road, BlockStatus.unknown),
     ]
     package = build_fact_package(request, FetchPlan(case_id=request.case_id), responses)
 
     trace = build_layer2_trace(package)
 
     assert trace["conflict_count"] > 0
-    assert "mode_blocked_but_later_blocks_present" in trace["conflict_types"]
+    assert "duplicate_block_response" in trace["conflict_types"]
 
 
 def test_write_layer2_trace_json(tmp_path):

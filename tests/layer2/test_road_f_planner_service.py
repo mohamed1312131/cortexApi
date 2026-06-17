@@ -81,7 +81,7 @@ def _oversized_road_request() -> ValidatedShipmentRequest:
     )
 
 
-def test_layer2_service_road_skips_road_f_after_road_b_blocking_gate():
+def test_layer2_service_road_runs_road_f_even_after_road_b_blocking_gate():
     package = build_fact_package_for_request(_oversized_road_request())
     blocks = [response.block_id for response in package.block_responses]
 
@@ -94,7 +94,6 @@ def test_layer2_service_road_skips_road_f_after_road_b_blocking_gate():
         response for response in package.block_responses if response.block_id == "ROAD-F"
     )
     assert road_b.hard_gates
-    assert road_f.status == BlockStatus.skipped
-    assert "ROAD-B" in road_f.unknowns[0].reason
-    assert "blocking hard gate" in road_f.unknowns[0].reason
+    # cascade-skip removed: ROAD-F still runs to surface documents/driver-hours/timing
+    assert road_f.status != BlockStatus.skipped
     assert RequestedMode.road in package.derived_rollup.modes_covered

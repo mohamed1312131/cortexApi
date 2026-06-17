@@ -81,7 +81,7 @@ def test_layer2_service_road_runs_road_cost_when_road_c_not_blocked():
     assert RequestedMode.road in package.derived_rollup.modes_covered
 
 
-def test_layer2_service_road_skips_road_cost_when_road_c_blocks():
+def test_layer2_service_road_runs_road_cost_even_when_road_c_blocks():
     package = build_fact_package_for_request(_road_request("CN", "FR"))
 
     road_c = next(
@@ -97,4 +97,5 @@ def test_layer2_service_road_skips_road_cost_when_road_c_blocks():
         for response in package.block_responses
         if response.block_id == "ROAD-COST"
     )
-    assert road_cost.status == BlockStatus.skipped
+    # cascade-skip removed: cost reference still runs for a blocked corridor
+    assert road_cost.status != BlockStatus.skipped

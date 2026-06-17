@@ -19,6 +19,8 @@ class Settings(BaseSettings):
     cortex_redis_fallback_enabled: bool = True
     database_url: str = "postgresql+asyncpg://cortex:cortex@postgres:5432/cortex"
     redis_url: str = "redis://redis:6379/0"
+    orchestrator_cache_enabled: bool = True
+    orchestrator_cache_ttl_seconds: int = 60 * 60 * 24 * 7
     llm_provider: str = "none"
     llm_model: str = "gpt-4o-mini"
     llm_api_key: str = ""
@@ -28,6 +30,15 @@ class Settings(BaseSettings):
     google_ai_layer3_model: str = ""
     google_ai_layer4_model: str = ""
     intake_max_output_tokens: int = 2048
+    layer3_max_output_tokens: int = 4096
+    layer4_max_output_tokens: int = 4096
+    # Gemini 2.5 thinking_budget:
+    # -2 = do not send the parameter, -1 = dynamic, 0 = disabled where supported,
+    # positive integer = budget cap.
+    google_ai_thinking_budget: int = -2
+    google_ai_intake_thinking_budget: int = -2
+    google_ai_layer3_thinking_budget: int = -2
+    google_ai_layer4_thinking_budget: int = -2
     langsmith_tracing: bool = False
     langsmith_api_key: str = ""
     langsmith_project: str = "cortex-api"

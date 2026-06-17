@@ -66,7 +66,9 @@ def test_no_conflicts_for_normal_road_it_fr():
     ]
 
 
-def test_no_later_road_blocks_after_cn_fr_road_c_block():
+def test_road_blocks_run_even_after_cn_fr_road_c_block():
+    # Cascade-skip removed: a blocking corridor gate no longer suppresses the
+    # deeper road blocks, so the worker still gets a complete report.
     package = build_fact_package_for_request(_road_request("CN", "FR"))
 
     road_c = next(
@@ -78,21 +80,27 @@ def test_no_later_road_blocks_after_cn_fr_road_c_block():
         for gate in road_c.hard_gates
     )
 
-    skipped_blocks = {"ROAD-B", "ROAD-F", "ROAD-COST"}
+    present = {response.block_id for response in package.block_responses}
+    assert {"ROAD-B", "ROAD-F", "ROAD-COST"}.issubset(present)
     assert not [
         response
         for response in package.block_responses
-        if response.block_id in skipped_blocks
-        and response.status != BlockStatus.skipped
+        if response.block_id in {"ROAD-B", "ROAD-F", "ROAD-COST"}
+        and response.status == BlockStatus.skipped
     ]
+    # the old skip-enforcing policy conflicts are retired
     assert not [
         conflict
         for conflict in package.conflicts
-        if conflict.type == "mode_blocked_but_later_blocks_present"
+        if conflict.type
+        in {
+            "mode_blocked_but_later_blocks_present",
+            "cost_reference_present_for_blocked_mode",
+        }
     ]
 
 
-def test_conflict_detector_catches_later_block_after_blocking_gate():
+def test_later_block_after_blocking_gate_is_no_longer_a_conflict():
     responses = [
         _response(
             "ROAD-C",
@@ -105,12 +113,13 @@ def test_conflict_detector_catches_later_block_after_blocking_gate():
 
     conflicts = detect_conflicts(responses)
 
-    assert "mode_blocked_but_later_blocks_present" in {
+    # deeper blocks running after a gate is the intended behavior now
+    assert "mode_blocked_but_later_blocks_present" not in {
         conflict.type for conflict in conflicts
     }
 
 
-def test_conflict_detector_catches_cost_for_blocked_mode():
+def test_cost_for_blocked_mode_is_no_longer_a_conflict():
     responses = [
         _response(
             "ROAD-C",
@@ -123,7 +132,7 @@ def test_conflict_detector_catches_cost_for_blocked_mode():
 
     conflicts = detect_conflicts(responses)
 
-    assert "cost_reference_present_for_blocked_mode" in {
+    assert "cost_reference_present_for_blocked_mode" not in {
         conflict.type for conflict in conflicts
     }
 
@@ -141,14 +150,10 @@ def test_conflict_detector_catches_duplicate_block_response():
 
 def test_fact_package_builder_includes_conflicts():
     request = _road_request("CN", "FR")
+    # duplicate block responses still surface as a conflict through the builder
     responses = [
-        _response(
-            "ROAD-C",
-            RequestedMode.road,
-            BlockStatus.found,
-            hard_gates=[_blocking_gate("ROAD-C", RequestedMode.road)],
-        ),
         _response("ROAD-B", RequestedMode.road, BlockStatus.found),
+        _response("ROAD-B", RequestedMode.road, BlockStatus.unknown),
     ]
 
     package = build_fact_package(
@@ -157,6 +162,6 @@ def test_fact_package_builder_includes_conflicts():
         responses,
     )
 
-    assert "mode_blocked_but_later_blocks_present" in {
+    assert "duplicate_block_response" in {
         conflict.type for conflict in package.conflicts
     }

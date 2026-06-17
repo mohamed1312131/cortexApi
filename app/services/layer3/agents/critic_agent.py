@@ -16,8 +16,12 @@ from app.schemas.layer3 import (
     ReasoningContext,
 )
 from app.services.layer3.llm_response import extract_model_text, strip_code_fences
+from app.services.layer3.prompt_compaction import (
+    compact_allowed_evidence_refs,
+    compact_deterministic_decision_for_prompt,
+    compact_reasoning_context_for_prompt,
+)
 from app.services.layer3.safety_rules import (
-    allowed_evidence_refs,
     contains_forbidden_claim,
     contains_raw_score_leakage,
 )
@@ -118,14 +122,16 @@ def build_critic_prompt(
     decision: DeterministicDecision,
     analyst_draft: AnalystDraft,
 ) -> str:
-    allowed = sorted(allowed_evidence_refs(context, decision))
+    allowed = compact_allowed_evidence_refs(context, decision)
     decision_json = json.dumps(
-        decision.model_dump(mode="json", exclude={"internal_trace_ref"}),
+        compact_deterministic_decision_for_prompt(decision),
         ensure_ascii=False,
         sort_keys=True,
     )
     context_json = json.dumps(
-        context.model_dump(mode="json"), ensure_ascii=False, sort_keys=True
+        compact_reasoning_context_for_prompt(context, decision),
+        ensure_ascii=False,
+        sort_keys=True,
     )
     draft_json = json.dumps(
         analyst_draft.model_dump(mode="json"), ensure_ascii=False, sort_keys=True

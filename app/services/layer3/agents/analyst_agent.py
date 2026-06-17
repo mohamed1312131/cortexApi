@@ -10,9 +10,15 @@ from app.core.logging import get_logger
 from app.core.llm import get_chat_model
 from app.schemas.layer3 import AnalystDraft, DeterministicDecision, ReasoningContext
 from app.services.layer3.llm_response import extract_model_text, strip_code_fences
+from app.services.layer3.prompt_compaction import (
+    compact_allowed_evidence_refs,
+    compact_deterministic_decision_for_prompt,
+    compact_path_evidence_refs,
+    compact_reasoning_context_for_prompt,
+)
 from app.services.layer3.safety_rules import (
-    allowed_evidence_refs,
     analyst_draft_text,
+    allowed_evidence_refs,
     contains_forbidden_claim,
     contains_raw_score_leakage,
 )
@@ -129,14 +135,14 @@ def build_analyst_prompt(
     decision: DeterministicDecision,
     revision_feedback: str | None = None,
 ) -> str:
-    allowed = sorted(allowed_evidence_refs(context, decision))
+    allowed = compact_allowed_evidence_refs(context, decision)
     required_narratives = [
         {
             "rank": path.rank,
             "mode": path.mode.value,
             "path_family": path.path_family,
             "readiness_band": path.readiness_band.value,
-            "evidence_refs": list(path.evidence_refs),
+            "evidence_refs": compact_path_evidence_refs(path.evidence_refs),
         }
         for path in decision.ranked_path_families
     ]
@@ -145,7 +151,7 @@ def build_analyst_prompt(
             "rank": path.rank,
             "mode": path.mode.value,
             "path_family": path.path_family,
-            "evidence_refs": list(path.evidence_refs),
+            "evidence_refs": compact_path_evidence_refs(path.evidence_refs),
         }
         for path in decision.ranked_path_families
     ]
@@ -155,15 +161,15 @@ def build_analyst_prompt(
         if revision_feedback
         else "No previous Analyst revision feedback."
     )
-    # internal_trace_ref is an id, not a score, but exclude it so the LLM never
-    # treats it as something to reason about.
     decision_json = json.dumps(
-        decision.model_dump(mode="json", exclude={"internal_trace_ref"}),
+        compact_deterministic_decision_for_prompt(decision),
         ensure_ascii=False,
         sort_keys=True,
     )
     context_json = json.dumps(
-        context.model_dump(mode="json"), ensure_ascii=False, sort_keys=True
+        compact_reasoning_context_for_prompt(context, decision),
+        ensure_ascii=False,
+        sort_keys=True,
     )
     return (
         ANALYST_PROMPT.replace("__ALLOWED_REFS__", json.dumps(allowed, ensure_ascii=False))

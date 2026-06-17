@@ -26,6 +26,38 @@ def get_google_model_name(
     return _configured(settings.google_ai_model)
 
 
+def get_google_max_tokens(
+    *,
+    intake: bool = False,
+    layer3: bool = False,
+    layer4: bool = False,
+) -> int | None:
+    if layer3:
+        value = settings.layer3_max_output_tokens
+    elif layer4:
+        value = settings.layer4_max_output_tokens
+    else:
+        value = settings.intake_max_output_tokens
+    return value if value > 0 else None
+
+
+def get_google_thinking_budget(
+    *,
+    intake: bool = False,
+    layer3: bool = False,
+    layer4: bool = False,
+) -> int | None:
+    if layer3 and settings.google_ai_layer3_thinking_budget >= -1:
+        return settings.google_ai_layer3_thinking_budget
+    if layer4 and settings.google_ai_layer4_thinking_budget >= -1:
+        return settings.google_ai_layer4_thinking_budget
+    if intake and settings.google_ai_intake_thinking_budget >= -1:
+        return settings.google_ai_intake_thinking_budget
+    if settings.google_ai_thinking_budget >= -1:
+        return settings.google_ai_thinking_budget
+    return None
+
+
 def get_chat_model(
     *,
     intake: bool = False,
@@ -61,12 +93,30 @@ def get_chat_model(
             raise RuntimeError("GOOGLE_AI_API_KEY is required when LLM_PROVIDER=google.")
 
         model_name = get_google_model_name(intake=intake, layer3=layer3, layer4=layer4)
-
-        return ChatGoogleGenerativeAI(
-            model=model_name,
-            api_key=settings.google_ai_api_key,
-            max_tokens=settings.intake_max_output_tokens,
-            timeout=30,
+        kwargs = {
+            "model": model_name,
+            "api_key": settings.google_ai_api_key,
+            "max_tokens": get_google_max_tokens(
+                intake=intake,
+                layer3=layer3,
+                layer4=layer4,
+            ),
+            "timeout": 30,
+        }
+        thinking_budget = get_google_thinking_budget(
+            intake=intake,
+            layer3=layer3,
+            layer4=layer4,
         )
+        if thinking_budget is not None:
+            kwargs["thinking_budget"] = thinking_budget
+
+        try:
+            return ChatGoogleGenerativeAI(**kwargs)
+        except Exception as exc:
+            if "thinking_budget" not in kwargs or "thinking_budget" not in str(exc):
+                raise
+            kwargs.pop("thinking_budget")
+            return ChatGoogleGenerativeAI(**kwargs)
 
     raise ValueError(f"Unsupported LLM_PROVIDER: {settings.llm_provider}")

@@ -46,12 +46,15 @@ def test_executor_calls_road_c_for_road_plan():
         responses[0].hard_gates[0].gate_id
         == "ROAD_C_INTERCONTINENTAL_OVERLAND_IMPRACTICAL"
     )
-    assert [response.status for response in responses[1:]] == [
-        BlockStatus.skipped,
-        BlockStatus.skipped,
-        BlockStatus.skipped,
-        BlockStatus.skipped,
+    # cascade-skip removed: the deeper road blocks still run after the corridor gate
+    assert [response.block_id for response in responses] == [
+        "ROAD-C",
+        "ROAD-A",
+        "ROAD-B",
+        "ROAD-F",
+        "ROAD-COST",
     ]
+    assert all(response.status != BlockStatus.skipped for response in responses[1:])
 
 
 def test_executor_unknown_block_returns_error_response():
@@ -82,7 +85,7 @@ def test_executor_unknown_block_returns_error_response():
     assert response.confidence.source_confidence == SourceConfidence.unknown
 
 
-def test_executor_skips_same_mode_after_required_blocking_gate(monkeypatch):
+def test_executor_runs_same_mode_blocks_after_blocking_gate(monkeypatch):
     request = _request()
     calls: list[str] = []
 
@@ -113,19 +116,14 @@ def test_executor_skips_same_mode_after_required_blocking_gate(monkeypatch):
 
     responses = execute_fetch_plan(request, plan)
 
+    # cascade-skip removed: the later same-mode block still runs (full report)
     assert [response.block_id for response in responses] == ["SEA-GATE", "SEA-LATER"]
     assert responses[0].status == BlockStatus.found
-    assert responses[1].status == BlockStatus.skipped
-    assert calls == ["SEA-GATE"]
-    assert "SEA-GATE" in responses[1].unknowns[0].reason
-    assert "SEA-GATE_BLOCKING" in responses[1].unknowns[0].reason
-    assert responses[1].provenance.extra == {
-        "skipped_after": "SEA-GATE",
-        "blocking_gate_id": "SEA-GATE_BLOCKING",
-    }
+    assert responses[1].status == BlockStatus.found
+    assert calls == ["SEA-GATE", "SEA-LATER"]
 
 
-def test_executor_blocking_gate_skip_is_mode_isolated(monkeypatch):
+def test_executor_runs_all_blocks_regardless_of_gate(monkeypatch):
     request = _request()
     calls: list[str] = []
 
@@ -164,13 +162,14 @@ def test_executor_blocking_gate_skip_is_mode_isolated(monkeypatch):
 
     responses = execute_fetch_plan(request, plan)
 
+    # every planned block runs now, including the later same-mode SEA-LATER
     assert [(response.block_id, response.status) for response in responses] == [
         ("SEA-GATE", BlockStatus.found),
         ("AIR-CHECK", BlockStatus.found),
-        ("SEA-LATER", BlockStatus.skipped),
+        ("SEA-LATER", BlockStatus.found),
         ("ROAD-CHECK", BlockStatus.found),
     ]
-    assert calls == ["SEA-GATE", "AIR-CHECK", "ROAD-CHECK"]
+    assert calls == ["SEA-GATE", "AIR-CHECK", "SEA-LATER", "ROAD-CHECK"]
 
 
 def _plan_item(

@@ -6,10 +6,10 @@ from uuid import uuid4
 from fastapi import APIRouter, HTTPException
 
 from app.core.logging import get_logger
-from app.schemas import CortexOrchestratorResult, IntakeMessageRequest
+from app.schemas import CortexFullOrchestratorResult, CortexOrchestratorResult, IntakeMessageRequest
 from app.services.layer1.conversation_lock import conversation_guard
 from app.services.layer1.response_sanitizer import sanitize_intake_result
-from app.services.orchestrator import handle_cortex_message
+from app.services.orchestrator import handle_cortex_message, handle_full_cortex_message
 
 
 router = APIRouter(prefix="/api/v1/cortex", tags=["cortex"])
@@ -60,3 +60,37 @@ async def cortex_message(payload: IntakeMessageRequest) -> CortexOrchestratorRes
 
 def _err(exc: Exception) -> str:
     return f"{exc.__class__.__name__}: {exc}"
+
+
+@router.post("/full-message", response_model=CortexFullOrchestratorResult)
+async def cortex_full_message(payload: IntakeMessageRequest) -> CortexFullOrchestratorResult:
+    trace_id = str(uuid4())
+    logger.info(
+        "cortex.received trace_id=%s endpoint=/api/v1/cortex/full-message conversation_id=%s case_id=%s",
+        trace_id,
+        payload.conversation_id,
+        payload.case_id,
+    )
+
+    def call() -> CortexFullOrchestratorResult:
+        with conversation_guard(payload.conversation_id):
+            return handle_full_cortex_message(
+                conversation_id=payload.conversation_id,
+                case_id=payload.case_id,
+                user_id=payload.user_id,
+                company_id=payload.company_id,
+                message=payload.message,
+                trace_id=trace_id,
+            )
+
+    try:
+        return await asyncio.to_thread(call)
+    except RuntimeError as exc:
+        logger.warning("cortex.error trace_id=%s error=%s", trace_id, _err(exc))
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except ValueError as exc:
+        logger.warning("cortex.error trace_id=%s error=%s", trace_id, _err(exc))
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except Exception as exc:
+        logger.warning("cortex.error trace_id=%s error=%s", trace_id, _err(exc))
+        raise HTTPException(status_code=503, detail=str(exc)) from exc

@@ -19,7 +19,11 @@ Base URL: `http://localhost:8000` — all requests are `POST` with header
 > GOOGLE_AI_MODEL=gemma-4-26b-a4b-it
 > GOOGLE_AI_INTAKE_MODEL=gemma-4-26b-a4b-it
 > GOOGLE_AI_LAYER3_MODEL=gemini-2.5-flash
-> INTAKE_MAX_OUTPUT_TOKENS=8192   # 2048 truncates the Analyst JSON (Gemini thinking tokens)
+> GOOGLE_AI_LAYER4_MODEL=gemini-2.5-flash
+> INTAKE_MAX_OUTPUT_TOKENS=2048
+> LAYER3_MAX_OUTPUT_TOKENS=4096
+> LAYER4_MAX_OUTPUT_TOKENS=4096
+> GOOGLE_AI_LAYER4_THINKING_BUDGET=0
 > ```
 > After editing `.env`: `docker compose up -d api`. Sanity check: `GET /health` → `{"status":"alive"}`.
 

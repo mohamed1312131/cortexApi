@@ -128,7 +128,10 @@ def test_no_connector_returns_raw_dataset_file_as_data():
         "route_feasibility_rules",
         "route_risk_rules",
         "schedule_input_requirements",
-        "tracking_milestones",
+        # NOTE: "tracking_milestones" is intentionally NOT blocklisted — AIR-I
+        # surfaces a curated, enriched tracking-milestone projection (each item
+        # carries an added planning_value), which is legitimate report content,
+        # not a raw dataset dump.
         "fit_rules",
     }
 

@@ -58,7 +58,7 @@ def _road_request(
     )
 
 
-def test_cn_fr_road_service_skips_deeper_blocks_after_road_c_gate():
+def test_cn_fr_road_service_runs_all_blocks_despite_road_c_gate():
     request = _road_request(
         case_id="case-road-cn-fr-fail-fast",
         origin_country="CN",
@@ -81,12 +81,19 @@ def test_cn_fr_road_service_skips_deeper_blocks_after_road_c_gate():
         and gate.status == GateStatus.triggered
         for gate in package.block_responses[0].hard_gates
     )
-    assert [response.status for response in package.block_responses[1:]] == [
-        BlockStatus.skipped,
-        BlockStatus.skipped,
-        BlockStatus.skipped,
-        BlockStatus.skipped,
+    # cascade-skip removed: deeper road blocks still run for a complete report,
+    # while the blocking gate keeps overall completeness = blocked.
+    assert [response.block_id for response in package.block_responses] == [
+        "ROAD-C",
+        "ROAD-A",
+        "ROAD-B",
+        "ROAD-F",
+        "ROAD-COST",
     ]
+    assert all(
+        response.status != BlockStatus.skipped
+        for response in package.block_responses[1:]
+    )
     assert package.completeness.status == CompletenessStatus.blocked
 
 

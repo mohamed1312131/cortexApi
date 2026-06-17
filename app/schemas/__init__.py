@@ -60,6 +60,9 @@ from app.schemas.cortex_orchestrator import (
     CortexNextAction,
     CortexOrchestratorDebug,
     CortexOrchestratorResult,
+    CortexFullNextAction,
+    CortexFullOrchestratorDebug,
+    CortexFullOrchestratorResult,
 )
 
 from app.schemas.reasoning_decision import (
@@ -138,6 +141,9 @@ __all__ = [
     "CortexNextAction",
     "CortexOrchestratorDebug",
     "CortexOrchestratorResult",
+    "CortexFullNextAction",
+    "CortexFullOrchestratorDebug",
+    "CortexFullOrchestratorResult",
     # reasoning_decision
     "ReadinessBand",
     "RankingType",

@@ -7,8 +7,6 @@ from app.schemas import (
     BlockResponse,
     BlockStatus,
     Conflict,
-    GateSeverity,
-    GateStatus,
     RequestedMode,
 )
 
@@ -161,14 +159,6 @@ def _has_non_empty_value(value: Any) -> bool:
     if value == {}:
         return False
     return True
-
-
-def _has_blocking_gate(response: BlockResponse) -> bool:
-    return any(
-        gate.severity == GateSeverity.blocking
-        and gate.status == GateStatus.triggered
-        for gate in response.hard_gates
-    )
 
 
 def _mode_label(mode: RequestedMode) -> str:

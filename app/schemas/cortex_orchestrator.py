@@ -7,6 +7,8 @@ from pydantic import BaseModel, Field
 
 from app.schemas.fact_package import FactPackage
 from app.schemas.intake import IntakeResult
+from app.schemas.layer3 import Layer3Result
+from app.schemas.layer4 import Layer4Result
 
 
 class CortexNextAction(str, Enum):
@@ -29,3 +31,32 @@ class CortexOrchestratorResult(BaseModel):
     layer2: FactPackage | None = None
     next_action: CortexNextAction
     debug: CortexOrchestratorDebug = Field(default_factory=CortexOrchestratorDebug)
+
+
+class CortexFullNextAction(str, Enum):
+    ask_user = "ASK_USER"
+    show_report = "SHOW_REPORT"
+    error = "ERROR"
+
+
+class CortexFullOrchestratorDebug(BaseModel):
+    layer2_ran: bool = False
+    layer3_ran: bool = False
+    layer4_ran: bool = False
+    route: str | None = None
+    rerun_scope: dict[str, Any] = Field(default_factory=dict)
+    cache: dict[str, Any] = Field(default_factory=dict)
+    trace_id: str | None = None
+    error: str | None = None
+
+
+class CortexFullOrchestratorResult(BaseModel):
+    conversation_id: str | None = None
+    case_id: str
+    assistant_message: str
+    layer1: IntakeResult
+    layer2: FactPackage | None = None
+    layer3: Layer3Result | None = None
+    layer4: Layer4Result | None = None
+    next_action: CortexFullNextAction
+    debug: CortexFullOrchestratorDebug = Field(default_factory=CortexFullOrchestratorDebug)

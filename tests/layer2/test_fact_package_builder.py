@@ -122,7 +122,7 @@ def test_rollup_includes_confidence_cap_from_block():
     assert cap.reasons == ["test cap"]
 
 
-def test_real_sea_i_blocking_gate_skips_sea_cost_without_conflict():
+def test_real_sea_i_blocking_gate_still_runs_sea_cost():
     package = build_fact_package_for_request(_sea_dg_request())
 
     sea_i = next(response for response in package.block_responses if response.block_id == "SEA-I")
@@ -135,10 +135,9 @@ def test_real_sea_i_blocking_gate_skips_sea_cost_without_conflict():
         and gate.status == GateStatus.triggered
         for gate in sea_i.hard_gates
     )
-    assert sea_cost.status == BlockStatus.skipped
-    assert sea_cost.unknowns
-    assert "SEA-I" in sea_cost.unknowns[0].reason
-    assert "blocking hard gate" in sea_cost.unknowns[0].reason
+    # cascade-skip removed: SEA-COST runs and contributes its planning reference
+    # alongside the blocking gate, instead of being suppressed.
+    assert sea_cost.status != BlockStatus.skipped
     assert any(
         gate.gate_id == "SEA_I_CUTOFF_DG_DOCUMENTS_HARD_GATE"
         for gate in package.derived_rollup.hard_gates
