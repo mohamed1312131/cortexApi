@@ -20,11 +20,11 @@ async def layer4_report(payload: Layer4ReportRequest) -> Layer4Result:
     logger.info(
         "layer4.received trace_id=%s endpoint=/api/v1/layer4/report case_id=%s",
         trace_id,
-        payload.fact_package.case_id,
+        payload.case_id,
     )
 
     def call() -> Layer4Result:
-        return build_layer4_report(payload)
+        return build_layer4_report(payload, trace_id=trace_id, run_order=5)
 
     try:
         result = await asyncio.to_thread(call)
@@ -47,4 +47,3 @@ async def layer4_report(payload: Layer4ReportRequest) -> Layer4Result:
 
 def _err(exc: Exception) -> str:
     return f"{exc.__class__.__name__}: {exc}"
-

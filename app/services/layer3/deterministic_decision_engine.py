@@ -54,9 +54,15 @@ _MODE_TIEBREAK: dict[RequestedMode, int] = {
 }
 
 _PATH_FAMILY_NAME: dict[RequestedMode, str] = {
-    RequestedMode.road: "road_preparation",
-    RequestedMode.sea: "sea_preparation",
-    RequestedMode.air: "air_preparation",
+    RequestedMode.road: "pure_road_preparation",
+    RequestedMode.sea: "sea_road_preparation",
+    RequestedMode.air: "air_road_preparation",
+}
+
+_PATH_FAMILY_DISPLAY_NAME: dict[str, str] = {
+    "sea_road_preparation": "Sea + Road",
+    "air_road_preparation": "Air + Road",
+    "pure_road_preparation": "Pure Road",
 }
 
 _HIGH_SEVERITIES = {"high", "critical"}
@@ -66,6 +72,10 @@ _DG_PROFILES = {"dangerous_goods", "lithium_battery"}
 def _weaker(a: ReadinessBand, b: ReadinessBand) -> ReadinessBand:
     """Return the lower (weaker) of two readiness bands."""
     return a if _BAND_ORDER[a] <= _BAND_ORDER[b] else b
+
+
+def path_family_display_name(path_family: str) -> str:
+    return _PATH_FAMILY_DISPLAY_NAME.get(path_family, path_family.replace("_", " ").title())
 
 
 # --------------------------------------------------------------------------- #
@@ -116,8 +126,26 @@ def _missing_cap(severity: str) -> ReadinessBand | None:
 _CONFLICT_CAP = ReadinessBand.SPECIALIZED_STUDY_REQUIRED
 
 
-def _completeness_cap(status: str | None) -> ReadinessBand | None:
+def _triggered_blocking_gates(context: ReasoningContext) -> list[ReasoningFactor]:
+    return [
+        gate
+        for gate in context.hard_gates
+        if gate.status == "triggered" and gate.severity == "blocking"
+    ]
+
+
+def _completeness_cap(
+    context: ReasoningContext,
+    mode: RequestedMode,
+) -> ReadinessBand | None:
+    status = context.completeness_status
     if status == "blocked":
+        triggered_blocking_gates = _triggered_blocking_gates(context)
+        if triggered_blocking_gates and all(
+            gate.mode is not None and gate.mode != mode
+            for gate in triggered_blocking_gates
+        ):
+            return None
         return ReadinessBand.SPECIALIZED_STUDY_REQUIRED
     if status == "insufficient":
         return ReadinessBand.MEDIUM_LOW
@@ -206,7 +234,7 @@ def _compute_path(
 ) -> _PathComputation:
     comp = _PathComputation(mode)
 
-    gates = [g for g in context.hard_gates if g.mode == mode]
+    gates = [g for g in context.hard_gates if g.mode is None or g.mode == mode]
     unknowns = [u for u in context.unknowns if u.mode is None or u.mode == mode]
     missing = list(context.missing_fields)  # global, applies to every path
     conflicts = [c for c in context.conflicts if c.mode is None or c.mode == mode]
@@ -307,7 +335,7 @@ def _compute_path(
         )
 
     # 5. completeness
-    completeness_cap = _completeness_cap(context.completeness_status)
+    completeness_cap = _completeness_cap(context, mode)
     if completeness_cap is not None:
         _apply(
             completeness_cap,

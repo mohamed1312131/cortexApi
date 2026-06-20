@@ -1,6 +1,8 @@
 # app/services/layer3/graph.py
 from __future__ import annotations
 
+from datetime import UTC, datetime
+
 from langchain_core.language_models.chat_models import BaseChatModel
 from langgraph.graph import END, StateGraph
 
@@ -20,6 +22,7 @@ from app.services.layer3.agents.analyst_agent import build_analyst_draft
 from app.services.layer3.agents.critic_agent import build_critic_review
 from app.services.layer3.context_builder import prepare_reasoning_context
 from app.services.layer3.decision_builder import build_reasoning_decision
+from app.services.layer3.decision_builder import build_blocked_reasoning_decision
 from app.services.layer3.deterministic_decision_engine import build_deterministic_decision
 from app.services.layer3.routing import (
     ROUTE_BLOCK,
@@ -31,6 +34,7 @@ from app.services.layer3.routing import (
 )
 from app.services.layer3.safety_gate import run_safety_gate
 from app.services.layer3.state import Layer3State
+from app.services.tracing import agent_run_recorder
 
 # Standalone Layer 3 reasoning graph:
 #   prepare_reasoning_context -> deterministic_decision_engine -> analyst_agent
@@ -123,13 +127,21 @@ class Layer3ReasoningGraph:
         self.max_revisions = max_revisions
         self._graph = self._build_graph()
 
-    def run(self, *, fact_package: FactPackage, trace_id: str | None = None) -> Layer3Result:
+    def run(
+        self,
+        *,
+        fact_package: FactPackage,
+        trace_id: str | None = None,
+        conversation_id: str | None = None,
+    ) -> Layer3Result:
         final_state = self._graph.invoke(
             {
                 "fact_package": fact_package,
                 "trace_id": trace_id,
+                "conversation_id": conversation_id,
                 "revision_count": 0,
                 "max_revisions": self.max_revisions,
+                "agent_run_order": 0,
             }
         )
         return final_state["result"]
@@ -142,18 +154,47 @@ class Layer3ReasoningGraph:
 
     @staticmethod
     def _engine_node(state: Layer3State) -> dict:
+        run_order = _next_run_order(state)
+        started_at = datetime.now(UTC)
         decision, trace = build_deterministic_decision(
             state["reasoning_context"], trace_id=state.get("trace_id")
         )
-        return {"deterministic_decision": decision, "internal_scoring_trace": trace}
+        agent_run_recorder.record_success(
+            case_id=state["reasoning_context"].case_id,
+            conversation_id=state.get("conversation_id"),
+            trace_id=state.get("trace_id"),
+            layer=3,
+            agent_name="layer3_deterministic_decision",
+            run_order=run_order,
+            input_summary={
+                "case_id": state["reasoning_context"].case_id,
+                "candidate_modes": [mode.value for mode in state["reasoning_context"].candidate_modes],
+                "hard_gate_count": len(state["reasoning_context"].hard_gates),
+                "unknown_count": len(state["reasoning_context"].unknowns),
+                "conflict_count": len(state["reasoning_context"].conflicts),
+            },
+            output=decision,
+            provider="deterministic",
+            model_name="deterministic_decision_engine",
+            started_at=started_at,
+        )
+        return {
+            "deterministic_decision": decision,
+            "internal_scoring_trace": trace,
+            "agent_run_order": run_order,
+        }
 
     def _analyst_node(self, state: Layer3State) -> dict:
+        run_order = _next_run_order(state)
         try:
             draft = build_analyst_draft(
                 context=state["reasoning_context"],
                 decision=state["deterministic_decision"],
                 model=self.analyst_model,
                 revision_feedback=state.get("analyst_revision_feedback"),
+                trace_id=state.get("trace_id"),
+                conversation_id=state.get("conversation_id"),
+                run_order=run_order,
             )
         except ValueError as exc:
             error = str(exc)
@@ -161,32 +202,80 @@ class Layer3ReasoningGraph:
                 "analyst_draft": None,
                 "analyst_error": error,
                 "analyst_revision_feedback": _analyst_revision_feedback(error),
+                "agent_run_order": run_order,
             }
         return {
             "analyst_draft": draft,
             "analyst_error": None,
             "analyst_revision_feedback": None,
+            "agent_run_order": run_order,
         }
 
     def _critic_node(self, state: Layer3State) -> dict:
+        run_order = _next_run_order(state)
         if not _should_run_critic(state):
-            return {"critic_review": CriticReview(verdict=CriticVerdict.skipped)}
+            review = CriticReview(verdict=CriticVerdict.skipped)
+            agent_run_recorder.record_skipped(
+                case_id=state["reasoning_context"].case_id,
+                conversation_id=state.get("conversation_id"),
+                trace_id=state.get("trace_id"),
+                layer=3,
+                agent_name="layer3_critic",
+                run_order=run_order,
+                input_summary={
+                    "case_id": state["reasoning_context"].case_id,
+                    "reason": "critic_not_required",
+                    "analyst_disputes_ranking": state["analyst_draft"].disputes_ranking,
+                },
+                output=review,
+                provider="deterministic",
+                model_name="critic_routing",
+            )
+            return {"critic_review": review, "agent_run_order": run_order}
         review = build_critic_review(
             context=state["reasoning_context"],
             decision=state["deterministic_decision"],
             analyst_draft=state["analyst_draft"],
             model=self.critic_model,
+            trace_id=state.get("trace_id"),
+            conversation_id=state.get("conversation_id"),
+            run_order=run_order,
         )
-        return {"critic_review": review}
+        return {"critic_review": review, "agent_run_order": run_order}
 
     @staticmethod
     def _safety_gate_node(state: Layer3State) -> dict:
+        run_order = _next_run_order(state)
+        started_at = datetime.now(UTC)
         report = run_safety_gate(
             context=state["reasoning_context"],
             decision=state["deterministic_decision"],
             analyst_draft=state["analyst_draft"],
         )
-        return {"safety_gate_report": report, "next_action": report.next_action}
+        agent_run_recorder.record_success(
+            case_id=state["reasoning_context"].case_id,
+            conversation_id=state.get("conversation_id"),
+            trace_id=state.get("trace_id"),
+            layer=3,
+            agent_name="layer3_safety_gate",
+            run_order=run_order,
+            input_summary={
+                "case_id": state["reasoning_context"].case_id,
+                "analyst_present": state.get("analyst_draft") is not None,
+                "hard_gate_count": len(state["reasoning_context"].hard_gates),
+                "unknown_count": len(state["reasoning_context"].unknowns),
+            },
+            output=report,
+            safety_report=report,
+            provider="deterministic",
+            model_name="safety_gate",
+            started_at=started_at,
+        )
+        return {
+            "safety_gate_report": report,
+            "next_action": report.next_action,
+            "agent_run_order": run_order,
+        }
 
     @staticmethod
     def _revise_node(state: Layer3State) -> dict:
@@ -218,14 +307,36 @@ class Layer3ReasoningGraph:
         }
 
     def _build_blocked_node(self, state: Layer3State) -> dict:
+        updated_state = state
         if state.get("analyst_error") and state.get("safety_gate_report") is None:
             report = _analyst_contract_failed_report(state["analyst_error"])
             updated_state = {**state, "safety_gate_report": report}
-            return {
-                "safety_gate_report": report,
-                "result": self._result(updated_state, status=Layer3Status.blocked, route=ROUTE_BLOCK),
-            }
-        return {"result": self._result(state, status=Layer3Status.blocked, route=ROUTE_BLOCK)}
+
+        reasoning_decision = None
+        if (
+            updated_state.get("reasoning_context") is not None
+            and updated_state.get("deterministic_decision") is not None
+        ):
+            try:
+                reasoning_decision = build_blocked_reasoning_decision(
+                    context=updated_state["reasoning_context"],
+                    decision=updated_state["deterministic_decision"],
+                )
+            except ValueError as exc:
+                updated_state = {
+                    **updated_state,
+                    "blocked_reasoning_decision_error": str(exc),
+                }
+
+        return {
+            "safety_gate_report": updated_state.get("safety_gate_report"),
+            "result": self._result(
+                updated_state,
+                status=Layer3Status.blocked,
+                route=ROUTE_BLOCK,
+                reasoning_decision=reasoning_decision,
+            ),
+        }
 
     def _build_clarification_node(self, state: Layer3State) -> dict:
         return {"result": self._result(state, status=Layer3Status.request_user_clarification, route=ROUTE_CLARIFY)}
@@ -251,6 +362,10 @@ class Layer3ReasoningGraph:
         }
         if state.get("analyst_error"):
             debug["analyst_error"] = state["analyst_error"]
+        if state.get("blocked_reasoning_decision_error"):
+            debug["blocked_reasoning_decision_error"] = state[
+                "blocked_reasoning_decision_error"
+            ]
         if decision is not None:
             # only the trace REFERENCE (an id) crosses out — never raw scores.
             debug["internal_trace_ref"] = decision.internal_trace_ref
@@ -320,6 +435,7 @@ def run_layer3(
     analyst_model: BaseChatModel | None = None,
     critic_model: BaseChatModel | None = None,
     max_revisions: int = 1,
+    conversation_id: str | None = None,
 ) -> Layer3Result:
     """Run the standalone Layer 3 reasoning graph over a FactPackage."""
     graph = Layer3ReasoningGraph(
@@ -327,4 +443,12 @@ def run_layer3(
         critic_model=critic_model,
         max_revisions=max_revisions,
     )
-    return graph.run(fact_package=fact_package, trace_id=trace_id)
+    return graph.run(
+        fact_package=fact_package,
+        trace_id=trace_id,
+        conversation_id=conversation_id,
+    )
+
+
+def _next_run_order(state: Layer3State) -> int:
+    return state.get("agent_run_order", 0) + 1

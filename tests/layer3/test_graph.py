@@ -333,8 +333,14 @@ def test_analyst_validation_failure_blocks_after_revision_budget():
 
     result = run_layer3(fact_package=fp, analyst_model=analyst_model, max_revisions=1)
 
-    assert result.status is Layer3Status.blocked
-    assert result.reasoning_decision is None
+    assert result.status == Layer3Status.blocked
+    assert result.reasoning_decision is not None
+    assert result.reasoning_decision.ranked_readiness_options
+    assert "approved" in result.reasoning_decision.forbidden_claims
+    assert not any(
+        "approved" in claim.lower()
+        for claim in result.reasoning_decision.allowed_claims
+    )
     assert result.debug["revision_count"] == 1
     assert "analyst_error" in result.debug
     assert result.safety_gate_report is not None
@@ -395,8 +401,14 @@ def test_partial_analyst_draft_blocks_after_revision_budget():
 
     result = run_layer3(fact_package=fp, analyst_model=analyst_model, max_revisions=1)
 
-    assert result.status is Layer3Status.blocked
-    assert result.reasoning_decision is None
+    assert result.status == Layer3Status.blocked
+    assert result.reasoning_decision is not None
+    assert result.reasoning_decision.ranked_readiness_options
+    assert "approved" in result.reasoning_decision.forbidden_claims
+    assert not any(
+        "approved" in claim.lower()
+        for claim in result.reasoning_decision.allowed_claims
+    )
     assert result.debug["revision_count"] == 1
     assert "analyst_error" in result.debug
     assert result.safety_gate_report is not None

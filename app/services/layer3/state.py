@@ -29,6 +29,7 @@ class Layer3State(TypedDict, total=False):
     analyst_draft: AnalystDraft | None
     analyst_error: str | None
     analyst_revision_feedback: str | None
+    blocked_reasoning_decision_error: str | None
     critic_review: CriticReview
     safety_gate_report: SafetyGateReport
 
@@ -37,5 +38,7 @@ class Layer3State(TypedDict, total=False):
 
     revision_count: int
     max_revisions: int
+    agent_run_order: int
     next_action: Layer3NextAction
     trace_id: str | None
+    conversation_id: str | None

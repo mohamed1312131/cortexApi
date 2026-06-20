@@ -1,10 +1,14 @@
 from __future__ import annotations
 
+from app.schemas import Lane, ModeSelection, ValidatedShipmentRequest
 from app.schemas.layer3 import EvidenceRef, ReasoningContext, ReasoningFactor
 from app.schemas.reasoning_decision import ConfidenceBand, RankingType, ReadinessBand
 from app.schemas.shipment_request import RequestedMode
+from app.services.layer2.service import build_fact_package_for_request
+from app.services.layer3.context_builder import prepare_reasoning_context
 from app.services.layer3.deterministic_decision_engine import (
     build_deterministic_decision,
+    path_family_display_name,
 )
 
 HIGH = ReadinessBand.HIGH
@@ -77,6 +81,16 @@ def _gate(code: str, mode: RequestedMode, severity: str, status: str) -> Reasoni
     )
 
 
+def _global_gate(code: str, severity: str, status: str) -> ReasoningFactor:
+    return ReasoningFactor(
+        code=code,
+        label=code,
+        severity=severity,
+        evidence_refs=[f"gate:global:{code}"],
+        status=status,
+    )
+
+
 def _unknown(code: str, *, mode: RequestedMode | None = None, severity: str = "unknown") -> ReasoningFactor:
     src = f"{mode.value.upper()}-A" if mode else "global"
     return ReasoningFactor(
@@ -106,6 +120,13 @@ def _band_of(decision, mode: RequestedMode) -> ReadinessBand:
     for path in decision.ranked_path_families:
         if path.mode is mode:
             return path.readiness_band
+    raise AssertionError(f"no ranked path for {mode}")
+
+
+def _path_of(decision, mode: RequestedMode):
+    for path in decision.ranked_path_families:
+        if path.mode is mode:
+            return path
     raise AssertionError(f"no ranked path for {mode}")
 
 
@@ -160,6 +181,175 @@ def test_not_triggered_blocking_gate_does_not_block():
     ctx = _ctx(hard_gates=[_gate("BLK", RequestedMode.road, "blocking", "not_triggered")])
     decision, _ = build_deterministic_decision(ctx)
     assert _band_of(decision, RequestedMode.road) is HIGH
+
+
+def test_path_family_ids_for_multimode_city_lane():
+    ctx = _ctx(candidate_modes=[RequestedMode.sea, RequestedMode.air, RequestedMode.road])
+
+    decision, _ = build_deterministic_decision(ctx)
+
+    by_mode = {path.mode: path.path_family for path in decision.ranked_path_families}
+    assert by_mode == {
+        RequestedMode.sea: "sea_road_preparation",
+        RequestedMode.air: "air_road_preparation",
+        RequestedMode.road: "pure_road_preparation",
+    }
+
+
+def test_pure_road_keeps_road_blocking_gate():
+    ctx = _ctx(
+        candidate_modes=[RequestedMode.sea, RequestedMode.air, RequestedMode.road],
+        hard_gates=[_gate("ROAD_ONLY", RequestedMode.road, "blocking", "triggered")],
+        completeness_status="blocked",
+    )
+
+    decision, _ = build_deterministic_decision(ctx)
+    road = _path_of(decision, RequestedMode.road)
+
+    assert road.path_family == "pure_road_preparation"
+    assert road.readiness_band is BLOCKED
+    assert road.blocking_factors == ["ROAD_ONLY"]
+
+
+def test_sea_road_not_blocked_by_pure_road_gate():
+    ctx = _ctx(
+        candidate_modes=[RequestedMode.sea, RequestedMode.road],
+        hard_gates=[_gate("ROAD_ONLY", RequestedMode.road, "blocking", "triggered")],
+        completeness_status="blocked",
+    )
+
+    decision, _ = build_deterministic_decision(ctx)
+    sea = _path_of(decision, RequestedMode.sea)
+
+    assert sea.path_family == "sea_road_preparation"
+    assert sea.readiness_band is not BLOCKED
+    assert "ROAD_ONLY" not in sea.blocking_factors
+
+
+def test_air_road_not_blocked_by_pure_road_gate():
+    ctx = _ctx(
+        candidate_modes=[RequestedMode.air, RequestedMode.road],
+        hard_gates=[_gate("ROAD_ONLY", RequestedMode.road, "blocking", "triggered")],
+        completeness_status="blocked",
+    )
+
+    decision, _ = build_deterministic_decision(ctx)
+    air = _path_of(decision, RequestedMode.air)
+
+    assert air.path_family == "air_road_preparation"
+    assert air.readiness_band is not BLOCKED
+    assert "ROAD_ONLY" not in air.blocking_factors
+
+
+def test_path_family_display_names_are_report_friendly():
+    assert path_family_display_name("sea_road_preparation") == "Sea + Road"
+    assert path_family_display_name("air_road_preparation") == "Air + Road"
+    assert path_family_display_name("pure_road_preparation") == "Pure Road"
+
+
+def test_multimode_road_gate_does_not_cap_sea_air():
+    request = ValidatedShipmentRequest(
+        case_id="case-cn-de-multimode",
+        lane=Lane(
+            origin_city="Shenzhen",
+            destination_city="Frankfurt",
+            origin_country="CN",
+            destination_country="DE",
+        ),
+        mode=ModeSelection(
+            requested_mode=RequestedMode.unknown,
+            candidate_modes=[RequestedMode.sea, RequestedMode.air, RequestedMode.road],
+            needs_mode_selection=True,
+        ),
+    )
+    package = build_fact_package_for_request(request)
+    ctx = prepare_reasoning_context(package)
+
+    decision, _ = build_deterministic_decision(ctx)
+    by_mode = {path.mode: path for path in decision.ranked_path_families}
+
+    assert ctx.completeness_status == "blocked"
+    assert _band_of(decision, RequestedMode.road) is BLOCKED
+    assert _band_of(decision, RequestedMode.sea) is not BLOCKED
+    assert _band_of(decision, RequestedMode.air) is not BLOCKED
+    assert not any(
+        cap.startswith("completeness:blocked")
+        for cap in by_mode[RequestedMode.sea].applied_caps
+    )
+    assert not any(
+        cap.startswith("completeness:blocked")
+        for cap in by_mode[RequestedMode.air].applied_caps
+    )
+    assert any(
+        cap.startswith("hard_gate:ROAD_C_INTERCONTINENTAL_OVERLAND_IMPRACTICAL=BLOCKED")
+        for cap in by_mode[RequestedMode.road].applied_caps
+    )
+
+
+def test_mode_specific_hard_gate_applies_only_to_matching_mode():
+    ctx = _ctx(
+        candidate_modes=[RequestedMode.road, RequestedMode.sea, RequestedMode.air],
+        hard_gates=[_gate("ROAD_ONLY", RequestedMode.road, "blocking", "triggered")],
+        completeness_status="blocked",
+    )
+
+    decision, _ = build_deterministic_decision(ctx)
+    by_mode = {path.mode: path for path in decision.ranked_path_families}
+
+    assert by_mode[RequestedMode.road].readiness_band is BLOCKED
+    assert by_mode[RequestedMode.sea].readiness_band is HIGH
+    assert by_mode[RequestedMode.air].readiness_band is HIGH
+    assert by_mode[RequestedMode.road].blocking_factors == ["ROAD_ONLY"]
+    assert by_mode[RequestedMode.sea].blocking_factors == []
+    assert by_mode[RequestedMode.air].blocking_factors == []
+    assert not any(
+        cap.startswith("completeness:blocked")
+        for mode in (RequestedMode.sea, RequestedMode.air)
+        for cap in by_mode[mode].applied_caps
+    )
+
+
+def test_global_hard_gate_can_still_block_all_paths_if_explicit():
+    ctx = _ctx(
+        candidate_modes=[RequestedMode.road, RequestedMode.sea, RequestedMode.air],
+        hard_gates=[_global_gate("GLOBAL_BLOCK", "blocking", "triggered")],
+        completeness_status="blocked",
+    )
+
+    decision, _ = build_deterministic_decision(ctx)
+
+    assert {path.mode for path in decision.ranked_path_families} == {
+        RequestedMode.road,
+        RequestedMode.sea,
+        RequestedMode.air,
+    }
+    assert all(path.readiness_band is BLOCKED for path in decision.ranked_path_families)
+    assert all(
+        path.blocking_factors == ["GLOBAL_BLOCK"]
+        for path in decision.ranked_path_families
+    )
+
+
+def test_road_gate_still_visible_in_road_path_blockers():
+    ctx = _ctx(
+        candidate_modes=[RequestedMode.road, RequestedMode.sea],
+        hard_gates=[_gate("ROAD_ONLY", RequestedMode.road, "blocking", "triggered")],
+        completeness_status="blocked",
+    )
+
+    decision, _ = build_deterministic_decision(ctx)
+    road_path = next(
+        path for path in decision.ranked_path_families if path.mode is RequestedMode.road
+    )
+    sea_path = next(
+        path for path in decision.ranked_path_families if path.mode is RequestedMode.sea
+    )
+
+    assert road_path.readiness_band is BLOCKED
+    assert road_path.blocking_factors == ["ROAD_ONLY"]
+    assert "gate:ROAD-A:ROAD_ONLY" in road_path.evidence_refs
+    assert sea_path.readiness_band is HIGH
+    assert "ROAD_ONLY" not in sea_path.blocking_factors
 
 
 # --------------------------------------------------------------------------- #
@@ -272,7 +462,7 @@ def test_skips_mode_with_no_evidence():
     )
     decision, trace = build_deterministic_decision(ctx)
     assert {p.mode for p in decision.ranked_path_families} == {RequestedMode.road}
-    assert any("sea_preparation" in note for note in trace.notes)
+    assert any("sea_road_preparation" in note for note in trace.notes)
 
 
 # --------------------------------------------------------------------------- #

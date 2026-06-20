@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+from datetime import UTC, datetime
 
 from langchain_core.language_models.chat_models import BaseChatModel
 from pydantic import ValidationError
@@ -22,6 +23,8 @@ from app.services.layer3.safety_rules import (
     contains_forbidden_claim,
     contains_raw_score_leakage,
 )
+from app.services.size_observability import log_prompt_size
+from app.services.tracing import agent_run_recorder
 
 # Cortex Layer 3 Analyst Agent.
 #
@@ -412,12 +415,53 @@ def build_analyst_draft(
     decision: DeterministicDecision,
     model: BaseChatModel | None = None,
     revision_feedback: str | None = None,
+    trace_id: str | None = None,
+    conversation_id: str | None = None,
+    run_order: int = 0,
 ) -> AnalystDraft:
     """Explain a DeterministicDecision. Raises ValueError on contract violations."""
     chat_model = _require_model(model)
     prompt = build_analyst_prompt(context, decision, revision_feedback=revision_feedback)
-    draft = _generate_draft(chat_model, prompt)
-    _validate_analyst_draft_against_decision(draft, decision, context)
+    log_prompt_size(logger, label="layer3.analyst", prompt=prompt, case_id=context.case_id)
+    started_at = datetime.now(UTC)
+    input_summary = {
+        "case_id": context.case_id,
+        "ranked_path_count": len(decision.ranked_path_families),
+        "revision_feedback_present": revision_feedback is not None,
+        "hard_gate_count": len(context.hard_gates),
+        "unknown_count": len(context.unknowns),
+    }
+    try:
+        draft = _generate_draft(chat_model, prompt)
+        _validate_analyst_draft_against_decision(draft, decision, context)
+    except Exception as exc:
+        agent_run_recorder.record_error(
+            case_id=context.case_id,
+            conversation_id=conversation_id,
+            trace_id=trace_id,
+            layer=3,
+            agent_name="layer3_analyst",
+            run_order=run_order,
+            input_summary=input_summary,
+            prompt=prompt,
+            model=chat_model,
+            started_at=started_at,
+            error=exc,
+        )
+        raise
+    agent_run_recorder.record_success(
+        case_id=context.case_id,
+        conversation_id=conversation_id,
+        trace_id=trace_id,
+        layer=3,
+        agent_name="layer3_analyst",
+        run_order=run_order,
+        input_summary=input_summary,
+        output=draft,
+        prompt=prompt,
+        model=chat_model,
+        started_at=started_at,
+    )
     return draft
 
 
@@ -427,9 +471,50 @@ async def build_analyst_draft_async(
     decision: DeterministicDecision,
     model: BaseChatModel | None = None,
     revision_feedback: str | None = None,
+    trace_id: str | None = None,
+    conversation_id: str | None = None,
+    run_order: int = 0,
 ) -> AnalystDraft:
     chat_model = _require_model(model)
     prompt = build_analyst_prompt(context, decision, revision_feedback=revision_feedback)
-    draft = await _generate_draft_async(chat_model, prompt)
-    _validate_analyst_draft_against_decision(draft, decision, context)
+    log_prompt_size(logger, label="layer3.analyst", prompt=prompt, case_id=context.case_id)
+    started_at = datetime.now(UTC)
+    input_summary = {
+        "case_id": context.case_id,
+        "ranked_path_count": len(decision.ranked_path_families),
+        "revision_feedback_present": revision_feedback is not None,
+        "hard_gate_count": len(context.hard_gates),
+        "unknown_count": len(context.unknowns),
+    }
+    try:
+        draft = await _generate_draft_async(chat_model, prompt)
+        _validate_analyst_draft_against_decision(draft, decision, context)
+    except Exception as exc:
+        agent_run_recorder.record_error(
+            case_id=context.case_id,
+            conversation_id=conversation_id,
+            trace_id=trace_id,
+            layer=3,
+            agent_name="layer3_analyst",
+            run_order=run_order,
+            input_summary=input_summary,
+            prompt=prompt,
+            model=chat_model,
+            started_at=started_at,
+            error=exc,
+        )
+        raise
+    agent_run_recorder.record_success(
+        case_id=context.case_id,
+        conversation_id=conversation_id,
+        trace_id=trace_id,
+        layer=3,
+        agent_name="layer3_analyst",
+        run_order=run_order,
+        input_summary=input_summary,
+        output=draft,
+        prompt=prompt,
+        model=chat_model,
+        started_at=started_at,
+    )
     return draft

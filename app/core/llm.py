@@ -88,6 +88,17 @@ def get_google_thinking_budget(
     return None
 
 
+def _supports_google_thinking_budget(model_name: str) -> bool:
+    return model_name.startswith("gemini-2.5")
+
+
+def _supports_google_json_mode(model_cls: type, model_name: str) -> bool:
+    if not model_name.startswith("gemini-"):
+        return False
+    fields = getattr(model_cls, "model_fields", {})
+    return "response_mime_type" in fields
+
+
 def get_chat_model(
     *,
     intake: bool = False,
@@ -131,23 +142,39 @@ def get_chat_model(
                 layer3=layer3,
                 layer4=layer4,
             ),
+            "temperature": 0 if (intake or layer3) else 0.7,
             "timeout": 30,
         }
+        if (intake or layer3) and _supports_google_json_mode(
+            ChatGoogleGenerativeAI,
+            model_name,
+        ):
+            kwargs["response_mime_type"] = "application/json"
         thinking_budget = get_google_thinking_budget(
             intake=intake,
             layer3=layer3,
             layer4=layer4,
         )
-        if thinking_budget is not None:
+        if thinking_budget is not None and _supports_google_thinking_budget(model_name):
             kwargs["thinking_budget"] = thinking_budget
 
         try:
             return ChatGoogleGenerativeAI(**kwargs)
         except Exception as exc:
-            if "thinking_budget" not in kwargs or "thinking_budget" not in str(exc):
+            if "thinking_budget" in kwargs and "thinking_budget" in str(exc):
+                kwargs.pop("thinking_budget")
+                return ChatGoogleGenerativeAI(**kwargs)
+            if (
+                "response_mime_type" in kwargs
+                and "response_mime_type" in str(exc)
+            ):
+                kwargs.pop("response_mime_type")
+                return ChatGoogleGenerativeAI(**kwargs)
+            if "temperature" in kwargs and "temperature" in str(exc):
+                kwargs.pop("temperature")
+                return ChatGoogleGenerativeAI(**kwargs)
+            else:
                 raise
-            kwargs.pop("thinking_budget")
-            return ChatGoogleGenerativeAI(**kwargs)
 
     if provider in {"ollama", "local"}:
         try:

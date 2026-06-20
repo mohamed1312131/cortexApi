@@ -46,10 +46,13 @@ class OrchestratorArtifactCache:
 
     def get_layer2(self, *, case_id: str, shipment_request_version: int | None) -> CacheRead[FactPackage]:
         return self._get(
-            key=self._artifact_key(case_id, shipment_request_version, "layer2"),
+            key=self.layer2_key(case_id=case_id, shipment_request_version=shipment_request_version),
             model=FactPackage,
             artifact="layer2",
         )
+
+    def get_layer2_by_key(self, key: str) -> CacheRead[FactPackage]:
+        return self._get(key=key, model=FactPackage, artifact="layer2")
 
     def set_layer2(
         self,
@@ -59,10 +62,13 @@ class OrchestratorArtifactCache:
         shipment_request_version: int | None,
     ) -> str:
         return self._set(
-            key=self._artifact_key(case_id, shipment_request_version, "layer2"),
+            key=self.layer2_key(case_id=case_id, shipment_request_version=shipment_request_version),
             value=value,
             artifact="layer2",
         )
+
+    def layer2_key(self, *, case_id: str, shipment_request_version: int | None) -> str | None:
+        return self._artifact_key(case_id, shipment_request_version, "layer2")
 
     def get_layer3(self, *, case_id: str, shipment_request_version: int | None) -> CacheRead[Layer3Result]:
         return self._get(
@@ -70,6 +76,9 @@ class OrchestratorArtifactCache:
             model=Layer3Result,
             artifact="layer3",
         )
+
+    def get_layer3_by_key(self, key: str) -> CacheRead[Layer3Result]:
+        return self._get(key=key, model=Layer3Result, artifact="layer3")
 
     def set_layer3(
         self,
@@ -95,6 +104,9 @@ class OrchestratorArtifactCache:
             model=Layer4Result,
             artifact="layer4",
         )
+
+    def get_layer4_by_key(self, key: str) -> CacheRead[Layer4Result]:
+        return self._get(key=key, model=Layer4Result, artifact="layer4")
 
     def set_layer4(
         self,
@@ -182,7 +194,7 @@ class OrchestratorArtifactCache:
         shipment_request_version: int | None,
     ) -> str | None:
         base = self._artifact_key(
-            request.fact_package.case_id,
+            request.case_id,
             shipment_request_version,
             "layer4",
         )

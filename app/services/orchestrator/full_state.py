@@ -5,6 +5,7 @@ from typing import TypedDict
 from app.schemas.cortex_orchestrator import CortexFullOrchestratorResult
 from app.schemas.fact_package import FactPackage
 from app.schemas.intake import IntakeResult
+from app.schemas.layer2_summary import Layer2Summary
 from app.schemas.layer3 import Layer3Result
 from app.schemas.layer4 import Layer4Result
 
@@ -18,10 +19,12 @@ class CortexFullState(TypedDict, total=False):
     trace_id: str
     shipment_request_version: int | None
     cache_status: dict
+    layer2_artifact_key: str | None
 
     layer1: IntakeResult
-    layer2: FactPackage
-    layer3: Layer3Result
+    layer2: FactPackage | None
+    layer2_summary: Layer2Summary
+    layer3: Layer3Result | None
     layer4: Layer4Result
 
     result: CortexFullOrchestratorResult

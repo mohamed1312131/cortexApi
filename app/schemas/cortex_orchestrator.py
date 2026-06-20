@@ -7,6 +7,7 @@ from pydantic import BaseModel, Field
 
 from app.schemas.fact_package import FactPackage
 from app.schemas.intake import IntakeResult
+from app.schemas.layer2_summary import Layer2Summary
 from app.schemas.layer3 import Layer3Result
 from app.schemas.layer4 import Layer4Result
 
@@ -55,6 +56,8 @@ class CortexFullOrchestratorResult(BaseModel):
     case_id: str
     assistant_message: str
     layer1: IntakeResult
+    layer2_summary: Layer2Summary | None = None
+    artifact_refs: dict[str, str] = Field(default_factory=dict)
     layer2: FactPackage | None = None
     layer3: Layer3Result | None = None
     layer4: Layer4Result | None = None

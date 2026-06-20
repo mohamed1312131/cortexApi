@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+from datetime import UTC, datetime
 
 from langchain_core.language_models.chat_models import BaseChatModel
 from pydantic import ValidationError
@@ -25,6 +26,8 @@ from app.services.layer3.safety_rules import (
     contains_forbidden_claim,
     contains_raw_score_leakage,
 )
+from app.services.size_observability import log_prompt_size
+from app.services.tracing import agent_run_recorder
 
 # Cortex Layer 3 Critic Agent.
 #
@@ -335,12 +338,54 @@ def build_critic_review(
     decision: DeterministicDecision,
     analyst_draft: AnalystDraft,
     model: BaseChatModel | None = None,
+    trace_id: str | None = None,
+    conversation_id: str | None = None,
+    run_order: int = 0,
 ) -> CriticReview:
     """Advisory review of an AnalystDraft. Raises ValueError on contract violations."""
     chat_model = _require_model(model)
     prompt = build_critic_prompt(context, decision, analyst_draft)
-    review = _generate_review(chat_model, prompt)
-    _validate_critic_review(review)
+    log_prompt_size(logger, label="layer3.critic", prompt=prompt, case_id=context.case_id)
+    started_at = datetime.now(UTC)
+    input_summary = {
+        "case_id": context.case_id,
+        "ranked_path_count": len(decision.ranked_path_families),
+        "analyst_narrative_count": len(analyst_draft.narratives),
+        "analyst_disputes_ranking": analyst_draft.disputes_ranking,
+        "hard_gate_count": len(context.hard_gates),
+        "unknown_count": len(context.unknowns),
+    }
+    try:
+        review = _generate_review(chat_model, prompt)
+        _validate_critic_review(review)
+    except Exception as exc:
+        agent_run_recorder.record_error(
+            case_id=context.case_id,
+            conversation_id=conversation_id,
+            trace_id=trace_id,
+            layer=3,
+            agent_name="layer3_critic",
+            run_order=run_order,
+            input_summary=input_summary,
+            prompt=prompt,
+            model=chat_model,
+            started_at=started_at,
+            error=exc,
+        )
+        raise
+    agent_run_recorder.record_success(
+        case_id=context.case_id,
+        conversation_id=conversation_id,
+        trace_id=trace_id,
+        layer=3,
+        agent_name="layer3_critic",
+        run_order=run_order,
+        input_summary=input_summary,
+        output=review,
+        prompt=prompt,
+        model=chat_model,
+        started_at=started_at,
+    )
     return review
 
 
@@ -350,9 +395,51 @@ async def build_critic_review_async(
     decision: DeterministicDecision,
     analyst_draft: AnalystDraft,
     model: BaseChatModel | None = None,
+    trace_id: str | None = None,
+    conversation_id: str | None = None,
+    run_order: int = 0,
 ) -> CriticReview:
     chat_model = _require_model(model)
     prompt = build_critic_prompt(context, decision, analyst_draft)
-    review = await _generate_review_async(chat_model, prompt)
-    _validate_critic_review(review)
+    log_prompt_size(logger, label="layer3.critic", prompt=prompt, case_id=context.case_id)
+    started_at = datetime.now(UTC)
+    input_summary = {
+        "case_id": context.case_id,
+        "ranked_path_count": len(decision.ranked_path_families),
+        "analyst_narrative_count": len(analyst_draft.narratives),
+        "analyst_disputes_ranking": analyst_draft.disputes_ranking,
+        "hard_gate_count": len(context.hard_gates),
+        "unknown_count": len(context.unknowns),
+    }
+    try:
+        review = await _generate_review_async(chat_model, prompt)
+        _validate_critic_review(review)
+    except Exception as exc:
+        agent_run_recorder.record_error(
+            case_id=context.case_id,
+            conversation_id=conversation_id,
+            trace_id=trace_id,
+            layer=3,
+            agent_name="layer3_critic",
+            run_order=run_order,
+            input_summary=input_summary,
+            prompt=prompt,
+            model=chat_model,
+            started_at=started_at,
+            error=exc,
+        )
+        raise
+    agent_run_recorder.record_success(
+        case_id=context.case_id,
+        conversation_id=conversation_id,
+        trace_id=trace_id,
+        layer=3,
+        agent_name="layer3_critic",
+        run_order=run_order,
+        input_summary=input_summary,
+        output=review,
+        prompt=prompt,
+        model=chat_model,
+        started_at=started_at,
+    )
     return review

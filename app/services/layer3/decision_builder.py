@@ -107,6 +107,19 @@ def _dedup_strings(values: list[str]) -> list[str]:
     return out
 
 
+def _global_next_actions_from_context(context: ReasoningContext) -> list[str]:
+    return _dedup_strings(
+        [
+            f"Resolve hard gate: {g.code}"
+            for g in context.hard_gates
+            if g.status == "triggered"
+        ]
+        + [f"Resolve unknown: {u.code}" for u in context.unknowns]
+        + [f"Resolve missing field: {m.code}" for m in context.missing_fields]
+        + [f"Resolve conflict: {c.code}" for c in context.conflicts]
+    )
+
+
 # --------------------------------------------------------------------------- #
 # narrative lookup
 # --------------------------------------------------------------------------- #
@@ -221,10 +234,7 @@ def build_reasoning_decision(
 
     global_unknowns = _dedup_unknowns([_to_unknown(f) for f in context.unknowns])
 
-    global_next_actions = _dedup_strings(
-        [f"Resolve missing field: {m.code}" for m in context.missing_fields]
-        + [f"Resolve conflict: {c.code}" for c in context.conflicts]
-    )
+    global_next_actions = _global_next_actions_from_context(context)
 
     # carry the deterministic warnings (already include NOT_FINAL_APPROVAL,
     # BLOCKING_HARD_GATE, CRITICAL_UNKNOWN, CONFLICT_PRESENT, ...) deduped
@@ -257,5 +267,63 @@ def build_reasoning_decision(
         must_show_warnings=must_show_warnings,
     )
 
+    _validate_built_decision(built, decision)
+    return built
+
+
+def build_blocked_reasoning_decision(
+    *,
+    context: ReasoningContext,
+    decision: DeterministicDecision,
+) -> ReasoningDecision:
+    """Build a safe Layer 4 contract when analyst prose failed safety.
+
+    This uses only deterministic Layer 2/3 facts. It intentionally avoids Analyst
+    text because the safety gate already rejected that draft.
+    """
+    options: list[RankedReadinessOption] = []
+    for path in decision.ranked_path_families:
+        hard_gates = [f for f in context.hard_gates if f.mode == path.mode]
+        unknowns = [f for f in context.unknowns if f.mode == path.mode]
+        options.append(
+            RankedReadinessOption(
+                rank=path.rank,
+                path_family_id=path.path_family,
+                mode=path.mode,
+                readiness_band=path.readiness_band,
+                status=path.readiness_band.value,
+                why_ranked_here=(
+                    "This path is carried forward from deterministic checks for "
+                    "a blocked or low-data readiness assessment."
+                ),
+                why_not_higher=(
+                    "It cannot be ranked higher until triggered hard gates, "
+                    "critical unknowns, and missing required facts are resolved."
+                ),
+                hard_gates=[_to_hard_gate(f) for f in hard_gates],
+                unknowns=[_to_unknown(f) for f in unknowns],
+                next_actions=_global_next_actions_from_context(context),
+            )
+        )
+
+    global_unknowns = _dedup_unknowns([_to_unknown(f) for f in context.unknowns])
+    allowed_claims = _dedup_strings(
+        [
+            "The current assessment is blocked or low-data based on deterministic checks.",
+            "This is a preparation-readiness assessment for planning only.",
+        ]
+    )
+    built = ReasoningDecision(
+        case_id=decision.case_id,
+        reasoning_decision_id=decision.internal_trace_ref or f"trace:{decision.case_id}",
+        ranking_type=decision.ranking_type,
+        ranked_readiness_options=options,
+        confidence=decision.confidence_report.model_copy(),
+        allowed_claims=allowed_claims,
+        forbidden_claims=list(FORBIDDEN_CLAIMS),
+        global_unknowns=global_unknowns,
+        global_next_actions=_global_next_actions_from_context(context),
+        must_show_warnings=[warning.model_copy() for warning in decision.must_show_warnings],
+    )
     _validate_built_decision(built, decision)
     return built

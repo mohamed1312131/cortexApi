@@ -15,6 +15,7 @@ import json
 
 from pydantic import BaseModel, ValidationError
 
+from app.core.logging import get_logger
 from app.core.llm import get_chat_model
 from app.schemas import (
     CaseAction,
@@ -22,7 +23,11 @@ from app.schemas import (
     IntakeIntent,
     ValidatedShipmentRequest,
 )
+from app.services.size_observability import log_prompt_size
 from app.services.layer3.llm_response import strip_thinking_tags
+
+
+logger = get_logger(__name__)
 
 
 class IntakeAgentError(RuntimeError):
@@ -72,10 +77,44 @@ def extract_model_text(raw: object) -> str:
 def _strip_code_fences(text: str) -> str:
     t = strip_thinking_tags(text)
     if t.startswith("```"):
-        t = t.split("\n", 1)[1] if "\n" in t else t
-        if t.endswith("```"):
-            t = t[:-3]
+        lines = t.splitlines()
+        if lines:
+            lines = lines[1:]
+        if lines and lines[-1].strip() == "```":
+            lines = lines[:-1]
+        t = "\n".join(lines)
     return t.strip()
+
+
+def _extract_json_object_text(text: str) -> str:
+    cleaned = _strip_code_fences(text)
+    if not cleaned:
+        return cleaned
+
+    decoder = json.JSONDecoder()
+    for index, char in enumerate(cleaned):
+        if char != "{":
+            continue
+        try:
+            _, end = decoder.raw_decode(cleaned[index:])
+        except json.JSONDecodeError:
+            continue
+        return cleaned[index : index + end].strip()
+    return cleaned
+
+
+def _raw_response_debug(raw: object) -> str:
+    details: dict[str, object] = {}
+    for attr in ("response_metadata", "usage_metadata", "additional_kwargs"):
+        value = getattr(raw, attr, None)
+        if value:
+            details[attr] = value
+    if not details:
+        return raw.__class__.__name__
+    try:
+        return json.dumps(details, ensure_ascii=False, default=str)[:1000]
+    except TypeError:
+        return str(details)[:1000]
 
 
 # --------------------------------------------------------------------------- #
@@ -275,7 +314,9 @@ def _require_model(model=None):
 
 
 def _parse_turn(raw: object, *, case_id: str) -> AgentTurn:
-    text = _strip_code_fences(extract_model_text(raw))
+    text = _extract_json_object_text(extract_model_text(raw))
+    if not text:
+        raise ValueError(f"Intake agent returned empty output. raw={_raw_response_debug(raw)}")
     try:
         payload = json.loads(text)
     except json.JSONDecodeError as exc:
@@ -313,6 +354,7 @@ def run_intake_agent(
         previous_request_json=previous_json,
         conversation_summary=conversation_summary,
     )
+    log_prompt_size(logger, label="layer1.intake", prompt=prompt, case_id=case_id)
 
     last_error: str | None = None
     for attempt in range(2):
