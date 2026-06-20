@@ -1,0 +1,429 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" width="1400" height="900" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <!-- Background gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f1623;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a2540;stop-opacity:1" />
+    </linearGradient>
+    <!-- Air gradient -->
+    <linearGradient id="airGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a3a5c;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0d2035;stop-opacity:1" />
+    </linearGradient>
+    <!-- Sea gradient -->
+    <linearGradient id="seaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d3d3d;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#061f1f;stop-opacity:1" />
+    </linearGradient>
+    <!-- Road gradient -->
+    <linearGradient id="roadGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3d2a0d;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1f1506;stop-opacity:1" />
+    </linearGradient>
+    <!-- Header gradient -->
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#1d4ed8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0ea5e9;stop-opacity:1" />
+    </linearGradient>
+    <!-- Glow filter -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="shadowSoft">
+      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1400" height="900" fill="url(#bgGrad)"/>
+
+  <!-- Subtle grid lines -->
+  <g opacity="0.04" stroke="#ffffff" stroke-width="1">
+    <line x1="0" y1="150" x2="1400" y2="150"/>
+    <line x1="0" y1="300" x2="1400" y2="300"/>
+    <line x1="0" y1="450" x2="1400" y2="450"/>
+    <line x1="0" y1="600" x2="1400" y2="600"/>
+    <line x1="0" y1="750" x2="1400" y2="750"/>
+    <line x1="233" y1="0" x2="233" y2="900"/>
+    <line x1="466" y1="0" x2="466" y2="900"/>
+    <line x1="700" y1="0" x2="700" y2="900"/>
+    <line x1="933" y1="0" x2="933" y2="900"/>
+    <line x1="1166" y1="0" x2="1166" y2="900"/>
+  </g>
+
+  <!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+  <rect x="0" y="0" width="1400" height="72" fill="url(#headerGrad)" rx="0"/>
+  <rect x="0" y="68" width="1400" height="4" fill="#0ea5e9" opacity="0.6"/>
+
+  <!-- Logo mark -->
+  <circle cx="46" cy="36" r="20" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.8"/>
+  <circle cx="46" cy="36" r="13" fill="none" stroke="#7dd3fc" stroke-width="1.5" opacity="0.7"/>
+  <circle cx="46" cy="36" r="5" fill="#38bdf8"/>
+
+  <text x="78" y="27" font-size="22" font-weight="800" fill="#ffffff" letter-spacing="2">CORTEX</text>
+  <text x="78" y="48" font-size="11" fill="#93c5fd" letter-spacing="4" font-weight="300">LOGISTICS INTELLIGENCE PLATFORM</text>
+
+  <!-- Right side header info -->
+  <text x="1320" y="30" font-size="11" fill="#93c5fd" text-anchor="middle">R&amp;D Reference Dataset</text>
+  <text x="1320" y="50" font-size="10" fill="#7dd3fc" text-anchor="middle">v1.0 — June 2026</text>
+
+  <!-- Divider line in header -->
+  <line x1="70" y1="10" x2="70" y2="62" stroke="#ffffff" stroke-width="1" opacity="0.2"/>
+  <line x1="1260" y1="10" x2="1260" y2="62" stroke="#ffffff" stroke-width="1" opacity="0.2"/>
+
+  <!-- ═══════════════════════════════ SECTION LABEL ═══════════════════════════════ -->
+  <text x="700" y="102" font-size="13" fill="#94a3b8" text-anchor="middle" letter-spacing="3" font-weight="600">MULTI-MODE FREIGHT READINESS DATA ARCHITECTURE</text>
+
+  <!-- ═══════════════════════════════ INTAKE BOX (TOP) ═══════════════════════════════ -->
+  <rect x="480" y="115" width="440" height="56" rx="10" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadowSoft)"/>
+  <rect x="480" y="115" width="440" height="6" rx="4" fill="#3b82f6" opacity="0.8"/>
+  <text x="700" y="141" font-size="13" font-weight="700" fill="#e2e8f0" text-anchor="middle" letter-spacing="1">SHIPMENT INTAKE</text>
+  <text x="700" y="161" font-size="10" fill="#94a3b8" text-anchor="middle">Origin · Destination · Cargo Type · Weight · Dimensions · DG flag · Temperature requirements</text>
+
+  <!-- Arrows from intake to 3 modes -->
+  <!-- to Air -->
+  <line x1="560" y1="171" x2="258" y2="210" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.6"/>
+  <polygon points="254,208 264,206 261,216" fill="#3b82f6" opacity="0.6"/>
+  <!-- to Sea -->
+  <line x1="700" y1="171" x2="700" y2="210" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.6"/>
+  <polygon points="697,210 703,210 700,220" fill="#3b82f6" opacity="0.6"/>
+  <!-- to Road -->
+  <line x1="840" y1="171" x2="1142" y2="210" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.6"/>
+  <polygon points="1138,208 1148,206 1145,216" fill="#3b82f6" opacity="0.6"/>
+
+
+  <!-- ═══════════════════════════════ AIR COLUMN ═══════════════════════════════ -->
+  <!-- Column background -->
+  <rect x="30" y="218" width="440" height="500" rx="12" fill="url(#airGrad)" stroke="#2563eb" stroke-width="1.5" opacity="0.9" filter="url(#shadowSoft)"/>
+
+  <!-- Air header -->
+  <rect x="30" y="218" width="440" height="46" rx="10" fill="#1d4ed8" opacity="0.9"/>
+  <!-- Plane icon (simplified) -->
+  <g transform="translate(55,234)" fill="#ffffff" opacity="0.9">
+    <path d="M0,7 L18,0 L20,3 L8,8 L20,14 L18,17 L0,10 Z" transform="scale(0.9)"/>
+    <path d="M4,8 L-2,11 L-2,9 L4,8Z" transform="scale(0.9) translate(2,0)"/>
+  </g>
+  <text x="250" y="245" font-size="16" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="2">AIR FREIGHT</text>
+  <text x="250" y="260" font-size="9" fill="#bfdbfe" text-anchor="middle" letter-spacing="1">9 AIRPORTS · 10 CARRIERS · 2,900+ DG RECORDS</text>
+
+  <!-- Block A -->
+  <rect x="48" y="278" width="200" height="68" rx="7" fill="#172554" stroke="#3b82f6" stroke-width="1" opacity="0.95"/>
+  <rect x="48" y="278" width="200" height="4" rx="2" fill="#ef4444"/>
+  <text x="58" y="296" font-size="9" fill="#ef4444" font-weight="700" letter-spacing="1">BLOCK A</text>
+  <text x="58" y="311" font-size="11" font-weight="700" fill="#e2e8f0">Dangerous Goods</text>
+  <text x="58" y="325" font-size="9" fill="#94a3b8">49 CFR 172.101 • UN/NA numbers</text>
+  <text x="58" y="337" font-size="9" fill="#94a3b8">Pax/cargo/forbidden per commodity</text>
+
+  <!-- Block B -->
+  <rect x="262" y="278" width="192" height="68" rx="7" fill="#172554" stroke="#3b82f6" stroke-width="1" opacity="0.95"/>
+  <rect x="262" y="278" width="192" height="4" rx="2" fill="#f59e0b"/>
+  <text x="272" y="296" font-size="9" fill="#f59e0b" font-weight="700" letter-spacing="1">BLOCK B</text>
+  <text x="272" y="311" font-size="11" font-weight="700" fill="#e2e8f0">Special Cargo</text>
+  <text x="272" y="325" font-size="9" fill="#94a3b8">90 handling codes • Pharma / Temp</text>
+  <text x="272" y="337" font-size="9" fill="#94a3b8">Live animals • Valuables • Remains</text>
+
+  <!-- Block C -->
+  <rect x="48" y="358" width="200" height="68" rx="7" fill="#172554" stroke="#3b82f6" stroke-width="1" opacity="0.95"/>
+  <rect x="48" y="358" width="200" height="4" rx="2" fill="#10b981"/>
+  <text x="58" y="376" font-size="9" fill="#10b981" font-weight="700" letter-spacing="1">BLOCK C</text>
+  <text x="58" y="391" font-size="11" font-weight="700" fill="#e2e8f0">Airport Capabilities</text>
+  <text x="58" y="405" font-size="9" fill="#94a3b8">CDG · FRA · AMS · DXB · DOH</text>
+  <text x="58" y="417" font-size="9" fill="#94a3b8">HKG · SIN · JFK · TUN</text>
+
+  <!-- Block D -->
+  <rect x="262" y="358" width="192" height="68" rx="7" fill="#172554" stroke="#3b82f6" stroke-width="1" opacity="0.95"/>
+  <rect x="262" y="358" width="192" height="4" rx="2" fill="#8b5cf6"/>
+  <text x="272" y="376" font-size="9" fill="#8b5cf6" font-weight="700" letter-spacing="1">BLOCK D</text>
+  <text x="272" y="391" font-size="11" font-weight="700" fill="#e2e8f0">Carrier Capabilities</text>
+  <text x="272" y="405" font-size="9" fill="#94a3b8">10 carriers • Acceptance flags</text>
+  <text x="272" y="417" font-size="9" fill="#94a3b8">By cargo category &amp; route</text>
+
+  <!-- Block E -->
+  <rect x="48" y="438" width="200" height="68" rx="7" fill="#172554" stroke="#3b82f6" stroke-width="1" opacity="0.95"/>
+  <rect x="48" y="438" width="200" height="4" rx="2" fill="#06b6d4"/>
+  <text x="58" y="456" font-size="9" fill="#06b6d4" font-weight="700" letter-spacing="1">BLOCK E</text>
+  <text x="58" y="471" font-size="11" font-weight="700" fill="#e2e8f0">Aircraft Fit / ULD</text>
+  <text x="58" y="485" font-size="9" fill="#94a3b8">7 aircraft types • 10 ULD specs</text>
+  <text x="58" y="497" font-size="9" fill="#94a3b8">Door dims • Floor loading rules</text>
+
+  <!-- Block F -->
+  <rect x="262" y="438" width="192" height="68" rx="7" fill="#172554" stroke="#3b82f6" stroke-width="1" opacity="0.95"/>
+  <rect x="262" y="438" width="192" height="4" rx="2" fill="#f97316"/>
+  <text x="272" y="456" font-size="9" fill="#f97316" font-weight="700" letter-spacing="1">BLOCK F</text>
+  <text x="272" y="471" font-size="11" font-weight="700" fill="#e2e8f0">Border Controls</text>
+  <text x="272" y="485" font-size="9" fill="#94a3b8">CITES · SPS · Pharma permits</text>
+  <text x="272" y="497" font-size="9" fill="#94a3b8">9 jurisdictions • Import/Export rules</text>
+
+  <!-- Block H & I -->
+  <rect x="48" y="518" width="192" height="68" rx="7" fill="#172554" stroke="#3b82f6" stroke-width="1" opacity="0.95"/>
+  <rect x="48" y="518" width="192" height="4" rx="2" fill="#ec4899"/>
+  <text x="58" y="536" font-size="9" fill="#ec4899" font-weight="700" letter-spacing="1">BLOCK H</text>
+  <text x="58" y="551" font-size="11" font-weight="700" fill="#e2e8f0">Security &amp; Screening</text>
+  <text x="58" y="565" font-size="9" fill="#94a3b8">SPX·SCO·NSC·ACC3 status</text>
+  <text x="58" y="577" font-size="9" fill="#94a3b8">PLACI advance data rules</text>
+
+  <rect x="254" y="518" width="200" height="68" rx="7" fill="#172554" stroke="#3b82f6" stroke-width="1" opacity="0.95"/>
+  <rect x="254" y="518" width="200" height="4" rx="2" fill="#14b8a6"/>
+  <text x="264" y="536" font-size="9" fill="#14b8a6" font-weight="700" letter-spacing="1">BLOCK I</text>
+  <text x="264" y="551" font-size="11" font-weight="700" fill="#e2e8f0">Route &amp; Tracking</text>
+  <text x="264" y="565" font-size="9" fill="#94a3b8">Feasibility rules • 17 AWB milestones</text>
+  <text x="264" y="577" font-size="9" fill="#94a3b8">Route risk • Schedule inputs</text>
+
+  <!-- Air rates box -->
+  <rect x="48" y="598" width="406" height="40" rx="7" fill="#0f172a" stroke="#1d4ed8" stroke-width="1" opacity="0.95"/>
+  <text x="60" y="614" font-size="9" fill="#60a5fa" font-weight="700">RATE REFERENCE</text>
+  <text x="60" y="629" font-size="9" fill="#94a3b8">Asia→EU $3.6–9.0/kg · Asia→US $4.0–9.5/kg · Volumetric ÷6000 rule · Surcharge bands</text>
+
+  <!-- Airport DB box -->
+  <rect x="48" y="648" width="406" height="40" rx="7" fill="#0f172a" stroke="#1d4ed8" stroke-width="1" opacity="0.95"/>
+  <text x="60" y="664" font-size="9" fill="#60a5fa" font-weight="700">GLOBAL AIRPORTS DB</text>
+  <text x="60" y="679" font-size="9" fill="#94a3b8">IATA/ICAO codes · Geo-coordinates · Cargo tier · Scheduled service flag</text>
+
+
+  <!-- ═══════════════════════════════ SEA COLUMN ═══════════════════════════════ -->
+  <rect x="480" y="218" width="440" height="500" rx="12" fill="url(#seaGrad)" stroke="#0d9488" stroke-width="1.5" opacity="0.9" filter="url(#shadowSoft)"/>
+
+  <!-- Sea header -->
+  <rect x="480" y="218" width="440" height="46" rx="10" fill="#0f766e" opacity="0.9"/>
+  <!-- Wave icon -->
+  <g transform="translate(500,230)" stroke="#ffffff" stroke-width="1.8" fill="none" opacity="0.9">
+    <path d="M0,8 Q5,2 10,8 Q15,14 20,8"/>
+    <path d="M0,14 Q5,8 10,14 Q15,20 20,14" opacity="0.6"/>
+  </g>
+  <text x="700" y="245" font-size="16" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="2">OCEAN FREIGHT</text>
+  <text x="700" y="260" font-size="9" fill="#99f6e4" text-anchor="middle" letter-spacing="1">7 CARRIERS · 14 CONTAINER TYPES · 2,912 DG RECORDS</text>
+
+  <!-- SEA-A -->
+  <rect x="498" y="278" width="200" height="68" rx="7" fill="#042f2e" stroke="#0d9488" stroke-width="1" opacity="0.95"/>
+  <rect x="498" y="278" width="200" height="4" rx="2" fill="#ef4444"/>
+  <text x="508" y="296" font-size="9" fill="#ef4444" font-weight="700" letter-spacing="1">SEA-A</text>
+  <text x="508" y="311" font-size="11" font-weight="700" fill="#e2e8f0">DG Sea Acceptance</text>
+  <text x="508" y="325" font-size="9" fill="#94a3b8">2,912 DG records • UN/NA numbers</text>
+  <text x="508" y="337" font-size="9" fill="#94a3b8">Vessel stowage A–E categories</text>
+
+  <!-- SEA-B -->
+  <rect x="712" y="278" width="192" height="68" rx="7" fill="#042f2e" stroke="#0d9488" stroke-width="1" opacity="0.95"/>
+  <rect x="712" y="278" width="192" height="4" rx="2" fill="#06b6d4"/>
+  <text x="722" y="296" font-size="9" fill="#06b6d4" font-weight="700" letter-spacing="1">SEA-B</text>
+  <text x="722" y="311" font-size="11" font-weight="700" fill="#e2e8f0">Container Fit Rules</text>
+  <text x="722" y="325" font-size="9" fill="#94a3b8">14 types: Dry·Reefer·Tank·FR·OT</text>
+  <text x="722" y="337" font-size="9" fill="#94a3b8">FCL/LCL thresholds · Payloads</text>
+
+  <!-- SEA-C -->
+  <rect x="498" y="358" width="200" height="68" rx="7" fill="#042f2e" stroke="#0d9488" stroke-width="1" opacity="0.95"/>
+  <rect x="498" y="358" width="200" height="4" rx="2" fill="#10b981"/>
+  <text x="508" y="376" font-size="9" fill="#10b981" font-weight="700" letter-spacing="1">SEA-C</text>
+  <text x="508" y="391" font-size="11" font-weight="700" fill="#e2e8f0">Port Capability</text>
+  <text x="508" y="405" font-size="9" fill="#94a3b8">Reefer plugs · OOG handling</text>
+  <text x="508" y="417" font-size="9" fill="#94a3b8">Special cargo terminal flags</text>
+
+  <!-- SEA-D -->
+  <rect x="712" y="358" width="192" height="68" rx="7" fill="#042f2e" stroke="#0d9488" stroke-width="1" opacity="0.95"/>
+  <rect x="712" y="358" width="192" height="4" rx="2" fill="#8b5cf6"/>
+  <text x="722" y="376" font-size="9" fill="#8b5cf6" font-weight="700" letter-spacing="1">SEA-D</text>
+  <text x="722" y="391" font-size="11" font-weight="700" fill="#e2e8f0">Carrier / Trade Lanes</text>
+  <text x="722" y="405" font-size="9" fill="#94a3b8">Maersk·MSC·CMA·Hapag·COSCO</text>
+  <text x="722" y="417" font-size="9" fill="#94a3b8">ONE·Evergreen • 10 lane families</text>
+
+  <!-- SEA-F -->
+  <rect x="498" y="438" width="200" height="68" rx="7" fill="#042f2e" stroke="#0d9488" stroke-width="1" opacity="0.95"/>
+  <rect x="498" y="438" width="200" height="4" rx="2" fill="#f97316"/>
+  <text x="508" y="456" font-size="9" fill="#f97316" font-weight="700" letter-spacing="1">SEA-F</text>
+  <text x="508" y="471" font-size="11" font-weight="700" fill="#e2e8f0">Maritime Documents</text>
+  <text x="508" y="485" font-size="9" fill="#94a3b8">B/L · Certificates · Border gates</text>
+  <text x="508" y="497" font-size="9" fill="#94a3b8">Documentary requirements by jurisdiction</text>
+
+  <!-- SEA-I -->
+  <rect x="712" y="438" width="192" height="68" rx="7" fill="#042f2e" stroke="#0d9488" stroke-width="1" opacity="0.95"/>
+  <rect x="712" y="438" width="192" height="4" rx="2" fill="#14b8a6"/>
+  <text x="722" y="456" font-size="9" fill="#14b8a6" font-weight="700" letter-spacing="1">SEA-I</text>
+  <text x="722" y="471" font-size="11" font-weight="700" fill="#e2e8f0">Route &amp; Chokepoints</text>
+  <text x="722" y="485" font-size="9" fill="#94a3b8">Suez · Panama · Bab-el-Mandeb</text>
+  <text x="722" y="497" font-size="9" fill="#94a3b8">Schedule readiness gates</text>
+
+  <!-- Sea cost box -->
+  <rect x="498" y="518" width="406" height="68" rx="7" fill="#021a1a" stroke="#0d9488" stroke-width="1" opacity="0.95"/>
+  <rect x="498" y="518" width="406" height="4" rx="2" fill="#fbbf24"/>
+  <text x="508" y="536" font-size="9" fill="#fbbf24" font-weight="700" letter-spacing="1">SEA COST REFERENCE</text>
+  <text x="508" y="551" font-size="9" fill="#94a3b8">Market indices: Drewry WCI · Freightos FBX · Xeneta weekly updates</text>
+  <text x="508" y="565" font-size="9" fill="#94a3b8">Tunisia-specific: Maersk 2026 · CMA CGM 2024 · Hapag-Lloyd · OMMP port rates</text>
+  <text x="508" y="579" font-size="9" fill="#94a3b8">Surcharge types: BAF · CAF · PSS · LSS · GRI · THC · D&amp;D free-time rules</text>
+
+  <!-- Tunisia spotlight -->
+  <rect x="498" y="598" width="406" height="40" rx="7" fill="#021a1a" stroke="#22c55e" stroke-width="1.5" opacity="0.95"/>
+  <circle cx="516" cy="618" r="6" fill="#22c55e" opacity="0.9"/>
+  <text x="530" y="614" font-size="9" fill="#22c55e" font-weight="700">TUNISIA FOCUS</text>
+  <text x="530" y="629" font-size="9" fill="#94a3b8">TUN airport · Sfax/Tunis port surcharges · OHC/DHC charges · Europe–Maghreb corridors</text>
+
+  <!-- Sea readiness note -->
+  <rect x="498" y="648" width="406" height="40" rx="7" fill="#021a1a" stroke="#0d9488" stroke-width="1" opacity="0.95"/>
+  <text x="508" y="664" font-size="9" fill="#2dd4bf" font-weight="700">CONFIDENCE SYSTEM</text>
+  <text x="508" y="679" font-size="9" fill="#94a3b8">Every block has confidence rules • Cap at 40% without live quote • Cap at 60% without carrier confirm</text>
+
+
+  <!-- ═══════════════════════════════ ROAD COLUMN ═══════════════════════════════ -->
+  <rect x="930" y="218" width="440" height="500" rx="12" fill="url(#roadGrad)" stroke="#d97706" stroke-width="1.5" opacity="0.9" filter="url(#shadowSoft)"/>
+
+  <!-- Road header -->
+  <rect x="930" y="218" width="440" height="46" rx="10" fill="#b45309" opacity="0.9"/>
+  <!-- Truck icon -->
+  <g transform="translate(950,232)" fill="none" stroke="#ffffff" stroke-width="1.6" opacity="0.9">
+    <rect x="0" y="4" width="22" height="12" rx="1"/>
+    <rect x="14" y="0" width="12" height="8" rx="1"/>
+    <circle cx="4" cy="18" r="2.5"/>
+    <circle cx="18" cy="18" r="2.5"/>
+  </g>
+  <text x="1150" y="245" font-size="16" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="2">ROAD FREIGHT</text>
+  <text x="1150" y="260" font-size="9" fill="#fde68a" text-anchor="middle" letter-spacing="1">5,150 CORRIDOR RECORDS · 36 CARGO PROFILES · EU + ECMT COVERAGE</text>
+
+  <!-- ROAD-A -->
+  <rect x="948" y="278" width="200" height="68" rx="7" fill="#1c1107" stroke="#d97706" stroke-width="1" opacity="0.95"/>
+  <rect x="948" y="278" width="200" height="4" rx="2" fill="#ef4444"/>
+  <text x="958" y="296" font-size="9" fill="#ef4444" font-weight="700" letter-spacing="1">ROAD-A</text>
+  <text x="958" y="311" font-size="11" font-weight="700" fill="#e2e8f0">DG Road Acceptance</text>
+  <text x="958" y="325" font-size="9" fill="#94a3b8">ADR 2025 framework • Tunnel codes</text>
+  <text x="958" y="337" font-size="9" fill="#94a3b8">A·B·C·D·E meanings · Validation rules</text>
+
+  <!-- ROAD-B -->
+  <rect x="1162" y="278" width="192" height="68" rx="7" fill="#1c1107" stroke="#d97706" stroke-width="1" opacity="0.95"/>
+  <rect x="1162" y="278" width="192" height="4" rx="2" fill="#f59e0b"/>
+  <text x="1172" y="296" font-size="9" fill="#f59e0b" font-weight="700" letter-spacing="1">ROAD-B</text>
+  <text x="1172" y="311" font-size="11" font-weight="700" fill="#e2e8f0">Vehicle Fit</text>
+  <text x="1172" y="325" font-size="9" fill="#94a3b8">36 cargo profiles → vehicle types</text>
+  <text x="1172" y="337" font-size="9" fill="#94a3b8">EU Dir. 96/53 • Abnormal load gates</text>
+
+  <!-- ROAD-C -->
+  <rect x="948" y="358" width="200" height="68" rx="7" fill="#1c1107" stroke="#d97706" stroke-width="1" opacity="0.95"/>
+  <rect x="948" y="358" width="200" height="4" rx="2" fill="#10b981"/>
+  <text x="958" y="376" font-size="9" fill="#10b981" font-weight="700" letter-spacing="1">ROAD-C</text>
+  <text x="958" y="391" font-size="11" font-weight="700" fill="#e2e8f0">Corridor Viability</text>
+  <text x="958" y="405" font-size="9" fill="#94a3b8">5,150 country-pair records</text>
+  <text x="958" y="417" font-size="9" fill="#94a3b8">EU-liberalized · ECMT · Bilateral</text>
+
+  <!-- ROAD-C detail badge -->
+  <rect x="1162" y="358" width="192" height="68" rx="7" fill="#1c1107" stroke="#d97706" stroke-width="1" opacity="0.95"/>
+  <rect x="1162" y="358" width="192" height="4" rx="2" fill="#10b981"/>
+  <text x="1172" y="376" font-size="9" fill="#10b981" font-weight="700" letter-spacing="1">ROAD-C DETAILS</text>
+  <text x="1172" y="391" font-size="10" fill="#e2e8f0">Corridor Viability Types:</text>
+  <text x="1172" y="405" font-size="9" fill="#94a3b8">✓ Liberalized (EU/EU)</text>
+  <text x="1172" y="417" font-size="9" fill="#94a3b8">⚠ ECMT / Bilateral permit req'd</text>
+
+  <!-- ROAD-F -->
+  <rect x="948" y="438" width="200" height="68" rx="7" fill="#1c1107" stroke="#d97706" stroke-width="1" opacity="0.95"/>
+  <rect x="948" y="438" width="200" height="4" rx="2" fill="#f97316"/>
+  <text x="958" y="456" font-size="9" fill="#f97316" font-weight="700" letter-spacing="1">ROAD-F</text>
+  <text x="958" y="471" font-size="11" font-weight="700" fill="#e2e8f0">Documents &amp; Driver Rules</text>
+  <text x="958" y="485" font-size="9" fill="#94a3b8">CMR · TIR · EU 561/2006 hours</text>
+  <text x="958" y="497" font-size="9" fill="#94a3b8">Border buffer estimates</text>
+
+  <!-- ROAD corridor types detail -->
+  <rect x="1162" y="438" width="192" height="68" rx="7" fill="#1c1107" stroke="#d97706" stroke-width="1" opacity="0.95"/>
+  <rect x="1162" y="438" width="192" height="4" rx="2" fill="#ef4444"/>
+  <text x="1172" y="456" font-size="9" fill="#ef4444" font-weight="700" letter-spacing="1">RESTRICTIONS</text>
+  <text x="1172" y="471" font-size="10" fill="#e2e8f0">Russia ban • Intercontinental</text>
+  <text x="1172" y="485" font-size="9" fill="#94a3b8">88 restricted corridors flagged</text>
+  <text x="1172" y="497" font-size="9" fill="#94a3b8">UK context overlay (72 records)</text>
+
+  <!-- Road cost box -->
+  <rect x="948" y="518" width="406" height="68" rx="7" fill="#110a00" stroke="#d97706" stroke-width="1" opacity="0.95"/>
+  <rect x="948" y="518" width="406" height="4" rx="2" fill="#fbbf24"/>
+  <text x="958" y="536" font-size="9" fill="#fbbf24" font-weight="700" letter-spacing="1">ROAD COST REFERENCE</text>
+  <text x="958" y="551" font-size="9" fill="#94a3b8">IRU/Ti/Upply European Road Freight Rate Benchmark (Q4 2025)</text>
+  <text x="958" y="565" font-size="9" fill="#94a3b8">Eurotunnel LeShuttle freight prices · UK HGV levy/VED rates</text>
+  <text x="958" y="579" font-size="9" fill="#94a3b8">Abnormal-load surcharges · Fuel volatility note (EU Weekly Oil Bulletin)</text>
+
+  <!-- Country groups box -->
+  <rect x="948" y="598" width="406" height="88" rx="7" fill="#110a00" stroke="#d97706" stroke-width="1" opacity="0.95"/>
+  <text x="958" y="616" font-size="9" fill="#f59e0b" font-weight="700" letter-spacing="1">COUNTRY GROUP COVERAGE</text>
+  <!-- Country group tags -->
+  <rect x="958" y="622" width="58" height="16" rx="3" fill="#1d4ed8" opacity="0.7"/>
+  <text x="987" y="633" font-size="8" fill="#bfdbfe" text-anchor="middle">EU (27)</text>
+  <rect x="1022" y="622" width="62" height="16" rx="3" fill="#0f766e" opacity="0.7"/>
+  <text x="1053" y="633" font-size="8" fill="#99f6e4" text-anchor="middle">ECMT (43)</text>
+  <rect x="1090" y="622" width="50" height="16" rx="3" fill="#7c3aed" opacity="0.7"/>
+  <text x="1115" y="633" font-size="8" fill="#ddd6fe" text-anchor="middle">EEA (3)</text>
+  <rect x="1146" y="622" width="44" height="16" rx="3" fill="#991b1b" opacity="0.7"/>
+  <text x="1168" y="633" font-size="8" fill="#fecaca" text-anchor="middle">Russia</text>
+  <rect x="1196" y="622" width="50" height="16" rx="3" fill="#065f46" opacity="0.7"/>
+  <text x="1221" y="633" font-size="8" fill="#6ee7b7" text-anchor="middle">N.Africa</text>
+  <rect x="1252" y="622" width="68" height="16" rx="3" fill="#78350f" opacity="0.7"/>
+  <text x="1286" y="633" font-size="8" fill="#fde68a" text-anchor="middle">C.Asia / MENA</text>
+  <text x="958" y="658" font-size="9" fill="#94a3b8">W.Balkans · Switzerland · Türkiye · East Asia (5) · Western Asia / Middle East (12)</text>
+  <text x="958" y="673" font-size="9" fill="#94a3b8">Intercontinental "not-practical" anti-nonsense gates for road requests</text>
+
+
+  <!-- ═══════════════════════════════ OUTPUT / USE CASE ROW ═══════════════════════════════ -->
+  <!-- Arrows up from columns to output -->
+  <line x1="250" y1="718" x2="250" y2="755" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.5"/>
+  <line x1="700" y1="718" x2="700" y2="755" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.5"/>
+  <line x1="1150" y1="718" x2="1150" y2="755" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.5"/>
+
+  <!-- Convergence line -->
+  <line x1="250" y1="765" x2="1150" y2="765" stroke="#94a3b8" stroke-width="1.5" opacity="0.4"/>
+  <line x1="700" y1="765" x2="700" y2="775" stroke="#94a3b8" stroke-width="1.5" opacity="0.4"/>
+  <polygon points="697,775 703,775 700,783" fill="#94a3b8" opacity="0.4"/>
+
+  <!-- Output section -->
+  <rect x="30" y="785" width="1340" height="95" rx="10" fill="#0f172a" stroke="#334155" stroke-width="1" filter="url(#shadowSoft)"/>
+  <rect x="30" y="785" width="1340" height="5" rx="3" fill="#3b82f6" opacity="0.7"/>
+
+  <text x="700" y="808" font-size="12" font-weight="800" fill="#e2e8f0" text-anchor="middle" letter-spacing="2">USE CASES — READINESS REPORT OUTPUT</text>
+
+  <!-- Use case pills -->
+  <!-- 1 -->
+  <rect x="55" y="818" width="175" height="48" rx="8" fill="#1e293b" stroke="#ef4444" stroke-width="1"/>
+  <rect x="55" y="818" width="175" height="4" rx="3" fill="#ef4444"/>
+  <text x="142" y="836" font-size="9" font-weight="700" fill="#fca5a5" text-anchor="middle">DG ACCEPTANCE CHECK</text>
+  <text x="142" y="849" font-size="8" fill="#94a3b8" text-anchor="middle">Is this commodity bookable?</text>
+  <text x="142" y="861" font-size="8" fill="#94a3b8" text-anchor="middle">Hard gate vs. restriction flags</text>
+
+  <!-- 2 -->
+  <rect x="245" y="818" width="175" height="48" rx="8" fill="#1e293b" stroke="#06b6d4" stroke-width="1"/>
+  <rect x="245" y="818" width="175" height="4" rx="3" fill="#06b6d4"/>
+  <text x="332" y="836" font-size="9" font-weight="700" fill="#67e8f9" text-anchor="middle">PHYSICAL FIT</text>
+  <text x="332" y="849" font-size="8" fill="#94a3b8" text-anchor="middle">Right aircraft / container / truck?</text>
+  <text x="332" y="861" font-size="8" fill="#94a3b8" text-anchor="middle">Dimensions · Weight · ULD fit</text>
+
+  <!-- 3 -->
+  <rect x="435" y="818" width="175" height="48" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="1"/>
+  <rect x="435" y="818" width="175" height="4" rx="3" fill="#10b981"/>
+  <text x="522" y="836" font-size="9" font-weight="700" fill="#6ee7b7" text-anchor="middle">CORRIDOR VIABILITY</text>
+  <text x="522" y="849" font-size="8" fill="#94a3b8" text-anchor="middle">Can this route be operated?</text>
+  <text x="522" y="861" font-size="8" fill="#94a3b8" text-anchor="middle">Permit types · Restrictions</text>
+
+  <!-- 4 -->
+  <rect x="625" y="818" width="155" height="48" rx="8" fill="#1e293b" stroke="#fbbf24" stroke-width="1"/>
+  <rect x="625" y="818" width="155" height="4" rx="3" fill="#fbbf24"/>
+  <text x="702" y="836" font-size="9" font-weight="700" fill="#fde68a" text-anchor="middle">COST ESTIMATION</text>
+  <text x="702" y="849" font-size="8" fill="#94a3b8" text-anchor="middle">Planning rate ranges</text>
+  <text x="702" y="861" font-size="8" fill="#94a3b8" text-anchor="middle">Surcharges · Local charges</text>
+
+  <!-- 5 -->
+  <rect x="795" y="818" width="175" height="48" rx="8" fill="#1e293b" stroke="#f97316" stroke-width="1"/>
+  <rect x="795" y="818" width="175" height="4" rx="3" fill="#f97316"/>
+  <text x="882" y="836" font-size="9" font-weight="700" fill="#fdba74" text-anchor="middle">COMPLIANCE &amp; DOCS</text>
+  <text x="882" y="849" font-size="8" fill="#94a3b8" text-anchor="middle">Permits · Certificates · B/L</text>
+  <text x="882" y="861" font-size="8" fill="#94a3b8" text-anchor="middle">Customs transit · Security status</text>
+
+  <!-- 6 -->
+  <rect x="985" y="818" width="175" height="48" rx="8" fill="#1e293b" stroke="#8b5cf6" stroke-width="1"/>
+  <rect x="985" y="818" width="175" height="4" rx="3" fill="#8b5cf6"/>
+  <text x="1072" y="836" font-size="9" font-weight="700" fill="#c4b5fd" text-anchor="middle">CARRIER SELECTION</text>
+  <text x="1072" y="849" font-size="8" fill="#94a3b8" text-anchor="middle">Carrier capability vs. cargo</text>
+  <text x="1072" y="861" font-size="8" fill="#94a3b8" text-anchor="middle">Route coverage · Special cargo</text>
+
+  <!-- 7 -->
+  <rect x="1175" y="818" width="175" height="48" rx="8" fill="#1e293b" stroke="#14b8a6" stroke-width="1"/>
+  <rect x="1175" y="818" width="175" height="4" rx="3" fill="#14b8a6"/>
+  <text x="1262" y="836" font-size="9" font-weight="700" fill="#5eead4" text-anchor="middle">TRACKING READINESS</text>
+  <text x="1262" y="849" font-size="8" fill="#94a3b8" text-anchor="middle">17 AWB milestones · Chokepoints</text>
+  <text x="1262" y="861" font-size="8" fill="#94a3b8" text-anchor="middle">Schedule risk · Route risk flags</text>
+
+  <!-- Footer note -->
+  <text x="700" y="893" font-size="8.5" fill="#475569" text-anchor="middle">All datasets are R&amp;D / planning reference — not certified production compliance data. Live quotes, carrier APIs, and authority validation required before operational use.</text>
+</svg>

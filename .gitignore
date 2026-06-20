@@ -27,11 +27,9 @@ skills-lock.json
 tmp/
 *.log
 
-# Docs (WIP — proper documentation to be added later)
-docs/
+
 
 # OS/editor
 .DS_Store
 .idea/
 .vscode/
-
