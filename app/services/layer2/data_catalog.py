@@ -6,7 +6,9 @@ Two things live here:
   that describes every JSON file (mode, block, role, shape);
 * the loaded store (``init_data`` / ``load_json_asset`` / ``get_main_asset``):
   the catalogue and the data assets the connectors use, read from disk **once**
-  per process and then shared read-only (S1).
+  per process and then shared read-only (S1). "Read-only" is enforced: every
+  payload is frozen when it is loaded (``FrozenDict`` / ``FrozenList``), so one
+  run can never change what another run reads.
 
 The data root is absolute (``app.core.data_paths``), so the working directory
 does not matter, and ``init_data`` refuses to load when a required asset is
@@ -67,6 +69,100 @@ MAIN_DATASET_FILENAMES = frozenset(
 
 class DataLoadError(RuntimeError):
     """The data root or a required data asset is missing or does not parse."""
+
+
+# --------------------------------------------------------------------------- #
+# Frozen containers: the shared data cannot be modified
+# --------------------------------------------------------------------------- #
+class FrozenDataError(TypeError):
+    """An attempt to modify the shared, read-only Layer 2 data."""
+
+
+def _refuse_mutation(self: Any, *_args: Any, **_kwargs: Any) -> Any:
+    raise FrozenDataError(
+        f"Layer 2 data is shared between runs and read-only: this {type(self).__name__} "
+        "cannot be modified. Work on your own copy (dict(x), list(x), copy.deepcopy(x))."
+    )
+
+
+class FrozenDict(dict):
+    """A ``dict`` that refuses every modification.
+
+    It stays a real ``dict`` on purpose: ``isinstance(x, dict)``, ``json.dumps``,
+    ``dict(x)``, ``x.get`` and iteration behave exactly as for a plain dict, so
+    connectors read it unchanged. Reading costs nothing extra (no read method is
+    overridden). ``dict(x)`` / ``x.copy()`` / ``copy.copy(x)`` give a plain,
+    modifiable shallow copy (its nested values are still frozen);
+    ``copy.deepcopy(x)`` gives a plain, fully modifiable copy.
+    """
+
+    __slots__ = ()
+
+    __setitem__ = _refuse_mutation
+    __delitem__ = _refuse_mutation
+    __ior__ = _refuse_mutation
+    clear = _refuse_mutation
+    pop = _refuse_mutation
+    popitem = _refuse_mutation
+    setdefault = _refuse_mutation
+    update = _refuse_mutation
+
+    def __reduce__(self) -> tuple[Any, ...]:
+        # copy.copy, copy.deepcopy and pickle all rebuild an object from this:
+        # they give back a plain dict (deep-copied by deepcopy and pickle).
+        return (dict, (dict(self),))
+
+
+class FrozenList(list):
+    """A ``list`` that refuses every modification. See ``FrozenDict``.
+
+    Slices, ``list(x)``, ``sorted(x)``, ``x + other`` and ``x.copy()`` give
+    plain, modifiable lists.
+    """
+
+    __slots__ = ()
+
+    __setitem__ = _refuse_mutation
+    __delitem__ = _refuse_mutation
+    __iadd__ = _refuse_mutation
+    __imul__ = _refuse_mutation
+    append = _refuse_mutation
+    clear = _refuse_mutation
+    extend = _refuse_mutation
+    insert = _refuse_mutation
+    pop = _refuse_mutation
+    remove = _refuse_mutation
+    reverse = _refuse_mutation
+    sort = _refuse_mutation
+
+    def __reduce__(self) -> tuple[Any, ...]:
+        # As for FrozenDict: copies and pickles are plain lists.
+        return (list, (list(self),))
+
+
+# JSON leaves: immutable already. Checked inline in ``freeze`` so that the
+# millions of leaves of the data set do not cost a function call each.
+_JSON_LEAF_TYPES = frozenset({str, int, float, bool, type(None)})
+
+
+def freeze(value: Any) -> Any:
+    """Return a deeply frozen copy of parsed JSON (dicts and lists, any depth).
+
+    Scalars (str, int, float, bool, None) are immutable already and are returned
+    as they are. Called once per asset at load time, never per request.
+    """
+    if isinstance(value, dict):
+        return FrozenDict(
+            {
+                key: item if type(item) in _JSON_LEAF_TYPES else freeze(item)
+                for key, item in value.items()
+            }
+        )
+    if isinstance(value, list):
+        return FrozenList(
+            [item if type(item) in _JSON_LEAF_TYPES else freeze(item) for item in value]
+        )
+    return value
 
 
 @dataclass(frozen=True)
@@ -274,6 +370,8 @@ def _describe_asset(logical: Path, inspection: _Inspection) -> DataAsset:
         notes,
     ) = inspection
     status = connector_status_for(block_id, logical)
+    # A DataAsset is shared too (get_main_asset / find_assets hand the same
+    # object to every caller): its list fields are frozen like the payloads.
     return DataAsset(
         path=logical.as_posix(),
         mode=mode,
@@ -281,12 +379,12 @@ def _describe_asset(logical: Path, inspection: _Inspection) -> DataAsset:
         role=role,
         purpose=_purpose_for(logical, block_id, role),
         top_type=top_type,
-        top_keys=top_keys,
+        top_keys=FrozenList(top_keys),
         list_key=list_key,
         record_count=record_count,
-        first_record_keys=first_record_keys,
+        first_record_keys=FrozenList(first_record_keys),
         connector_status=status,
-        notes=notes + _notes_for(block_id, role, top_type),
+        notes=FrozenList(notes + _notes_for(block_id, role, top_type)),
     )
 
 
@@ -313,8 +411,11 @@ class LoadedData:
 
     root: Path
     catalog: tuple[DataAsset, ...]
+    # block id -> the asset of its main dataset. A FrozenDict.
     main_assets: dict[str, DataAsset]
-    # logical path -> parsed JSON. Treat the payloads as read-only.
+    # logical path -> parsed JSON, deeply frozen (FrozenDict / FrozenList): a
+    # payload cannot be modified. The mapping itself is the store's own index;
+    # only ``load_json_asset`` adds to it (a late-loaded file), under the lock.
     payloads: dict[str, Any]
     # logical paths that were required at load time (connector-declared + main).
     required_paths: frozenset[str]
@@ -427,11 +528,13 @@ def _load(root: Path) -> LoadedData:
         )
 
     # Keep only what is used at request time; the rest of the 37 MB is dropped.
-    used_payloads = {key: payloads[key] for key in required}
+    # What is kept is frozen here, once: every run reads the same objects and
+    # none of them can modify them.
+    used_payloads = {key: freeze(payloads[key]) for key in required}
     return LoadedData(
         root=root,
         catalog=tuple(catalog),
-        main_assets=main_assets,
+        main_assets=FrozenDict(main_assets),
         payloads=used_payloads,
         required_paths=frozenset(required),
     )
@@ -530,7 +633,8 @@ def load_json_asset(path: str | Path) -> Any:
     a missing or invalid file raises ``OSError`` / ``json.JSONDecodeError`` so the
     caller reports the block as unknown (never as clear).
 
-    The returned object is shared: do not mutate it.
+    The returned object is shared by every run and frozen: modifying it (at
+    any depth) raises ``FrozenDataError``. Copy what you need to change.
     """
     loaded = get_loaded_data()
     key = logical_data_path(path, loaded.root)
@@ -541,7 +645,7 @@ def load_json_asset(path: str | Path) -> Any:
     with _LOAD_LOCK:
         if key in loaded.payloads:
             return loaded.payloads[key]
-        payload = _read_json_file(resolve_data_path(path, loaded.root))
+        payload = freeze(_read_json_file(resolve_data_path(path, loaded.root)))
         loaded.payloads[key] = payload
         logger.warning(
             "layer2.data_asset_loaded_late path=%s (not declared as a connector "
