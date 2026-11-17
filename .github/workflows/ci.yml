@@ -1,0 +1,43 @@
+name: CI
+
+# Offline test suite on every push and pull request.
+# No secrets and no network services are needed: the live-LLM tests are
+# deselected, and the suite never talks to Postgres, Redis or an LLM provider.
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  offline-tests:
+    name: Offline suite (Python 3.12)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      # Same switches as a clean checkout without a .env file, stated explicitly.
+      APP_ENV: local
+      LANGSMITH_TRACING: "false"
+      LLM_PROVIDER: none
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install uv and Python 3.12
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          version: "0.13.8"
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Install the locked dependencies
+        run: uv sync --frozen
+
+      - name: Run the offline suite
+        run: uv run --frozen python -m pytest -q -m "not live_llm"
