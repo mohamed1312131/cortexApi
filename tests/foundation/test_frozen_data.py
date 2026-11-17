@@ -317,7 +317,12 @@ def test_freeze_helper():
 
     assert frozen == plain
     assert freeze(frozen) == frozen  # freezing again changes nothing
-    assert [type(node) for node in _walk(frozen)] == [FrozenDict, FrozenList, FrozenDict, FrozenList]
+    assert [type(node) for node in _walk(frozen)] == [
+        FrozenDict,
+        FrozenList,
+        FrozenDict,
+        FrozenList,
+    ]
     assert all(type(node) in (dict, list) for node in _walk(plain))  # the input is untouched
     for scalar in ("text", 3, 1.5, True, None):
         assert freeze(scalar) is scalar

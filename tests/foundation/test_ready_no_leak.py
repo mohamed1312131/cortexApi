@@ -235,7 +235,10 @@ def test_timeout_is_logged_without_crashing(dependencies_up, monkeypatch, caplog
         ),
         ("redis://:pw-two@cache:6379/0", "redis://***@cache:6379/0"),
         ("rediss://only-user@cache:6379/0", "rediss://***@cache:6379/0"),
-        ("see https://sqlalche.me/e/20/e3q8 for help", "see https://sqlalche.me/e/20/e3q8 for help"),
+        (
+            "see https://sqlalche.me/e/20/e3q8 for help",
+            "see https://sqlalche.me/e/20/e3q8 for help",
+        ),
         (
             "host=db port=5432 user=u password=pw-three dbname=n",
             "host=db port=5432 user=u password=*** dbname=n",

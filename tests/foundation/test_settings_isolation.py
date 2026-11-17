@@ -239,7 +239,9 @@ def test_a_developer_env_file_does_not_change_test_results(scenario, tmp_path):
     """Copy the application and tests/conftest.py next to a synthetic .env and
     run a small test session there, with nothing pinned from the outside."""
     checkout = tmp_path / "checkout"
-    shutil.copytree(REPO_ROOT / "app", checkout / "app", ignore=shutil.ignore_patterns("__pycache__"))
+    shutil.copytree(
+        REPO_ROOT / "app", checkout / "app", ignore=shutil.ignore_patterns("__pycache__")
+    )
     (checkout / "tests").mkdir()
     shutil.copy(REPO_ROOT / "tests" / "conftest.py", checkout / "tests" / "conftest.py")
     shutil.copy(REPO_ROOT / "pyproject.toml", checkout / "pyproject.toml")
