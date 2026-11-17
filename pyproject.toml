@@ -1,3 +1,41 @@
+[project]
+name = "cortex-api"
+version = "0.1.0"
+description = "Cortex shipment-readiness API (FastAPI + LangGraph)"
+requires-python = ">=3.12,<3.13"
+# Direct dependencies are pinned exactly; uv.lock pins the full tree.
+# Change a pin here, then run `uv lock` and commit both files.
+dependencies = [
+    "fastapi==0.136.3",
+    "uvicorn[standard]==0.32.1",
+    "langgraph==1.2.22",
+    "langgraph-checkpoint-postgres==3.2.1",
+    "psycopg[binary]==3.3.9",
+    "langchain==1.5.0",
+    "langchain-core==1.8.1",
+    "langchain-openai==1.8.0",
+    "langchain-ollama==1.1.0",
+    "langchain-google-genai==4.5.0",
+    "langsmith==0.14.17",
+    "SQLAlchemy==2.0.36",
+    "asyncpg==0.30.0",
+    "greenlet==3.1.1",
+    "pydantic==2.14.3",
+    "pydantic-settings==2.6.1",
+    "redis==5.2.1",
+    "alembic==1.14.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx==0.28.1",
+    "pytest==8.3.4",
+]
+
+[tool.uv]
+# This repo is an application, not an installable package.
+package = false
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]

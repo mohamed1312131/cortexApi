@@ -18,6 +18,7 @@ from app.schemas import (
     Unknown,
     ValidatedShipmentRequest,
 )
+from app.services.layer2.data_catalog import load_json_asset
 from app.services.layer2.provider_config import provenance_for
 
 BLOCK_ID = "SEA-C"
@@ -51,8 +52,7 @@ _DATA_FIELDS = [
 @lru_cache(maxsize=1)
 def _load_ports() -> list[dict[str, Any]]:
     try:
-        with _DATA_PATH.open(encoding="utf-8") as f:
-            payload = json.load(f)
+        payload = load_json_asset(_DATA_PATH)
     except (OSError, json.JSONDecodeError):
         return []
 

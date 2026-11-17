@@ -5,7 +5,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     app_env: str = "local"
-    api_port: int = 8000
+    # 8100 by default: the legacy Backend keeps 8000 (D15).
+    api_port: int = 8100
     # Number of uvicorn worker processes (read by the Docker/runtime command).
     # 1 for local dev; raise (e.g. 4) for production-like multi-worker runtime.
     cortex_api_workers: int = 1
@@ -19,6 +20,14 @@ class Settings(BaseSettings):
     cortex_redis_fallback_enabled: bool = True
     database_url: str = "postgresql+asyncpg://cortex:cortex@postgres:5432/cortex"
     redis_url: str = "redis://redis:6379/0"
+    # Folder that contains the air/, sea/ and road/ data files. Empty = the
+    # repository's own data/ folder, resolved from the package location (never
+    # from the working directory). See app/core/data_paths.py.
+    cortex_data_dir: str = ""
+    # Temporary API-key auth (replaced by the tenants table in Wave 2).
+    # JSON object {"<sha256 hex of the API key>": "<tenant_id>"}. Raw keys are
+    # never stored. Empty is only accepted when APP_ENV=local (auth is then off).
+    cortex_api_keys_json: str = ""
     orchestrator_cache_enabled: bool = True
     orchestrator_cache_ttl_seconds: int = 60 * 60 * 24 * 7
     full_response_include_artifacts: bool = False
@@ -53,6 +62,8 @@ class Settings(BaseSettings):
     ollama_layer3_model: str = ""
     ollama_layer4_model: str = ""
     ollama_temperature: float = 0.0
+    # LangSmith sends prompts and outputs to a third party: off unless a
+    # deployment turns it on explicitly (S4).
     langsmith_tracing: bool = False
     langsmith_api_key: str = ""
     langsmith_project: str = "cortex-api"

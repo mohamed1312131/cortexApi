@@ -18,7 +18,7 @@ from app.schemas import (
     Unknown,
     ValidatedShipmentRequest,
 )
-from app.services.layer2.data_catalog import get_main_asset
+from app.services.layer2.data_catalog import get_main_asset, load_json_asset
 from app.services.layer2.provider_config import provenance_for
 
 BLOCK_ID = "SEA-I"
@@ -48,8 +48,7 @@ def _data_path() -> Path:
 @lru_cache(maxsize=1)
 def _load_dataset() -> dict[str, Any]:
     try:
-        with _data_path().open(encoding="utf-8") as f:
-            payload = json.load(f)
+        payload = load_json_asset(_data_path())
     except (OSError, json.JSONDecodeError):
         return {}
 

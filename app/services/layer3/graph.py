@@ -42,7 +42,9 @@ from app.services.tracing import agent_run_recorder
 #
 # The Critic is advisory; the Safety Gate is authoritative and runs regardless of
 # whether the Critic ran. The revision loop is bounded by max_revisions. Models are
-# injectable for testing. This graph is NOT wired into any route or orchestrator.
+# injectable for testing. The graph is run through run_layer3(), which is called by
+# POST /api/v1/layer3/reason (app/api/v1/routes_layer3.py) and by the full
+# orchestrator (app/services/orchestrator/full_graph.py).
 
 _SERIOUS_GATE_SEVERITIES = {"blocking", "high", "critical"}
 _DG_PROFILES = {"dangerous_goods", "lithium_battery"}

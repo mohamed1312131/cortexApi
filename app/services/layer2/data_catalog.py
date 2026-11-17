@@ -1,8 +1,72 @@
+"""Layer 2 data catalogue and the process-wide loaded data store.
+
+Two things live here:
+
+* the catalogue builder (``build_data_catalog``): a pure scan of the data root
+  that describes every JSON file (mode, block, role, shape);
+* the loaded store (``init_data`` / ``load_json_asset`` / ``get_main_asset``):
+  the catalogue and the data assets the connectors use, read from disk **once**
+  per process and then shared read-only (S1).
+
+The data root is absolute (``app.core.data_paths``), so the working directory
+does not matter, and ``init_data`` refuses to load when a required asset is
+missing or does not parse (S2).
+
+Paths stored on ``DataAsset.path`` and used as store keys are *logical* paths
+(``data/<mode>/<file>``): they identify an asset and are what connectors put in
+``Provenance.source``. They are never absolute machine paths.
+"""
+
 from __future__ import annotations
 
+import importlib
 import json
+import pkgutil
+import threading
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Any
+
+from app.core.data_paths import (
+    DATA_DIR_ENV,
+    LOGICAL_PREFIX,
+    data_root,
+    logical_data_path,
+    resolve_data_path,
+)
+from app.core.logging import get_logger
+
+logger = get_logger(__name__)
+
+
+# File names (lower case) of the main dataset of each block.
+MAIN_DATASET_FILENAMES = frozenset(
+    {
+        "road_c_corridor_viability.json",
+        "road_b_vehicle_fit_profiles.json",
+        "road_f_document_requirements.json",
+        "sea_a_dg_sea_acceptance.json",
+        "sea_b_container_fit_rules.json",
+        "sea_c_port_capability.json",
+        "sea_d_carrier_trade_lane_reference.json",
+        "sea_f_maritime_documents_border_gates.json",
+        "sea_i_chokepoints_schedule_readiness.json",
+        "sea_cost_reference.json",
+        "road_cost_reference.json",
+        "cortex_air_block_a_dg_records_repaired.json",
+        "cortex_air_block_b_dataset.json",
+        "cortex_air_block_c_dataset.json",
+        "cortex_air_block_d_dataset.json",
+        "cortex_air_block_e_dataset.json",
+        "cortex_air_block_f_dataset.json",
+        "cortex_air_block_h_dataset.json",
+        "cortex_air_block_i_dataset.json",
+    }
+)
+
+
+class DataLoadError(RuntimeError):
+    """The data root or a required data asset is missing or does not parse."""
 
 
 @dataclass(frozen=True)
@@ -72,28 +136,7 @@ def infer_block_id_from_filename(path: Path) -> str | None:
 
 def infer_role_from_filename(path: Path) -> str:
     name = path.name.lower()
-    main_datasets = {
-        "road_c_corridor_viability.json",
-        "road_b_vehicle_fit_profiles.json",
-        "road_f_document_requirements.json",
-        "sea_a_dg_sea_acceptance.json",
-        "sea_b_container_fit_rules.json",
-        "sea_c_port_capability.json",
-        "sea_d_carrier_trade_lane_reference.json",
-        "sea_f_maritime_documents_border_gates.json",
-        "sea_i_chokepoints_schedule_readiness.json",
-        "sea_cost_reference.json",
-        "road_cost_reference.json",
-        "cortex_air_block_a_dg_records_repaired.json",
-        "cortex_air_block_b_dataset.json",
-        "cortex_air_block_c_dataset.json",
-        "cortex_air_block_d_dataset.json",
-        "cortex_air_block_e_dataset.json",
-        "cortex_air_block_f_dataset.json",
-        "cortex_air_block_h_dataset.json",
-        "cortex_air_block_i_dataset.json",
-    }
-    if name in main_datasets:
+    if name in MAIN_DATASET_FILENAMES:
         return "main"
 
     if name in {"air_reference.json", "air_airports.json", "air_carriers.json"}:
@@ -165,16 +208,25 @@ def connector_status_for(block_id: str | None, path: Path) -> str:
     return status_by_block.get(block_id, "planned")
 
 
-def inspect_json_file(
-    path: Path,
-) -> tuple[str, list[str], str | None, int | None, list[str], list[str]]:
-    notes: list[str] = []
+_Inspection = tuple[str, list[str], str | None, int | None, list[str], list[str]]
+
+
+def _read_json_file(path: Path) -> Any:
+    """Read and parse one JSON file. Raises ``OSError`` / ``json.JSONDecodeError``."""
+    with path.open(encoding="utf-8") as f:
+        return json.load(f)
+
+
+def inspect_json_file(path: Path) -> _Inspection:
     try:
-        with path.open(encoding="utf-8") as f:
-            payload = json.load(f)
+        payload = _read_json_file(path)
     except (OSError, json.JSONDecodeError) as exc:
         return "invalid", [], None, None, [], [f"json inspection failed: {exc}"]
+    return _inspect_payload(payload)
 
+
+def _inspect_payload(payload: Any) -> _Inspection:
+    notes: list[str] = []
     if isinstance(payload, dict):
         top_keys = list(payload.keys())[:30]
         list_key = None
@@ -198,41 +250,305 @@ def inspect_json_file(
     return "scalar", [], None, None, [], notes
 
 
-def build_data_catalog(root: Path = Path("data")) -> list[DataAsset]:
-    assets: list[DataAsset] = []
+def _iter_json_files(root: Path) -> list[tuple[Path, Path]]:
+    """Return ``(absolute path, logical path)`` for every JSON file under the root."""
+    files: list[tuple[Path, Path]] = []
     for path in sorted(root.rglob("*.json")):
-        if any(part.startswith(".") for part in path.parts):
+        relative = path.relative_to(root)
+        if any(part.startswith(".") for part in relative.parts):
             continue
+        files.append((path, Path(LOGICAL_PREFIX) / relative))
+    return files
 
-        mode = infer_mode_from_path(path)
-        block_id = infer_block_id_from_filename(path)
-        role = infer_role_from_filename(path)
-        (
-            top_type,
-            top_keys,
-            list_key,
-            record_count,
-            first_record_keys,
-            notes,
-        ) = inspect_json_file(path)
-        status = connector_status_for(block_id, path)
-        assets.append(
-            DataAsset(
-                path=path.as_posix(),
-                mode=mode,
-                block_id=block_id,
-                role=role,
-                purpose=_purpose_for(path, block_id, role),
-                top_type=top_type,
-                top_keys=top_keys,
-                list_key=list_key,
-                record_count=record_count,
-                first_record_keys=first_record_keys,
-                connector_status=status,
-                notes=notes + _notes_for(block_id, role, top_type),
-            )
+
+def _describe_asset(logical: Path, inspection: _Inspection) -> DataAsset:
+    mode = infer_mode_from_path(logical)
+    block_id = infer_block_id_from_filename(logical)
+    role = infer_role_from_filename(logical)
+    (
+        top_type,
+        top_keys,
+        list_key,
+        record_count,
+        first_record_keys,
+        notes,
+    ) = inspection
+    status = connector_status_for(block_id, logical)
+    return DataAsset(
+        path=logical.as_posix(),
+        mode=mode,
+        block_id=block_id,
+        role=role,
+        purpose=_purpose_for(logical, block_id, role),
+        top_type=top_type,
+        top_keys=top_keys,
+        list_key=list_key,
+        record_count=record_count,
+        first_record_keys=first_record_keys,
+        connector_status=status,
+        notes=notes + _notes_for(block_id, role, top_type),
+    )
+
+
+def build_data_catalog(root: Path | None = None) -> list[DataAsset]:
+    """Scan the data root from disk and describe every JSON file.
+
+    This reads every file. Request-time code must not call it: use
+    ``get_catalog`` / ``find_assets`` / ``get_main_asset``, which read the
+    catalogue loaded once by ``init_data``.
+    """
+    base = Path(root).resolve() if root is not None else data_root()
+    return [
+        _describe_asset(logical, inspect_json_file(path))
+        for path, logical in _iter_json_files(base)
+    ]
+
+
+# --------------------------------------------------------------------------- #
+# Loaded store: catalogue + used assets, read once per process (S1, S2)
+# --------------------------------------------------------------------------- #
+@dataclass(frozen=True)
+class LoadedData:
+    """Everything Layer 2 needs from disk, loaded once and shared read-only."""
+
+    root: Path
+    catalog: tuple[DataAsset, ...]
+    main_assets: dict[str, DataAsset]
+    # logical path -> parsed JSON. Treat the payloads as read-only.
+    payloads: dict[str, Any]
+    # logical paths that were required at load time (connector-declared + main).
+    required_paths: frozenset[str]
+
+
+_LOADED: LoadedData | None = None
+_LOAD_ERROR: str | None = None
+_LOAD_LOCK = threading.RLock()
+
+
+def _connector_modules() -> list[Any]:
+    from app.services.layer2 import connectors
+
+    return [
+        importlib.import_module(f"{connectors.__name__}.{info.name}")
+        for info in pkgutil.iter_modules(connectors.__path__)
+    ]
+
+
+def connector_declared_paths() -> dict[str, list[str]]:
+    """Logical path -> where it is declared, for every data file a connector names.
+
+    Connectors declare their files as module-level ``Path`` constants
+    (``DEFAULT_DATA_PATH``, ``_DATA_PATH``, ``*_RULES_PATH`` ...). Those constants
+    are the list of "used" assets that ``init_data`` loads and requires.
+    """
+    declared: dict[str, list[str]] = {}
+    for module in _connector_modules():
+        short_name = module.__name__.rsplit(".", 1)[-1]
+        for name, value in sorted(vars(module).items()):
+            if isinstance(value, Path):
+                declared.setdefault(logical_data_path(value), []).append(
+                    f"{short_name}.{name}"
+                )
+    return declared
+
+
+def _registry_block_ids() -> set[str]:
+    from app.services.layer2.registry import BLOCK_REGISTRY
+
+    return set(BLOCK_REGISTRY)
+
+
+def _load(root: Path) -> LoadedData:
+    if not root.is_dir():
+        raise DataLoadError(
+            f"Cortex data root does not exist or is not a directory: {root} "
+            f"(set {DATA_DIR_ENV} to the folder that contains air/, sea/ and road/)."
         )
-    return assets
+
+    declared = connector_declared_paths()
+    block_ids = _registry_block_ids()
+
+    catalog: list[DataAsset] = []
+    payloads: dict[str, Any] = {}
+    parse_errors: dict[str, str] = {}
+    for path, logical in _iter_json_files(root):
+        key = logical.as_posix()
+        try:
+            payload = _read_json_file(path)
+        except (OSError, json.JSONDecodeError) as exc:
+            parse_errors[key] = str(exc)
+            inspection: _Inspection = (
+                "invalid", [], None, None, [], [f"json inspection failed: {exc}"],
+            )
+        else:
+            inspection = _inspect_payload(payload)
+            payloads[key] = payload
+        catalog.append(_describe_asset(logical, inspection))
+
+    main_assets: dict[str, DataAsset] = {}
+    for asset in catalog:
+        if asset.role == "main" and asset.block_id is not None:
+            main_assets.setdefault(asset.block_id, asset)
+
+    # Required = every file a connector declares + the main dataset of every
+    # block in the registry.
+    required: dict[str, str] = {
+        key: "declared by " + ", ".join(where) for key, where in declared.items()
+    }
+    present_main_names = {
+        Path(asset.path).name.lower(): asset for asset in catalog if asset.role == "main"
+    }
+    for filename in sorted(MAIN_DATASET_FILENAMES):
+        block_id = infer_block_id_from_filename(Path(filename))
+        if block_id not in block_ids:
+            continue
+        asset = present_main_names.get(filename)
+        if asset is not None:
+            required.setdefault(asset.path, f"main dataset of {block_id}")
+            continue
+        mode = block_id.split("-", 1)[0].lower()
+        expected = f"{LOGICAL_PREFIX}/{mode}/{filename}"
+        # File names are matched case-insensitively here; do not report the same
+        # missing file twice when a connector already declares it.
+        if expected.lower() not in {key.lower() for key in required}:
+            required[expected] = f"main dataset of {block_id}"
+
+    problems: list[str] = []
+    for key, why in sorted(required.items()):
+        absolute = resolve_data_path(key, root)
+        if key in parse_errors:
+            problems.append(f"{absolute} is not valid JSON ({parse_errors[key]}) [{why}]")
+        elif key not in payloads:
+            problems.append(f"{absolute} is missing [{why}]")
+    if problems:
+        raise DataLoadError(
+            f"Cortex data failed to load from {root}: "
+            f"{len(problems)} required data asset(s) unusable: " + "; ".join(problems)
+        )
+
+    # Keep only what is used at request time; the rest of the 37 MB is dropped.
+    used_payloads = {key: payloads[key] for key in required}
+    return LoadedData(
+        root=root,
+        catalog=tuple(catalog),
+        main_assets=main_assets,
+        payloads=used_payloads,
+        required_paths=frozenset(required),
+    )
+
+
+def clear_connector_caches() -> None:
+    """Drop derived-record caches inside connectors (they hold loaded payloads)."""
+    for module in _connector_modules():
+        for value in vars(module).values():
+            if getattr(value, "__module__", None) != module.__name__:
+                continue  # imported helper, not this connector's own cache
+            cache_clear = getattr(value, "cache_clear", None)
+            if callable(cache_clear):
+                cache_clear()
+
+
+def init_data(root: Path | str | None = None, *, force: bool = False) -> LoadedData:
+    """Load the catalogue and the used data assets once for this process.
+
+    Call it at process start (the API does it in the FastAPI lifespan; workers
+    and scripts call it explicitly). It is idempotent: a second call returns the
+    already-loaded data unless ``force`` is set or a different root is given.
+
+    Raises ``DataLoadError`` naming every required asset that is missing or does
+    not parse. Nothing is loaded in that case.
+    """
+    global _LOADED, _LOAD_ERROR
+    target = Path(root).expanduser().resolve() if root is not None else data_root()
+    with _LOAD_LOCK:
+        if _LOADED is not None and not force and _LOADED.root == target:
+            return _LOADED
+        had_previous = _LOADED is not None
+        try:
+            loaded = _load(target)
+        except DataLoadError as exc:
+            _LOADED = None
+            _LOAD_ERROR = str(exc)
+            if had_previous:
+                clear_connector_caches()
+            logger.error("layer2.data_load_failed root=%s error=%s", target, exc)
+            raise
+        _LOADED = loaded
+        _LOAD_ERROR = None
+        if had_previous:
+            clear_connector_caches()
+        logger.info(
+            "layer2.data_loaded root=%s catalog_files=%d loaded_assets=%d",
+            loaded.root,
+            len(loaded.catalog),
+            len(loaded.payloads),
+        )
+        return loaded
+
+
+def reset_data() -> None:
+    """Forget the loaded data (tests). The next access loads it again."""
+    global _LOADED, _LOAD_ERROR
+    with _LOAD_LOCK:
+        _LOADED = None
+        _LOAD_ERROR = None
+        clear_connector_caches()
+
+
+def is_data_loaded() -> bool:
+    return _LOADED is not None
+
+
+def data_load_error() -> str | None:
+    """The error of the last failed load, if the data is currently not loaded."""
+    return _LOAD_ERROR
+
+
+def get_loaded_data() -> LoadedData:
+    """Return the loaded data, loading it on first use if ``init_data`` was not called.
+
+    The lazy path exists for tests and one-off scripts. It fails as loudly as
+    ``init_data`` does: a wrong data folder raises ``DataLoadError`` instead of
+    quietly turning every block into "unknown".
+    """
+    loaded = _LOADED
+    if loaded is not None:
+        return loaded
+    return init_data()
+
+
+def get_catalog() -> list[DataAsset]:
+    return list(get_loaded_data().catalog)
+
+
+def load_json_asset(path: str | Path) -> Any:
+    """Return the parsed JSON of a data asset from the loaded store.
+
+    Connectors call this instead of opening files. Assets declared by connectors
+    are loaded by ``init_data`` and served from memory. A path that was not
+    declared is read from disk the first time only, then served from memory;
+    a missing or invalid file raises ``OSError`` / ``json.JSONDecodeError`` so the
+    caller reports the block as unknown (never as clear).
+
+    The returned object is shared: do not mutate it.
+    """
+    loaded = get_loaded_data()
+    key = logical_data_path(path, loaded.root)
+    try:
+        return loaded.payloads[key]
+    except KeyError:
+        pass
+    with _LOAD_LOCK:
+        if key in loaded.payloads:
+            return loaded.payloads[key]
+        payload = _read_json_file(resolve_data_path(path, loaded.root))
+        loaded.payloads[key] = payload
+        logger.warning(
+            "layer2.data_asset_loaded_late path=%s (not declared as a connector "
+            "path constant, so it was not loaded at startup)",
+            key,
+        )
+        return payload
 
 
 def find_assets(
@@ -241,7 +557,7 @@ def find_assets(
     role: str | None = None,
     connector_status: str | None = None,
 ) -> list[DataAsset]:
-    assets = build_data_catalog()
+    assets = get_catalog()
     if mode is not None:
         assets = [asset for asset in assets if asset.mode == mode]
     if block_id is not None:
@@ -258,9 +574,7 @@ def find_assets(
 
 
 def get_main_asset(block_id: str) -> DataAsset | None:
-    for asset in find_assets(block_id=block_id, role="main"):
-        return asset
-    return None
+    return get_loaded_data().main_assets.get(block_id)
 
 
 def _purpose_for(path: Path, block_id: str | None, role: str) -> str:
