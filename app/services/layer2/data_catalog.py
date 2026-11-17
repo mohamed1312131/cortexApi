@@ -141,7 +141,7 @@ class FrozenList(list):
 
 
 # JSON leaves: immutable already. Checked inline in ``freeze`` so that the
-# millions of leaves of the data set do not cost a function call each.
+# leaves (the large majority of the values) do not cost a function call each.
 _JSON_LEAF_TYPES = frozenset({str, int, float, bool, type(None)})
 
 
@@ -414,8 +414,9 @@ class LoadedData:
     # block id -> the asset of its main dataset. A FrozenDict.
     main_assets: dict[str, DataAsset]
     # logical path -> parsed JSON, deeply frozen (FrozenDict / FrozenList): a
-    # payload cannot be modified. The mapping itself is the store's own index;
-    # only ``load_json_asset`` adds to it (a late-loaded file), under the lock.
+    # payload cannot be modified. The mapping is a FrozenDict too, so an asset
+    # cannot be replaced or removed; only ``load_json_asset`` adds to it (a
+    # late-loaded file), under the lock, through ``_add_payload``.
     payloads: dict[str, Any]
     # logical paths that were required at load time (connector-declared + main).
     required_paths: frozenset[str]
@@ -535,7 +536,7 @@ def _load(root: Path) -> LoadedData:
         root=root,
         catalog=tuple(catalog),
         main_assets=FrozenDict(main_assets),
-        payloads=used_payloads,
+        payloads=FrozenDict(used_payloads),
         required_paths=frozenset(required),
     )
 
@@ -624,6 +625,14 @@ def get_catalog() -> list[DataAsset]:
     return list(get_loaded_data().catalog)
 
 
+def _add_payload(loaded: LoadedData, key: str, payload: Any) -> None:
+    """Add a late-loaded asset to the frozen index. The one place that writes to
+    it: callers hold ``_LOAD_LOCK`` and never replace an existing key."""
+    if key in loaded.payloads:
+        raise FrozenDataError(f"Layer 2 asset {key} is already loaded and cannot be replaced.")
+    dict.__setitem__(loaded.payloads, key, payload)
+
+
 def load_json_asset(path: str | Path) -> Any:
     """Return the parsed JSON of a data asset from the loaded store.
 
@@ -646,7 +655,7 @@ def load_json_asset(path: str | Path) -> Any:
         if key in loaded.payloads:
             return loaded.payloads[key]
         payload = freeze(_read_json_file(resolve_data_path(path, loaded.root)))
-        loaded.payloads[key] = payload
+        _add_payload(loaded, key, payload)
         logger.warning(
             "layer2.data_asset_loaded_late path=%s (not declared as a connector "
             "path constant, so it was not loaded at startup)",

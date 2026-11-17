@@ -176,6 +176,15 @@ def test_late_loaded_asset_is_frozen_too(fresh_data_store, tmp_path):
     ]
     with pytest.raises(FrozenDataError):
         payload["records"][0]["tags"].append("y")
+    # It is in the index now, served from memory, and cannot be replaced there.
+    assert data_catalog.load_json_asset(extra) is payload
+    loaded = data_catalog.get_loaded_data()
+    late_keys = [key for key, value in loaded.payloads.items() if value is payload]
+    assert len(late_keys) == 1
+    with pytest.raises(FrozenDataError):
+        loaded.payloads[late_keys[0]] = {}
+    with pytest.raises(FrozenDataError):
+        data_catalog._add_payload(loaded, late_keys[0], payload)
 
 
 def test_catalogue_entries_are_read_only(fresh_data_store):
@@ -192,6 +201,14 @@ def test_catalogue_entries_are_read_only(fresh_data_store):
         loaded.main_assets["SEA-C"] = asset  # type: ignore[index]
     with pytest.raises(dataclasses.FrozenInstanceError):
         loaded.payloads = {}  # type: ignore[misc]
+    # A whole asset cannot be replaced or removed either.
+    with pytest.raises(FrozenDataError):
+        loaded.payloads[SAMPLE] = {}
+    with pytest.raises(FrozenDataError):
+        loaded.payloads.pop(SAMPLE)
+    with pytest.raises(FrozenDataError):
+        loaded.payloads.clear()
+    assert type(loaded.payloads) is FrozenDict and type(loaded.main_assets) is FrozenDict
     # The lists handed out by get_catalog / find_assets are the caller's own.
     catalog = data_catalog.get_catalog()
     catalog.clear()
