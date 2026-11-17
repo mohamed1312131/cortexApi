@@ -24,7 +24,8 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
     configure_logging()
     init_langsmith()
 
-    # Refuse to start on a bad API-key configuration, then load the Layer 2
+    # Refuse to start on a bad auth configuration (auth fails closed: no API
+    # keys outside APP_ENV=local is an error), then load the Layer 2
     # catalogue and data assets once for this process (S1). A missing or invalid
     # required asset raises DataLoadError here, so the process refuses to start
     # instead of answering "unknown" for everything (S2). See app/core/preflight.py.
@@ -72,9 +73,27 @@ def _split_routes_by_auth(router: APIRouter) -> tuple[APIRouter, APIRouter]:
     return open_router, protected_router
 
 
-app = FastAPI(title="cortex-api", lifespan=lifespan)
+def create_app() -> FastAPI:
+    """Build the API application from the current settings.
 
-_open_router, _protected_router = _split_routes_by_auth(api_router)
-app.include_router(_open_router)
-app.include_router(readiness_router)
-app.include_router(_protected_router, dependencies=[Depends(require_api_key)])
+    The interactive docs (``/docs``, ``/redoc``) and the OpenAPI schema
+    (``/openapi.json``) describe every route; they are only mounted with an
+    explicit ``APP_ENV=local``. Anywhere else the three paths answer 404
+    (https://fastapi.tiangolo.com/how-to/conditional-openapi/).
+    """
+    expose_docs = settings.is_local
+    application = FastAPI(
+        title="cortex-api",
+        lifespan=lifespan,
+        openapi_url="/openapi.json" if expose_docs else None,
+        docs_url="/docs" if expose_docs else None,
+        redoc_url="/redoc" if expose_docs else None,
+    )
+    open_router, protected_router = _split_routes_by_auth(api_router)
+    application.include_router(open_router)
+    application.include_router(readiness_router)
+    application.include_router(protected_router, dependencies=[Depends(require_api_key)])
+    return application
+
+
+app = create_app()

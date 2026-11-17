@@ -18,7 +18,7 @@ LOCAL_APP_ENV = "local"
 
 class Settings(BaseSettings):
     # Not "local" by default: every local-only convenience (start without API
-    # keys, CORTEX_AUTH_DISABLED) has to be asked for with an explicit
+    # keys, CORTEX_AUTH_DISABLED, /docs) has to be asked for with an explicit
     # APP_ENV=local. An unset APP_ENV behaves like production.
     app_env: str = "production"
     # 8100 by default: the legacy Backend keeps 8000 (D15).

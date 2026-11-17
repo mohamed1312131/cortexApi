@@ -169,6 +169,13 @@ def test_env_example_says_how_auth_behaves():
     assert "authentication OFF (local development only)" not in text
 
 
+def test_env_example_says_where_the_docs_are_served():
+    text = ENV_EXAMPLE.read_text(encoding="utf-8")
+
+    assert "/docs, /redoc, /openapi.json" in text
+    assert "404 anywhere else" in text
+
+
 def test_env_example_ports_do_not_clash_with_the_usual_local_services(monkeypatch):
     active, _ = _example_entries()
 
