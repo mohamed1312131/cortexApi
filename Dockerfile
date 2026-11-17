@@ -17,6 +17,7 @@ RUN uv sync --frozen --no-dev
 
 COPY . .
 
-# CORTEX_API_WORKERS controls the number of worker processes (default 1 for
-# local dev). docker-compose sets it higher for a production-like runtime.
-CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${API_PORT:-8000} --workers ${CORTEX_API_WORKERS:-1}"]
+# The entrypoint runs `alembic upgrade head`, then uvicorn on API_PORT (default
+# 8100; the legacy Backend keeps 8000). CORTEX_API_WORKERS controls the number of
+# worker processes (default 1; docker-compose sets it higher).
+CMD ["sh", "/app/docker/entrypoint.sh"]

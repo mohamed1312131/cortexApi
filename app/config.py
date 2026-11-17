@@ -5,7 +5,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     app_env: str = "local"
-    api_port: int = 8000
+    # 8100 by default: the legacy Backend keeps 8000 (D15).
+    api_port: int = 8100
     # Number of uvicorn worker processes (read by the Docker/runtime command).
     # 1 for local dev; raise (e.g. 4) for production-like multi-worker runtime.
     cortex_api_workers: int = 1
@@ -61,6 +62,8 @@ class Settings(BaseSettings):
     ollama_layer3_model: str = ""
     ollama_layer4_model: str = ""
     ollama_temperature: float = 0.0
+    # LangSmith sends prompts and outputs to a third party: off unless a
+    # deployment turns it on explicitly (S4).
     langsmith_tracing: bool = False
     langsmith_api_key: str = ""
     langsmith_project: str = "cortex-api"
