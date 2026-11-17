@@ -1,6 +1,16 @@
 from functools import lru_cache
+from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+# app/config.py -> parents[1] is the repository root (``/app`` in Docker).
+PACKAGE_ROOT = Path(__file__).resolve().parents[1]
+# The settings file is found from the code location, never from the working
+# directory: starting the process from another folder loads the same file.
+# The file is optional. When it does not exist (the Docker image has none;
+# compose passes the environment), settings come from the process environment
+# and the defaults below.
+ENV_FILE = PACKAGE_ROOT / ".env"
 
 
 class Settings(BaseSettings):
@@ -69,7 +79,7 @@ class Settings(BaseSettings):
     langsmith_project: str = "cortex-api"
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=ENV_FILE,
         env_file_encoding="utf-8",
         extra="ignore",
     )
