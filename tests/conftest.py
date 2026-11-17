@@ -45,11 +45,13 @@ def pinned_settings(
 
     * Environment: ``APP_ENV=test``, one known API key, auth not disabled,
       tracing off.
-    * No ``.env`` file is read while the test runs, and the cached settings
-      object is dropped and rebuilt from the pinned environment and the code
-      defaults. The shared ``app.config.settings`` object (imported by reference
-      all over the application) gets every value of the rebuilt object, and gets
-      its own values back after the test.
+    * No ``.env`` file is read: not at import (``app.config`` reads none inside
+      a pytest session, which covers the objects built at import time) and not
+      while the test runs. The cached settings object is dropped and rebuilt
+      from the pinned environment and the code defaults. The shared
+      ``app.config.settings`` object (imported by reference all over the
+      application) gets every value of the rebuilt object, and gets its own
+      values back after the test.
     * Auth is ON (``APP_ENV=test`` + a key). The existing tests call ``/api/v1``
       without a key, so the API-key dependency of the application is replaced by
       one that answers with the pinned tenant, the way FastAPI documents it
@@ -69,8 +71,10 @@ def pinned_settings(
     monkeypatch.setenv("CORTEX_AUTH_DISABLED", "false")
     monkeypatch.setenv("LANGSMITH_TRACING", "false")
     monkeypatch.setenv("LANGCHAIN_TRACING_V2", "false")
-    if request.node.get_closest_marker("live_llm") is None:
-        monkeypatch.setitem(config.Settings.model_config, "env_file", None)
+    is_live = request.node.get_closest_marker("live_llm") is not None
+    monkeypatch.setitem(
+        config.Settings.model_config, "env_file", config.ENV_FILE if is_live else None
+    )
 
     config.get_settings.cache_clear()
     auth._resolve_auth.cache_clear()

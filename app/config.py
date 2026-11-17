@@ -1,3 +1,4 @@
+import os
 from functools import lru_cache
 from pathlib import Path
 
@@ -14,6 +15,27 @@ PACKAGE_ROOT = Path(__file__).resolve().parents[1]
 ENV_FILE = PACKAGE_ROOT / ".env"
 
 LOCAL_APP_ENV = "local"
+
+# Set by pytest for the whole test session, before any test code is imported
+# (https://docs.pytest.org/en/stable/reference/reference.html#envvar-PYTEST_VERSION).
+PYTEST_SESSION_ENV = "PYTEST_VERSION"
+
+
+def default_env_file() -> Path | None:
+    """The settings file this process reads: ``ENV_FILE``, or none under pytest.
+
+    Several modules build objects from the settings while they are imported
+    (the database engine, the Redis case-state store, the FastAPI app). A
+    fixture runs too late to pin those, so inside a pytest session the file is
+    not read at all: a developer's ``.env`` (its REDIS_URL, DATABASE_URL, ...)
+    can neither change a test result nor point the tests at real services.
+    tests/conftest.py pins the values tests rely on. Not reading the file can
+    only remove configuration, and with nothing configured auth refuses to
+    start, so this cannot open anything.
+    """
+    if os.environ.get(PYTEST_SESSION_ENV):
+        return None
+    return ENV_FILE
 
 
 class Settings(BaseSettings):
@@ -89,7 +111,7 @@ class Settings(BaseSettings):
     langsmith_project: str = "cortex-api"
 
     model_config = SettingsConfigDict(
-        env_file=ENV_FILE,
+        env_file=default_env_file(),
         env_file_encoding="utf-8",
         extra="ignore",
     )

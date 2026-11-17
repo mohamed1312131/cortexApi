@@ -183,6 +183,8 @@ _ENV_FILES = {
         "LLM_PROVIDER=google\n"
         "CORTEX_REDIS_FALLBACK_ENABLED=false\n"
         "ORCHESTRATOR_CACHE_ENABLED=false\n"
+        "DATABASE_URL=postgresql+asyncpg://dev:dev-pw@127.0.0.1:1/developer_db\n"
+        "REDIS_URL=redis://127.0.0.1:1/7\n"
     ),
 }
 
@@ -199,6 +201,21 @@ from app.repositories.agent_run_repository import InMemoryAgentRunRepository
 def test_the_env_file_of_this_checkout_is_there_and_would_be_read():
     assert config.ENV_FILE.is_file()
     assert Settings(_env_file=config.ENV_FILE).api_port == 9471
+
+
+def test_objects_built_at_import_did_not_take_their_settings_from_it():
+    """The engine, the Redis store and the app are built while their modules are
+    imported, before any fixture runs."""
+    from app.core.db import engine
+    from app.services.layer1.case_state_manager import case_state_store
+
+    defaults = Settings(_env_file=None)
+    assert engine.url.render_as_string(hide_password=False) == defaults.database_url
+    assert engine.url.host == "postgres"
+    redis_target = case_state_store._redis.connection_pool.connection_kwargs
+    assert (redis_target["host"], redis_target["port"], redis_target["db"]) == ("redis", 6379, 0)
+    assert case_state_store._fallback_enabled is True
+    assert app.docs_url is None and app.openapi_url is None  # APP_ENV=local in one scenario
 
 
 def test_and_it_changes_nothing(monkeypatch):
@@ -249,4 +266,4 @@ def test_a_developer_env_file_does_not_change_test_results(scenario, tmp_path):
     )
 
     assert completed.returncode == 0, completed.stdout[-3000:] + completed.stderr[-2000:]
-    assert "2 passed" in completed.stdout
+    assert "3 passed" in completed.stdout

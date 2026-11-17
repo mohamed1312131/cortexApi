@@ -23,7 +23,7 @@ from pathlib import Path
 import pytest
 
 from app import config
-from app.config import ENV_FILE, PACKAGE_ROOT, Settings
+from app.config import ENV_FILE, PACKAGE_ROOT, PYTEST_SESSION_ENV, Settings
 from app.core import auth
 from app.core.auth import ApiKeyConfigError
 
@@ -57,10 +57,16 @@ def package_copy(tmp_path: Path) -> Path:
     return root
 
 
-def _settings_seen_from(cwd: Path, package_root: Path, **extra_env: str) -> dict:
-    setting_names = {name.upper() for name in Settings.model_fields}
-    env = {key: value for key, value in os.environ.items() if key.upper() not in setting_names}
+def _plain_process_env(package_root: Path) -> dict[str, str]:
+    """The environment of an ordinary process: no setting, and not a pytest session."""
+    hidden = {name.upper() for name in Settings.model_fields} | {PYTEST_SESSION_ENV}
+    env = {key: value for key, value in os.environ.items() if key.upper() not in hidden}
     env["PYTHONPATH"] = str(package_root)
+    return env
+
+
+def _settings_seen_from(cwd: Path, package_root: Path, **extra_env: str) -> dict:
+    env = _plain_process_env(package_root)
     env.update(extra_env)
     completed = subprocess.run(
         [sys.executable, "-c", _PRINT_SETTINGS],
@@ -96,7 +102,7 @@ def test_settings_class_reads_that_file_and_no_relative_path(package_copy):
     completed = subprocess.run(
         [sys.executable, "-c", script],
         cwd=package_copy.parent,
-        env={**os.environ, "PYTHONPATH": str(package_copy)},
+        env=_plain_process_env(package_copy),
         capture_output=True,
         text=True,
         timeout=60,
@@ -186,3 +192,33 @@ def test_start_with_nothing_configured_fails_loudly_and_names_the_settings_file(
     state = "found" if ENV_FILE.is_file() else "not found"
     assert f"Settings file {ENV_FILE}: {state}." in message
     assert "refusing" in message
+
+
+# --------------------------------------------------------------------------- #
+# inside a pytest session the file is not read, not even at import
+# --------------------------------------------------------------------------- #
+def test_pytest_sets_the_session_variable_before_the_app_is_imported():
+    """What app/config.py relies on: pytest defines PYTEST_VERSION for the session."""
+    assert os.environ.get(PYTEST_SESSION_ENV)
+    assert config.default_env_file() is None
+
+
+def test_outside_pytest_the_default_is_the_package_env_file(monkeypatch):
+    monkeypatch.delenv(PYTEST_SESSION_ENV)
+
+    assert config.default_env_file() == ENV_FILE
+
+
+def test_env_file_is_not_read_at_import_inside_a_pytest_session(package_copy, tmp_path):
+    """Objects built while modules are imported (database engine, Redis store,
+    the app) take their settings before any fixture runs."""
+    (package_copy / ".env").write_text(_SYNTHETIC_ENV, encoding="utf-8")
+
+    outside = _settings_seen_from(tmp_path, package_copy)
+    inside = _settings_seen_from(tmp_path, package_copy, **{PYTEST_SESSION_ENV: "8.3.4"})
+
+    assert outside["api_port"] == 8123  # the file is there and is read normally
+    assert inside["api_port"] == 8100
+    assert inside["app_env"] == "production"
+    assert inside["cortex_auth_disabled"] is False
+    assert inside["llm_provider"] == "none"
