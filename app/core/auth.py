@@ -10,9 +10,20 @@ Replaced in Wave 2 by the tenants table. Until then:
 
 Missing key -> 401. Unknown key -> 403.
 
-When no key is configured the API refuses to start, except with ``APP_ENV=local``
-where authentication is switched off (local development and the offline test
-suite) and a warning is logged.
+Authentication fails closed. It is ON unless ``CORTEX_AUTH_DISABLED=true`` and
+``APP_ENV=local`` are both set explicitly (``APP_ENV`` is not ``local`` by
+default):
+
+=================  ==========  ======================  =========================
+APP_ENV            keys        CORTEX_AUTH_DISABLED    result
+=================  ==========  ======================  =========================
+anything           configured  false                   auth on
+not ``local``      none        false                   refuses to start
+not ``local``      any         true                    refuses to start
+``local``          none        false                   starts; /api/v1 refuses
+                                                       every request (401/403)
+``local``          any         true                    auth off, warning logged
+=================  ==========  ======================  =========================
 """
 
 from __future__ import annotations
@@ -21,19 +32,22 @@ import hashlib
 import hmac
 import json
 import re
+from collections.abc import Mapping
+from dataclasses import dataclass
 from functools import lru_cache
+from types import MappingProxyType
 
 from fastapi import HTTPException, Request, Security, status
 from fastapi.security import APIKeyHeader
 
-from app.config import settings
+from app.config import ENV_FILE, LOCAL_APP_ENV, settings
 from app.core.logging import get_logger
 
 logger = get_logger(__name__)
 
 API_KEY_HEADER_NAME = "X-API-Key"
 API_KEYS_ENV = "CORTEX_API_KEYS_JSON"
-LOCAL_APP_ENV = "local"
+AUTH_DISABLED_ENV = "CORTEX_AUTH_DISABLED"
 LOCAL_DEV_TENANT_ID = "local-dev"
 
 _SHA256_HEX_RE = re.compile(r"^[0-9a-f]{64}$")
@@ -46,7 +60,19 @@ api_key_header = APIKeyHeader(
 
 
 class ApiKeyConfigError(RuntimeError):
-    """``CORTEX_API_KEYS_JSON`` is missing (outside local) or malformed."""
+    """The auth configuration is unusable: no key outside local, a malformed
+    ``CORTEX_API_KEYS_JSON``, or ``CORTEX_AUTH_DISABLED`` outside local."""
+
+
+@dataclass(frozen=True)
+class AuthConfig:
+    """The resolved auth configuration. ``enabled`` is False only for an
+    explicit ``CORTEX_AUTH_DISABLED=true`` together with ``APP_ENV=local``."""
+
+    enabled: bool
+    # key hash -> tenant id (read-only). May be empty while ``enabled`` is True:
+    # then no request can pass.
+    keys: Mapping[str, str]
 
 
 def hash_api_key(raw_key: str) -> str:
@@ -83,36 +109,75 @@ def parse_api_keys(raw_json: str) -> dict[str, str]:
     return keys
 
 
+def _settings_file_hint() -> str:
+    """Where the settings file is looked for, for error messages (path only)."""
+    state = "found" if ENV_FILE.is_file() else "not found"
+    return f"Settings file {ENV_FILE}: {state}."
+
+
 @lru_cache(maxsize=8)
-def _resolve_api_keys(raw_json: str, app_env: str) -> dict[str, str]:
-    keys = parse_api_keys(raw_json)
-    if not keys and app_env.strip().lower() != LOCAL_APP_ENV:
+def _resolve_auth(raw_json: str, app_env: str, auth_disabled: bool) -> AuthConfig:
+    is_local = app_env.strip().lower() == LOCAL_APP_ENV
+    if auth_disabled:
+        if not is_local:
+            raise ApiKeyConfigError(
+                f"{AUTH_DISABLED_ENV}=true is only accepted together with an explicit "
+                f"APP_ENV={LOCAL_APP_ENV} (APP_ENV is {app_env!r}): refusing to start. "
+                f"Remove {AUTH_DISABLED_ENV} or set it to false. {_settings_file_hint()}"
+            )
+        # Explicitly off for local development: the keys are not used, so they
+        # are not read either (the .env.example placeholder may still be there).
+        return AuthConfig(enabled=False, keys=MappingProxyType({}))
+    keys = MappingProxyType(parse_api_keys(raw_json))
+    if not keys and not is_local:
         raise ApiKeyConfigError(
-            f"{API_KEYS_ENV} is empty and APP_ENV={app_env!r}: refusing to serve "
-            "/api/v1 without API keys. Configure at least one key hash."
+            f"{API_KEYS_ENV} is empty and APP_ENV={app_env!r} (APP_ENV is not "
+            f"{LOCAL_APP_ENV!r} unless it is set explicitly): refusing to serve /api/v1 "
+            f"without API keys. Configure at least one key hash. {_settings_file_hint()}"
         )
-    return keys
+    return AuthConfig(enabled=True, keys=keys)
 
 
-def configured_api_keys() -> dict[str, str]:
-    """Key hash -> tenant id. Empty only when APP_ENV=local and no key is set."""
-    return _resolve_api_keys(settings.cortex_api_keys_json, settings.app_env)
+def auth_config() -> AuthConfig:
+    """Resolve the auth configuration from the settings. Raises ``ApiKeyConfigError``."""
+    return _resolve_auth(
+        settings.cortex_api_keys_json,
+        settings.app_env,
+        bool(settings.cortex_auth_disabled),
+    )
+
+
+def configured_api_keys() -> Mapping[str, str]:
+    """Key hash -> tenant id (read-only). Empty when no key is set or auth is off."""
+    return auth_config().keys
 
 
 def validate_api_key_config() -> None:
-    """Fail fast at startup on a bad configuration; warn when auth is off."""
-    keys = configured_api_keys()
-    if keys:
-        logger.info("auth.api_keys_configured count=%d", len(keys))
+    """Fail fast at startup on a bad configuration; warn when nothing can pass
+    or when auth is off."""
+    config = auth_config()
+    if not config.enabled:
+        logger.warning(
+            "auth.disabled API-key authentication is OFF (%s=true, APP_ENV=%s). "
+            "Never run a shared or production deployment like this.",
+            AUTH_DISABLED_ENV,
+            LOCAL_APP_ENV,
+        )
+    elif config.keys:
+        logger.info("auth.api_keys_configured count=%d", len(config.keys))
     else:
         logger.warning(
-            "auth.disabled API-key authentication is OFF (no %s, APP_ENV=local). "
-            "Never run a shared or production deployment like this.",
+            "auth.no_api_keys APP_ENV=%s and %s is empty: authentication is ON and "
+            "every /api/v1 request will be refused (401/403). Set %s, or set "
+            "%s=true to switch authentication off for local development.",
+            LOCAL_APP_ENV,
             API_KEYS_ENV,
+            API_KEYS_ENV,
+            AUTH_DISABLED_ENV,
         )
 
 
-def match_tenant(presented_key: str, keys: dict[str, str]) -> str | None:
+def match_tenant(presented_key: str, keys: Mapping[str, str]) -> str | None:
     """Return the tenant id for a presented raw key, or None."""
     presented_hash = hash_api_key(presented_key)
     tenant_id: str | None = None
@@ -128,8 +193,8 @@ async def require_api_key(
     presented_key: str | None = Security(api_key_header),
 ) -> str:
     """FastAPI dependency for every ``/api/v1`` route. Returns the tenant id."""
-    keys = configured_api_keys()
-    if not keys:
+    config = auth_config()
+    if not config.enabled:
         request.state.tenant_id = LOCAL_DEV_TENANT_ID
         return LOCAL_DEV_TENANT_ID
 
@@ -140,7 +205,7 @@ async def require_api_key(
             headers={"WWW-Authenticate": "APIKey"},
         )
 
-    tenant_id = match_tenant(presented_key, keys)
+    tenant_id = match_tenant(presented_key, config.keys)
     if tenant_id is None:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

@@ -15,6 +15,16 @@ from tests.prompt_budget_helpers import multimode_request
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
 
+def pytest_configure(config: pytest.Config) -> None:
+    # Registered here (pyproject.toml is not owned by the W0 follow-up task).
+    config.addinivalue_line(
+        "markers",
+        "real_auth: keep the real API-key dependency for this test. Without the "
+        "mark, tests/conftest.py::pinned_settings replaces it by one that answers "
+        "with the pinned test tenant.",
+    )
+
+
 @pytest.fixture
 def fresh_data_store(monkeypatch: pytest.MonkeyPatch) -> Iterator[None]:
     """Start with nothing loaded and leave nothing loaded behind.

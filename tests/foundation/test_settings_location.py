@@ -3,7 +3,8 @@
 Rule: ``<repository>/.env`` (next to ``app/``) is read when it exists, whatever
 the working directory is. It is optional: when it does not exist the settings
 come from the process environment and the code defaults (the Docker image has no
-``.env``).
+``.env``), and the fail-closed defaults make a start with nothing configured
+impossible to miss.
 
 The behaviour is checked in fresh interpreters on a throwaway copy of
 ``app/config.py`` placed next to a synthetic ``.env``: the developer's real
@@ -23,6 +24,8 @@ import pytest
 
 from app import config
 from app.config import ENV_FILE, PACKAGE_ROOT, Settings
+from app.core import auth
+from app.core.auth import ApiKeyConfigError
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
@@ -35,11 +38,12 @@ print(json.dumps({
     "env_file": str(config.ENV_FILE),
     "app_env": settings.app_env,
     "api_port": settings.api_port,
+    "cortex_auth_disabled": settings.cortex_auth_disabled,
     "llm_provider": settings.llm_provider,
 }))
 """
 
-_SYNTHETIC_ENV = "APP_ENV=staging\nAPI_PORT=8123\nLLM_PROVIDER=ollama\n"
+_SYNTHETIC_ENV = "APP_ENV=local\nAPI_PORT=8123\nCORTEX_AUTH_DISABLED=true\nLLM_PROVIDER=ollama\n"
 _DECOY_ENV = "APP_ENV=decoy\nAPI_PORT=9999\nLLM_PROVIDER=openai\n"
 
 
@@ -116,8 +120,9 @@ def test_settings_are_the_same_from_another_working_directory(package_copy, tmp_
     assert from_elsewhere == from_package_root
     assert from_elsewhere == {
         "env_file": str((package_copy / ".env").resolve()),
-        "app_env": "staging",
+        "app_env": "local",
         "api_port": 8123,
+        "cortex_auth_disabled": True,
         "llm_provider": "ollama",
     }
 
@@ -131,7 +136,7 @@ def test_env_file_in_the_working_directory_is_not_read(package_copy, tmp_path):
 
     seen = _settings_seen_from(decoy_dir, package_copy)
 
-    assert seen["app_env"] == "staging"
+    assert seen["app_env"] == "local"
     assert seen["api_port"] == 8123
     assert seen["llm_provider"] == "ollama"
 
@@ -139,15 +144,15 @@ def test_env_file_in_the_working_directory_is_not_read(package_copy, tmp_path):
 def test_environment_variables_still_win_over_the_file(package_copy, tmp_path):
     (package_copy / ".env").write_text(_SYNTHETIC_ENV, encoding="utf-8")
 
-    seen = _settings_seen_from(tmp_path, package_copy, API_PORT="8456", APP_ENV="production")
+    seen = _settings_seen_from(tmp_path, package_copy, API_PORT="8456", APP_ENV="staging")
 
     assert seen["api_port"] == 8456
-    assert seen["app_env"] == "production"
+    assert seen["app_env"] == "staging"
     assert seen["llm_provider"] == "ollama"  # not overridden: still from the file
 
 
 # --------------------------------------------------------------------------- #
-# no file at all (Docker): environment only
+# no file at all (Docker): environment only, and never a silent open start
 # --------------------------------------------------------------------------- #
 def test_missing_env_file_is_allowed_and_the_environment_is_used(package_copy, tmp_path):
     """The Docker image has no .env: compose passes the environment."""
@@ -157,3 +162,27 @@ def test_missing_env_file_is_allowed_and_the_environment_is_used(package_copy, t
 
     assert seen["app_env"] == "staging"
     assert seen["api_port"] == 8222
+
+
+def test_missing_env_file_and_empty_environment_gives_the_closed_defaults(package_copy, tmp_path):
+    decoy_dir = tmp_path / "folder-with-another-env"
+    decoy_dir.mkdir()
+    (decoy_dir / ".env").write_text(_DECOY_ENV, encoding="utf-8")
+
+    seen = _settings_seen_from(decoy_dir, package_copy)
+
+    assert seen["app_env"] == "production"
+    assert seen["cortex_auth_disabled"] is False
+    assert seen["api_port"] == 8100
+
+
+def test_start_with_nothing_configured_fails_loudly_and_names_the_settings_file():
+    """Missing file + empty environment is never silent: the start is refused
+    and the error says where the settings file was looked for."""
+    with pytest.raises(ApiKeyConfigError) as excinfo:
+        auth._resolve_auth("", "production", False)
+
+    message = str(excinfo.value)
+    state = "found" if ENV_FILE.is_file() else "not found"
+    assert f"Settings file {ENV_FILE}: {state}." in message
+    assert "refusing" in message

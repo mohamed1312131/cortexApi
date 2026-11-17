@@ -9,12 +9,18 @@ PACKAGE_ROOT = Path(__file__).resolve().parents[1]
 # directory: starting the process from another folder loads the same file.
 # The file is optional. When it does not exist (the Docker image has none;
 # compose passes the environment), settings come from the process environment
-# and the defaults below.
+# and the defaults below, and the fail-closed defaults decide what happens:
+# without APP_ENV and API keys the process refuses to start (app/core/auth.py).
 ENV_FILE = PACKAGE_ROOT / ".env"
+
+LOCAL_APP_ENV = "local"
 
 
 class Settings(BaseSettings):
-    app_env: str = "local"
+    # Not "local" by default: every local-only convenience (start without API
+    # keys, CORTEX_AUTH_DISABLED) has to be asked for with an explicit
+    # APP_ENV=local. An unset APP_ENV behaves like production.
+    app_env: str = "production"
     # 8100 by default: the legacy Backend keeps 8000 (D15).
     api_port: int = 8100
     # Number of uvicorn worker processes (read by the Docker/runtime command).
@@ -36,8 +42,12 @@ class Settings(BaseSettings):
     cortex_data_dir: str = ""
     # Temporary API-key auth (replaced by the tenants table in Wave 2).
     # JSON object {"<sha256 hex of the API key>": "<tenant_id>"}. Raw keys are
-    # never stored. Empty is only accepted when APP_ENV=local (auth is then off).
+    # never stored. Empty outside APP_ENV=local = the process refuses to start.
+    # Empty with APP_ENV=local = it starts and every /api/v1 request is refused.
     cortex_api_keys_json: str = ""
+    # Switches API-key auth off. Only honoured together with an explicit
+    # APP_ENV=local; with any other APP_ENV the process refuses to start.
+    cortex_auth_disabled: bool = False
     orchestrator_cache_enabled: bool = True
     orchestrator_cache_ttl_seconds: int = 60 * 60 * 24 * 7
     full_response_include_artifacts: bool = False
@@ -83,6 +93,11 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         extra="ignore",
     )
+
+    @property
+    def is_local(self) -> bool:
+        """True only for APP_ENV=local (never by default)."""
+        return self.app_env.strip().lower() == LOCAL_APP_ENV
 
 
 @lru_cache

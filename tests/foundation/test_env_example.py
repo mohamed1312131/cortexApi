@@ -9,8 +9,8 @@ from pathlib import Path
 import pytest
 
 from app.config import Settings
-from app.core import tracing
-from app.core.auth import API_KEYS_ENV
+from app.core import auth, tracing
+from app.core.auth import API_KEYS_ENV, AUTH_DISABLED_ENV, ApiKeyConfigError
 from app.core.data_paths import DATA_DIR_ENV
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -121,8 +121,52 @@ def test_env_example_holds_no_secret_values():
     for name, value in {**commented, **active}.items():
         if name.endswith("_API_KEY"):
             assert value in {"", "PASTE_YOUR_REAL_KEY_HERE"}, name
-    assert active[API_KEYS_ENV] == ""
+    # A placeholder, not a key hash (W0-FU; the value was empty in W0).
+    assert active[API_KEYS_ENV] == '{"PASTE_SHA256_HEX_OF_YOUR_API_KEY_HERE":"tenant-local"}'
     assert active[DATA_DIR_ENV] == ""
+
+
+# --------------------------------------------------------------------------- #
+# W0-FU: the example fails closed
+# --------------------------------------------------------------------------- #
+def _settings_from_the_example(monkeypatch: pytest.MonkeyPatch) -> Settings:
+    """What a process gets from an unedited copy of .env.example and nothing else."""
+    for name in Settings.model_fields:
+        monkeypatch.delenv(name.upper(), raising=False)
+    return Settings(_env_file=ENV_EXAMPLE)
+
+
+def test_env_example_keeps_auth_on(monkeypatch):
+    active, _ = _example_entries()
+    from_example = _settings_from_the_example(monkeypatch)
+
+    assert active[AUTH_DISABLED_ENV] == "false"
+    assert from_example.cortex_auth_disabled is False
+    assert active["APP_ENV"] == "local"
+    assert from_example.is_local is True
+
+
+def test_an_unedited_copy_of_the_example_does_not_serve(monkeypatch):
+    """The placeholder is not a key hash: the API refuses to start with it."""
+    from_example = _settings_from_the_example(monkeypatch)
+
+    with pytest.raises(ApiKeyConfigError) as excinfo:
+        auth._resolve_auth(
+            from_example.cortex_api_keys_json,
+            from_example.app_env,
+            from_example.cortex_auth_disabled,
+        )
+
+    assert API_KEYS_ENV in str(excinfo.value)
+
+
+def test_env_example_says_how_auth_behaves():
+    text = ENV_EXAMPLE.read_text(encoding="utf-8")
+
+    assert "fails closed" in text
+    assert "refuses to start" in text
+    # The W0 wording that described the open default is gone.
+    assert "authentication OFF (local development only)" not in text
 
 
 def test_env_example_ports_do_not_clash_with_the_usual_local_services(monkeypatch):
