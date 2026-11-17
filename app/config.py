@@ -23,6 +23,10 @@ class Settings(BaseSettings):
     # repository's own data/ folder, resolved from the package location (never
     # from the working directory). See app/core/data_paths.py.
     cortex_data_dir: str = ""
+    # Temporary API-key auth (replaced by the tenants table in Wave 2).
+    # JSON object {"<sha256 hex of the API key>": "<tenant_id>"}. Raw keys are
+    # never stored. Empty is only accepted when APP_ENV=local (auth is then off).
+    cortex_api_keys_json: str = ""
     orchestrator_cache_enabled: bool = True
     orchestrator_cache_ttl_seconds: int = 60 * 60 * 24 * 7
     full_response_include_artifacts: bool = False
