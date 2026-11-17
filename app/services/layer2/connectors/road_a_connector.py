@@ -19,6 +19,7 @@ from app.schemas import (
     Unknown,
     ValidatedShipmentRequest,
 )
+from app.services.layer2.data_catalog import load_json_asset
 from app.services.layer2.provider_config import provenance_for
 
 BLOCK_ID = "ROAD-A"
@@ -50,8 +51,7 @@ def _source_confidence(raw: object) -> SourceConfidence:
 @lru_cache(maxsize=1)
 def _load_records() -> list[dict[str, Any]]:
     try:
-        with _DATA_PATH.open(encoding="utf-8") as f:
-            data = json.load(f)
+        data = load_json_asset(_DATA_PATH)
     except (OSError, json.JSONDecodeError):
         return []
     if not isinstance(data, list):

@@ -19,7 +19,7 @@ from app.schemas import (
     Unknown,
     ValidatedShipmentRequest,
 )
-from app.services.layer2.data_catalog import get_main_asset
+from app.services.layer2.data_catalog import get_main_asset, load_json_asset
 from app.services.layer2.provider_config import provenance_for
 
 BLOCK_ID = "SEA-B"
@@ -61,8 +61,7 @@ def _data_path() -> Path:
 @lru_cache(maxsize=8)
 def _load_json(path: Path) -> Any:
     try:
-        with path.open(encoding="utf-8") as f:
-            return json.load(f)
+        return load_json_asset(path)
     except (OSError, json.JSONDecodeError):
         return {}
 

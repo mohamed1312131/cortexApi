@@ -15,7 +15,7 @@ from app.schemas import (
     Unknown,
     ValidatedShipmentRequest,
 )
-from app.services.layer2.data_catalog import get_main_asset
+from app.services.layer2.data_catalog import get_main_asset, load_json_asset
 from app.services.layer2.provider_config import provenance_for
 
 BLOCK_ID = "ROAD-COST"
@@ -66,8 +66,7 @@ def _data_path() -> Path:
 @lru_cache(maxsize=1)
 def _load_dataset() -> Any:
     try:
-        with _data_path().open(encoding="utf-8") as f:
-            return json.load(f)
+        return load_json_asset(_data_path())
     except (OSError, json.JSONDecodeError):
         return {}
 

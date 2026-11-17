@@ -19,6 +19,10 @@ class Settings(BaseSettings):
     cortex_redis_fallback_enabled: bool = True
     database_url: str = "postgresql+asyncpg://cortex:cortex@postgres:5432/cortex"
     redis_url: str = "redis://redis:6379/0"
+    # Folder that contains the air/, sea/ and road/ data files. Empty = the
+    # repository's own data/ folder, resolved from the package location (never
+    # from the working directory). See app/core/data_paths.py.
+    cortex_data_dir: str = ""
     orchestrator_cache_enabled: bool = True
     orchestrator_cache_ttl_seconds: int = 60 * 60 * 24 * 7
     full_response_include_artifacts: bool = False
